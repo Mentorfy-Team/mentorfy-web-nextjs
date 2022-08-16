@@ -1,17 +1,15 @@
 import axios from 'axios';
 
-const {NEXT_PUBLIC_BASE_URL} = process.env;
+const { NEXT_PUBLIC_BASE_URL } = process.env;
 
 export class HttpClient {
-
   private baseUrl: string;
 
-  constructor({baseUrl}: { baseUrl?: string; } = { }) {
+  constructor({ baseUrl }: { baseUrl?: string } = {}) {
     this.baseUrl = baseUrl ?? NEXT_PUBLIC_BASE_URL;
   }
 
-  public get<T>({path, config}: HttpClient.RequestParams) {
+  public get<T>({ path, config }: any) {
     return axios.get<T>(`${this.baseUrl}/${path}`, config);
   }
-
 }
