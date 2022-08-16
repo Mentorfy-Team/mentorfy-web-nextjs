@@ -1,0 +1,82 @@
+{
+  "extends": "next/core-web-vitals",
+  "plugins": ["better-styled-components"],
+  "rules": {
+    "react/display-name": "off",
+    "better-styled-components/sort-declarations-alphabetically": "error",
+    "import/no-anonymous-default-export": "off",
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "no-trailing-spaces": "error",
+    "comma-dangle": [
+      2,
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "never"
+      }
+    ],
+    "no-debugger": "warn",
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1,
+        "maxEOF": 1,
+        "maxBOF": 1
+      }
+    ],
+    "eol-last": ["error", "always"],
+    "import/order": [
+      "error",
+      {
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "~/**",
+            "group": "parent",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "sort-imports": [
+      "error",
+      {
+        "ignoreDeclarationSort": true
+      }
+    ],
+    "space-in-parens": ["error", "never"],
+    "array-bracket-spacing": [
+      "error",
+      "always",
+      {
+        "objectsInArrays": false,
+        "singleValue": true
+      }
+    ],
+    "prefer-const": ["error"],
+    "react/jsx-curly-spacing": [
+      "error",
+      {
+        "when": "never",
+        "spacing": {
+          "objectLiterals": "never"
+        },
+        "children": {
+          "when": "never"
+        }
+      }
+    ]
+  }
+}
