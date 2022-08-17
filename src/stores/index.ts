@@ -1,4 +1,2 @@
-
-export {AppStore} from './app/app.store';
-export {BaseStore} from './base/base.store';
-export {UserDataStore} from './data/user/user.data.store';
+export { default as AppStore } from './app';
+export { default as UserStore } from './data/user';

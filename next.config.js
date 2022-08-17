@@ -2,9 +2,9 @@
 
 module.exports = {
   reactStrictMode: true,
-  webpack: (config, {isServer}) => {
+  webpack: (config, { isServer }) => {
     if (isServer) {
-      config.resolve.mainFields = [ 'module', 'main' ];
+      //config.resolve.mainFields = ['module', 'main'];
     }
     return config;
   },

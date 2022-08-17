@@ -1,7 +1,11 @@
-import { css } from '@stitches/react';
+import styled from '@emotion/styled';
+import { Typography } from '@mui/material';
+import { getColor } from '~/theme';
 
-const name = css({
-  padding: '0',
-});
+export const Wrapper = styled.div``;
 
-export {};
+export const Title = styled.h1``;
+
+export const SubTitle = styled(Typography)`
+  color: blue;
+`;

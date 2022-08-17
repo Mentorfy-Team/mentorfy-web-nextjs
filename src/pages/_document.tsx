@@ -1,34 +1,23 @@
-import React from 'react';
-import {
-ServerStyles, createGetInitialProps, createStylesServer,
-} from '@mantine/next';
-import NextDocument, {
-  DocumentContext,
-Head, Html, Main, NextScript,
-} from 'next/document';
-import {rtlCache} from '~/rtl-cache';
-import {getCssText} from '~/theme/stitches.config';
+import * as React from 'react';
+import createEmotionServer from '@emotion/server/create-instance';
+import Document, { Head, Html, Main, NextScript } from 'next/document';
+import createEmotionCache from '~/createEmotionCache';
+import colorsTheme from '~/theme/provider/colors/colors.provider.theme';
 
-const stylesServer = createStylesServer(rtlCache);
-
-export default class Document extends NextDocument {
-  static async getInitialProps(ctx: DocumentContext) {
-    const initialProps = await NextDocument.getInitialProps(ctx);
-
-    return {
-      ...initialProps,
-      styles: [
-        initialProps.styles,
-        <ServerStyles html={initialProps.html} server={stylesServer} key="styles" />,
-      ],
-    };
-  }
-
+export default class MyDocument extends Document {
   render() {
     return (
       <Html lang="en">
         <Head>
-          <style id="stitches" dangerouslySetInnerHTML={{__html: getCssText()}} />
+          {/* PWA primary color */}
+          <meta name="theme-color" content={colorsTheme.primary.main} />
+          <link rel="shortcut icon" href="/favicon.ico" />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+          />
+          <meta name="emotion-insertion-point" content="" />
+          {(this.props as any).emotionStyleTags}
         </Head>
         <body>
           <Main />
@@ -38,3 +27,34 @@ export default class Document extends NextDocument {
     );
   }
 }
+
+MyDocument.getInitialProps = async (ctx) => {
+  const originalRenderPage = ctx.renderPage;
+
+  const cache = createEmotionCache();
+  const { extractCriticalToChunks } = createEmotionServer(cache);
+
+  ctx.renderPage = () =>
+    originalRenderPage({
+      enhanceApp: (App: any) =>
+        function EnhanceApp(props) {
+          return <App emotionCache={cache} {...props} />;
+        },
+    });
+
+  const initialProps = await Document.getInitialProps(ctx);
+  const emotionStyles = extractCriticalToChunks(initialProps.html);
+  const emotionStyleTags = emotionStyles.styles.map((style) => (
+    <style
+      data-emotion={`${style.key} ${style.ids.join(' ')}`}
+      key={style.key}
+      // eslint-disable-next-line react/no-danger
+      dangerouslySetInnerHTML={{ __html: style.css }}
+    />
+  ));
+
+  return {
+    ...initialProps,
+    emotionStyleTags,
+  };
+};

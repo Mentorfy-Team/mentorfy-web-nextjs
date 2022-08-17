@@ -1,28 +1,31 @@
+import { FC, useState } from 'react';
+import { ThemeProvider } from '@emotion/react';
+import { createTheme } from '@mui/material';
+import colorsTheme from './colors/colors.provider.theme';
 
-import {FC, useState} from 'react';
+declare module '@mui/material/styles' {
+  interface Theme {
+    colors: typeof colorsTheme;
+  }
+  interface ThemeOptions {
+    colors?: typeof colorsTheme;
+  }
+}
 
-import {MantineProvider} from '@mantine/core';
-import {rtlCache} from '~/rtl-cache';
 // import {default as colors} from './colors/colors.provider.theme';
-const Provider: FC<{children:React.ReactNode}> = ({children}) => {
-
+const Provider: FC<{ children: React.ReactNode }> = ({ children }) => {
   // for remote config
-  const [ themeConfig, setThemeConfig ] = useState({});
+  const [themeConfig, setThemeConfig] = useState({});
 
-  return(
+  const Theme = createTheme({
+    colors: colorsTheme,
+  });
+
+  return (
     <div dir="rtl">
-  <MantineProvider
-  withGlobalStyles
-  withNormalizeCSS
-  emotionCache={rtlCache}
-  theme={{
-      colorScheme: 'dark',
-      dir: 'rtl',
-      ...themeConfig,
-    }}>
-    {children}
-  </MantineProvider>
-  </div>
-);};
+      <ThemeProvider theme={Theme}>{children}</ThemeProvider>
+    </div>
+  );
+};
 
 export default Provider;

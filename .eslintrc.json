@@ -8,16 +8,6 @@
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
     "no-trailing-spaces": "error",
-    "comma-dangle": [
-      2,
-      {
-        "arrays": "always-multiline",
-        "objects": "always-multiline",
-        "imports": "always-multiline",
-        "exports": "always-multiline",
-        "functions": "never"
-      }
-    ],
     "no-debugger": "warn",
     "no-multiple-empty-lines": [
       "error",
@@ -57,14 +47,6 @@
       }
     ],
     "space-in-parens": ["error", "never"],
-    "array-bracket-spacing": [
-      "error",
-      "always",
-      {
-        "objectsInArrays": false,
-        "singleValue": true
-      }
-    ],
     "prefer-const": ["error"],
     "react/jsx-curly-spacing": [
       "error",

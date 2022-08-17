@@ -1,5 +1,4 @@
-
-import {darken, lighten} from 'polished';
+import { darken, lighten } from 'polished';
 
 // Mainly for buttons.
 const primary = '#2e2f30';

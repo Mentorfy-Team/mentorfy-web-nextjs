@@ -1,46 +1,45 @@
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import CssBaseline from '@mui/material/CssBaseline';
 import { Provider as StoreProvider } from 'jotai';
+import { useHydrateAtoms } from 'jotai/utils';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { Routes } from '~/consts';
-// import {HeaderPartial, LoadingPartial} from '~/';
-import { UserDataStore } from '~/stores';
+import createEmotionCache from '~/createEmotionCache';
+import { AppStore, UserStore } from '~/stores';
 import { GlobalStyles, ThemeProvider } from '~/theme';
-import { Meta, PageWrapper, Title, Wrapper } from './_app.styles';
+import { PageWrapper, Wrapper } from './_app.styles';
 
-const App = ({ Component, pageProps }: AppProps) => {
-  //const router = useRouter();
+const clientSideEmotionCache = createEmotionCache();
 
-  // useEffect(() => {
-  //   if(sessionStatus.value === null) return;
-  //   if(sessionStatus.value && (
-  //     router.pathname === Routes.login
-  //   )) {
-  //     router.replace(Routes.home);
-  //   } else if(!sessionStatus.value && (
-  //     router.pathname === Routes.home
-  //   )) {
-  //     router.replace(Routes.login);
-  //   }
-  // }, [ sessionStatus.value, router ]);
+interface MyAppProps extends AppProps {
+  emotionCache?: EmotionCache;
+}
+
+const App = (props: MyAppProps) => {
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  useHydrateAtoms([[UserStore.state, {}]] as const);
+  useHydrateAtoms([[AppStore.state, {}]] as const);
 
   return (
-    <Wrapper>
+    <CacheProvider value={emotionCache}>
       <Head>
-        <Title>Mentorfy</Title>
-        <Meta />
+        <title>Mentorfy</title>
+        <meta content="width=device-width, initial-scale=1" />
       </Head>
-      {GlobalStyles()}
+      <GlobalStyles />
       <StoreProvider>
         <ThemeProvider>
           {/* <HeaderPartial /> */}
-          <PageWrapper>
-            <Component {...pageProps} />
-          </PageWrapper>
+          <CssBaseline />
+          <Wrapper>
+            <PageWrapper>
+              <Component {...pageProps} />
+            </PageWrapper>
+          </Wrapper>
         </ThemeProvider>
       </StoreProvider>
       {/* <LoadingPartial /> */}
-    </Wrapper>
+    </CacheProvider>
   );
 };
 
