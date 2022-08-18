@@ -8,7 +8,6 @@ export function GlobalStyles() {
           boxSizing: 'border-box',
           margin: 0,
           padding: 0,
-          textAlign: 'left',
         },
         body: {
           fontFamily: '"Roboto", sans-serif',

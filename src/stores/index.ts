@@ -1,2 +1,1 @@
-export { default as AppStore } from './app';
-export { default as UserStore } from './data/user';
+export { default as userStore } from './user';

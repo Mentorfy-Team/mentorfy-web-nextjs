@@ -22,7 +22,7 @@ const Provider: FC<{ children: React.ReactNode }> = ({ children }) => {
   });
 
   return (
-    <div dir="rtl">
+    <div>
       <ThemeProvider theme={Theme}>{children}</ThemeProvider>
     </div>
   );

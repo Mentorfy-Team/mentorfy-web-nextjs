@@ -3,4 +3,4 @@ import { getProps as getProps } from '~/layouts/login';
 
 export default LoginLayout;
 
-export const getServerSideProps = getProps;
+export const getStaticProps = getProps;
