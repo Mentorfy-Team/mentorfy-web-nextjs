@@ -16,6 +16,13 @@ export function GlobalStyles() {
         'h1, h2, h3, h4, h5, h6': {
           fontFamily: '"Roboto", sans-serif',
         },
+        h1: {
+          lineHeight: '2.4rem',
+          '@media (max-width: 490px)': {
+            lineHeight: '2.0rem',
+            fontSize: '1.7rem',
+          },
+        },
         'label, p, input': {
           fontFamily: '"Open Sans", "sans-serif"',
         },

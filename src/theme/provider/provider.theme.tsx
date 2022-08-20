@@ -1,29 +1,34 @@
 import { FC, useState } from 'react';
-import { ThemeProvider } from '@emotion/react';
-import { createTheme } from '@mui/material';
-import colorsTheme from './colors/colors.provider.theme';
+import {
+  StyledEngineProvider,
+  ThemeProvider,
+  createTheme,
+  responsiveFontSizes,
+} from '@mui/material';
+import { colors } from './colors/colors.provider.theme';
 
-declare module '@mui/material/styles' {
-  interface Theme {
-    colors: typeof colorsTheme;
-  }
-  interface ThemeOptions {
-    colors?: typeof colorsTheme;
-  }
-}
-
-// import {default as colors} from './colors/colors.provider.theme';
 const Provider: FC<{ children: React.ReactNode }> = ({ children }) => {
   // for remote config
-  const [themeConfig, setThemeConfig] = useState({});
+  //const [themeConfig, setThemeConfig] = useState({});
 
-  const Theme = createTheme({
-    colors: colorsTheme,
+  let Theme = createTheme({
+    palette: colors,
   });
+  Theme = responsiveFontSizes(Theme);
+  Theme.components.MuiButton = {
+    defaultProps: {
+      sx: {
+        height: '3rem',
+        paddingBottom: '.2rem',
+      },
+    },
+  };
 
   return (
     <div>
-      <ThemeProvider theme={Theme}>{children}</ThemeProvider>
+      <StyledEngineProvider injectFirst>
+        <ThemeProvider theme={Theme}>{children}</ThemeProvider>
+      </StyledEngineProvider>
     </div>
   );
 };
