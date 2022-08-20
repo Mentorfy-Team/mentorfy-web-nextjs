@@ -23,17 +23,7 @@ const Provider: FC<{ children: React.ReactNode }> = ({ children }) => {
       },
     },
   };
-  Theme.components.MuiTextField = {
-    styleOverrides: {
-      root: {
-        backgroundColor: '#FFF',
-        ':focus': {
-          //you want this to be the same as the backgroundColor above
-          backgroundColor: '#FFF',
-        },
-      },
-    },
-  };
+
   return (
     <div>
       <StyledEngineProvider injectFirst>

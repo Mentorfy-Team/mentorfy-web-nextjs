@@ -5,8 +5,8 @@ declare module '@mui/material/styles/createPalette' {
   interface Palette {
     tertiary: Palette['primary'];
     accent: Palette['primary'];
-    failure: PaletteOptions['primary'];
-    caption: PaletteOptions['primary'];
+    failure: Palette['primary'];
+    caption: Palette['primary'];
   }
   interface PaletteOptions {
     tertiary: PaletteOptions['primary'];
