@@ -10,18 +10,18 @@ type User = {
 type UserStateType = {
   saveUser: (user: User) => void;
   removeUser: () => void;
+  user?: User | null;
 } & typeof initialUserStore;
 
 const initialUserStore = {
   isLoggedIn: false,
-  user: null,
 };
 
 const userStore = create(
   persist<UserStateType>(
     (set, get) => ({
       ...initialUserStore,
-      saveUser: (user: Partial<User>) => {
+      saveUser: (user: User) => {
         set(
           produce((draft: UserStateType) => {
             draft.isLoggedIn = true;
