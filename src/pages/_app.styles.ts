@@ -8,5 +8,4 @@ export const Wrapper = styled.div`
 
 export const PageWrapper = styled.div`
   min-height: calc(100vh - 70px);
-  padding: 30px 20px;
 `;
