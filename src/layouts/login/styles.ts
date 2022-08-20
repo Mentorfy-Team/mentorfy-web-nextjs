@@ -4,8 +4,10 @@ import MuiGrid from '@mui/material/Unstable_Grid2';
 export const Grid = styled(MuiGrid)``;
 
 export const Wrapper = styled(Box)`
+  align-self: center;
   display: flex;
   flex-direction: column;
+  max-width: 700px;
 `;
 
 export const InputField = styled(TextField)`
