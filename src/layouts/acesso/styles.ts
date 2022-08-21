@@ -4,18 +4,35 @@ import MuiGrid from '@mui/material/Unstable_Grid2';
 export const Grid = styled(MuiGrid)``;
 
 export const Wrapper = styled(Box)`
+  align-self: center;
   display: flex;
+  flex: 1;
   flex-direction: column;
+  justify-content: center;
+  max-width: 600px;
+  width: 100%;
+
+  input {
+    color: ${({ theme }) => theme.palette.caption.main};
+  }
+`;
+
+export const Accent = styled('label')`
+  color: ${({ theme }) => theme.palette.accent.main};
+`;
+
+export const LinkButton = styled('label')`
+  cursor: pointer;
 `;
 
 export const InputField = styled(TextField)`
+  margin: 1.5rem 0;
   * {
-    color: ${(props) => props.theme.palette.text.secondary} !important;
+    color: ${(props) => props.theme.palette.text.secondary};
   }
   &:hover fieldset {
     border-color: grey !important;
   }
-  margin: 2rem 0;
 
   @media (max-width: 490px) {
     margin: 1rem 0;
@@ -30,13 +47,19 @@ export const Title = styled('h1')`
   color: ${({ theme }) => theme.palette.text.secondary};
   margin-bottom: 0.5rem;
 
-  b {
-    color: ${({ theme }) => theme.palette.accent.main};
+  @media (min-width: 490px) {
+    font-size: 1.8rem;
   }
 `;
 
 export const SubTitle = styled(Typography)`
   color: ${({ theme }) => theme.palette.caption.main};
+  @media (min-width: 490px) {
+    font-size: 1.1rem;
+  }
+  @media (min-width: 1400px) {
+    font-size: 1.2rem;
+  }
 `;
 
 export const InfoText = styled(Typography)`
@@ -44,11 +67,17 @@ export const InfoText = styled(Typography)`
   color: ${({ theme }) => theme.palette.caption.dark};
   font-size: 0.9rem;
   margin-top: 1rem;
+
+  @media (min-width: 490px) {
+    margin: 0.5rem 0;
+    margin-top: 1.5rem;
+  }
 `;
 
 export const LoginButton = styled(Button)`
   background-color: ${({ theme }) => theme.palette.accent.main};
   color: white;
+  font-weight: bold;
   margin-top: 1rem;
   &:hover {
     background-color: ${({ theme }) => theme.palette.accent.light};
@@ -58,6 +87,10 @@ export const LoginButton = styled(Button)`
 export const ForgotPassButton = styled(Button)`
   color: ${({ theme }) => theme.palette.accent.main};
   margin-top: 1rem;
+
+  @media (min-width: 490px) {
+    margin: 1rem 0;
+  }
 `;
 
 export const CreateAccountButton = styled(Button)`
@@ -70,7 +103,7 @@ export const CreateAccountButton = styled(Button)`
 `;
 
 export const BackgroundHolder = styled('div')`
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   position: relative;
   width: 100%;
