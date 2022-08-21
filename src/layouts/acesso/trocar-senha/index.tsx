@@ -48,6 +48,31 @@ const TrocarSenha: FC<props> = ({ pageChange, setInfo }) => {
     );
   }, [hasNumber, hasSpecial, hasUpper, minChars]);
 
+  const CadastrarButton = useCallback(() => {
+    return (
+      <LoginButton
+        disabled={!passed || rePassword.length == 0 || !RePasswordCheck}
+        onClick={() => {
+          setInfo(
+            <>
+              <Text>Sua senha foi alterada com sucesso!</Text>
+              <Text>Você já pode acessar usando sua nova senha.</Text>
+            </>,
+          );
+          pageChange('sucesso');
+        }}
+        sx={{
+          backgroundColor: ({ palette }) =>
+            passed && rePassword.length > 0 && RePasswordCheck
+              ? palette.accent.main
+              : palette.accent.light,
+        }}
+      >
+        Resetar senha
+      </LoginButton>
+    );
+  }, [RePasswordCheck, pageChange, passed, rePassword, setInfo]);
+
   return (
     <>
       <InputField
@@ -77,19 +102,7 @@ const TrocarSenha: FC<props> = ({ pageChange, setInfo }) => {
           shrink: true,
         }}
       />
-      <LoginButton
-        onClick={() => {
-          setInfo(
-            <>
-              <Text>Sua senha foi alterada com sucesso!</Text>
-              <Text>Você já pode acessar usando sua nova senha.</Text>
-            </>,
-          );
-          pageChange('sucesso');
-        }}
-      >
-        Resetar senha
-      </LoginButton>
+      {CadastrarButton()}
     </>
   );
 };

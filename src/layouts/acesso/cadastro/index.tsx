@@ -86,7 +86,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
         Cadastrar
       </CadastroButton>
     );
-  }, [CheckComplete]);
+  }, [CheckComplete, HandleCadastro]);
 
   return (
     <>
