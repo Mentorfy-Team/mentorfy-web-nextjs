@@ -22,9 +22,9 @@ const App = (props: MyAppProps) => {
         <meta content="width=device-width, initial-scale=1" />
       </Head>
       <GlobalStyles />
+      <CssBaseline />
       <ThemeProvider>
         {/* <HeaderPartial /> */}
-        <CssBaseline />
         <Wrapper>
           <PageWrapper>
             <Component {...pageProps} />

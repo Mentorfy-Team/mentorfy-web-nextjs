@@ -18,7 +18,7 @@ export function GlobalStyles() {
         },
         h1: {
           lineHeight: '2.4rem',
-          '@media (max-width: 490px)': {
+          '@media (max-width: 500px)': {
             lineHeight: '2.0rem',
             fontSize: '1.7rem',
           },
