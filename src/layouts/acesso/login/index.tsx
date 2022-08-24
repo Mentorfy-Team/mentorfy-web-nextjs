@@ -1,5 +1,7 @@
 import { FC, useState } from 'react';
 import { Divider } from '@mui/material';
+import { useRouter } from 'next/router';
+import { routes } from '~/consts/routes/routes.consts';
 import { AcessoSubPage } from '..';
 import {
   Accent,
@@ -18,7 +20,11 @@ type props = {
 
 const Login: FC<props> = ({ pageChange }) => {
   const [email, setEmail] = useState('');
-  const HandleLogin = (name: string, email: string): void => {};
+  const route = useRouter();
+
+  const HandleLogin = (name: string, email: string): void => {
+    route.push(routes.home.path);
+  };
 
   return (
     <>
