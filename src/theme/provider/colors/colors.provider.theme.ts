@@ -29,7 +29,7 @@ export const colors: PaletteOptions = {
   failure: { main: '#cc0000' },
   caption: { main: '#7D7D7D', dark: '#36353A' },
   primary: {
-    light: lighten(0.2, primary),
+    light: '#29282D',
     main: primary,
     dark: darken(0.2, primary),
   },

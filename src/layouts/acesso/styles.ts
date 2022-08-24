@@ -34,7 +34,7 @@ export const InputField = styled(TextField)`
     border-color: grey !important;
   }
 
-  @media (max-width: 490px) {
+  @media (max-width: 500px) {
     margin: 1rem 0;
   }
 `;
@@ -47,14 +47,14 @@ export const Title = styled('h1')`
   color: ${({ theme }) => theme.palette.text.secondary};
   margin-bottom: 0.5rem;
 
-  @media (min-width: 490px) {
+  @media (min-width: 500px) {
     font-size: 1.8rem;
   }
 `;
 
 export const SubTitle = styled(Typography)`
   color: ${({ theme }) => theme.palette.caption.main};
-  @media (min-width: 490px) {
+  @media (min-width: 500px) {
     font-size: 1.1rem;
   }
   @media (min-width: 1400px) {
@@ -68,7 +68,7 @@ export const InfoText = styled(Typography)`
   font-size: 0.9rem;
   margin-top: 1rem;
 
-  @media (min-width: 490px) {
+  @media (min-width: 500px) {
     margin: 0.5rem 0;
     margin-top: 1.5rem;
   }
@@ -88,7 +88,7 @@ export const ForgotPassButton = styled(Button)`
   color: ${({ theme }) => theme.palette.accent.main};
   margin-top: 1rem;
 
-  @media (min-width: 490px) {
+  @media (min-width: 500px) {
     margin: 1rem 0;
   }
 `;
