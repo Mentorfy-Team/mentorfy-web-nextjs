@@ -94,7 +94,7 @@ const MiniDrawer: React.FC<props> = ({ children, Title }) => {
                 sx={{
                   minHeight: 70,
                   justifyContent: open ? 'initial' : 'center',
-                  px: 2.5,
+                  px: 2,
                 }}
               >
                 <ListItemIcon
