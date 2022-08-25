@@ -13,6 +13,7 @@ import {
   SubTitle,
   Title,
 } from '../styles';
+import { userStore } from '~/stores';
 
 type props = {
   pageChange: (page: AcessoSubPage) => void;
@@ -21,6 +22,7 @@ type props = {
 const Login: FC<props> = ({ pageChange }) => {
   const [email, setEmail] = useState('');
   const route = useRouter();
+  const store = userStore();
 
   const HandleLogin = (name: string, email: string): void => {
     route.push(routes.home.path);

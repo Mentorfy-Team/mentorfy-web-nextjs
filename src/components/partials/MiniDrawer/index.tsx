@@ -20,6 +20,7 @@ import {
   DrawerHeader,
   Kind,
   ProFree,
+  SupportHeader,
   UserField,
   UserName,
 } from './styles';
@@ -27,11 +28,12 @@ import {
 const drawerWidth = 240;
 
 type props = {
-  children?: React.ReactNode;
-  Title: string;
+  children?: JSX.Element;
+  supportHeader?: JSX.Element;
+  header?: JSX.Element;
 };
 
-const MiniDrawer: React.FC<props> = ({ children, Title }) => {
+const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const isMobile = useMediaQuery('(max-width:500px)');
@@ -47,7 +49,7 @@ const MiniDrawer: React.FC<props> = ({ children, Title }) => {
   return (
     <Box sx={{ display: 'flex', overflowX: 'hidden' }}>
       <AppBar id="AppBar" position="fixed" open={open}>
-        <Toolbar sx={{ marginLeft: open ? -7 : 0 }}>
+        <Toolbar >
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -55,6 +57,7 @@ const MiniDrawer: React.FC<props> = ({ children, Title }) => {
             edge="start"
             sx={{
               marginRight: 5,
+              marginLeft: -1
             }}
           >
             <Image
@@ -64,14 +67,15 @@ const MiniDrawer: React.FC<props> = ({ children, Title }) => {
               src={open ? '/svgs/arrows-left.svg' : '/svgs/menu.svg'}
             />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            {Title}
-          </Typography>
+          {header}
         </Toolbar>
+        {supportHeader && <SupportHeader>
+          {supportHeader}
+        </SupportHeader>}
       </AppBar>
       <Drawer id="Drawer" variant="permanent" open={open}>
         <DrawerHeader id="DrawerHeader" />
-        <UserField pl={2} display="flex">
+        <UserField pl={1.5} display="flex">
           <Avatar src="/images/avatar.png" />
           <Box pl={2.5}>
             <UserName variant="body2" noWrap>

@@ -51,6 +51,7 @@ export const AppBar = styled(MuiAppBar, {
     })};
 
   > div {
+    background-color: ${({ theme }) => theme.palette.primary.light};
     transition: ${({ theme }) =>
       theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -58,8 +59,7 @@ export const AppBar = styled(MuiAppBar, {
       })};
   }
 
-  background-color: ${({ theme }) => theme.palette.primary.light};
-  border-left: solid 1px #424242;
+  background-color: transparent;
   box-shadow: none;
 
   margin-left: 201px;
@@ -143,4 +143,14 @@ export const ProFree = styled(Box)`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.palette.accent.main} !important;
   color: ${({ theme }) => theme.palette.text.primary} !important;
+`;
+
+export const SupportHeader = styled(Box)`
+  width: 100%;
+
+  ${({theme}) => css`
+    ${theme.breakpoints.up('sm')} {
+      margin-left: 4rem;
+    }
+  `}
 `;
