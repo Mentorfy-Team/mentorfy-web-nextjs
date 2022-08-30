@@ -22,6 +22,7 @@ const tertiary = '#7D7D7D';
 const accent = '#FE7D22';
 
 export const colors: PaletteOptions = {
+  mode: 'light',
   text: { primary: '#FFFFFF', secondary: '#000000' },
   info: { main: '#FE7D22' },
   success: { main: '#66cd80' },

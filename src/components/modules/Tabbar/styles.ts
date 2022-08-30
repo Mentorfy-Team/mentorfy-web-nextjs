@@ -1,6 +1,11 @@
 import { Tab, Tabs, styled } from '@mui/material';
 
-export const TabWrapper = styled(Tabs)``;
+export const TabWrapper = styled(Tabs)`
+    .Mui-selected {
+        border-bottom: 3px solid #7586EC;
+        color: white;
+    }
+`;
 
 export const TabItem = styled(Tab)`
     border-bottom: 3px solid transparent;

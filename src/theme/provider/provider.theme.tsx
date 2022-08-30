@@ -15,12 +15,31 @@ const Provider: FC<{ children: React.ReactNode }> = ({ children }) => {
     palette: colors,
   });
   Theme = responsiveFontSizes(Theme);
-  Theme.components.MuiButton = {
-    defaultProps: {
-      sx: {
-        height: '3rem',
-        paddingBottom: '.2rem',
+  Theme.components = {
+    MuiButton: {
+      defaultProps: {
+        sx: {
+          height: '3rem',
+          paddingBottom: '.2rem',
+        },
       },
+      styleOverrides: {
+        root: ({ ownerState, theme }) => ({
+          ...(ownerState.variant === 'contained' && {
+            backgroundColor: theme.palette.accent.main,
+            fontWeight: 'bold'
+          }),
+          ...(ownerState.variant === 'text' && {
+            color: theme.palette.accent.main,
+            fontWeight: 'bold'
+          }),
+          ...(ownerState.variant === 'outlined' && {
+            color: theme.palette.accent.main,
+            borderColor: theme.palette.accent.main,
+            fontWeight: 'bold'
+          })
+        })
+      }
     },
   };
 
