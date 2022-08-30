@@ -1,17 +1,29 @@
 import { FC } from 'react';
-import { Typography } from '@mui/material';
-import { MiniDrawer, PageWrapper } from '~/components';
+import { Tab, Tabs, Typography } from '@mui/material';
+import { Box } from '@mui/system';
+import { MiniDrawer, PageWrapper, Tabbar } from '~/components';
+import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';
 
 const Clients: FC = () => {
 
-    const header = (
-        <Typography variant='h6'>
-            Meus Clientes
-        </Typography>
+    const Header = (
+            <Typography  variant='h6'>
+                Meus Clientes
+            </Typography>
+    );
+
+    const SupportHeader = (
+        <TabWrapper>
+            <TabItem label="Lista de Clientes"/>
+            <TabItem label="Aprovações"/>
+            <TabItem label="Meus Times"/>
+        </TabWrapper>
     );
     return (
         <PageWrapper>
-            <MiniDrawer header={header}></MiniDrawer>
+            <MiniDrawer header={Header} supportHeader={SupportHeader}>
+                <input></input>
+            </MiniDrawer>
         </PageWrapper>
     );
 };
