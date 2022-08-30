@@ -145,12 +145,13 @@ export const ProFree = styled(Box)`
   color: ${({ theme }) => theme.palette.text.primary} !important;
 `;
 
-export const SupportHeader = styled(Box)`
+export const WrapperSupportHeader = styled(Box)<AppBarProps>`
   width: 100%;
 
-  ${({theme}) => css`
+  ${({theme, open}) => css`
     ${theme.breakpoints.up('sm')} {
-      margin-left: 4rem;
+      margin-left: ${!open && '4rem'};
+      padding-left: 0.45rem;
     }
   `}
 `;

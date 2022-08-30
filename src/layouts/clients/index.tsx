@@ -1,6 +1,6 @@
 import { FC } from 'react';
-import { Typography } from '@mui/material';
-import { MiniDrawer, PageWrapper } from '~/components';
+import { Tab, Typography } from '@mui/material';
+import { MiniDrawer, PageWrapper, Tabbar } from '~/components';
 
 const Clients: FC = () => {
 
@@ -9,9 +9,21 @@ const Clients: FC = () => {
             Meus Clientes
         </Typography>
     );
+
+    const SupportHeader = (
+        <Tabbar value={0}>
+          <>
+            <Tab label="Desempenho" />
+            <Tab label="Notificações" />
+          </>
+        </Tabbar>
+      );
+
     return (
         <PageWrapper>
-            <MiniDrawer header={header}></MiniDrawer>
+            <MiniDrawer header={header} supportHeader={SupportHeader}>
+                <div>Meus Clientes</div>
+            </MiniDrawer>
         </PageWrapper>
     );
 };
