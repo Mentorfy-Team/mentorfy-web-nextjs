@@ -12,6 +12,7 @@ import { useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { routes } from '~/consts/routes/routes.consts';
 import AdjustName from './helper/AdjustName';
 import {
@@ -37,6 +38,7 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const isMobile = useMediaQuery('(max-width:500px)');
+  const router = useRouter();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -44,6 +46,14 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const getIcon = (component, path) => {
+    const props: any = {};
+
+    if (router.pathname.includes(path)) props.fill = theme.palette.accent.main;
+
+    return component(props);
   };
 
   return (
@@ -99,7 +109,9 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
                   minHeight: 70,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2,
+                  cursor: 'pointer'
                 }}
+                onClick={() => router.push(routes[route].path)}
               >
                 <ListItemIcon
                   sx={{
@@ -108,16 +120,11 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
                     justifyContent: 'center',
                   }}
                 >
-                  <Image
-                    alt={routes[route].name}
-                    width={routes[route].icon.width}
-                    height={routes[route].icon.height}
-                    src={routes[route].icon.path}
-                  />
+                  {getIcon(routes[route].component, routes[route].path)}
                 </ListItemIcon>
                 <ListItemText
                   primary={routes[route].name}
-                  sx={{ opacity: open ? 1 : 0 }}
+                  sx={{ opacity: open ? 1 : 0, color: router.pathname.includes(routes[route].path) ? theme.palette.accent.main : theme.palette.text.primary }}
                 />
               </ListItemButton>
             </ListItem>
