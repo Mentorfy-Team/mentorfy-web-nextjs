@@ -20,9 +20,9 @@ import {
   DrawerHeader,
   Kind,
   ProFree,
-  SupportHeader,
   UserField,
   UserName,
+  WrapperSupportHeader,
 } from './styles';
 
 const drawerWidth = 240;
@@ -69,9 +69,9 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
           </IconButton>
           {header}
         </Toolbar>
-        {supportHeader && <SupportHeader>
+        {supportHeader && <WrapperSupportHeader open={open}>
           {supportHeader}
-        </SupportHeader>}
+        </WrapperSupportHeader>}
       </AppBar>
       <Drawer id="Drawer" variant="permanent" open={open}>
         <DrawerHeader id="DrawerHeader" />
@@ -125,7 +125,7 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
+        <DrawerHeader mb={5} />
         {children}
       </Box>
     </Box>
