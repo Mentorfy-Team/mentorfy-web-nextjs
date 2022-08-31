@@ -1,13 +1,10 @@
-<<<<<<< HEAD
+
+import { useState } from 'react';
 import MoreIcon from '@rsuite/icons/legacy/More';
 import { Checkbox, Dropdown, IconButton, Popover, Progress, Table, Whisper } from 'rsuite';
-import { mockUsers } from './mock';
 
-=======
-import { useState } from 'react';
-import { Checkbox, Table } from 'rsuite';
 import { mockUsers } from '../../../layouts/produtos/ProductsTable/mock';
->>>>>>> 945a4dbf2d3ac48c0725e572e3e139a1598299ed
+
 const { Column, HeaderCell, Cell } = Table;
 
 const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
