@@ -3,7 +3,7 @@ import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import { MiniDrawer, PageWrapper, Tabbar } from '~/components';
 import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';
-import { Grid, GridWrapper, Item, TextWrapper } from './style';
+import { Grid, GridWrapper, Item, TextWrapper } from './sty';
 
 const Clients: FC = () => {
 
@@ -35,15 +35,15 @@ const Clients: FC = () => {
                             <Image
                                 alt=''
                                 src='/svgs/graduation-cap.svg'
-                                height={'2.562rem'}
-                                width={'3.187rem'}
-                            >
+                                height={'41px'}
+                                width={'51px'}
+                                 >
                             </Image>
                         </Item>
                     </Grid>
 
                     <Grid xs={4}>
-                        <Item>
+                    <Item>
                             <TextWrapper>
                                 <Typography>Total de Membros</Typography>
                                 <Typography variant='h4'>273</Typography>
@@ -52,15 +52,15 @@ const Clients: FC = () => {
                             <Image
                                 alt=''
                                 src='/svgs/graduation-cap.svg'
-                                height={'2.562rem'}
-                                width={'3.187rem'}
-                            >
+                                height={'41px'}
+                                width={'51px'}
+                                 >
                             </Image>
                         </Item>
                     </Grid>
 
                     <Grid xs={4}>
-                        <Item>
+                    <Item>
                             <TextWrapper>
                                 <Typography>Total de Membros</Typography>
                                 <Typography variant='h4'>273</Typography>
@@ -69,9 +69,9 @@ const Clients: FC = () => {
                             <Image
                                 alt=''
                                 src='/svgs/graduation-cap.svg'
-                                height={'2.562rem'}
-                                width={'3.187rem'}
-                            >
+                                height={'41px'}
+                                width={'51px'}
+                                 >
                             </Image>
                         </Item>
                     </Grid>

@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { Box, SvgIcon, Tab, Typography } from '@mui/material';
-import { MiniDrawer, PageWrapper, TabItem, Tabbar } from '~/components';
+import { Datagrid, MiniDrawer, PageWrapper, TabItem, Tabbar } from '~/components';
 import { AddProductButton, HeaderWrapper, OptionsWrapper } from './styles';
 import { plus_svg } from '~/../public/svgs';
 
@@ -29,7 +29,7 @@ const Produtos: FC = () => {
   return (
     <PageWrapper>
       <MiniDrawer header={Header} supportHeader={SupportHeader}>
-        <Datagrid />
+        <Datagrid/>
       </MiniDrawer>
     </PageWrapper>
   );

@@ -1,5 +1,5 @@
-import { Table, Popover, Whisper, Checkbox, Dropdown, IconButton, Progress } from 'rsuite';
 import MoreIcon from '@rsuite/icons/legacy/More';
+import { Checkbox, Dropdown, IconButton, Popover, Progress, Table, Whisper } from 'rsuite';
 import { mockUsers } from './mock';
 
 const { Column, HeaderCell, Cell } = Table;
