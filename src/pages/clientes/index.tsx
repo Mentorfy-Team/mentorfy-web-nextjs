@@ -1,5 +1,5 @@
-import { default as ClientsLayout } from '~/layouts/clients';
-import { getProps as getProps } from '~/layouts/clients';
+import { default as ClientsLayout } from '~/layouts/clientes';
+import { getProps as getProps } from '~/layouts/clientes';
 
 export default ClientsLayout;
 

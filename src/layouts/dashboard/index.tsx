@@ -1,9 +1,9 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { Tab, Tabs, Typography } from '@mui/material';
-import { MiniDrawer, PageWrapper, Tabbar } from '~/components';
+import { MiniDrawer, PageWrapper, TabItem, Tabbar } from '~/components';
 
 const Dashboard: FC = () => {
-
+  const [tabindex, setTabindex] = useState(0);
   const Header = (
     <Typography variant="h6" noWrap component="div">
       Dashboard
@@ -11,11 +11,9 @@ const Dashboard: FC = () => {
   );
 
   const SupportHeader = (
-    <Tabbar value={0}>
-      <>
-        <Tab label="Desempenho" />
-        <Tab label="Notificações" />
-      </>
+    <Tabbar onChange={(_, value)=>setTabindex(value)} selected={tabindex}>
+      <TabItem label="Desempenho" />
+      <TabItem label="Notificações" />
     </Tabbar>
   );
 

@@ -1,13 +1,14 @@
 import { TabItem, TabWrapper } from './styles';
 
 type props = {
-  children?: JSX.Element;
+  children?: any;
+  selected: number;
+  onChange: (event: React.ChangeEvent<{}>, newValue: number) => void;
 }
 
-const Tabbar: React.FC<props> = () => {
-  return (<TabWrapper value={0} >
-    <TabItem label="Desempenho" />
-    <TabItem label="Notificações" />
+const Tabbar: React.FC<props> = ({ selected, children, onChange }) => {
+  return (<TabWrapper value={selected} onChange={onChange} >
+    {children}
   </TabWrapper>);
 };
 

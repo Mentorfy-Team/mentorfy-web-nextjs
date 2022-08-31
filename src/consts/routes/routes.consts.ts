@@ -12,12 +12,12 @@ export const routes = {
   },
   products: {
     path: '/produtos',
-    name: 'Meus Produtos',
+    name: 'Produtos',
     component: my_products_svg,
   },
   clients: {
     path: '/clientes',
-    name: 'Meus Clientes',
+    name: 'Clientes',
     component: clients_svg,
   },
   settings: {
