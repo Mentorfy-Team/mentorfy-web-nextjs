@@ -1,11 +1,12 @@
 import { FC } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import { MiniDrawer, PageWrapper, Tabbar } from '~/components';
 import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';
 import { ButtonsWrapper, ClientsOptionsButton, Grid, GridWrapper, Item, TextWrapper } from './style';
 
 const Clients: FC = () => {
+    const isMobile = useMediaQuery('(max-width: 500px)');
 
     const Header = (
             <Typography  variant='h6'>
@@ -20,6 +21,11 @@ const Clients: FC = () => {
             <TabItem label="Meus Times"/>
         </TabWrapper>
     );
+
+    // Consts to controll buttons text
+    const exportClientsText =  (!isMobile ? 'Exportar Clientes' : '');
+    const filterClientsText =  (!isMobile ? 'Filtrar Clientes' : '');
+    const createdClientsText =  (!isMobile ? 'Cadastrar Clientes' : '');
     return (
         <PageWrapper>
             <MiniDrawer header={Header} supportHeader={SupportHeader}>
@@ -79,9 +85,9 @@ const Clients: FC = () => {
                 </Grid>
                 </GridWrapper>
                 <ButtonsWrapper>
-                    <ClientsOptionsButton variant='outlined'><Image alt='exportar-clientes' src='/svgs/export-clients.svg' height={'22px'} width={'22px'}/>Exportar Clientes</ClientsOptionsButton>
-                    <ClientsOptionsButton variant='outlined'><Image alt='exportar-clientes' src='/svgs/filter-clients.svg' height={'22px'} width={'22px'}/>Filtrar Clientes</ClientsOptionsButton>
-                    <ClientsOptionsButton variant='contained'><Image alt='exportar-clientes' src='/svgs/plus.svg' height={'31px'} width={'18px'}/>Cadastrar Clientes</ClientsOptionsButton>
+                    <ClientsOptionsButton variant='outlined'><Image alt='exportar-clientes' src='/svgs/export-clients.svg' height={'22px'} width={'22px'}/>{exportClientsText}</ClientsOptionsButton>
+                    <ClientsOptionsButton variant='outlined'><Image alt='exportar-clientes' src='/svgs/filter-clients.svg' height={'22px'} width={'22px'}/>{filterClientsText}</ClientsOptionsButton>
+                    <ClientsOptionsButton variant='contained'><Image alt='exportar-clientes' src='/svgs/plus.svg' height={'31px'} width={'18px'}/>{createdClientsText}</ClientsOptionsButton>
                 </ButtonsWrapper>
                 </>
             </MiniDrawer>
@@ -96,3 +102,7 @@ export async function getProps() {
 }
 
 export default Clients;
+function px(arg0: number, arg1: number, px: any) {
+    throw new Error('Function not implemented.');
+}
+

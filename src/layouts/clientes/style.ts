@@ -1,7 +1,10 @@
 import { Box, Button, styled } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
-export const Grid = styled(Grid2)``;
+export const Grid = styled(Grid2)`
+    display: flex;
+    justify-content: center;
+`;
 
 export const Item = styled(Box)`
     align-items: flex-start;
@@ -17,8 +20,6 @@ export const Item = styled(Box)`
 
 export const GridWrapper = styled(Box)`
     display: flex;
-    justify-content: center;
-
     margin-top: 3.75rem;
 `;
 
@@ -54,4 +55,8 @@ export const ClientsOptionsButton = styled(Button)`
     text-transform: none;
 
     width: 12.5rem;
+
+    @media (max-width: 500px) { 
+        width: 5rem;
+    }
 `;
