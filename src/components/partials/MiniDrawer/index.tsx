@@ -57,9 +57,9 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', overflowX: 'hidden' }}>
+    <Box sx={{ display: 'flex', overflow: 'hidden', minHeight: 'inherit' }}>
       <AppBar id="AppBar" position="fixed" open={open}>
-        <Toolbar >
+        <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -67,7 +67,7 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
             edge="start"
             sx={{
               marginRight: 5,
-              marginLeft: -1
+              marginLeft: -1,
             }}
           >
             <Image
@@ -79,9 +79,11 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
           </IconButton>
           {header}
         </Toolbar>
-        {supportHeader && <WrapperSupportHeader open={open}>
-          {supportHeader}
-        </WrapperSupportHeader>}
+        {supportHeader && (
+          <WrapperSupportHeader open={open}>
+            {supportHeader}
+          </WrapperSupportHeader>
+        )}
       </AppBar>
       <Drawer id="Drawer" variant="permanent" open={open}>
         <DrawerHeader id="DrawerHeader" />
@@ -109,7 +111,7 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
                   minHeight: 70,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2,
-                  cursor: 'pointer'
+                  cursor: 'pointer',
                 }}
                 onClick={() => router.push(routes[route].path)}
               >
@@ -124,16 +126,34 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
                 </ListItemIcon>
                 <ListItemText
                   primary={routes[route].name}
-                  sx={{ opacity: open ? 1 : 0, color: router.pathname.includes(routes[route].path) ? theme.palette.accent.main : theme.palette.text.primary }}
+                  sx={{
+                    opacity: open ? 1 : 0,
+                    color: router.pathname.includes(routes[route].path)
+                      ? theme.palette.accent.main
+                      : theme.palette.text.primary,
+                  }}
                 />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader mb={5} />
-        {children}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          pt: 3,
+          marginTop: supportHeader ? '114px' : '60px',
+          overflow: 'auto',
+        }}
+      >
+        <Box
+          sx={{
+            height: '0vh',
+          }}
+        >
+          {children}
+        </Box>
       </Box>
     </Box>
   );

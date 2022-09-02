@@ -2,15 +2,22 @@ import { Box, Button, styled } from '@mui/material';
 
 export const OptionsWrapper = styled(Box)``;
 
+export const ScrollArea = styled(Box)`
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  padding: 0 2rem;
+  text-align: -webkit-center;
+`;
+
 export const HeaderWrapper = styled(Box)`
   align-items: center;
   display: flex;
-  flex:1;
+  flex: 1;
   justify-content: space-between;
 `;
 
 export const AddProductButton = styled(Button)`
-  font-size: 0.7rem; 
-  height: 2rem; 
-  line-height: 0.8rem
+  font-size: 0.7rem;
+  height: 2rem;
+  line-height: 0.8rem;
 `;

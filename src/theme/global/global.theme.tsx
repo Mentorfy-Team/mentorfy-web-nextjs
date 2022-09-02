@@ -4,6 +4,21 @@ export function GlobalStyles() {
   return (
     <Global
       styles={(theme) => ({
+        '::-webkit-scrollbar': {
+          width: '12px',
+          height: '12px',
+        },
+        '::-webkit-scrollbar-track': {
+          border: '1px solid #FE7D22',
+          'border-radius': '10px',
+        },
+        '::-webkit-scrollbar-thumb': {
+          background: '#FE7D22',
+          'border-radius': '10px',
+        },
+        '::-webkit-scrollbar-thumb:hover': {
+          background: '#FE7D22',
+        },
         '*, *:before, *:after': {
           boxSizing: 'border-box',
           margin: 0,

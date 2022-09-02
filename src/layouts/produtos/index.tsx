@@ -1,19 +1,17 @@
-import { FC, useState } from 'react';
-import { Box, SvgIcon, Typography } from '@mui/material';
-import {
-  Datagrid,
-  MiniDrawer,
-  PageWrapper,
-  TabItem,
-  Tabbar,
-} from '~/components';
+import { FC, useEffect, useState } from 'react';
+import { Box, SvgIcon, Typography, useMediaQuery } from '@mui/material';
+import { MiniDrawer, PageWrapper, TabItem, Tabbar } from '~/components';
 import ProductsTable from './ProductsTable';
-import { mockUsers } from './ProductsTable/mock';
-import { AddProductButton, HeaderWrapper } from './styles';
+import { AddProductButton, HeaderWrapper, ScrollArea } from './styles';
 import { plus_svg } from '~/../public/svgs';
 
 const Produtos: FC = () => {
   const [tabindex, setTabindex] = useState(0);
+  const [products, setProducts] = useState([]);
+  const isMobile = useMediaQuery('(max-width: 600px)');
+
+  useEffect(() => {}, []);
+
   const Header = (
     <HeaderWrapper>
       <Typography variant="h6">Produtos</Typography>
@@ -35,9 +33,15 @@ const Produtos: FC = () => {
   return (
     <PageWrapper>
       <MiniDrawer header={Header} supportHeader={SupportHeader}>
-        <Datagrid/>
-        <Box sx={{ width: '100%', textAlign: '-webkit-center' }}>
-          <Datagrid data={mockUsers(300)} columns={ProductsTable()} />
+        <Box id="Grid" sx={{ textAlign: '-webkit-center' }}>
+          <ScrollArea
+            sx={{
+              width: isMobile ? '90vw' : '80vw',
+              maxWidth: '1120px',
+            }}
+          >
+            <ProductsTable />
+          </ScrollArea>
         </Box>
       </MiniDrawer>
     </PageWrapper>

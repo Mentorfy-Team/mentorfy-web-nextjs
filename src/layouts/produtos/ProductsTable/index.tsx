@@ -1,129 +1,90 @@
-import MoreIcon from '@rsuite/icons/legacy/More';
-import { Dropdown, IconButton, Popover, Table, Whisper } from 'rsuite';
-const { Column, HeaderCell, Cell } = Table;
-const NameCell = ({ rowData, dataKey, ...props }) => {
-  const speaker = (
-    <Popover title="Description">
-      <p>
-        <b>Name:</b> {rowData.name}
-      </p>
-      <p>
-        <b>Gender:</b> {rowData.gender}
-      </p>
-      <p>
-        <b>City:</b> {rowData.city}
-      </p>
-      <p>
-        <b>Street:</b> {rowData.street}
-      </p>
-    </Popover>
-  );
+import { useState } from 'react';
+import { Box, Button, SvgIcon, TableCell, Typography } from '@mui/material';
+import { Datagrid } from '~/components';
+import { Column } from '~/components/atoms/Datagrid';
+import { gear_svg } from '~/../public/svgs';
 
-  return (
-    <Cell {...props}>
-      <Whisper placement="top" speaker={speaker}>
-        <a>{rowData[dataKey]}</a>
-      </Whisper>
-    </Cell>
-  );
-};
+const columns: Column[] = [
+  { id: 'name', label: 'NOME', minWidth: 170 },
+  {
+    id: 'price',
+    label: 'PREÇO',
+    minWidth: 100,
+    format: (value) =>
+      value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
+  },
+  {
+    id: 'users',
+    label: 'MENTORADOS',
+    minWidth: 170,
+  },
+  {
+    id: 'status',
+    label: 'STATUS',
+    minWidth: 170,
+  },
+];
 
-const ImageCell = ({ rowData, dataKey, ...props }) => (
-  <Cell {...props} style={{ padding: 0 }}>
-    <div
-      style={{
-        width: 40,
-        height: 40,
-        background: '#f5f5f5',
-        borderRadius: 6,
-        marginTop: 2,
-        overflow: 'hidden',
-        display: 'inline-block',
-      }}
-    >
-      <img src={rowData.avatar} width="40" />
-    </div>
-  </Cell>
-);
+interface Data {
+  name: string;
+  price: number;
+  users: number;
+  status: JSX.Element;
+}
 
-const renderMenu = ({ onClose, left, top, className }, ref) => {
-  const handleSelect = (eventKey) => {
-    onClose();
-    console.log(eventKey);
+function createData(
+  name: string,
+  price: number,
+  users: number,
+  status: string,
+): Data {
+  return {
+    name,
+    price,
+    users,
+    status: (
+      <Box sx={{}}>
+        <Typography variant="body2">{status}</Typography>
+      </Box>
+    ),
   };
-  return (
-    <Popover ref={ref} className={className} style={{ left, top }} full>
-      <Dropdown.Menu onSelect={handleSelect}>
-        <Dropdown.Item eventKey={1}>Follow</Dropdown.Item>
-        <Dropdown.Item eventKey={2}>Sponsor</Dropdown.Item>
-        <Dropdown.Item eventKey={3}>Add to friends</Dropdown.Item>
-        <Dropdown.Item eventKey={4}>View Profile</Dropdown.Item>
-        <Dropdown.Item eventKey={5}>Block</Dropdown.Item>
-      </Dropdown.Menu>
-    </Popover>
-  );
-};
+}
 
-const ActionCell = ({ rowData, dataKey, ...props }) => {
-  return (
-    <Cell {...props} className="link-group">
-      <Whisper
-        placement="autoVerticalStart"
-        trigger="click"
-        speaker={renderMenu as any}
-      >
-        <IconButton appearance="subtle" icon={<MoreIcon />} />
-      </Whisper>
-    </Cell>
-  );
-};
+const rows = [
+  // createData('Mentoria S1', 597.0, 159, 'Ativo'),
+  // createData('Mentoria S2', 597.0, 159, 'Ativo'),
+  // createData('Mentoria S3', 597.0, 159, 'Ativo'),
+  // createData('Mentoria S4', 597.0, 159, 'Ativo'),
+  // createData('Mentoria S5', 597.0, 159, 'Ativo'),
+  // createData('Mentoria S6', 597.0, 159, 'Ativo'),
+  // createData('Mentoria S7', 597.0, 159, 'Ativo'),
+  // createData('Mentoria S8', 597.0, 159, 'Ativo'),
+  // createData('Mentoria S9', 597.0, 159, 'Ativo'),
+  // createData('Mentoria S10', 597.0, 159, 'Ativo'),
+  // createData('Mentoria S11', 597.0, 159, 'Ativo'),
+  // createData('Mentoria S12', 597.0, 159, 'Ativo'),
+  // createData('Mentoria S13', 597.0, 159, 'Ativo'),
+  // createData('Mentoria S14', 597.0, 159, 'Ativo'),
+  //createData('Mentoria S15', 597.0, 159, 'Ativo'),
+];
 
 const ProductsTable = () => {
+  const [page, setPage] = useState(1);
+
   return (
-    <>
-      <Column width={80} align="center">
-        <HeaderCell>NOME</HeaderCell>
-        <NameCell dataKey="name" rowData={undefined} />
-      </Column>
-
-      <Column width={160}>
-        <HeaderCell>PREÇO</HeaderCell>
-        <NameCell dataKey="price" rowData={undefined} />
-      </Column>
-
-      <Column width={160}>
-        <HeaderCell>STATUS</HeaderCell>
-        <NameCell dataKey="status" rowData={undefined} />
-      </Column>
-
-      {/* Exemplo de progresso */}
-      {/* <Column width={230}>
-        <HeaderCell>Skill Proficiency</HeaderCell>
-        <Cell style={{ padding: '10px 0' }}>
-          {(rowData) => (
-            <Progress percent={rowData.progress} showInfo={false} />
-          )}
-        </Cell>
-      </Column> */}
-
-      {/* <Column width={100}>
-        <HeaderCell>Rating</HeaderCell>
-        <Cell>
-          {(rowData) =>
-            Array.from({ length: rowData.rating }).map((_, i) => (
-              <span key={i}>⭐️</span>
-            ))
-          }
-        </Cell>
-      </Column> */}
-
-      <Column width={120}>
-        <HeaderCell>
-          <MoreIcon />
-        </HeaderCell>
-        <ActionCell dataKey="id" rowData={undefined} />
-      </Column>
-    </>
+    <Datagrid
+      page={page}
+      onPageChange={setPage}
+      columns={columns}
+      rows={rows}
+      actionButtons={[
+        <TableCell key="settings" align="left" style={{ minWidth: 100 }}>
+          <Button sx={{ height: 18 }}>
+            <SvgIcon component={gear_svg} />
+          </Button>
+        </TableCell>,
+      ]}
+    />
   );
 };
 

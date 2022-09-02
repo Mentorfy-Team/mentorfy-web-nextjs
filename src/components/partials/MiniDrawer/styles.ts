@@ -78,14 +78,14 @@ export const AppBar = styled(MuiAppBar, {
 export const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
 })`
-  
   div {
     background-color: unset;
   }
   box-sizing: border-box;
   flex-shrink: 0;
-  height: 100vh;
-  overflow: hidden !important;
+  * {
+    overflow: hidden;
+  }
   white-space: nowrap;
 
   ${({ theme, open }) => {
@@ -146,7 +146,7 @@ export const ProFree = styled(Box)`
 export const WrapperSupportHeader = styled(Box)<AppBarProps>`
   width: 100%;
 
-  ${({theme, open}) => css`
+  ${({ theme, open }) => css`
     ${theme.breakpoints.up('sm')} {
       margin-left: ${!open && '4rem'};
       padding-left: 0.45rem;

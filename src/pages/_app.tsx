@@ -25,7 +25,7 @@ const App = (props: MyAppProps) => {
       <CssBaseline />
       <ThemeProvider>
         {/* <HeaderPartial /> */}
-        <Wrapper>
+        <Wrapper id="WrapperRoot">
           <PageWrapper>
             <Component {...pageProps} />
           </PageWrapper>

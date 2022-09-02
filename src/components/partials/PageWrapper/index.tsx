@@ -8,8 +8,20 @@ type props = {
 
 const PageWrapper: FC<props> = ({ children, darkMode = true }) => {
   return (
-    <Container>
-      <Wrapper className={darkMode ? 'dark-mode' : ''}>{children}</Wrapper>
+    <Container
+      sx={{
+        minHeight: 'inherit',
+      }}
+      id="PageWrapper"
+    >
+      <Wrapper
+        sx={{
+          minHeight: 'inherit',
+        }}
+        className={darkMode ? 'dark-mode' : ''}
+      >
+        {children}
+      </Wrapper>
     </Container>
   );
 };
