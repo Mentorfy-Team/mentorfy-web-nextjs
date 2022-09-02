@@ -1,8 +1,12 @@
 import { useState } from 'react';
 import { Box, Button, SvgIcon, TableCell, Typography } from '@mui/material';
-import { Datagrid } from '~/components';
+import dynamic from 'next/dynamic';
 import { Column } from '~/components/atoms/Datagrid';
 import { gear_svg } from '~/../public/svgs';
+
+const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
+  ssr: false,
+});
 
 const columns: Column[] = [
   { id: 'name', label: 'NOME', minWidth: 170 },
@@ -51,21 +55,21 @@ function createData(
 }
 
 const rows = [
-  // createData('Mentoria S1', 597.0, 159, 'Ativo'),
-  // createData('Mentoria S2', 597.0, 159, 'Ativo'),
-  // createData('Mentoria S3', 597.0, 159, 'Ativo'),
-  // createData('Mentoria S4', 597.0, 159, 'Ativo'),
-  // createData('Mentoria S5', 597.0, 159, 'Ativo'),
-  // createData('Mentoria S6', 597.0, 159, 'Ativo'),
-  // createData('Mentoria S7', 597.0, 159, 'Ativo'),
-  // createData('Mentoria S8', 597.0, 159, 'Ativo'),
-  // createData('Mentoria S9', 597.0, 159, 'Ativo'),
-  // createData('Mentoria S10', 597.0, 159, 'Ativo'),
-  // createData('Mentoria S11', 597.0, 159, 'Ativo'),
-  // createData('Mentoria S12', 597.0, 159, 'Ativo'),
-  // createData('Mentoria S13', 597.0, 159, 'Ativo'),
-  // createData('Mentoria S14', 597.0, 159, 'Ativo'),
-  //createData('Mentoria S15', 597.0, 159, 'Ativo'),
+  createData('Mentoria S1', 597.0, 159, 'Ativo'),
+  createData('Mentoria S2', 597.0, 159, 'Ativo'),
+  createData('Mentoria S3', 597.0, 159, 'Ativo'),
+  createData('Mentoria S4', 597.0, 159, 'Ativo'),
+  createData('Mentoria S5', 597.0, 159, 'Ativo'),
+  createData('Mentoria S6', 597.0, 159, 'Ativo'),
+  createData('Mentoria S7', 597.0, 159, 'Ativo'),
+  createData('Mentoria S8', 597.0, 159, 'Ativo'),
+  createData('Mentoria S9', 597.0, 159, 'Ativo'),
+  createData('Mentoria S10', 597.0, 159, 'Ativo'),
+  createData('Mentoria S11', 597.0, 159, 'Ativo'),
+  createData('Mentoria S12', 597.0, 159, 'Ativo'),
+  createData('Mentoria S13', 597.0, 159, 'Ativo'),
+  createData('Mentoria S14', 597.0, 159, 'Ativo'),
+  createData('Mentoria S15', 597.0, 159, 'Ativo'),
 ];
 
 const ProductsTable = () => {

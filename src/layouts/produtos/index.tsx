@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Box, SvgIcon, Typography, useMediaQuery } from '@mui/material';
 import { MiniDrawer, PageWrapper, TabItem, Tabbar } from '~/components';
 import ProductsTable from './ProductsTable';
@@ -30,6 +30,11 @@ const Produtos: FC = () => {
       <TabItem label="Minhas co-produções" />
     </Tabbar>
   );
+
+  const ProductsTableComponent = useCallback(() => {
+    return <ProductsTable />;
+  }, []);
+
   return (
     <PageWrapper>
       <MiniDrawer header={Header} supportHeader={SupportHeader}>
@@ -40,7 +45,7 @@ const Produtos: FC = () => {
               maxWidth: '1120px',
             }}
           >
-            <ProductsTable />
+            <ProductsTableComponent />
           </ScrollArea>
         </Box>
       </MiniDrawer>

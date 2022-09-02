@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Button, Typography, useMediaQuery } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -50,7 +50,16 @@ export default function StickyHeadTable({
   const maxPages = useMemo(() => {
     if (rows.length <= rowsPerPage) return 1;
     return Math.round(rows.length / rowsPerPage);
-  }, [rows.length, rowsPerPage]);
+  }, [rows, rowsPerPage]);
+
+  const EmptyRows = useCallback(() => {
+    if (rows.length > 0) return <></>;
+    return (
+      <Typography pt={4} color="GrayText">
+        Nenhum resultado encontrado
+      </Typography>
+    );
+  }, [rows]);
 
   return (
     <PaperWrapper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -79,34 +88,32 @@ export default function StickyHeadTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.length === 0 && (
-              <Typography pt={4} color="GrayText">
-                Nenhum resultado encontrado
-              </Typography>
-            )}
-            {rows
-              .slice(
-                (page - 1) * rowsPerPage,
-                (page - 1) * rowsPerPage + rowsPerPage,
-              )
-              .map((row, index) => {
-                return (
-                  <CustomRow hover role="checkbox" tabIndex={-1} key={index}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === 'number'
-                            ? column.format(value)
-                            : value}
-                        </TableCell>
-                      );
-                    })}
+            <>
+              <EmptyRows />
+              {rows
+                .slice(
+                  (page - 1) * rowsPerPage,
+                  (page - 1) * rowsPerPage + rowsPerPage,
+                )
+                .map((row, index) => {
+                  return (
+                    <CustomRow hover role="checkbox" tabIndex={-1} key={index}>
+                      {columns.map((column) => {
+                        const value = row[column.id];
+                        return (
+                          <TableCell key={column.id} align={column.align}>
+                            {column.format && typeof value === 'number'
+                              ? column.format(value)
+                              : value}
+                          </TableCell>
+                        );
+                      })}
 
-                    {actionButtons}
-                  </CustomRow>
-                );
-              })}
+                      {actionButtons}
+                    </CustomRow>
+                  );
+                })}
+            </>
           </TableBody>
         </Table>
       </TableContainer>
