@@ -9,23 +9,23 @@ const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
 });
 
 const columns: Column[] = [
-  { id: 'name', label: 'NOME', minWidth: 170 },
+  { id: 'name', label: 'NOME', minWidth: 120 },
   {
     id: 'price',
     label: 'PREÇO',
-    minWidth: 100,
+    minWidth: 0,
     format: (value) =>
       value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
   },
   {
     id: 'users',
     label: 'MENTORADOS',
-    minWidth: 170,
+    minWidth: 0,
   },
   {
     id: 'status',
     label: 'STATUS',
-    minWidth: 170,
+    minWidth: 0,
   },
 ];
 
@@ -47,7 +47,16 @@ function createData(
     price,
     users,
     status: (
-      <Box sx={{}}>
+      <Box
+        sx={{
+          backgroundColor: status === 'Ativo' ? '#86ffb9' : '#ff98ac',
+          color: status === 'Ativo' ? '#075327' : '#6b1728',
+          fontWeight: 'bold',
+          width: 60,
+          textAlign: 'center',
+          borderRadius: 10,
+        }}
+      >
         <Typography variant="body2">{status}</Typography>
       </Box>
     ),

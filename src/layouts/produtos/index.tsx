@@ -15,12 +15,6 @@ const Produtos: FC = () => {
   const Header = (
     <HeaderWrapper>
       <Typography variant="h6">Produtos</Typography>
-      <Box ml={4}>
-        <AddProductButton variant="contained" color="primary">
-          <SvgIcon sx={{ paddingTop: '0.4rem' }} component={plus_svg} />
-          Criar produto
-        </AddProductButton>
-      </Box>
     </HeaderWrapper>
   );
 
@@ -45,6 +39,17 @@ const Produtos: FC = () => {
               maxWidth: '1120px',
             }}
           >
+            <AddProductButton
+              sx={{
+                float: 'right',
+                marginTop: '4px',
+              }}
+              variant="contained"
+              color="primary"
+            >
+              <SvgIcon sx={{ paddingTop: '0.4rem' }} component={plus_svg} />
+              Criar produto
+            </AddProductButton>
             <ProductsTableComponent />
           </ScrollArea>
         </Box>

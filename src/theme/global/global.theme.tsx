@@ -4,25 +4,27 @@ export function GlobalStyles() {
   return (
     <Global
       styles={(theme) => ({
-        '::-webkit-scrollbar': {
-          width: '12px',
-          height: '12px',
-        },
-        '::-webkit-scrollbar-track': {
-          border: '1px solid #FE7D22',
-          'border-radius': '10px',
-        },
-        '::-webkit-scrollbar-thumb': {
-          background: '#FE7D22',
-          'border-radius': '10px',
-        },
-        '::-webkit-scrollbar-thumb:hover': {
-          background: '#FE7D22',
-        },
-        '*, *:before, *:after': {
-          boxSizing: 'border-box',
-          margin: 0,
-          padding: 0,
+        '@media (min-width: 600px)': {
+          '::-webkit-scrollbar': {
+            width: '12px',
+            height: '12px',
+          },
+          '::-webkit-scrollbar-track': {
+            border: '1px solid #6e6e6e',
+            'border-radius': '10px',
+          },
+          '::-webkit-scrollbar-thumb': {
+            background: '#6e6e6e',
+            'border-radius': '10px',
+          },
+          '::-webkit-scrollbar-thumb:hover': {
+            background: '#6e6e6e',
+          },
+          '*, *:before, *:after': {
+            boxSizing: 'border-box',
+            margin: 0,
+            padding: 0,
+          },
         },
         body: {
           fontFamily: '"Roboto", sans-serif',

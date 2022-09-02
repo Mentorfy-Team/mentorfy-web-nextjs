@@ -4,8 +4,6 @@ export const OptionsWrapper = styled(Box)``;
 
 export const ScrollArea = styled(Box)`
   border-radius: 0.5rem;
-  overflow-x: auto;
-  padding: 0 2rem;
   text-align: -webkit-center;
 `;
 
