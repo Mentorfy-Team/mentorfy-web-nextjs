@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
 
 export type Column = {
-  id: 'name' | 'price' | 'status' | 'users';
+  id: string;
   label: string;
   minWidth?: number;
   align?: 'right';

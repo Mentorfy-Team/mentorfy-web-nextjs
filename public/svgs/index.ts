@@ -5,3 +5,6 @@ export { default as settings_svg } from './settings';
 export { default as product_svg } from './product';
 export { default as plus_svg } from './plus';
 export { default as gear_svg } from './gear';
+export { default as chavron_left_svg } from './chavron-left';
+export { default as chavron_right_svg } from './chavron-right';
+export { default as dots_svg } from './dots';

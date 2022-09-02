@@ -1,31 +1,30 @@
 import { useState } from 'react';
-import { Box, Button, SvgIcon, TableCell, Typography } from '@mui/material';
+import { Box, SvgIcon, TableCell, Typography } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { Column } from '~/components/atoms/Datagrid';
-import { gear_svg } from '~/../public/svgs';
+import { OptionsButton } from './styles';
+import { dots_svg } from '~/../public/svgs';
 
 const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
   ssr: false,
 });
 
 const columns: Column[] = [
-  { id: 'name', label: 'NOME', minWidth: 120 },
+  { id: 'avatar', label: '', minWidth: 0 },
+  { id: 'name', label: 'NOME' },
   {
     id: 'price',
     label: 'PREÇO',
-    minWidth: 0,
     format: (value) =>
       value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
   },
   {
     id: 'users',
     label: 'MENTORADOS',
-    minWidth: 0,
   },
   {
     id: 'status',
     label: 'STATUS',
-    minWidth: 0,
   },
 ];
 
@@ -92,9 +91,9 @@ const ProductsTable = () => {
       rows={rows}
       actionButtons={[
         <TableCell key="settings" align="left" style={{ minWidth: 100 }}>
-          <Button sx={{ height: 18 }}>
-            <SvgIcon component={gear_svg} />
-          </Button>
+          <OptionsButton>
+            <SvgIcon color="info" component={dots_svg} />
+          </OptionsButton>
         </TableCell>,
       ]}
     />

@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { Box, SvgIcon, Typography, useMediaQuery } from '@mui/material';
 import { MiniDrawer, PageWrapper, TabItem, Tabbar } from '~/components';
-import ProductsTable from './ProductsTable';
+import ProductsTable from './components/ProductsTable';
 import { AddProductButton, HeaderWrapper, ScrollArea } from './styles';
 import { plus_svg } from '~/../public/svgs';
 

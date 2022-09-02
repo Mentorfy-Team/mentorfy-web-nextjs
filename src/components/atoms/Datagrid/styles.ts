@@ -14,9 +14,6 @@ export const PaperWrapper = styled(Paper)`
 `;
 
 export const CustomRow = styled(TableRow)`
-  path {
-    fill: ${({ theme }) => theme.palette.accent.main};
-  }
   td {
     background-color: ${({ theme }) => theme.palette.primary.light};
     border-bottom: none;

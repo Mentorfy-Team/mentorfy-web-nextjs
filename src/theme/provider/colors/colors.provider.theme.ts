@@ -24,7 +24,7 @@ const accent = '#FE7D22';
 export const colors: PaletteOptions = {
   mode: 'light',
   text: { primary: '#FFFFFF', secondary: '#000000' },
-  info: { main: '#FE7D22' },
+  info: { main: '#FFFFFF' },
   success: { main: '#66cd80' },
   warning: { main: '#f9d652' },
   failure: { main: '#cc0000' },
