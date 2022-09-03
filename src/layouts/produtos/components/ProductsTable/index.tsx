@@ -1,8 +1,16 @@
 import { useState } from 'react';
-import { Box, SvgIcon, TableCell, Typography } from '@mui/material';
+import { Edit, Link } from '@mui/icons-material';
+import {
+  Box,
+  Button,
+  Popover,
+  SvgIcon,
+  TableCell,
+  Typography,
+} from '@mui/material';
 import dynamic from 'next/dynamic';
 import { Column } from '~/components/atoms/Datagrid';
-import { OptionsButton } from './styles';
+import { MarginPopopver, OptionsButton, PopoverBox } from './styles';
 import { dots_svg } from '~/../public/svgs';
 
 const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
@@ -10,8 +18,7 @@ const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
 });
 
 const columns: Column[] = [
-  { id: 'avatar', label: '', minWidth: 0 },
-  { id: 'name', label: 'NOME' },
+  { id: 'name', label: 'NOME', minWidth: 140 },
   {
     id: 'price',
     label: 'PREÇO',
@@ -82,6 +89,18 @@ const rows = [
 
 const ProductsTable = () => {
   const [page, setPage] = useState(1);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   return (
     <Datagrid
@@ -95,9 +114,35 @@ const ProductsTable = () => {
           align="left"
           style={{ minWidth: 100, padding: '0px' }}
         >
-          <OptionsButton>
-            <SvgIcon color="info" component={dots_svg} />
-          </OptionsButton>
+          <MarginPopopver
+            sx={{ width: 35, height: 32 }}
+            onClick={(e) => handleClick(e as any)}
+          >
+            <OptionsButton>
+              <SvgIcon color="info" component={dots_svg} />
+            </OptionsButton>
+          </MarginPopopver>
+          <Popover
+            id={id}
+            open={open}
+            onClose={handleClose}
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: 'center',
+              horizontal: 'left',
+            }}
+            transformOrigin={{
+              vertical: 'center',
+              horizontal: 'right',
+            }}
+          >
+            <PopoverBox display="flex" flexDirection="column">
+              <Button>
+              <SvgIcon component={Link} /> Ver Links
+              </Button>
+              <Button><SvgIcon component={Edit} /> Editar</Button>
+            </PopoverBox>
+          </Popover>
         </TableCell>,
       ]}
     />

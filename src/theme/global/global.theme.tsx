@@ -4,6 +4,9 @@ export function GlobalStyles() {
   return (
     <Global
       styles={(theme) => ({
+        '.MuiPopover-paper': {
+          'box-shadow': '-4px 4px 4px -3px rgb(0 0 0 / 14%)',
+        },
         '@media (min-width: 600px)': {
           '::-webkit-scrollbar': {
             width: '12px',

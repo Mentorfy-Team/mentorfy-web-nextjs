@@ -1,6 +1,12 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Box, SvgIcon, Typography, useMediaQuery } from '@mui/material';
-import { MiniDrawer, PageWrapper, TabItem, Tabbar } from '~/components';
+import { Box, Grid, SvgIcon, Typography, useMediaQuery } from '@mui/material';
+import {
+  MiniDrawer,
+  PageWrapper,
+  SearchInput,
+  TabItem,
+  Tabbar,
+} from '~/components';
 import ProductsTable from './components/ProductsTable';
 import { AddProductButton, HeaderWrapper, ScrollArea } from './styles';
 import { plus_svg } from '~/../public/svgs';
@@ -39,17 +45,27 @@ const Produtos: FC = () => {
               maxWidth: '1120px',
             }}
           >
-            <AddProductButton
-              sx={{
-                float: 'right',
-                marginTop: '4px',
-              }}
-              variant="contained"
-              color="primary"
-            >
-              <SvgIcon sx={{ paddingTop: '0.4rem' }} component={plus_svg} />
-              Criar produto
-            </AddProductButton>
+            <Grid container>
+              <Grid xs={12} lg={6}>
+                <Box sx={{ float: 'left' }}>
+                  <SearchInput
+                    sx={{
+                      width: isMobile ? '90vw' : 'unset',
+                    }}
+                  />
+                </Box>
+              </Grid>
+              <Grid xs={12} lg={6}>
+                <AddProductButton
+                  sx={{ float: 'right', marginTop: isMobile ? '1rem' : '0px' }}
+                  variant="contained"
+                  color="primary"
+                >
+                  <SvgIcon sx={{ paddingTop: '0.4rem' }} component={plus_svg} />
+                  Criar produto
+                </AddProductButton>
+              </Grid>
+            </Grid>
             <ProductsTableComponent />
           </ScrollArea>
         </Box>

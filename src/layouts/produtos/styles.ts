@@ -14,8 +14,4 @@ export const HeaderWrapper = styled(Box)`
   justify-content: space-between;
 `;
 
-export const AddProductButton = styled(Button)`
-  font-size: 0.7rem;
-  height: 2rem;
-  line-height: 0.8rem;
-`;
+export const AddProductButton = styled(Button)``;

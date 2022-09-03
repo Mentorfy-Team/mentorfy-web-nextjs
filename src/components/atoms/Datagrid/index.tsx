@@ -109,7 +109,6 @@ export default function StickyHeadTable({
                           </TableCell>
                         );
                       })}
-
                       {actionButtons}
                     </CustomRow>
                   );
