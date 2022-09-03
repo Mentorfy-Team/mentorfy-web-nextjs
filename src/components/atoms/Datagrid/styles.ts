@@ -17,6 +17,11 @@ export const CustomRow = styled(TableRow)`
   td {
     background-color: ${({ theme }) => theme.palette.primary.light};
     border-bottom: none;
+
+    button {
+      float: right;
+      right: 20%;
+    }
   }
   td:nth-child(1) {
     border-left: solid 4px ${({ theme }) => theme.palette.secondary.main};
@@ -38,11 +43,11 @@ export const CustomNavigation = styled('div')`
     border-radius: 5px;
     color: #fff;
     height: 2.5rem;
-    margin: 0 0 0 5px;
     width: 2.5rem;
     font-size: 1.3rem;
     font-weight: 300;
-    padding-bottom: 0.5rem;
+    padding-left: 1.6rem;
+    padding-top: 0.7rem;
   }
   button:disabled {
     background-color: ${({ theme }) => theme.palette.caption.dark};

@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Button, Typography, useMediaQuery } from '@mui/material';
+import { Button, SvgIcon, Typography, useMediaQuery } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -7,6 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
+import { chavron_left_svg, chavron_right_svg } from '~/../public/svgs';
 
 export type Column = {
   id: string;
@@ -122,7 +123,7 @@ export default function StickyHeadTable({
           disabled={page !== maxPages || page === 1}
           onClick={(e) => handleChangePage(e, page - 1)}
         >
-          {'<'}
+          <SvgIcon component={chavron_left_svg} />
         </Button>
         <Typography marginX={isMobile ? 0 : 4} mt={1}>{`${
           isMobile ? page : `Página ${page}`
@@ -131,7 +132,7 @@ export default function StickyHeadTable({
           disabled={page === maxPages || maxPages === 0}
           onClick={(e) => handleChangePage(e, page + 1)}
         >
-          {'>'}
+          <SvgIcon component={chavron_right_svg} />
         </Button>
       </CustomNavigation>
     </PaperWrapper>
