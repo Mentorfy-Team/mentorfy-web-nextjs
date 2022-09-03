@@ -108,9 +108,9 @@ const ProductsTable = () => {
       onPageChange={setPage}
       columns={columns}
       rows={rows}
-      actionButtons={[
+      actionButtons={(index)=>[
         <TableCell
-          key="settings"
+          key={`settings-${index}`}
           align="left"
           style={{ minWidth: 100, padding: '0px' }}
         >
@@ -123,7 +123,7 @@ const ProductsTable = () => {
             </OptionsButton>
           </MarginPopopver>
           <Popover
-            id={id}
+            id={'simple-popover-'+index}
             open={open}
             onClose={handleClose}
             anchorEl={anchorEl}
@@ -135,12 +135,17 @@ const ProductsTable = () => {
               vertical: 'center',
               horizontal: 'right',
             }}
+            transitionDuration={1}
           >
             <PopoverBox display="flex" flexDirection="column">
               <Button>
-              <SvgIcon component={Link} /> Ver Links
+                <SvgIcon sx={{ marginRight: '0.5rem' }} component={Link} /> Ver
+                Links
               </Button>
-              <Button><SvgIcon component={Edit} /> Editar</Button>
+              <Button>
+                <SvgIcon sx={{ marginRight: '0.5rem' }} component={Edit} />{' '}
+                Editar
+              </Button>
             </PopoverBox>
           </Popover>
         </TableCell>,

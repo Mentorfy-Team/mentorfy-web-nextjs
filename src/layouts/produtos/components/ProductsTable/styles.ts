@@ -6,12 +6,18 @@ export const MarginPopopver = styled(Box)`
 `;
 
 export const PopoverBox = styled(Box)`
+  position: relative;
   button {
     background-color: white;
     color: ${({ theme }) => theme.palette.text.secondary};
+    font-size: 0.7rem;
     font-weight: 300;
     height: 2rem;
+    justify-content: left;
     min-width: 8rem;
+    .MuiSvgIcon-root {
+      width: 1rem !important;
+    }
   }
 `;
 

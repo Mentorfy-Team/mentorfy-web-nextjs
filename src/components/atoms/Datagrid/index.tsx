@@ -18,7 +18,7 @@ export type Column = {
 };
 
 type TableProps = {
-  actionButtons?: JSX.Element[];
+  actionButtons?: (index)=>JSX.Element[];
   columns: Column[];
   rows: any[];
   page: number;
@@ -109,7 +109,7 @@ export default function StickyHeadTable({
                           </TableCell>
                         );
                       })}
-                      {actionButtons}
+                      {actionButtons(index)}
                     </CustomRow>
                   );
                 })}
