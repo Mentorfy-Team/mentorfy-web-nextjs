@@ -90,7 +90,11 @@ const ProductsTable = () => {
       columns={columns}
       rows={rows}
       actionButtons={[
-        <TableCell key="settings" align="left" style={{ minWidth: 100 }}>
+        <TableCell
+          key="settings"
+          align="left"
+          style={{ minWidth: 100, padding: '0px' }}
+        >
           <OptionsButton>
             <SvgIcon color="info" component={dots_svg} />
           </OptionsButton>
