@@ -1,19 +1,29 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Box, Grid, SvgIcon, Typography, useMediaQuery } from '@mui/material';
 import {
+  Box,
+  Unstable_Grid2 as Grid,
+  SvgIcon,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
+import {
+  ContentWidthLimit,
   MiniDrawer,
   PageWrapper,
   SearchInput,
   TabItem,
   Tabbar,
 } from '~/components';
+import CreateProductDialog from './components/CreateProductDialog';
 import ProductsTable from './components/ProductsTable';
-import { AddProductButton, HeaderWrapper, ScrollArea } from './styles';
+import { AddProductButton, HeaderWrapper } from './styles';
 import { plus_svg } from '~/../public/svgs';
 
 const Produtos: FC = () => {
   const [tabindex, setTabindex] = useState(0);
   const [products, setProducts] = useState([]);
+  const [openCreatePage, setOpenCreatePage] = useState(false);
+
   const isMobile = useMediaQuery('(max-width: 600px)');
 
   useEffect(() => {}, []);
@@ -36,15 +46,10 @@ const Produtos: FC = () => {
   }, []);
 
   return (
-    <PageWrapper>
-      <MiniDrawer header={Header} supportHeader={SupportHeader}>
-        <Box id="Grid" sx={{ textAlign: '-webkit-center' }}>
-          <ScrollArea
-            sx={{
-              width: isMobile ? '90vw' : '80vw',
-              maxWidth: '1120px',
-            }}
-          >
+    <>
+      <PageWrapper>
+        <MiniDrawer header={Header} supportHeader={SupportHeader}>
+          <ContentWidthLimit>
             <Grid container>
               <Grid xs={12} lg={6}>
                 <Box sx={{ float: 'left' }}>
@@ -57,9 +62,13 @@ const Produtos: FC = () => {
               </Grid>
               <Grid xs={12} lg={6}>
                 <AddProductButton
-                  sx={{ float: 'right', marginTop: isMobile ? '1rem' : '0px' }}
+                  sx={{
+                    float: 'right',
+                    marginTop: isMobile ? '1rem' : '0px',
+                  }}
                   variant="contained"
                   color="primary"
+                  onClick={() => setOpenCreatePage(true)}
                 >
                   <SvgIcon sx={{ paddingTop: '0.4rem' }} component={plus_svg} />
                   Criar produto
@@ -67,10 +76,11 @@ const Produtos: FC = () => {
               </Grid>
             </Grid>
             <ProductsTableComponent />
-          </ScrollArea>
-        </Box>
-      </MiniDrawer>
-    </PageWrapper>
+          </ContentWidthLimit>
+        </MiniDrawer>
+      </PageWrapper>
+      <CreateProductDialog open={openCreatePage} setOpen={setOpenCreatePage} />
+    </>
   );
 };
 

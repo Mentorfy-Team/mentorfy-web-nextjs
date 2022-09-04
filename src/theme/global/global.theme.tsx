@@ -3,9 +3,17 @@ import { Global } from '@emotion/react';
 export function GlobalStyles() {
   return (
     <Global
-      styles={(theme) => ({
+      styles={(theme: any) => ({
+        '.MuiDialog-paper': {
+          'background-color': 'transparent',
+          '@media (max-width: 490px)': {
+            position: 'absolute',
+            bottom: -34,
+            width: '100%',
+          },
+        },
         '.MuiPopover-paper': {
-          'box-shadow': '-4px 4px 4px -3px rgb(0 0 0 / 14%)',
+          'box-shadow': '-4px 4px 0px 0px #00000000',
         },
         '@media (min-width: 600px)': {
           '::-webkit-scrollbar': {

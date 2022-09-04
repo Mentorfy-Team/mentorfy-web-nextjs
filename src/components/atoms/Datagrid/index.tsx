@@ -18,20 +18,22 @@ export type Column = {
 };
 
 type TableProps = {
-  actionButtons?: (index)=>JSX.Element[];
+  actionButtons?: (index) => JSX.Element[];
   columns: Column[];
   rows: any[];
   page: number;
   onPageChange?: (page: number) => void;
   onRowsPerPageChange?: (rowsPerPage: number) => void;
+  onTitleClick?: (id) => void;
 };
 
 export default function StickyHeadTable({
-  actionButtons = [],
+  actionButtons,
   page = 1,
   onPageChange,
   rows = [],
   columns = [],
+  onTitleClick,
 }: TableProps) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const isMobile = useMediaQuery('(max-width: 490px)');
@@ -75,7 +77,7 @@ export default function StickyHeadTable({
         >
           <TableHead>
             <TableRow>
-              {columns.map((column) => (
+              {columns.map((column, index) => (
                 <TableCell
                   key={column.id}
                   align={column.align}
@@ -99,10 +101,24 @@ export default function StickyHeadTable({
                 .map((row, index) => {
                   return (
                     <CustomRow hover role="checkbox" tabIndex={-1} key={index}>
-                      {columns.map((column) => {
+                      {columns.map((column, index) => {
                         const value = row[column.id];
                         return (
-                          <TableCell key={column.id} align={column.align}>
+                          <TableCell
+                            onClick={() =>
+                              index === 0 &&
+                              onTitleClick &&
+                              onTitleClick(column.id)
+                            }
+                            sx={{
+                              cursor:
+                                index === 0 && onTitleClick
+                                  ? 'pointer'
+                                  : 'auto',
+                            }}
+                            key={column.id}
+                            align={column.align}
+                          >
                             {column.format && typeof value === 'number'
                               ? column.format(value)
                               : value}

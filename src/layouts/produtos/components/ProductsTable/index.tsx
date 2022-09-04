@@ -9,7 +9,9 @@ import {
   Typography,
 } from '@mui/material';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import { Column } from '~/components/atoms/Datagrid';
+import { Routes } from '~/consts';
 import { MarginPopopver, OptionsButton, PopoverBox } from './styles';
 import { dots_svg } from '~/../public/svgs';
 
@@ -89,6 +91,7 @@ const rows = [
 
 const ProductsTable = () => {
   const [page, setPage] = useState(1);
+  const route = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -97,6 +100,10 @@ const ProductsTable = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleEdit = (id = 'hud2-ioqdf-002e-eee7') => {
+    route.push(Routes.products_edit + '/' + id);
   };
 
   const open = Boolean(anchorEl);
@@ -108,7 +115,8 @@ const ProductsTable = () => {
       onPageChange={setPage}
       columns={columns}
       rows={rows}
-      actionButtons={(index)=>[
+      onTitleClick={(id) => handleEdit(id)}
+      actionButtons={(index) => [
         <TableCell
           key={`settings-${index}`}
           align="left"
@@ -123,7 +131,7 @@ const ProductsTable = () => {
             </OptionsButton>
           </MarginPopopver>
           <Popover
-            id={'simple-popover-'+index}
+            id={'simple-popover-' + index}
             open={open}
             onClose={handleClose}
             anchorEl={anchorEl}
@@ -142,7 +150,7 @@ const ProductsTable = () => {
                 <SvgIcon sx={{ marginRight: '0.5rem' }} component={Link} /> Ver
                 Links
               </Button>
-              <Button>
+              <Button onClick={() => handleEdit()}>
                 <SvgIcon sx={{ marginRight: '0.5rem' }} component={Edit} />{' '}
                 Editar
               </Button>

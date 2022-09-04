@@ -16,6 +16,24 @@ declare module '@mui/material/styles/createPalette' {
   }
 }
 
+declare module '@mui/material/textfield' {
+  interface TextFieldPropsColorOverrides {
+    accent: true;
+  }
+}
+
+declare module '@mui/material/inputbase' {
+  interface InputBasePropsColorOverrides {
+    accent: true;
+  }
+}
+
+declare module '@mui/material/svgicon' {
+  interface SvgIconPropsColorOverrides {
+    accent: true;
+  }
+}
+
 const primary = '#1C1B20';
 const secondary = '#7586EC';
 const tertiary = '#7D7D7D';

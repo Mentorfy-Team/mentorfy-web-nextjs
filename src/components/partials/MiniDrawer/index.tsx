@@ -48,12 +48,22 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
     setOpen(false);
   };
 
-  const getIcon = (component, path) => {
+  const getIcon = (component, path, subpaths = []) => {
     const props: any = {};
 
-    if (router.pathname.includes(path)) props.fill = theme.palette.accent.main;
+    if (IsActiveValidator(path, subpaths))
+      props.fill = theme.palette.accent.main;
 
     return component(props);
+  };
+
+  const IsActiveValidator = (path, subpaths = []) => {
+    if (router.pathname.includes(path)) return true;
+
+    if (subpaths.find((subpath) => router.pathname.includes(subpath)))
+      return true;
+
+    return false;
   };
 
   return (
@@ -66,7 +76,7 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
             onClick={open ? handleDrawerClose : handleDrawerOpen}
             edge="start"
             sx={{
-              marginRight: 5,
+              marginRight: isMobile ? 2 : 5,
               marginLeft: -1,
             }}
           >
@@ -122,13 +132,20 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
                     justifyContent: 'center',
                   }}
                 >
-                  {getIcon(routes[route].component, routes[route].path)}
+                  {getIcon(
+                    routes[route].component,
+                    routes[route].path,
+                    routes[route].subpaths,
+                  )}
                 </ListItemIcon>
                 <ListItemText
                   primary={routes[route].name}
                   sx={{
                     opacity: open ? 1 : 0,
-                    color: router.pathname.includes(routes[route].path)
+                    color: IsActiveValidator(
+                      routes[route].path,
+                      routes[route].subpaths,
+                    )
                       ? theme.palette.accent.main
                       : theme.palette.text.primary,
                   }}
