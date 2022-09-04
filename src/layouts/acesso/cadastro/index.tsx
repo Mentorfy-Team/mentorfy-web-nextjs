@@ -27,7 +27,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
   const [rePassword, setRePassword] = useState('');
   const [acceptPolices, setAcceptPolices] = useState(false);
 
-  const HandleCadastro = (): void => {
+  const HandleCadastro = useCallback(() => {
     setInfo(
       <>
         <Text>Seu cadastro foi concluido com sucesso!</Text>
@@ -35,7 +35,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
       </>,
     );
     pageChange('sucesso');
-  };
+  }, [pageChange, setInfo]);
 
   const HandlePasswordRequirement = () => {};
 
