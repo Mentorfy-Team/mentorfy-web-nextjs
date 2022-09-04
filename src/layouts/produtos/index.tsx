@@ -16,8 +16,8 @@ import {
 } from '~/components';
 import CreateProductDialog from './components/CreateProductDialog';
 import ProductsTable from './components/ProductsTable';
-import { AddProductButton, HeaderWrapper } from './styles';
-import { plus_svg } from '~/../public/svgs';
+import { AddProductButton, HeaderWrapper, MembersAreaButton } from './styles';
+import { graduation_cap_svg, plus_svg } from '~/../public/svgs';
 
 const Produtos: FC = () => {
   const [tabindex, setTabindex] = useState(0);

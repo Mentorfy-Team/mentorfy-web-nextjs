@@ -13,3 +13,5 @@ export const HeaderWrapper = styled(Box)`
 `;
 
 export const AddProductButton = styled(Button)``;
+
+export const MembersAreaButton = styled(Button)``;

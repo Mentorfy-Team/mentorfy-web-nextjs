@@ -43,6 +43,18 @@ const Links: FC = () => {
           readOnly: true,
         }}
       />
+      <InputField
+        color="accent"
+        id="outlined-required"
+        value="https://mentoryfy/cadastro/mentoria-4s"
+        label="Link de cadastro"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        InputProps={{
+          readOnly: true,
+        }}
+      />
     </>
   );
 };

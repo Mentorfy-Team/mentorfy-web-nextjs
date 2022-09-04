@@ -72,7 +72,7 @@ const Geral: FC = () => {
             float: 'right',
             marginLeft: '2rem',
           }}
-          variant="contained"
+          variant="outlined"
           color="primary"
           onClick={() => {}}
         >

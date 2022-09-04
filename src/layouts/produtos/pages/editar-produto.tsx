@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Box, Typography, useMediaQuery } from '@mui/material';
+import { Box, SvgIcon, Typography, useMediaQuery } from '@mui/material';
 import { useRouter } from 'next/router';
 import {
   ContentWidthLimit,
@@ -9,10 +9,12 @@ import {
   Tabbar,
 } from '~/components';
 import { Routes } from '~/consts';
+import { MembersAreaButton } from '../styles';
 import { HeaderWrapper } from './styles';
 
 import GeralPage from './tabs/geral';
 import LinksPage from './tabs/links';
+import { graduation_cap_svg } from '~/../public/svgs';
 
 enum tabs {
   'Geral',
@@ -31,6 +33,23 @@ const EditarProduto: FC = () => {
   const Header = (
     <HeaderWrapper>
       <Typography variant="h6">Mentoria 4S</Typography>
+      <MembersAreaButton
+        sx={{
+          float: 'right',
+          marginLeft: '1rem',
+          height: '2.6rem',
+          lineHeight: '1.0rem',
+        }}
+        variant="contained"
+        color="primary"
+        onClick={() => route.push(Routes.member_area + '/mentoria-4s')}
+      >
+        <SvgIcon
+          sx={{ paddingRight: '1rem', width: '40px' }}
+          component={graduation_cap_svg}
+        />
+        Área de Membros
+      </MembersAreaButton>
     </HeaderWrapper>
   );
 
@@ -38,7 +57,6 @@ const EditarProduto: FC = () => {
     <Tabbar selected={tabindex} onChange={(_, value) => setTabindex(value)}>
       <TabItem label="Geral" />
       <TabItem label="Links" />
-      <TabItem label="Área de Membros" />
     </Tabbar>
   );
 
@@ -48,13 +66,10 @@ const EditarProduto: FC = () => {
         return <GeralPage />;
       case tabs.Links:
         return <LinksPage />;
-      case tabs.Membros:
-        route.push(Routes.member_area + '/mentoria-4s');
-        break;
       default:
         return <GeralPage />;
     }
-  }, [route, tabindex]);
+  }, [tabindex]);
 
   return (
     <>
