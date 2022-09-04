@@ -1,11 +1,11 @@
-import styled from '@emotion/styled';
+import { styled } from '@mui/material';
 
-export const Wrapper = styled.div`
+export const Wrapper = styled('div')`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 `;
 
-export const PageWrapper = styled.div`
-  min-height: calc(100vh - 70px);
+export const PageWrapper = styled('div')`
+  min-height: inherit;
 `;

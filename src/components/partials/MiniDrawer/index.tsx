@@ -12,6 +12,7 @@ import { useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { routes } from '~/consts/routes/routes.consts';
 import AdjustName from './helper/AdjustName';
 import {
@@ -22,19 +23,22 @@ import {
   ProFree,
   UserField,
   UserName,
+  WrapperSupportHeader,
 } from './styles';
 
 const drawerWidth = 240;
 
 type props = {
-  children?: React.ReactNode;
-  Title: string;
+  children?: JSX.Element;
+  supportHeader?: JSX.Element;
+  header?: JSX.Element;
 };
 
-const MiniDrawer: React.FC<props> = ({ children, Title }) => {
+const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const isMobile = useMediaQuery('(max-width:500px)');
+  const router = useRouter();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -44,17 +48,36 @@ const MiniDrawer: React.FC<props> = ({ children, Title }) => {
     setOpen(false);
   };
 
+  const getIcon = (component, path, subpaths = []) => {
+    const props: any = {};
+
+    if (IsActiveValidator(path, subpaths))
+      props.fill = theme.palette.accent.main;
+
+    return component(props);
+  };
+
+  const IsActiveValidator = (path, subpaths = []) => {
+    if (router.pathname.includes(path)) return true;
+
+    if (subpaths.find((subpath) => router.pathname.includes(subpath)))
+      return true;
+
+    return false;
+  };
+
   return (
-    <Box sx={{ display: 'flex', overflowX: 'hidden' }}>
+    <Box sx={{ display: 'flex', overflow: 'hidden', minHeight: 'inherit' }}>
       <AppBar id="AppBar" position="fixed" open={open}>
-        <Toolbar sx={{ marginLeft: open ? -7 : 0 }}>
+        <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={open ? handleDrawerClose : handleDrawerOpen}
             edge="start"
             sx={{
-              marginRight: 5,
+              marginRight: isMobile ? 2 : 5,
+              marginLeft: -1,
             }}
           >
             <Image
@@ -64,14 +87,17 @@ const MiniDrawer: React.FC<props> = ({ children, Title }) => {
               src={open ? '/svgs/arrows-left.svg' : '/svgs/menu.svg'}
             />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            {Title}
-          </Typography>
+          {header}
         </Toolbar>
+        {supportHeader && (
+          <WrapperSupportHeader open={open}>
+            {supportHeader}
+          </WrapperSupportHeader>
+        )}
       </AppBar>
       <Drawer id="Drawer" variant="permanent" open={open}>
         <DrawerHeader id="DrawerHeader" />
-        <UserField pl={2} display="flex">
+        <UserField pl={1.5} display="flex">
           <Avatar src="/images/avatar.png" />
           <Box pl={2.5}>
             <UserName variant="body2" noWrap>
@@ -95,7 +121,9 @@ const MiniDrawer: React.FC<props> = ({ children, Title }) => {
                   minHeight: 70,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2,
+                  cursor: 'pointer',
                 }}
+                onClick={() => router.push(routes[route].path)}
               >
                 <ListItemIcon
                   sx={{
@@ -104,25 +132,45 @@ const MiniDrawer: React.FC<props> = ({ children, Title }) => {
                     justifyContent: 'center',
                   }}
                 >
-                  <Image
-                    alt={routes[route].name}
-                    width={routes[route].icon.width}
-                    height={routes[route].icon.height}
-                    src={routes[route].icon.path}
-                  />
+                  {getIcon(
+                    routes[route].component,
+                    routes[route].path,
+                    routes[route].subpaths,
+                  )}
                 </ListItemIcon>
                 <ListItemText
                   primary={routes[route].name}
-                  sx={{ opacity: open ? 1 : 0 }}
+                  sx={{
+                    opacity: open ? 1 : 0,
+                    color: IsActiveValidator(
+                      routes[route].path,
+                      routes[route].subpaths,
+                    )
+                      ? theme.palette.accent.main
+                      : theme.palette.text.primary,
+                  }}
                 />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <DrawerHeader />
-        {children}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          pt: 3,
+          marginTop: supportHeader ? '114px' : '60px',
+          overflow: 'auto',
+        }}
+      >
+        <Box
+          sx={{
+            height: '0vh',
+          }}
+        >
+          {children}
+        </Box>
       </Box>
     </Box>
   );

@@ -51,6 +51,7 @@ export const AppBar = styled(MuiAppBar, {
     })};
 
   > div {
+    background-color: ${({ theme }) => theme.palette.primary.light};
     transition: ${({ theme }) =>
       theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -58,8 +59,7 @@ export const AppBar = styled(MuiAppBar, {
       })};
   }
 
-  background-color: ${({ theme }) => theme.palette.primary.light};
-  border-left: solid 1px #424242;
+  background-color: transparent;
   box-shadow: none;
 
   margin-left: 201px;
@@ -78,16 +78,14 @@ export const AppBar = styled(MuiAppBar, {
 export const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
 })`
-  * {
-    color: ${({ theme }) => theme.palette.caption.main};
-  }
   div {
     background-color: unset;
   }
   box-sizing: border-box;
   flex-shrink: 0;
-  height: 100vh;
-  overflow: hidden !important;
+  * {
+    overflow: hidden;
+  }
   white-space: nowrap;
 
   ${({ theme, open }) => {
@@ -143,4 +141,15 @@ export const ProFree = styled(Box)`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.palette.accent.main} !important;
   color: ${({ theme }) => theme.palette.text.primary} !important;
+`;
+
+export const WrapperSupportHeader = styled(Box)<AppBarProps>`
+  width: 100%;
+
+  ${({ theme, open }) => css`
+    ${theme.breakpoints.up('sm')} {
+      margin-left: ${!open && '4rem'};
+      padding-left: 0.45rem;
+    }
+  `}
 `;
