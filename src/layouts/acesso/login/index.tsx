@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { Divider } from '@mui/material';
 import { useRouter } from 'next/router';
 import { routes } from '~/consts/routes/routes.consts';
+import { userStore } from '~/stores';
 import { AcessoSubPage } from '..';
 import {
   Accent,
@@ -13,7 +14,6 @@ import {
   SubTitle,
   Title,
 } from '../styles';
-import { userStore } from '~/stores';
 
 type props = {
   pageChange: (page: AcessoSubPage) => void;
