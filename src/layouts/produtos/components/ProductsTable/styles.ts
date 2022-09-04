@@ -5,6 +5,14 @@ export const MarginPopopver = styled(Box)`
   margin-right: 10%;
 `;
 
+export const EnterMemberArea = styled(Box)`
+  color: ${({ theme }) => theme.palette.accent.main};
+  * {
+    fill: ${({ theme }) => theme.palette.accent.main};
+  }
+  cursor: pointer;
+`;
+
 export const PopoverBox = styled(Box)`
   position: relative;
   button {

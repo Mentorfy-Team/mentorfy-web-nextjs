@@ -8,6 +8,7 @@ export { default as gear_svg } from './gear';
 export { default as chavron_left_svg } from './chavron-left';
 export { default as chavron_right_svg } from './chavron-right';
 export { default as dots_svg } from './dots';
+export { default as door_svg } from './door';
 export { default as copy_link_svg } from './copy-link';
 export { default as add_user_svg } from './add-user';
 export { default as graduation_cap_svg } from './graduation-cap';
