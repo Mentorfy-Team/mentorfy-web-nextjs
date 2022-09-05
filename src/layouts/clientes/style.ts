@@ -1,9 +1,14 @@
 import { Box, Button, styled } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
+export const Wrapper = styled(Box)`
+    display: flex;
+    flex-wrap: wrap; 
+    width: 100%;
+`;
+
 export const Grid = styled(Grid2)`
     display: flex;
-    justify-content: center;
 `;
 
 export const Item = styled(Box)`
@@ -19,8 +24,8 @@ export const Item = styled(Box)`
 `;
 
 export const GridWrapper = styled(Box)`
-    display: flex;
-    margin-top: 3.75rem;
+    
+    
 `;
 
 export const TextWrapper = styled(Box)`
@@ -32,15 +37,17 @@ export const TextWrapper = styled(Box)`
 export const ButtonsWrapper = styled('div')`
     display: flex;
     flex-wrap: wrap;
-
     gap: 1.8125rem;
+    
 
     justify-content: end;
     margin-top: 4.125rem;
+    width: 100%;
  `;
 
 export const ClientsOptionsButton = styled(Button)`
     align-items: center;
+    border-radius: 10px;
     display: flex;
 
     font-size: 0.875rem;

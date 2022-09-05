@@ -1,13 +1,18 @@
-import { FC } from 'react';
-import { Box, Typography, useMediaQuery } from '@mui/material';
+import { FC, useCallback } from 'react';
+import { Box, SvgIcon, Typography, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
-import { MiniDrawer, PageWrapper, Tabbar } from '~/components';
+import { ContentWidthLimit, MiniDrawer, PageWrapper, Tabbar } from '~/components';
 import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';
-import { ButtonsWrapper, ClientsOptionsButton, Grid, GridWrapper, Item, TextWrapper } from './style';
+import ProductsTable from './components/ProductsTable';
+import { ButtonsWrapper, ClientsOptionsButton, Grid, GridWrapper, Item, TextWrapper, Wrapper } from './style';
+import { graduation_cap_svg } from '~/../public/svgs';
 
 const Clients: FC = () => {
     const isMobile = useMediaQuery('(max-width: 500px)');
 
+    const ProductsTableComponent = useCallback(() => {
+        return <ProductsTable />;
+      }, []);
     const Header = (
             <Typography  variant='h6'>
                 Meus Clientes
@@ -29,67 +34,58 @@ const Clients: FC = () => {
     return (
         <PageWrapper>
             <MiniDrawer header={Header} supportHeader={SupportHeader}>
-                <>
-                <GridWrapper>
-                <Grid container spacing={7}  justifyContent='center'>
-                    <Grid xs={12} lg={4}>
-                        <Item>
-                            <TextWrapper>
-                                <Typography>Total de Membros</Typography>
-                                <Typography sx={{ fontWeight: 600, fontSize: 40}}>273</Typography>
-                            </TextWrapper>
+                <ContentWidthLimit>
+                    <GridWrapper>
+                        <Grid container spacing={7}>
+                            <Grid xs={12} lg={4}>
+                                <Item>
+                                    <TextWrapper>
+                                        <Typography>Total de Membros</Typography>
+                                        <Typography sx={{ fontWeight: 600, fontSize: 40}}>273</Typography>
+                                    </TextWrapper>
 
-                            <Image
-                                alt=''
-                                src='/svgs/graduation-cap.svg'
-                                height={'41px'}
-                                width={'51px'}
-                            >
-                            </Image>
-                        </Item>
-                    </Grid>
+                                    <SvgIcon
+                                        alt=''
+                                        component={graduation_cap_svg}
+                                    />
+                                </Item>
+                            </Grid>
 
-                    <Grid xs={12} lg={4}>
-                        <Item>
-                            <TextWrapper>
-                                <Typography>Total de Membros</Typography>
-                                <Typography sx={{ fontWeight: 600, fontSize: 40}}>273</Typography>
-                            </TextWrapper>
+                            <Grid xs={12} lg={4}>
+                                <Item>
+                                    <TextWrapper>
+                                        <Typography>Total de Membros</Typography>
+                                        <Typography sx={{ fontWeight: 600, fontSize: 40}}>273</Typography>
+                                    </TextWrapper>
 
-                            <Image
-                                alt=''
-                                src='/svgs/graduation-cap.svg'
-                                height={'41px'}
-                                width={'51px'}
-                            >
-                            </Image>
-                        </Item>
-                    </Grid>
+                                    <SvgIcon
+                                        alt=''
+                                        component={graduation_cap_svg}
+                                    />
+                                </Item>
+                            </Grid>
 
-                    <Grid xs={12} lg={4}>
-                        <Item>
-                            <TextWrapper>
-                                <Typography>Total de Membros</Typography>
-                                <Typography sx={{ fontWeight: 600, fontSize: 40}}>273</Typography>
-                            </TextWrapper>
+                            <Grid xs={12} lg={4}>
+                                <Item>
+                                    <TextWrapper>
+                                        <Typography>Total de Membros</Typography>
+                                        <Typography sx={{ fontWeight: 600, fontSize: 40}}>273</Typography>
+                                    </TextWrapper>
 
-                            <Image
-                                alt=''
-                                src='/svgs/graduation-cap.svg'
-                                height={'41px'}
-                                width={'51px'}
-                            >
-                            </Image>
-                        </Item>
-                    </Grid>
-                </Grid>
-                </GridWrapper>
-                <ButtonsWrapper>
-                    <ClientsOptionsButton variant='outlined'><Image alt='exportar-clientes' src='/svgs/export-clients.svg' height={'22px'} width={'22px'}/>{exportClientsText}</ClientsOptionsButton>
-                    <ClientsOptionsButton variant='outlined'><Image alt='exportar-clientes' src='/svgs/filter-clients.svg' height={'22px'} width={'22px'}/>{filterClientsText}</ClientsOptionsButton>
-                    <ClientsOptionsButton variant='contained'><Image alt='exportar-clientes' src='/svgs/plus.svg' height={'31px'} width={'18px'}/>{createdClientsText}</ClientsOptionsButton>
-                </ButtonsWrapper>
-                </>
+                                    <SvgIcon
+                                        alt=''
+                                        component={graduation_cap_svg}
+                                    />
+                                </Item>
+                            </Grid>
+                        </Grid>
+                    </GridWrapper>
+                    <ButtonsWrapper>
+                            <ClientsOptionsButton variant='outlined'><Image alt='exportar-clientes' src='/svgs/export-clients.svg' height={'22px'} width={'22px'}/>{exportClientsText}</ClientsOptionsButton>
+                            <ClientsOptionsButton variant='outlined'><Image alt='exportar-clientes' src='/svgs/filter-clients.svg' height={'22px'} width={'22px'}/>{filterClientsText}</ClientsOptionsButton>
+                            <ClientsOptionsButton variant='contained'><Image alt='exportar-clientes' src='/svgs/plus.svg' height={'31px'} width={'18px'}/>{createdClientsText}</ClientsOptionsButton>
+                    </ButtonsWrapper>
+                </ContentWidthLimit>
             </MiniDrawer>
         </PageWrapper>
     );
