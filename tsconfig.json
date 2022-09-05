@@ -1,8 +1,8 @@
 {
   "extends": "./tsconfig.alias.json",
   "compilerOptions": {
-    "target": "ES6",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "target": "ES5",
+    "lib": ["dom", "dom.iterable", "es6"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -18,6 +18,6 @@
     "strictNullChecks": false,
     "noImplicitAny": false
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "./src/@types/mui.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
