@@ -5,7 +5,6 @@ import Head from 'next/head';
 import createEmotionCache from '~/createEmotionCache';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
-import 'rsuite/dist/rsuite.css';
 const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps extends AppProps {
@@ -25,7 +24,7 @@ const App = (props: MyAppProps) => {
       <CssBaseline />
       <ThemeProvider>
         {/* <HeaderPartial /> */}
-        <Wrapper>
+        <Wrapper id="WrapperRoot">
           <PageWrapper>
             <Component {...pageProps} />
           </PageWrapper>

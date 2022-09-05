@@ -16,6 +16,24 @@ declare module '@mui/material/styles/createPalette' {
   }
 }
 
+declare module '@mui/material/textfield' {
+  interface TextFieldPropsColorOverrides {
+    accent: true;
+  }
+}
+
+declare module '@mui/material/inputbase' {
+  interface InputBasePropsColorOverrides {
+    accent: true;
+  }
+}
+
+declare module '@mui/material/svgicon' {
+  interface SvgIconPropsColorOverrides {
+    accent: true;
+  }
+}
+
 const primary = '#1C1B20';
 const secondary = '#7586EC';
 const tertiary = '#7D7D7D';
@@ -24,7 +42,7 @@ const accent = '#FE7D22';
 export const colors: PaletteOptions = {
   mode: 'light',
   text: { primary: '#FFFFFF', secondary: '#000000' },
-  info: { main: '#FE7D22' },
+  info: { main: '#FFFFFF' },
   success: { main: '#66cd80' },
   warning: { main: '#f9d652' },
   failure: { main: '#cc0000' },

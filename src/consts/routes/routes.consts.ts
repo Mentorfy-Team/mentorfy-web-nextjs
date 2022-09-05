@@ -1,7 +1,29 @@
-import { clients_svg, home_svg, my_products_svg, settings_svg } from '~/../public/svgs';
+import {
+  clients_svg,
+  home_svg,
+  my_products_svg,
+  settings_svg,
+} from '~/../public/svgs';
 
 export enum Routes {
+  //* Rota de acesso inicial
   login = '/',
+
+  //* Rota de acesso inicial
+  home = '/dashboard',
+
+  //* Rotas de produto
+  products = '/produtos',
+  products_edit = '/produtos/editar',
+
+  //* Rotas de área de membros
+  member_area = '/membros',
+
+  //* Rotas de clientes
+  clients = '/clientes',
+
+  //* Rota de Perfil/Configurações do usuário
+  settings = '/minha-conta',
 }
 
 export const routes = {
@@ -12,6 +34,7 @@ export const routes = {
   },
   products: {
     path: '/produtos',
+    subpaths: ['/membros'],
     name: 'Produtos',
     component: my_products_svg,
   },

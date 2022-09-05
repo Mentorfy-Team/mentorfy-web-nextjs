@@ -1,106 +1,155 @@
+import { useCallback, useMemo, useState } from 'react';
+import { Button, SvgIcon, Typography, useMediaQuery } from '@mui/material';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
+import { chavron_left_svg, chavron_right_svg } from '~/../public/svgs';
 
-import { useState } from 'react';
-import MoreIcon from '@rsuite/icons/legacy/More';
-import { Checkbox, Dropdown, IconButton, Popover, Progress, Table, Whisper } from 'rsuite';
-
-import { mockUsers } from '../../../layouts/produtos/ProductsTable/mock';
-
-const { Column, HeaderCell, Cell } = Table;
-
-const CheckCell = ({ rowData, onChange, checkedKeys, dataKey, ...props }) => (
-  <Cell {...props} style={{ padding: 0 }}>
-    <div style={{ lineHeight: '46px' }}>
-      <Checkbox
-        value={rowData[dataKey]}
-        inline
-        onChange={onChange}
-        checked={checkedKeys.some((item) => item === rowData[dataKey])}
-      />
-    </div>
-  </Cell>
-);
-
-const Datagrid = ({
-  data,
-  columns,
-  height = 300,
-  maxWidth = 900,
-  withCheck = false,
-}) => {
-  const [checkedKeys, setCheckedKeys] = useState([]);
-  let checked = false;
-  let indeterminate = false;
-
-  if (checkedKeys.length === data.length) {
-    checked = true;
-  } else if (checkedKeys.length === 0) {
-    checked = false;
-  } else if (checkedKeys.length > 0 && checkedKeys.length < data.length) {
-    indeterminate = true;
-  }
-
-  const handleCheckAll = (value, checked) => {
-    const keys = checked ? data.map((item) => item.id) : [];
-    setCheckedKeys(keys);
-  };
-  const handleCheck = (value, checked) => {
-    const keys = checked
-      ? [...checkedKeys, value]
-      : checkedKeys.filter((item) => item !== value);
-    setCheckedKeys(keys);
-  };
-
-  return (
-    <Table
-      style={{ maxWidth: maxWidth }}
-      height={height}
-      data={data}
-      id="table"
-    >
-      {withCheck && (
-        <Column width={50} align="center">
-          <HeaderCell style={{ padding: 0 }}>
-            <div style={{ lineHeight: '40px' }}>
-              <Checkbox
-                inline
-                checked={checked}
-                indeterminate={indeterminate}
-                onChange={handleCheckAll}
-              />
-            </div>
-          </HeaderCell>
-          <CheckCell
-            dataKey="id"
-            checkedKeys={checkedKeys}
-            onChange={handleCheck}
-            rowData={undefined}
-          />
-        </Column>
-      )}
-      {columns}
-
-      {/* Exemplo de progresso */}
-      {/* <Column width={230}>
-        <HeaderCell>Skill Proficiency</HeaderCell>
-        <Cell style={{ padding: '10px 0' }}>
-          {(rowData) => (
-            <Progress percent={rowData.progress} showInfo={false} />
-          )}
-        </Cell>
-      </Column> */}
-
-      {/* <Column width={100}>
-        <HeaderCell>Rating</HeaderCell>
-        <Cell>
-          {(rowData) =>
-            Array.from({ length: rowData.rating }).map((_, i) => (
-              <span key={i}>⭐️</span>
-            ))
-          }
-        </Cell>
-      </Column> */}
-    </Table>
-  );
+export type Column = {
+  id: string;
+  label: string;
+  minWidth?: number;
+  align?: 'right';
+  format?: (value: number) => string;
 };
 
-export default Datagrid;
+type TableProps = {
+  actionButtons?: (index) => JSX.Element[];
+  columns: Column[];
+  rows: any[];
+  page: number;
+  onPageChange?: (page: number) => void;
+  onRowsPerPageChange?: (rowsPerPage: number) => void;
+  onTitleClick?: (id) => void;
+};
+
+export default function StickyHeadTable({
+  actionButtons,
+  page = 1,
+  onPageChange,
+  rows = [],
+  columns = [],
+  onTitleClick,
+}: TableProps) {
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const isMobile = useMediaQuery('(max-width: 490px)');
+  const handleChangePage = (event: unknown, newPage: number) => {
+    console.log('newPage', newPage);
+    if (newPage >= 1) onPageChange(newPage);
+  };
+
+  //? TODO: Implementar rows per page se necessário
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setRowsPerPage(+event.target.value);
+    onPageChange(0);
+  };
+
+  const maxPages = useMemo(() => {
+    if (rows.length <= rowsPerPage) return 1;
+    return Math.round(rows.length / rowsPerPage);
+  }, [rows, rowsPerPage]);
+
+  const EmptyRows = useCallback(() => {
+    if (rows.length > 0) return <></>;
+    return (
+      <Typography pt={4} color="GrayText">
+        Nenhum resultado encontrado
+      </Typography>
+    );
+  }, [rows]);
+
+  return (
+    <PaperWrapper sx={{ width: '100%', overflow: 'hidden' }}>
+      <TableContainer>
+        <Table
+          sx={{
+            borderCollapse: 'separate',
+            borderSpacing: '0px 12px',
+          }}
+          stickyHeader
+          aria-label="sticky table"
+        >
+          <TableHead>
+            <TableRow>
+              {columns.map((column, index) => (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  style={{ minWidth: column.minWidth }}
+                >
+                  {column.label}
+                </TableCell>
+              ))}
+
+              <TableCell align="left" style={{ minWidth: 100 }}></TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            <>
+              <EmptyRows />
+              {rows
+                .slice(
+                  (page - 1) * rowsPerPage,
+                  (page - 1) * rowsPerPage + rowsPerPage,
+                )
+                .map((row, index) => {
+                  return (
+                    <CustomRow hover role="checkbox" tabIndex={-1} key={index}>
+                      {columns.map((column, index) => {
+                        const value = row[column.id];
+                        return (
+                          <TableCell
+                            onClick={() =>
+                              index === 0 &&
+                              onTitleClick &&
+                              onTitleClick(column.id)
+                            }
+                            sx={{
+                              cursor:
+                                index === 0 && onTitleClick
+                                  ? 'pointer'
+                                  : 'auto',
+                            }}
+                            key={column.id}
+                            align={column.align}
+                          >
+                            {column.format && typeof value === 'number'
+                              ? column.format(value)
+                              : value}
+                          </TableCell>
+                        );
+                      })}
+                      {actionButtons(index)}
+                    </CustomRow>
+                  );
+                })}
+            </>
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <CustomNavigation>
+        <Button
+          disabled={page !== maxPages || page === 1}
+          onClick={(e) => handleChangePage(e, page - 1)}
+        >
+          <SvgIcon component={chavron_left_svg} />
+        </Button>
+        <Typography marginX={isMobile ? 0 : 4} mt={1}>{`${
+          isMobile ? page : `Página ${page}`
+        } de ${maxPages}`}</Typography>
+        <Button
+          disabled={page === maxPages || maxPages === 0}
+          onClick={(e) => handleChangePage(e, page + 1)}
+        >
+          <SvgIcon component={chavron_right_svg} />
+        </Button>
+      </CustomNavigation>
+    </PaperWrapper>
+  );
+}
