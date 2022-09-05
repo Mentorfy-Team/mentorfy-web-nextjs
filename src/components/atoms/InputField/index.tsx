@@ -8,7 +8,7 @@ const InputField: FC<TextFieldProps & MUIStyledCommonProps<Theme>> = (
 ) => {
   return (
     <TextField
-      color="accent"
+      color="secondary"
       InputLabelProps={{
         shrink: true,
       }}
