@@ -8,6 +8,10 @@ export const Wrapper = styled('div')`
     gap: 1.5rem;
     height: 100vh; 
     padding: 0.625rem 1.5rem ; 
+
+    @media (max-width: 500px) { 
+        height: 100%; 
+    }
 `;
 
 export const Header = styled('header')`
@@ -15,7 +19,6 @@ export const Header = styled('header')`
 
 export const WrapperContent = styled(Box)`
     display: flex;
-
     @media (max-width: 500px) { 
         flex-direction: column;
     }
@@ -44,19 +47,17 @@ export const FormContentWrapper = styled(Box)`
     display: flex;
     flex-direction: column;
     gap: 1.7rem;
-    height: 75vh;
+    height: 80vh;
     padding: 1.5rem;
 `;
 
-export const InputField = styled(TextField)`
-    color: ${({theme}) => theme.palette.text.primary};
-    height: 10px;
-    
-    width: 50%;
-    
-    input { 
-        height: 0.625rem;
+export const InputField = styled(TextField)` 
+    height: 2.8125rem;
+    outline: none;
 
+    width: 50%;
+    input { 
+        height: 0.625rem; 
     }
     label { 
         color: ${({theme}) => theme.palette.text.primary};
@@ -96,7 +97,7 @@ export const Buttons = styled(Button)`
 
 export const ButtonInputWrapper = styled('div')`
     display:flex;
-    
+    flex-wrap: wrap;
     gap: 1rem;
     
     margin: 3rem 0;

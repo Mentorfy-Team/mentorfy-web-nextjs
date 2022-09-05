@@ -23,11 +23,13 @@ const MyProfile: FC = () => {
                             <Avatar
                             alt='foto-perfil'
                             src='/images/avatar.png'/>
-                            <Buttons variant='outlined'>Alterar</Buttons>
+                            <Buttons variant='text'>Alterar</Buttons>
                         </AvatarWrapper>
                         <InputField
                         label='Nome'
                         type='text'
+                        color='accent'
+                        autoComplete='off'
                         placeholder='Digite seu nome'
                         InputLabelProps={{
                             shrink: true,
@@ -37,6 +39,8 @@ const MyProfile: FC = () => {
                             <InputField
                             label='E-mail'
                             type='e-mail'
+                            color='accent'
+                            autoComplete='off'
                             placeholder='Digite seu e-mail'
                             InputLabelProps={{
                                 shrink: true,
@@ -47,6 +51,8 @@ const MyProfile: FC = () => {
                         <InputField
                         label='Telefone'
                         type='tel'
+                        color='accent'
+                        autoComplete='off'
                         placeholder='Digite seu telefone'
                         InputLabelProps={{
                             shrink: true,
@@ -56,12 +62,14 @@ const MyProfile: FC = () => {
                             <InputField
                             label='Senha'
                             type='password'
+                            color='accent'
+                            autoComplete='off'
                             placeholder='********'
                             InputLabelProps={{
                                 shrink: true,
                             }}
                             />
-                            <Buttons variant='outlined'>Alterar senha</Buttons>
+                            <Buttons variant='text'>Alterar senha</Buttons>
                         </ButtonInputWrapper>
                     </FormContentWrapper>
                     <Buttons variant='contained'type='submit' className='submit-button'>Salvar alterações</Buttons>
