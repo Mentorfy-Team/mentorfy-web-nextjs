@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { ArrowForward } from '@mui/icons-material';
-import { Box, SvgIcon, Typography } from '@mui/material';
+import { ArrowForwardIos } from '@mui/icons-material';
+import { Box, Button, SvgIcon, Typography } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { Column } from '~/components/atoms/Datagrid';
-import { ProductBox } from './style';
+import { ArrowButton, P, ProductBox } from './style';
 
 const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
   ssr: false,
@@ -47,10 +47,14 @@ const ClientsTable = () => {
       name,
       email,
       product: <ProductBox>{product}</ProductBox>,
-      date: <Box>
+      date: <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+            <Box>
+              <P>{date}</P>
               <Typography>{date}</Typography>
-              <Typography>{date}</Typography>
-              <SvgIcon id="Arrow" component={ArrowForward}/>
+            </Box>
+            <ArrowButton>
+              <SvgIcon id="Arrow" component={ArrowForwardIos}/>
+            </ArrowButton>
             </Box>,
     };
   }

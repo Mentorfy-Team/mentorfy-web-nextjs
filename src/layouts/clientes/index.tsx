@@ -8,8 +8,8 @@ import {
   Tabbar,
 } from '~/components';
 import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';
-import ClientsTable from './components/ClientsTable';
 import ClientsGrid from './components/ClientsGrid';
+import ClientsTable from './components/ClientsTable';
 import {
   ButtonsWrapper,
   ClientsOptionsButton,
