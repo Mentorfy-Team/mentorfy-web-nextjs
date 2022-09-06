@@ -1,15 +1,10 @@
-import { useCallback, useState } from 'react';
-import { useMediaQuery } from '@mui/material';
+import { useState } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { InferGetStaticPropsType } from 'next';
 import Image from 'next/image';
 import { PageWrapper } from '~/components';
-import Cadastro from './cadastro';
-import ConfirmarConta from './confirmar-conta';
-import EsqueciMinhaSenha from './esqueci-minha-senha';
-import Login from './login';
+import { handleAcessoSubPage } from './helper/SwitchSubPages';
 import { AlignSelf, BackgroundHolder, Grid, Wrapper } from './styles';
-import Sucesso from './sucesso';
-import TrocarSenha from './trocar-senha';
 
 export type AcessoSubPage =
   | 'login'
@@ -23,23 +18,6 @@ function LoginView({}: InferGetStaticPropsType<typeof getProps>) {
   const mobile = useMediaQuery('(max-width:500px)');
   const [AcessosubPage, setAcessoSubPage] = useState<AcessoSubPage>('login');
   const [info, setInfo] = useState<any>();
-
-  const handleAcessoSubPage = useCallback(() => {
-    switch (AcessosubPage) {
-      case 'login':
-        return <Login pageChange={setAcessoSubPage} />;
-      case 'cadastro':
-        return <Cadastro setInfo={setInfo} pageChange={setAcessoSubPage} />;
-      case 'trocar-senha':
-        return <TrocarSenha setInfo={setInfo} pageChange={setAcessoSubPage} />;
-      case 'esqueci-minha-senha':
-        return <EsqueciMinhaSenha pageChange={setAcessoSubPage} />;
-      case 'confirmar-conta':
-        return <ConfirmarConta pageChange={setAcessoSubPage} />;
-      case 'sucesso':
-        return <Sucesso info={info} pageChange={setAcessoSubPage} />;
-    }
-  }, [AcessosubPage, info]);
 
   return (
     <PageWrapper darkMode={false}>
@@ -74,7 +52,14 @@ function LoginView({}: InferGetStaticPropsType<typeof getProps>) {
               alt="logo"
             />
           </AlignSelf>
-          <Wrapper p={5}>{handleAcessoSubPage()}</Wrapper>
+          <Wrapper p={5}>
+            {handleAcessoSubPage(
+              AcessosubPage,
+              setAcessoSubPage,
+              info,
+              setInfo,
+            )}
+          </Wrapper>
         </Grid>
       </Grid>
     </PageWrapper>

@@ -125,7 +125,7 @@ export default function StickyHeadTable({
                           </TableCell>
                         );
                       })}
-                      {actionButtons(index)}
+                      {actionButtons && actionButtons(index)}
                     </CustomRow>
                   );
                 })}

@@ -1,5 +1,9 @@
-import { Box, Button, TextField, Typography, styled } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import MuiGrid from '@mui/material/Unstable_Grid2';
+import styled from '@mui/system/styled';
 
 export const Grid = styled(MuiGrid)``;
 

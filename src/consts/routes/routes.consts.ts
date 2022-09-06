@@ -23,29 +23,29 @@ export enum Routes {
   clients = '/clientes',
 
   //* Rota de Perfil/Configurações do usuário
-  settings = '/minha-conta',
+  settings = '/meu-perfil',
 }
 
 export const routes = {
   home: {
-    path: '/dashboard',
+    path: Routes.home,
     name: 'Dashboard',
     component: home_svg,
   },
   products: {
-    path: '/produtos',
-    subpaths: ['/membros'],
+    path: Routes.products,
+    subpaths: [Routes.member_area],
     name: 'Produtos',
     component: my_products_svg,
   },
   clients: {
-    path: '/clientes',
+    path: Routes.clients,
     name: 'Clientes',
     component: clients_svg,
   },
   settings: {
-    path: '/perfil',
-    name: 'Minha Conta',
+    path: Routes.settings,
+    name: 'Meu Perfil',
     component: settings_svg,
   },
 };
