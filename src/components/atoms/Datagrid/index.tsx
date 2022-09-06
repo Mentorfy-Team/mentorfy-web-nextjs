@@ -87,7 +87,6 @@ export default function StickyHeadTable({
                 </TableCell>
               ))}
 
-              <TableCell align="left" style={{ minWidth: 100 }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

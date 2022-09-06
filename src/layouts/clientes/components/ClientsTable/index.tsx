@@ -18,7 +18,7 @@ const columns: Column[] = [
     label: 'E-MAIL',
   },
   {
-    id: 'produto',
+    id: 'product',
     label: 'PRODUTO',
   },
   {
@@ -30,7 +30,7 @@ const columns: Column[] = [
 interface Data {
   name: string;
   email: string;
-  produto: JSX.Element;
+  product: JSX.Element;
   date: JSX.Element;
 }
 
@@ -40,13 +40,13 @@ const ClientsTable = () => {
   function createData(
     name: string,
     email: string,
-    produto: string,
+    product: string,
     date: string,
   ): Data {
     return {
       name,
       email,
-      produto: <ProductBox>{produto}</ProductBox>,
+      product: <ProductBox>{product}</ProductBox>,
       date: <Box>
               <Typography>{date}</Typography>
               <Typography>{date}</Typography>
