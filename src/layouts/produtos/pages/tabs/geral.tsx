@@ -122,7 +122,7 @@ const Geral: FC = () => {
 
       <InputField
         required
-        color="accent"
+        color="secondary"
         id="outlined-required"
         value="Mentoria 4S"
         label="Nome do produto"
@@ -133,7 +133,7 @@ const Geral: FC = () => {
       />
       <InputField
         required
-        color="accent"
+        color="secondary"
         id="outlined-required"
         label="Preço"
         placeholder="R$ "
@@ -151,7 +151,7 @@ const Geral: FC = () => {
           value={2}
           label="Entrega de Conteúdo"
           onChange={() => {}}
-          color="accent"
+          color="secondary"
         >
           <MenuItem value={2}>
             Área de Membros

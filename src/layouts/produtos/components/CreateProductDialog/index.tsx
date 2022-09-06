@@ -40,7 +40,7 @@ export default function CreateProduct({ open, setOpen }) {
           </Typography>
           <InputField
             required
-            color="accent"
+            color="secondary"
             id="outlined-required"
             label="Nome do Produto"
             placeholder=""
@@ -51,7 +51,7 @@ export default function CreateProduct({ open, setOpen }) {
           />
           <InputField
             required
-            color="accent"
+            color="secondary"
             id="outlined-required"
             label="Preço"
             placeholder="R$ "
@@ -69,7 +69,7 @@ export default function CreateProduct({ open, setOpen }) {
               value={2}
               label="Entrega de Conteúdo"
               onChange={() => {}}
-              color="accent"
+              color="secondary"
             >
               <MenuItem value={2}>
                 Área de Membros

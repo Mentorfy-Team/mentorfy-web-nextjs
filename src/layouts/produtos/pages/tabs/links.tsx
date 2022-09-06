@@ -32,7 +32,7 @@ const Links: FC = () => {
       </Box>
 
       <InputField
-        color="accent"
+        color="secondary"
         id="outlined-required"
         value="https://mentoryfy/membros/mentoria-4s"
         label="Link para área de membros"
@@ -44,7 +44,7 @@ const Links: FC = () => {
         }}
       />
       <InputField
-        color="accent"
+        color="secondary"
         id="outlined-required"
         value="https://mentoryfy/cadastro/mentoria-4s"
         label="Link de cadastro"
