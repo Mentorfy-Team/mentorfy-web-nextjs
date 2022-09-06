@@ -9,6 +9,7 @@ import {
 } from '~/components';
 import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';
 import ClientsTable from './components/ClientsTable';
+import ClientsGrid from './components/ClientsGrid';
 import {
   ButtonsWrapper,
   ClientsOptionsButton,
@@ -44,52 +45,7 @@ const Clients: FC = () => {
     <PageWrapper>
       <MiniDrawer header={Header} supportHeader={SupportHeader}>
         <ContentWidthLimit>
-          <Grid container spacing={!isMobile ? 7 : 2}>
-            <Grid p={isMobile ? 0 : null} xs={4} lg={4}>
-              <Item>
-                <TextWrapper>
-                  <Typography variant="body2">Total de Membros</Typography>
-                  <Typography
-                    sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}
-                  >
-                    273
-                  </Typography>
-                </TextWrapper>
-
-                {!isMobile && <SvgIcon alt="" component={graduation_cap_svg} />}
-              </Item>
-            </Grid>
-
-            <Grid p={isMobile ? 0 : null} xs={4} lg={4}>
-              <Item>
-                <TextWrapper>
-                  <Typography variant="body2">Total de Membros</Typography>
-                  <Typography
-                    sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}
-                  >
-                    273
-                  </Typography>
-                </TextWrapper>
-
-                {!isMobile && <SvgIcon alt="" component={graduation_cap_svg} />}
-              </Item>
-            </Grid>
-
-            <Grid p={isMobile ? 0 : null} xs={4} lg={4}>
-              <Item>
-                <TextWrapper>
-                  <Typography variant="body2">Total de Membros</Typography>
-                  <Typography
-                    sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}
-                  >
-                    273
-                  </Typography>
-                </TextWrapper>
-
-                {!isMobile && <SvgIcon alt="" component={graduation_cap_svg} />}
-              </Item>
-            </Grid>
-          </Grid>
+          <ClientsGrid />
           <ButtonsWrapper>
             <ClientsOptionsButton variant="outlined">
               <Image

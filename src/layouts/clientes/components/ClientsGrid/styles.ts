@@ -14,7 +14,6 @@ ${({ theme }) => theme.breakpoints.down('sm')} {
   padding: 1rem 1rem;
 }
 
-width: 23rem;
 `;
 
 export const TextWrapper = styled(Box)`
@@ -26,5 +25,4 @@ export const TextWrapper = styled(Box)`
 `;
 
 export const Grid = styled(Grid2)`
-  display: flex;
 `;
