@@ -1,10 +1,11 @@
 import { FC } from 'react';
-import { Avatar, Typography } from '@mui/material';
+import { Avatar, Box, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import { ContentWidthLimit, MiniDrawer, PageWrapper } from '~/components';
 import {
   AvatarWrapper,
+  BOX,
   Buttons,
   CustomTypography,
   Form,
@@ -18,7 +19,7 @@ const MyProfile: FC = () => {
   return (
     <PageWrapper>
       <MiniDrawer header={HeaderDrawer}>
-        <ContentWidthLimit maxWidth={800}>
+        <ContentWidthLimit maxWidth={600}>
           <Header>
             <CustomTypography variant="h6">Dados Gerais</CustomTypography>
             <CustomTypography
@@ -28,10 +29,13 @@ const MyProfile: FC = () => {
             </CustomTypography>
           </Header>
           <Form>
-            <CustomTypography>Foto</CustomTypography>
             <AvatarWrapper>
-              <Avatar alt="foto-perfil" src="/images/avatar.png" />
-              <Buttons variant="text">Alterar</Buttons>
+              <Avatar alt="foto-perfil" src="/images/avatar.png" sx={{width: 70, height: 70}}/>
+              <BOX>
+                <CustomTypography variant='body1'>Minha imagem</CustomTypography>
+                <Buttons>Alterar</Buttons>
+                <CustomTypography sx={{opacity: '0.7', fontSize: '0.7rem'}}>Recomendação: 70x70 pixels</CustomTypography>
+              </BOX>
             </AvatarWrapper>
             <InputField
               label="Nome"
