@@ -5,104 +5,82 @@ import { useTheme } from '@mui/material/styles';
 import { ContentWidthLimit, MiniDrawer, PageWrapper } from '~/components';
 import {
   AvatarWrapper,
-  ButtonInputWrapper,
   Buttons,
   CustomTypography,
   Form,
-  FormContentWrapper,
   Header,
   InputField,
-  TextWrapper,
-  Wrapper,
-  WrapperContent,
 } from './style';
 
 const MyProfile: FC = () => {
   const theme = useTheme();
-  const HeaderDrawer = <Typography variant="h6">Meus Clientes</Typography>;
+  const HeaderDrawer = <Typography variant="h6">Meu Perfil</Typography>;
   return (
     <PageWrapper>
       <MiniDrawer header={HeaderDrawer}>
-        <ContentWidthLimit>
-          <Wrapper>
-            <Header>
-              <CustomTypography sx={{ fontWeight: 600, fontSize: '1.5rem' }}>
-                Meu Perfil
-              </CustomTypography>
-            </Header>
-            <WrapperContent>
-              <TextWrapper>
-                <CustomTypography variant="h6">Dados Gerais</CustomTypography>
-                <CustomTypography
-                  sx={{ fontWeight: 'lighter', fontSize: '0.95rem' }}
-                >
-                  Informações sobre a sua conta
-                </CustomTypography>
-              </TextWrapper>
-              <Form>
-                <FormContentWrapper>
-                  <CustomTypography>Foto</CustomTypography>
-                  <AvatarWrapper>
-                    <Avatar alt="foto-perfil" src="/images/avatar.png" />
-                    <Buttons variant="text">Alterar</Buttons>
-                  </AvatarWrapper>
-                  <InputField
-                    label="Nome"
-                    type="text"
-                    color="accent"
-                    autoComplete="off"
-                    placeholder="Digite seu nome"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                  <ButtonInputWrapper>
-                    <InputField
-                      label="E-mail"
-                      type="e-mail"
-                      color="accent"
-                      autoComplete="off"
-                      placeholder="Digite seu e-mail"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                    <Buttons variant="text">Alterar e-mail</Buttons>
-                  </ButtonInputWrapper>
-                  <InputField
-                    label="Telefone"
-                    type="tel"
-                    color="accent"
-                    autoComplete="off"
-                    placeholder="Digite seu telefone"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                  <ButtonInputWrapper>
-                    <InputField
-                      label="Senha"
-                      type="password"
-                      color="accent"
-                      autoComplete="off"
-                      placeholder="********"
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                    />
-                    <Buttons variant="text">Alterar senha</Buttons>
-                  </ButtonInputWrapper>
-                </FormContentWrapper>
-                <Buttons
-                  variant="contained"
-                  type="submit"
-                  className="submit-button"
-                >
-                  Salvar alterações
-                </Buttons>
-              </Form>
-            </WrapperContent>
-          </Wrapper>
+        <ContentWidthLimit maxWidth={800}>
+          <Header>
+            <CustomTypography variant="h6">Dados Gerais</CustomTypography>
+            <CustomTypography
+              sx={{ fontWeight: 'lighter', fontSize: '0.95rem' }}
+            >
+              Informações sobre a sua conta
+            </CustomTypography>
+          </Header>
+          <Form>
+            <CustomTypography>Foto</CustomTypography>
+            <AvatarWrapper>
+              <Avatar alt="foto-perfil" src="/images/avatar.png" />
+              <Buttons variant="text">Alterar</Buttons>
+            </AvatarWrapper>
+            <InputField
+              label="Nome"
+              type="text"
+              color="accent"
+              autoComplete="off"
+              placeholder="Digite seu nome"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <InputField
+              label="E-mail"
+              type="e-mail"
+              color="accent"
+              autoComplete="off"
+              placeholder="Digite seu e-mail"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <InputField
+              label="Telefone"
+              type="tel"
+              color="accent"
+              autoComplete="off"
+              placeholder="Digite seu telefone"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <InputField
+              label="Senha"
+              type="password"
+              color="accent"
+              autoComplete="off"
+              placeholder="********"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <Buttons
+              variant="contained"
+              type="submit"
+              className="submit-button"
+            >
+              Salvar alterações
+            </Buttons>
+          </Form>
         </ContentWidthLimit>
       </MiniDrawer>
     </PageWrapper>

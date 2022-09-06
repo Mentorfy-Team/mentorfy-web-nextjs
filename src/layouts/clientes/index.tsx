@@ -8,7 +8,7 @@ import {
   Tabbar,
 } from '~/components';
 import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';
-import ProductsTable from './components/ProductsTable';
+import ClientsTable from './components/ClientsTable';
 import {
   ButtonsWrapper,
   ClientsOptionsButton,
@@ -24,7 +24,7 @@ const Clients: FC = () => {
   const isMobile = useMediaQuery('(max-width: 500px)');
 
   const ProductsTableComponent = useCallback(() => {
-    return <ProductsTable />;
+    return <ClientsTable />;
   }, []);
   const Header = <Typography variant="h6">Meus Clientes</Typography>;
 
