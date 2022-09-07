@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography, styled  } from '@mui/material';
+import { Box, Button, FormControl, TextField, Typography, styled  } from '@mui/material';
 
 export const Header = styled('header')`
     background-color:  ${({ theme }) => theme.palette.caption.dark};   
@@ -8,7 +8,7 @@ export const Header = styled('header')`
 `;
 
 export const InputField = styled(TextField)` 
-    height: 2.8125rem;
+    height: 2.8rem;
     outline: none;
 
     width: 100%;
@@ -20,7 +20,7 @@ export const InputField = styled(TextField)`
     }
     fieldset  { 
         border-color: ${({theme}) => theme.palette.text.primary} ;
-        height: 2.8125rem;
+        height: 2.8rem;
     }
 `;
 
@@ -62,6 +62,7 @@ export const Form = styled('form')`
         margin-top: 1.5rem;
         padding: 0.1rem 1rem;
     }  
+   
 `;
 
 export const BOX = styled(Box)`
@@ -69,5 +70,34 @@ export const BOX = styled(Box)`
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
+`;
+
+export const SelectForm =styled(FormControl)`
+    height: 2.8rem;
+    outline: none;
+    width: 100%;
+    
+
+    .css-17m1a6v-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root { 
+        display: flex;
+        height: 2.8rem;
+    };
+    .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input { 
+        padding: 0px;
+    }
+    fieldset { 
+        border-color: ${({theme}) => theme.palette.text.primary} ;
+        display: flex;
+        height: 2.8rem;
+        justify-content: center;
+        &:active { 
+            border-color: green;
+        }
+    }
+    svg { 
+        color: ${({theme}) => theme.palette.text.primary};
+        margin-top: 0.5rem;
+    }
+
 `;
 
