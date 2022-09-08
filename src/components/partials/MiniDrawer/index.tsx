@@ -77,7 +77,7 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
             edge="start"
             sx={{
               marginRight: isMobile ? 2 : 5,
-              marginLeft: -1,
+              marginLeft: open ? -9.3 : -1,
             }}
           >
             <Image

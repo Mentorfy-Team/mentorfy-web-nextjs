@@ -62,8 +62,6 @@ export const AppBar = styled(MuiAppBar, {
   background-color: transparent;
   box-shadow: none;
 
-  margin-left: 201px;
-
   ${({ theme, open }) =>
     open &&
     css`
@@ -73,6 +71,14 @@ export const AppBar = styled(MuiAppBar, {
       })};
       width: calc(100% - ${DrawerWidth});
     `}
+
+  button {
+    transition: ${({ theme }) =>
+      theme.transitions.create(['margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      })};
+  }
 `;
 
 export const Drawer = styled(MuiDrawer, {
@@ -87,6 +93,14 @@ export const Drawer = styled(MuiDrawer, {
     overflow: hidden;
   }
   white-space: nowrap;
+
+  * {
+    transition: ${({ theme }) =>
+      theme.transitions.create(['margin, opacity, width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      })};
+  }
 
   ${({ theme, open }) => {
     if (open) {

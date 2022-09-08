@@ -38,16 +38,16 @@ const AreaDeMembros = () => {
               </Button>
             </Box>
           </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'row'}}>
-            {[1, 2, 3, 4, 5, 6, 7,8,9,10,11].map((index) => (
-              <div key={index}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', overflow: 'auto' }}>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((index) => (
+              <Box minWidth={300} mr={4} key={index}>
                 <Image
                   alt=""
                   src="/images/area-de-membros.png"
                   width={246}
                   height={244}
                 />
-              </div>
+              </Box>
             ))}
           </Box>
           <Divider sx={{ borderColor: '#36353A', m: '2rem 0rem' }} />
