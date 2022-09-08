@@ -1,14 +1,8 @@
-import * as React from 'react';
+import { DefaultProps } from './type';
 
-const SvgComponent = (props) => (
-  <svg
-    width={32}
-    height={26}
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
-    <g clipPath="url(#a)" fill={props?.fill ? props.fill:'#7D7D7D'}>
+const SvgComponent = ({ width, height, fill }: DefaultProps) => (
+  <svg width={32} height={26} fill="none" xmlns="http://www.w3.org/2000/svg">
+    <g clipPath="url(#a)" fill={fill ? fill : '#7D7D7D'}>
       <path d="M15.995 16c2.87 0 5.155-2.328 5.155-5.2 0-2.872-2.327-5.2-5.155-5.2-2.87 0-5.155 2.328-5.155 5.2-.045 2.87 2.285 5.2 5.155 5.2Zm2.5 1.6h-4.99C9.58 17.6 6.4 20.585 6.4 24.265c0 .74.635 1.335 1.42 1.335h16.36c.785 0 1.42-.595 1.42-1.335 0-3.68-3.18-6.665-7.105-6.665Z" />
       <path
         opacity={0.4}
