@@ -1,5 +1,5 @@
 import { FC, useCallback } from 'react';
-import { Box, SvgIcon, Typography, useMediaQuery } from '@mui/material';
+import { Typography, useMediaQuery } from '@mui/material';
 import Image from 'next/image';
 import {
   ContentWidthLimit,
@@ -13,11 +13,6 @@ import ClientsTable from './components/ClientsTable';
 import {
   ButtonsWrapper,
   ClientsOptionsButton,
-  Grid,
-  GridWrapper,
-  Item,
-  TextWrapper,
-  Wrapper,
 } from './style';
 import { graduation_cap_svg } from '~/../public/svgs';
 
