@@ -1,7 +1,5 @@
-import { FC, useState } from 'react';
-import { Avatar, Box, FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
-import { useTheme } from '@mui/material/styles';
+import { FC } from 'react';
+import { Autocomplete, AutocompleteRenderInputParams, Avatar, Typography } from '@mui/material';
 
 import { ContentWidthLimit, MiniDrawer, PageWrapper } from '~/components';
 import {
@@ -12,16 +10,14 @@ import {
   Form,
   Header,
   InputField,
-  SelectForm,
 } from './style';
 
 const MyProfile: FC = () => {
-  const theme = useTheme();
-  const [age, setAge] = useState('');
+  const States = [ 'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO' ];
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
-  };
+  // const handleChange = (event: SelectChangeEvent) => {
+  //   setAge(event.target.value as string);
+
   const HeaderDrawer = <Typography variant="h6">Meu Perfil</Typography>;
   return (
     <PageWrapper>
@@ -162,33 +158,19 @@ const MyProfile: FC = () => {
                 shrink: true,
               }}
             />
-            <InputField
-              id='state-input'
-              label="Estado"
-              type="text"
-              color="accent"
-              autoComplete="off"
-              placeholder="Ex: SP"
-              InputLabelProps={{
-                shrink: true,
-              }}
+            <Autocomplete
+            sx={{width: '100%'}}
+            options={States}
+            renderInput={(params: AutocompleteRenderInputParams) => <InputField {...params} id='state-input'
+            label="Estado"
+            type="text"
+            color="accent"
+            autoComplete="off"
+            placeholder="Ex: SP"
+            InputLabelProps={{
+              shrink: true,
+            }}/>}
             />
-            <SelectForm color='accent'>
-              <InputLabel id='state-select'>Estado</InputLabel>
-              <Select
-                id='state-select'
-                value={age}
-                onChange={handleChange}
-                label='Estado'
-                inputProps={{
-                  shrink: true,
-                }}
-                >
-                  <MenuItem value='SP'>SP</MenuItem>
-                  <MenuItem value='RJ'>RJ</MenuItem>
-                  <MenuItem value='SC'>SC</MenuItem>
-                </Select>
-            </SelectForm>
             <Buttons
               variant="contained"
               type="submit"

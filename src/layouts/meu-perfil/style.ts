@@ -9,11 +9,12 @@ export const Header = styled('header')`
 
 export const InputField = styled(TextField)` 
     height: 2.8rem;
-    outline: none;
 
+    outline: none;
     width: 100%;
     input { 
         height: 0.625rem; 
+        font-size: 0.9rem;
     }
     label { 
         color: ${({theme}) => theme.palette.text.primary};
@@ -62,7 +63,9 @@ export const Form = styled('form')`
         margin-top: 1.5rem;
         padding: 0.1rem 1rem;
     }  
-   
+    svg { 
+        color: white;
+    }
 `;
 
 export const BOX = styled(Box)`
@@ -71,33 +74,3 @@ export const BOX = styled(Box)`
     flex-direction: column;
     gap: 0.8rem;
 `;
-
-export const SelectForm =styled(FormControl)`
-    height: 2.8rem;
-    outline: none;
-    width: 100%;
-    
-
-    .css-17m1a6v-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root { 
-        display: flex;
-        height: 2.8rem;
-    };
-    .css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input { 
-        padding: 0px;
-    }
-    fieldset { 
-        border-color: ${({theme}) => theme.palette.text.primary} ;
-        display: flex;
-        height: 2.8rem;
-        justify-content: center;
-        &:active { 
-            border-color: green;
-        }
-    }
-    svg { 
-        color: ${({theme}) => theme.palette.text.primary};
-        margin-top: 0.5rem;
-    }
-
-`;
-
