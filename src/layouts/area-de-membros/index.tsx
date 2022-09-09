@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -14,8 +13,8 @@ import SvgComponent from '~/../public/svgs/graduation-cap';
 const AreaDeMembros = () => {
   const Header = <Typography variant="h6">Área de Membros</Typography>;
   const isMobile = useMediaQuery('(max-width: 500px)');
-
   const theme = useTheme();
+
   const SupportHeader = (
     <TabWrapper>
       <TabItem label="Ativos"></TabItem>
@@ -23,6 +22,7 @@ const AreaDeMembros = () => {
   );
     // Const to crontrol the text in the button
   const creatNewMembersArea = isMobile ? '' : 'Criar nova área de membros';
+
   return (
     <PageWrapper>
       <MiniDrawer header={Header} supportHeader={SupportHeader}>
