@@ -1,5 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
-import { DialogTitle, IconButton } from '@mui/material';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
 export interface DialogTitleProps {
   id: string;
   children?: React.ReactNode;

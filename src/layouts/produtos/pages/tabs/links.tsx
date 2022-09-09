@@ -1,7 +1,8 @@
 import { FC } from 'react';
-import { Box, SvgIcon } from '@mui/material';
+import Box from '@mui/material/Box';
+import SvgIcon from '@mui/material/SvgIcon';
 import { useRouter } from 'next/router';
-import { InputField } from '~/components';
+import InputField from '~/components/atoms/InputField';
 import { Routes } from '~/consts';
 import { ReturnButton } from '../styles';
 import { chavron_left_svg } from '~/../public/svgs';

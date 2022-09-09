@@ -1,11 +1,14 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Button, SvgIcon, Typography, useMediaQuery } from '@mui/material';
+import Button from '@mui/material/Button';
+import SvgIcon from '@mui/material/SvgIcon';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
 import { chavron_left_svg, chavron_right_svg } from '~/../public/svgs';
 
@@ -86,7 +89,6 @@ export default function StickyHeadTable({
                   {column.label}
                 </TableCell>
               ))}
-
             </TableRow>
           </TableHead>
           <TableBody>

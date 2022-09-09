@@ -2,7 +2,7 @@ import { useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { InferGetStaticPropsType } from 'next';
 import Image from 'next/image';
-import { PageWrapper } from '~/components';
+import PageWrapper from '~/components/partials/PageWrapper';
 import { handleAcessoSubPage } from './helper/SwitchSubPages';
 import { AlignSelf, BackgroundHolder, Grid, Wrapper } from './styles';
 

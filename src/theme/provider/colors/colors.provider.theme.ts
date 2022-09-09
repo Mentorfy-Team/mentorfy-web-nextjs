@@ -1,4 +1,4 @@
-import { PaletteOptions } from '@mui/material';
+import { PaletteOptions } from '@mui/material/styles';
 import { darken, lighten } from 'polished';
 
 const primary = '#1C1B20';

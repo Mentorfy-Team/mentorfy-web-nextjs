@@ -1,6 +1,8 @@
 import { useState } from 'react';
-import { ArrowForwardIos } from '@mui/icons-material';
-import { Box, Button, SvgIcon, Typography } from '@mui/material';
+import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
+import Box from '@mui/material/Box';
+import SvgIcon from '@mui/material/SvgIcon';
+import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
 import { Column } from '~/components/atoms/Datagrid';
 import { ArrowButton, P, ProductBox } from './style';
@@ -47,36 +49,90 @@ const ClientsTable = () => {
       name,
       email,
       product: <ProductBox>{product}</ProductBox>,
-      date: <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-            <Box>
-              <P>{date}</P>
-              <Typography>{date}</Typography>
-            </Box>
-            <ArrowButton>
-              <SvgIcon id="Arrow" component={ArrowForwardIos}/>
-            </ArrowButton>
-            </Box>,
+      date: (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box>
+            <P>{date}</P>
+            <Typography>{date}</Typography>
+          </Box>
+          <ArrowButton>
+            <SvgIcon id="Arrow" component={ArrowForwardIos} />
+          </ArrowButton>
+        </Box>
+      ),
     };
   }
 
   const rows = [
-    createData('Alexandre Mendes', 'alexandremendes@gmail.com', 'Mentoria 4S', 'Cerca de 8 horas'),
-    createData('Alexandre Mendes', 'alexandremendes@gmail.com', 'Mentoria 4S', 'Cerca de 8 horas'),
-    createData('Alexandre Mendes', 'alexandremendes@gmail.com', 'Mentoria 4S', 'Cerca de 8 horas'),
-    createData('Alexandre Mendes', 'alexandremendes@gmail.com', 'Mentoria 4S', 'Cerca de 8 horas'),
-    createData('Alexandre Mendes', 'alexandremendes@gmail.com', 'Mentoria 4S', 'Cerca de 8 horas'),
-    createData('Alexandre Mendes', 'alexandremendes@gmail.com', 'Mentoria 4S', 'Cerca de 8 horas'),
-    createData('Alexandre Mendes', 'alexandremendes@gmail.com', 'Mentoria 4S', 'Cerca de 8 horas'),
-    createData('Alexandre Mendes', 'alexandremendes@gmail.com', 'Mentoria 4S', 'Cerca de 8 horas'),
-    createData('Alexandre Mendes', 'alexandremendes@gmail.com', 'Mentoria 4S', 'Cerca de 8 horas'),
-
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
   ];
-  return <Datagrid
-           page={page}
-           columns={columns}
-           rows={rows}
-           onPageChange={setPage}
-          />;
+  return (
+    <Datagrid
+      page={page}
+      columns={columns}
+      rows={rows}
+      onPageChange={setPage}
+    />
+  );
 };
 
 export default ClientsTable;

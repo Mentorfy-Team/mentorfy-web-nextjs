@@ -1,4 +1,5 @@
-import { Dialog, css, styled } from '@mui/material';
+import Dialog from '@mui/material/Dialog';
+import { css, styled } from '@mui/material/styles';
 
 export default styled(Dialog)`
   ${({ theme }) => css`

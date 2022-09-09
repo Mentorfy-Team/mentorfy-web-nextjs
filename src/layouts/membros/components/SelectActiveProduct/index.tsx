@@ -1,12 +1,7 @@
 import React from 'react';
-import {
-  InputLabel,
-  MenuItem,
-  Select,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
-import { SelectField } from '~/components';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { SelectFormControl } from './styles';
 
 // import { Container } from './styles';

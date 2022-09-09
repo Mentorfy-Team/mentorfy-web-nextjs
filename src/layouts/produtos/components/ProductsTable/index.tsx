@@ -1,13 +1,12 @@
-import { useState } from 'react';
-import { Edit, Link } from '@mui/icons-material';
-import {
-  Box,
-  Button,
-  Popover,
-  SvgIcon,
-  TableCell,
-  Typography,
-} from '@mui/material';
+import { useEffect, useState } from 'react';
+import Edit from '@mui/icons-material/Edit';
+import Link from '@mui/icons-material/Link';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Popover from '@mui/material/Popover';
+import SvgIcon from '@mui/material/SvgIcon';
+import TableCell from '@mui/material/TableCell';
+import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { Column } from '~/components/atoms/Datagrid';
@@ -56,6 +55,7 @@ interface Data {
 
 const ProductsTable = () => {
   const [page, setPage] = useState(1);
+  const [rows, setRows] = useState([]);
   const route = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -96,24 +96,6 @@ const ProductsTable = () => {
     };
   }
 
-  const rows = [
-    createData('Mentoria S1', 597.0, 159, 'Ativo', 1),
-    createData('Mentoria S2', 597.0, 159, 'Ativo'),
-    createData('Mentoria S3', 597.0, 159, 'Ativo'),
-    createData('Mentoria S4', 597.0, 159, 'Ativo'),
-    createData('Mentoria S5', 597.0, 159, 'Ativo'),
-    createData('Mentoria S6', 597.0, 159, 'Ativo'),
-    createData('Mentoria S7', 597.0, 159, 'Ativo'),
-    createData('Mentoria S8', 597.0, 159, 'Ativo'),
-    createData('Mentoria S9', 597.0, 159, 'Ativo'),
-    createData('Mentoria S10', 597.0, 159, 'Ativo'),
-    createData('Mentoria S11', 597.0, 159, 'Ativo'),
-    createData('Mentoria S12', 597.0, 159, 'Ativo'),
-    createData('Mentoria S13', 597.0, 159, 'Ativo'),
-    createData('Mentoria S14', 597.0, 159, 'Ativo'),
-    createData('Mentoria S15', 597.0, 159, 'Ativo'),
-  ];
-
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -128,6 +110,26 @@ const ProductsTable = () => {
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
+
+  useEffect(() => {
+    setRows([
+      createData('Mentoria S1', 597.0, 159, 'Ativo', 1),
+      createData('Mentoria S2', 597.0, 159, 'Ativo'),
+      createData('Mentoria S3', 597.0, 159, 'Ativo'),
+      createData('Mentoria S4', 597.0, 159, 'Ativo'),
+      createData('Mentoria S5', 597.0, 159, 'Ativo'),
+      createData('Mentoria S6', 597.0, 159, 'Ativo'),
+      createData('Mentoria S7', 597.0, 159, 'Ativo'),
+      createData('Mentoria S8', 597.0, 159, 'Ativo'),
+      createData('Mentoria S9', 597.0, 159, 'Ativo'),
+      createData('Mentoria S10', 597.0, 159, 'Ativo'),
+      createData('Mentoria S11', 597.0, 159, 'Ativo'),
+      createData('Mentoria S12', 597.0, 159, 'Ativo'),
+      createData('Mentoria S13', 597.0, 159, 'Ativo'),
+      createData('Mentoria S14', 597.0, 159, 'Ativo'),
+      createData('Mentoria S15', 597.0, 159, 'Ativo'),
+    ]);
+  }, [createData]);
 
   return (
     <Datagrid

@@ -1,5 +1,6 @@
 import { FC, useCallback, useMemo, useState } from 'react';
-import { Box, Checkbox } from '@mui/material';
+import Box from '@mui/material/Box';
+import Checkbox from '@mui/material/Checkbox';
 import Link from 'next/link';
 import { AcessoSubPage } from '..';
 import {

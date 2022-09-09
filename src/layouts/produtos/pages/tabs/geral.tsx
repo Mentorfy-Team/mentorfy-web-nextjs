@@ -1,15 +1,14 @@
 import { FC } from 'react';
-import { Save } from '@mui/icons-material';
-import {
-  Box,
-  InputLabel,
-  MenuItem,
-  Select,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
+import Save from '@mui/icons-material/Save';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import SvgIcon from '@mui/material/SvgIcon';
+import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
-import { InputField, SelectField } from '~/components';
+import InputField from '~/components/atoms/InputField';
+import SelectField from '~/components/atoms/SelectField';
 import { Routes } from '~/consts';
 import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
 import { ActionButton, ReturnButton, SaveButton } from '../styles';

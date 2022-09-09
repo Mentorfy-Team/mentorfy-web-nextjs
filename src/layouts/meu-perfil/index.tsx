@@ -1,7 +1,13 @@
+/* eslint-disable no-restricted-imports */
 import { FC } from 'react';
-import { Autocomplete, AutocompleteRenderInputParams, Avatar, Typography } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
+import { AutocompleteRenderInputParams } from '@mui/material/Autocomplete/Autocomplete';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
 
-import { ContentWidthLimit, MiniDrawer, PageWrapper } from '~/components';
+import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
+import MiniDrawer from '~/components/partials/MiniDrawer';
+import PageWrapper from '~/components/partials/PageWrapper';
 import {
   AvatarWrapper,
   BOX,
@@ -13,7 +19,7 @@ import {
 } from './style';
 
 const MyProfile: FC = () => {
-  const States = [ 'AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO' ];
+  const States = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO'];
 
   // const handleChange = (event: SelectChangeEvent) => {
   //   setAge(event.target.value as string);
@@ -33,11 +39,19 @@ const MyProfile: FC = () => {
           </Header>
           <Form>
             <AvatarWrapper>
-              <Avatar alt="foto-perfil" src="/images/avatar.png" sx={{width: 70, height: 70}}/>
+              <Avatar
+                alt="foto-perfil"
+                src="/images/avatar.png"
+                sx={{ width: 70, height: 70 }}
+              />
               <BOX>
-                <CustomTypography variant='body1'>Minha imagem</CustomTypography>
+                <CustomTypography variant="body1">
+                  Minha imagem
+                </CustomTypography>
                 <Buttons>Alterar</Buttons>
-                <CustomTypography sx={{opacity: '0.7', fontSize: '0.7rem'}}>Recomendação: 70x70 pixels</CustomTypography>
+                <CustomTypography sx={{ opacity: '0.7', fontSize: '0.7rem' }}>
+                  Recomendação: 70x70 pixels
+                </CustomTypography>
               </BOX>
             </AvatarWrapper>
             <InputField
@@ -89,7 +103,7 @@ const MyProfile: FC = () => {
             </Buttons>
           </Form>
           {/* Addreess page  */}
-          <Header sx={{marginTop: '1.3rem'}}>
+          <Header sx={{ marginTop: '1.3rem' }}>
             <CustomTypography variant="h6">Endereço</CustomTypography>
             <CustomTypography
               sx={{ fontWeight: 'lighter', fontSize: '0.95rem' }}
@@ -159,17 +173,22 @@ const MyProfile: FC = () => {
               }}
             />
             <Autocomplete
-            sx={{width: '100%'}}
-            options={States}
-            renderInput={(params: AutocompleteRenderInputParams) => <InputField {...params} id='state-input'
-            label="Estado"
-            type="text"
-            color="accent"
-            autoComplete="off"
-            placeholder="Ex: SP"
-            InputLabelProps={{
-              shrink: true,
-            }}/>}
+              sx={{ width: '100%' }}
+              options={States}
+              renderInput={(params: AutocompleteRenderInputParams) => (
+                <InputField
+                  {...params}
+                  id="state-input"
+                  label="Estado"
+                  type="text"
+                  color="accent"
+                  autoComplete="off"
+                  placeholder="Ex: SP"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              )}
             />
             <Buttons
               variant="contained"

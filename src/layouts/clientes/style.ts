@@ -1,4 +1,6 @@
-import { Box, Button, styled } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
 import Grid2 from '@mui/material/Unstable_Grid2';
 
 export const Wrapper = styled(Box)`

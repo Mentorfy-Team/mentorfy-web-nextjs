@@ -1,4 +1,5 @@
-import { FormControl, styled } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
+import { styled } from '@mui/material/styles';
 
 export const SelectFormControl = styled(FormControl)`
   text-align: left;

@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Divider } from '@mui/material';
+import Divider from '@mui/material/Divider';
 import { useRouter } from 'next/router';
 import { routes } from '~/consts/routes/routes.consts';
 import { userStore } from '~/stores';

@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Divider } from '@mui/material';
+import Divider from '@mui/material/Divider';
 import { AcessoSubPage } from '..';
 import {
   Accent,

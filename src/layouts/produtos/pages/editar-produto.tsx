@@ -1,13 +1,14 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Box, SvgIcon, Typography, useMediaQuery } from '@mui/material';
+import Box from '@mui/material/Box';
+import SvgIcon from '@mui/material/SvgIcon';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
-import {
-  ContentWidthLimit,
-  MiniDrawer,
-  PageWrapper,
-  TabItem,
-  Tabbar,
-} from '~/components';
+import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
+import Tabbar from '~/components/modules/Tabbar';
+import { TabItem } from '~/components/modules/Tabbar/styles';
+import MiniDrawer from '~/components/partials/MiniDrawer';
+import PageWrapper from '~/components/partials/PageWrapper';
 import { Routes } from '~/consts';
 import { MembersAreaButton } from '../styles';
 import { HeaderWrapper } from './styles';

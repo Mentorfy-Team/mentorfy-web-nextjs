@@ -1,20 +1,15 @@
 import { FC, useCallback } from 'react';
-import { Typography, useMediaQuery } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Image from 'next/image';
-import {
-  ContentWidthLimit,
-  MiniDrawer,
-  PageWrapper,
-  Tabbar,
-} from '~/components';
+
+import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';
+import MiniDrawer from '~/components/partials/MiniDrawer';
+import PageWrapper from '~/components/partials/PageWrapper';
 import ClientsGrid from './components/ClientsGrid';
 import ClientsTable from './components/ClientsTable';
-import {
-  ButtonsWrapper,
-  ClientsOptionsButton,
-} from './style';
-import { graduation_cap_svg } from '~/../public/svgs';
+import { ButtonsWrapper, ClientsOptionsButton } from './style';
 
 const Clients: FC = () => {
   const isMobile = useMediaQuery('(max-width: 500px)');

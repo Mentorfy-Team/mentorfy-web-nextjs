@@ -1,5 +1,6 @@
 import { FC, useCallback, useMemo, useState } from 'react';
-import { Box, Divider } from '@mui/material';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
 import { AcessoSubPage } from '..';
 import { Text } from '../cadastro/components/styles';
 import TextSuccess from '../cadastro/components/TextSuccess';

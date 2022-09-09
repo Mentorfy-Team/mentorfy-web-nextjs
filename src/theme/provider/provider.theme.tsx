@@ -1,10 +1,9 @@
-import { FC, useState } from 'react';
-import {
-  StyledEngineProvider,
-  ThemeProvider,
-  createTheme,
-  responsiveFontSizes,
-} from '@mui/material';
+import { FC } from 'react';
+import StyledEngineProvider from '@mui/material/StyledEngineProvider';
+import { createTheme } from '@mui/material/styles';
+import { responsiveFontSizes } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+
 import { colors } from './colors/colors.provider.theme';
 
 const Provider: FC<{ children: React.ReactNode }> = ({ children }) => {
