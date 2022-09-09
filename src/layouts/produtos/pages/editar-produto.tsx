@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Tabbar from '~/components/modules/Tabbar';
@@ -14,8 +15,9 @@ import { MembersAreaButton } from '../styles';
 import { HeaderWrapper } from './styles';
 
 import GeralPage from './tabs/geral';
-import LinksPage from './tabs/links';
-import { graduation_cap_svg } from '~/../public/svgs';
+import graduation_cap_svg from '~/../public/svgs/graduation-cap';
+
+const LinksPage = dynamic(() => import('./tabs/links'));
 
 enum tabs {
   'Geral',

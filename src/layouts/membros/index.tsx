@@ -17,7 +17,9 @@ import SelectActiveProduct from './components/SelectActiveProduct';
 import { AddMemberButton, CopyLinkButton } from './styles';
 import JorneyPage from './tabs/jorney';
 import ModePage from './tabs/mode';
-import { add_user_svg, copy_link_svg, plus_svg } from '~/../public/svgs';
+import add_user_svg from '~/../public/svgs/add-user';
+import copy_link_svg from '~/../public/svgs/copy-link';
+import plus_svg from '~/../public/svgs/plus';
 
 enum tabs {
   'Geral',

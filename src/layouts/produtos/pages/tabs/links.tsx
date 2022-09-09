@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import InputField from '~/components/atoms/InputField';
 import { Routes } from '~/consts';
 import { ReturnButton } from '../styles';
-import { chavron_left_svg } from '~/../public/svgs';
+import chavron_left_svg from '~/../public/svgs/chavron-left';
 
 const Links: FC = () => {
   const route = useRouter();

@@ -12,7 +12,7 @@ import SelectField from '~/components/atoms/SelectField';
 import { Routes } from '~/consts';
 import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
 import { ActionButton, ReturnButton, SaveButton } from '../styles';
-import { chavron_left_svg } from '~/../public/svgs';
+import chavron_left_svg from '~/../public/svgs/chavron-left';
 
 const Geral: FC = () => {
   const route = useRouter();

@@ -10,7 +10,8 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
-import { chavron_left_svg, chavron_right_svg } from '~/../public/svgs';
+import chavron_left_svg from '~/../public/svgs/chavron-left';
+import chavron_right_svg from '~/../public/svgs/chavron-right';
 
 export type Column = {
   id: string;
