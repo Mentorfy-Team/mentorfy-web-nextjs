@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import SelectField from '~/components/atoms/SelectField';
 
 export const Header = styled('header')`
   background-color: ${({ theme }) => theme.palette.caption.dark};
@@ -26,6 +27,26 @@ export const InputField = styled(TextField)`
   fieldset {
     border-color: ${({ theme }) => theme.palette.text.primary};
     height: 2.8rem;
+  }
+`;
+
+export const CustomSelectField = styled(SelectField)`
+  height: 2.8rem;
+  outline: none;
+  width: 100%;
+  input {
+    font-size: 0.9rem;
+    height: 0.625rem;
+  }
+  label {
+    color: ${({ theme }) => theme.palette.text.primary} !important;
+  }
+  fieldset {
+    border-color: #fff !important;
+    height: 2.8rem;
+  }
+  .MuiOutlinedInput-input {
+    padding: 9.5px 14px;
   }
 `;
 

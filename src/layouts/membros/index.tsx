@@ -2,6 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import SvgIcon from '@mui/material/SvgIcon';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
@@ -10,16 +11,18 @@ import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { Routes } from '~/consts';
-import { HeaderWrapper } from '../produtos/styles';
 
-import CreateMemberDialog from './components/CreateMemberDialog';
 import SelectActiveProduct from './components/SelectActiveProduct';
-import { AddMemberButton, CopyLinkButton } from './styles';
+import { AddMemberButton, CopyLinkButton, HeaderWrapper } from './styles';
 import JorneyPage from './tabs/jorney';
 import ModePage from './tabs/mode';
 import add_user_svg from '~/../public/svgs/add-user';
 import copy_link_svg from '~/../public/svgs/copy-link';
 import plus_svg from '~/../public/svgs/plus';
+
+const CreateMemberDialog = dynamic(
+  () => import('./components/CreateMemberDialog'),
+);
 
 enum tabs {
   'Geral',

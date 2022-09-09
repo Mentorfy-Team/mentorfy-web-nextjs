@@ -1,5 +1,4 @@
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -21,7 +20,7 @@ const AreaDeMembros = () => {
       <TabItem label="Ativos"></TabItem>
     </TabWrapper>
   );
-    // Const to crontrol the text in the button
+  // Const to crontrol the text in the button
   const creatNewMembersArea = isMobile ? '' : 'Criar nova área de membros';
   return (
     <PageWrapper>
