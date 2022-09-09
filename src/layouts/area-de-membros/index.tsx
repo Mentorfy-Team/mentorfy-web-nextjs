@@ -20,7 +20,7 @@ const AreaDeMembros = () => {
       <TabItem label="Ativos"></TabItem>
     </TabWrapper>
   );
-    // Const to crontrol the text in the button
+  // Const to crontrol the text in the button
   const creatNewMembersArea = isMobile ? '' : 'Criar nova área de membros';
 
   return (

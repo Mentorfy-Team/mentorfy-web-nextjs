@@ -1,8 +1,10 @@
 /* eslint-disable no-restricted-imports */
 import { FC } from 'react';
-import Autocomplete from '@mui/material/Autocomplete';
-import { AutocompleteRenderInputParams } from '@mui/material/Autocomplete/Autocomplete';
+import { OutlinedInput } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
@@ -12,6 +14,7 @@ import {
   AvatarWrapper,
   BOX,
   Buttons,
+  CustomSelectField,
   CustomTypography,
   Form,
   Header,
@@ -172,24 +175,22 @@ const MyProfile: FC = () => {
                 shrink: true,
               }}
             />
-            <Autocomplete
-              sx={{ width: '100%' }}
-              options={States}
-              renderInput={(params: AutocompleteRenderInputParams) => (
-                <InputField
-                  {...params}
-                  id="state-input"
-                  label="Estado"
-                  type="text"
-                  color="accent"
-                  autoComplete="off"
-                  placeholder="Ex: SP"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
+            <CustomSelectField required sx={{ width: '100%', margin: '0px' }}>
+              <InputLabel shrink={true}>Estado</InputLabel>
+              <Select
+                placeholder="Ex: SP"
+                label="Estado"
+                onChange={() => {}}
+                color="secondary"
+                notched={true}
+              >
+                {States.map((state) => (
+                  <MenuItem key={state} value={state}>
+                    {state}
+                  </MenuItem>
+                ))}
+              </Select>
+            </CustomSelectField>
             <Buttons
               variant="contained"
               type="submit"

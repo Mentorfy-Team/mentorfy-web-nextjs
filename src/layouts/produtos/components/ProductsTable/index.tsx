@@ -17,7 +17,8 @@ import {
   OptionsButton,
   PopoverBox,
 } from './styles';
-import { door_svg, dots_svg } from '~/../public/svgs';
+import door_svg from '~/../public/svgs/door';
+import dots_svg from '~/../public/svgs/dots';
 
 const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
   ssr: false,

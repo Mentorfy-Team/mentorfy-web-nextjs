@@ -25,8 +25,6 @@ import {
   WrapperSupportHeader,
 } from './styles';
 
-const drawerWidth = 240;
-
 type props = {
   children?: JSX.Element;
   supportHeader?: JSX.Element;

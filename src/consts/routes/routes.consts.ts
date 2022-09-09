@@ -1,9 +1,7 @@
-import {
-  clients_svg,
-  home_svg,
-  my_products_svg,
-  settings_svg,
-} from '~/../public/svgs';
+import clients_svg from '~/../public/svgs/clients';
+import home_svg from '~/../public/svgs/home';
+import my_products_svg from '~/../public/svgs/my-products';
+import settings_svg from '~/../public/svgs/settings';
 
 export enum Routes {
   //* Rota de acesso inicial

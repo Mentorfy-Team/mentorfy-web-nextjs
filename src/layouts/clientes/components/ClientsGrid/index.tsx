@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Item, TextWrapper } from './styles';
-import { graduation_cap_svg } from '~/../public/svgs';
+import graduation_cap_svg from '~/../public/svgs/graduation-cap';
 
 const ClientsGrid = () => {
   const isMobile = useMediaQuery('(max-width: 500px)');

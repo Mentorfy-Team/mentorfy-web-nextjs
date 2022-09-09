@@ -14,7 +14,7 @@ export const ImageButton = styled(Box)`
 
 export const EmptyBox = styled(Box)`
   align-items: center;
-  background: none; 
+  background: none;
   border-radius: 5px;
   color: black;
   cursor: pointer;
@@ -26,12 +26,12 @@ export const EmptyBox = styled(Box)`
 `;
 
 export const CreatAreaButton = styled(Button)`
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    margin-right: 2rem;
-    text-transform: none;
-    
-    @media ( max-width: 500px) { 
-      width: 1rem;
-    }
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  margin-right: 2rem;
+  text-transform: none;
+
+  @media (max-width: 500px) {
+    width: 1rem;
+  }
 `;
