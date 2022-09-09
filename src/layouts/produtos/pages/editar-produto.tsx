@@ -11,8 +11,7 @@ import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { Routes } from '~/consts';
-import { MembersAreaButton } from '../styles';
-import { HeaderWrapper } from './styles';
+import { HeaderWrapper, MembersAreaButton } from './styles';
 
 import GeralPage from './tabs/geral';
 import graduation_cap_svg from '~/../public/svgs/graduation-cap';
@@ -27,11 +26,8 @@ enum tabs {
 
 const EditarProduto: FC = () => {
   const [tabindex, setTabindex] = useState<tabs>(tabs.Geral);
-  const [products, setProducts] = useState([]);
-  const [openCreatePage, setOpenCreatePage] = useState(false);
   const isMobile = useMediaQuery('(max-width: 400px)');
   const route = useRouter();
-  useEffect(() => {}, []);
 
   const Header = (
     <HeaderWrapper>

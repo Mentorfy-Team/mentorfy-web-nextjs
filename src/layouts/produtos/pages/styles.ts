@@ -22,3 +22,5 @@ export const ActionButton = styled(Button)`
     fill: ${({ theme }) => theme.palette.accent.main};
   }
 `;
+
+export const MembersAreaButton = styled(Button)``;
