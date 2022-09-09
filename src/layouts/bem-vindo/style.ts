@@ -19,8 +19,9 @@ export const LinearProgressBar = styled(LinearProgress)`
 export const CourseBox = styled(Box)`
     border-radius: 5px;
     cursor: pointer;
-    height: 25rem;
+    height: 24.3rem;
     margin-right: 1.3rem;
+    overflow: hidden;
     width: 19rem;
 
     &:hover { 

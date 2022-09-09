@@ -1,6 +1,4 @@
 import Box from '@mui/material/Box';
-import SvgIcon from '@mui/material/SvgIcon';
-
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
@@ -42,11 +40,11 @@ const BemVindo = () => {
             <Typography variant="h5">Meus estudos</Typography>
           </Box>
             <Box sx={{display: 'flex', flexDirection: 'row', overflow: 'auto', margin: '0 0 1.2rem 0'}}>
-                <CourseBox minWidth={350}><Image alt='' src='/images/area-de-membros.png' width={350} height={390}/></CourseBox>
-                <CourseBox minWidth={350}><Image alt='' src='/images/imagem2.png' width={350} height={390}/></CourseBox>
-                <CourseBox minWidth={350}><Image alt='' src='/images/imagem3.png' width={350} height={390}/></CourseBox>
-                <CourseBox minWidth={350}><Image alt='' src='/images/imagem3.png' width={350} height={390}/></CourseBox>
-                <CourseBox minWidth={350}><Image alt='' src='/images/imagem3.png' width={350} height={390}/></CourseBox>
+                <CourseBox minWidth={350}><Image alt='' src='/images/area-de-membros.png' width={350} height={390} objectFit='cover'/></CourseBox>
+                <CourseBox minWidth={350}><Image alt='' src='/images/imagem2.png' width={350} height={390} objectFit='cover'/></CourseBox>
+                <CourseBox minWidth={350}><Image alt='' src='/images/imagem3.png' width={350} height={390} objectFit='cover'/></CourseBox>
+                <CourseBox minWidth={350}><Image alt='' src='/images/imagem3.png' width={350} height={390} objectFit='cover'/></CourseBox>
+                <CourseBox minWidth={350}><Image alt='' src='/images/imagem3.png' width={350} height={390} objectFit='cover'/></CourseBox>
             </Box>
           <Box sx={{display: 'flex'}}>
             <Typography variant='h5'>Populares na Mentorfy</Typography>
