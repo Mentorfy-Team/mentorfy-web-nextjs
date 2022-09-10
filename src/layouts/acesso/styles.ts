@@ -1,3 +1,4 @@
+import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -78,7 +79,7 @@ export const InfoText = styled(Typography)`
   }
 `;
 
-export const LoginButton = styled(Button)`
+export const LoginButton = styled(LoadingButton)`
   background-color: ${({ theme }) => theme.palette.accent.main};
   color: white;
   font-weight: bold;

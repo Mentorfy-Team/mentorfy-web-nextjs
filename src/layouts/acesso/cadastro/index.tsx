@@ -157,7 +157,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
             <Link href="/">Termos de Responsabilidades Fiscal.</Link>
           </Policies>
         </PoliciesWrapper>
-        <CadastroButton disabled={!CheckComplete} type="submit">
+        <CadastroButton loading disabled={!CheckComplete} type="submit">
           Cadastrar
         </CadastroButton>
       </FormWrapper>
