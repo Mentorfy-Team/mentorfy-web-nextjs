@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Routes } from '~/consts';
 import { AcessoSubPage } from '..';
@@ -11,13 +11,19 @@ type props = {
 
 const Sucesso: FC<props> = ({ pageChange, info }) => {
   const route = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <>
       <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
         {info || 'Sucesso! Você já pode continuar.'}
       </SubTitle>
-      <LoginButton onClick={() => route.push(Routes.home)}>
+
+      <LoginButton
+        isLoading={isLoading}
+        disabled={isLoading}
+        onClick={() => setIsLoading(true) && route.push(Routes.home)}
+      >
         CONTINUAR
       </LoginButton>
     </>

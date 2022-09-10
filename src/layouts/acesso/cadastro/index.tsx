@@ -27,6 +27,7 @@ type props = {
 
 const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>();
   const [rePassword, setRePassword] = useState('');
   const [acceptPolices, setAcceptPolices] = useState(false);
@@ -62,6 +63,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
 
   const onSubmit: SubmitHandler<NewUserForm> = useCallback(
     async (values) => {
+      setIsLoading(true);
       if (values.password.length <= 0) values.password = password;
       const registerData = await RegisterNewUser(values);
 
@@ -79,6 +81,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
           setError('Email já cadastrado');
         }
       }
+      setIsLoading(false);
     },
     [pageChange, password, setInfo, userLogin],
   );
@@ -157,8 +160,12 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
             <Link href="/">Termos de Responsabilidades Fiscal.</Link>
           </Policies>
         </PoliciesWrapper>
-        <CadastroButton loading disabled={!CheckComplete} type="submit">
-          Cadastrar
+        <CadastroButton
+          loading={isLoading}
+          disabled={!CheckComplete || isLoading}
+          type="submit"
+        >
+          {!isLoading && 'Cadastrar'}
         </CadastroButton>
       </FormWrapper>
       <InfoText>
