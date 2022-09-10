@@ -20,9 +20,12 @@ const Sucesso: FC<props> = ({ pageChange, info }) => {
       </SubTitle>
 
       <LoginButton
-        isLoading={isLoading}
+        loading={isLoading}
         disabled={isLoading}
-        onClick={() => setIsLoading(true) && route.push(Routes.home)}
+        onClick={() => {
+          setIsLoading(true);
+          route.push(Routes.home);
+        }}
       >
         CONTINUAR
       </LoginButton>
