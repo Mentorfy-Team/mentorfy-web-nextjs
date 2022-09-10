@@ -1,5 +1,4 @@
+import { handler } from '~/backend/handler';
+import { get, post } from '~/backend/users/post.users';
 
-import {handler} from '~/backend/handler';
-import {post} from '~/backend/users/post.users';
-
-export default handler({post});
+export default handler({ post, get });

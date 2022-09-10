@@ -23,3 +23,8 @@ export const Policies = styled(Typography)`
     text-decoration: none;
   }
 `;
+
+export const FormWrapper = styled('form')`
+  display: flex;
+  flex-direction: column;
+`;

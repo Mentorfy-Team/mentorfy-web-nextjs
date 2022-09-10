@@ -1,16 +1,8 @@
-import { FC, useState } from 'react';
-import Divider from '@mui/material/Divider';
+import { FC } from 'react';
+import { useRouter } from 'next/router';
+import { Routes } from '~/consts';
 import { AcessoSubPage } from '..';
-import {
-  Accent,
-  CreateAccountButton,
-  ForgotPassButton,
-  InfoText,
-  InputField,
-  LoginButton,
-  SubTitle,
-  Title,
-} from '../styles';
+import { LoginButton, SubTitle } from '../styles';
 
 type props = {
   pageChange: (page: AcessoSubPage) => void;
@@ -18,15 +10,16 @@ type props = {
 };
 
 const Sucesso: FC<props> = ({ pageChange, info }) => {
-  const [email, setEmail] = useState('');
-  const HandleLogin = (name: string, email: string): void => {};
+  const route = useRouter();
 
   return (
     <>
       <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
         {info || 'Sucesso! Você já pode continuar.'}
       </SubTitle>
-      <LoginButton onClick={() => pageChange('login')}>CONTINUAR</LoginButton>
+      <LoginButton onClick={() => route.push(Routes.home)}>
+        CONTINUAR
+      </LoginButton>
     </>
   );
 };

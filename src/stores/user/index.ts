@@ -2,15 +2,10 @@ import produce from 'immer';
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 
-type User = {
-  name: string;
-  email: string;
-};
-
 type UserStateType = {
-  saveUser: (user: User) => void;
-  removeUser: () => void;
-  user?: User | null;
+  userLogin: (user: ExternalModules.Supabase.User) => void;
+  userLogout: () => void;
+  user?: ExternalModules.Supabase.User | null;
 } & typeof initialUserStore;
 
 const initialUserStore = {
@@ -21,7 +16,7 @@ const userStore = create(
   persist<UserStateType>(
     (set, get) => ({
       ...initialUserStore,
-      saveUser: (user: User) => {
+      userLogin: (user: ExternalModules.Supabase.User) => {
         set(
           produce((draft: UserStateType) => {
             draft.isLoggedIn = true;
@@ -29,7 +24,7 @@ const userStore = create(
           }),
         );
       },
-      removeUser: () => {
+      userLogout: () => {
         set(
           produce((draft: UserStateType) => {
             draft.isLoggedIn = false;
