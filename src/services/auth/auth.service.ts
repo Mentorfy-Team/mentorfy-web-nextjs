@@ -1,6 +1,6 @@
 import { Auth } from '~/@types/api/auth/auth';
 import { ApiRoutes } from '~/consts/routes/api.routes';
-import { HttpClient } from './HttpClient';
+import { HttpClient } from '../HttpClient';
 
 export const Authenticate = async (auth: Auth) => {
   try {

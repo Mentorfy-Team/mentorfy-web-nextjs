@@ -24,7 +24,8 @@ const Sucesso: FC<props> = ({ pageChange, info }) => {
         disabled={isLoading}
         onClick={() => {
           setIsLoading(true);
-          route.push(Routes.home);
+          route.reload();
+          setIsLoading(false);
         }}
       >
         CONTINUAR

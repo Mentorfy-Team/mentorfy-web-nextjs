@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { InferGetStaticPropsType } from 'next';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import PageWrapper from '~/components/partials/PageWrapper';
+import { RecoveryProps } from '~/pages/_app';
 import { handleAcessoSubPage } from './helper/SwitchSubPages';
 import { AlignSelf, BackgroundHolder, Grid, Wrapper } from './styles';
 
@@ -14,10 +16,28 @@ export type AcessoSubPage =
   | 'sucesso'
   | 'confirmar-conta';
 
-function LoginView({}: InferGetStaticPropsType<typeof getProps>) {
+function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
   const mobile = useMediaQuery('(max-width:500px)');
   const [AcessosubPage, setAcessoSubPage] = useState<AcessoSubPage>('login');
+  const route = useRouter();
   const [info, setInfo] = useState<any>();
+  const [urlProps, setUrlProps] = useState<any>();
+
+  useEffect(() => {
+    if ((props as any).urlParams) {
+      setUrlProps((props as any).urlParams);
+    }
+  }, [props, route.pathname]);
+
+  const handleSubPages = useCallback(() => {
+    return handleAcessoSubPage(
+      AcessosubPage,
+      setAcessoSubPage,
+      info,
+      setInfo,
+      urlProps,
+    );
+  }, [AcessosubPage, info, urlProps]);
 
   return (
     <PageWrapper darkMode={false}>
@@ -52,21 +72,14 @@ function LoginView({}: InferGetStaticPropsType<typeof getProps>) {
               alt="logo"
             />
           </AlignSelf>
-          <Wrapper p={5}>
-            {handleAcessoSubPage(
-              AcessosubPage,
-              setAcessoSubPage,
-              info,
-              setInfo,
-            )}
-          </Wrapper>
+          <Wrapper p={5}>{handleSubPages()}</Wrapper>
         </Grid>
       </Grid>
     </PageWrapper>
   );
 }
 
-export async function getProps() {
+export async function getProps(params) {
   return {
     props: {},
   };

@@ -42,7 +42,6 @@ export default function StickyHeadTable({
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const isMobile = useMediaQuery('(max-width: 490px)');
   const handleChangePage = (event: unknown, newPage: number) => {
-    console.log('newPage', newPage);
     if (newPage >= 1) onPageChange(newPage);
   };
 

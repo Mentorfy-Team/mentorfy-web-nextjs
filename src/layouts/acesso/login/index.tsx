@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
 import { routes } from '~/consts/routes/routes.consts';
-import { Authenticate } from '~/services/auth.service';
+import { Authenticate } from '~/services/auth/auth.service';
 import { userStore } from '~/stores';
 import { AcessoSubPage } from '..';
 import { FormWrapper } from '../cadastro/styles';

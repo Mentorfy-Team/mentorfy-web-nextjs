@@ -12,14 +12,24 @@ export const handleAcessoSubPage = (
   setAcessoSubPage,
   info,
   setInfo,
+  urlProps,
 ) => {
+  if (urlProps?.type === 'recovery' && AcessosubPage !== 'sucesso') {
+    AcessosubPage = 'trocar-senha';
+  }
   switch (AcessosubPage) {
     case 'login':
       return <Login pageChange={setAcessoSubPage} />;
     case 'cadastro':
       return <Cadastro setInfo={setInfo} pageChange={setAcessoSubPage} />;
     case 'trocar-senha':
-      return <TrocarSenha setInfo={setInfo} pageChange={setAcessoSubPage} />;
+      return (
+        <TrocarSenha
+          setInfo={setInfo}
+          pageChange={setAcessoSubPage}
+          access_token={urlProps.access_token}
+        />
+      );
     case 'esqueci-minha-senha':
       return <EsqueciMinhaSenha pageChange={setAcessoSubPage} />;
     case 'confirmar-conta':

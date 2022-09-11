@@ -24,47 +24,22 @@ const ConfirmarConta: FC<props> = ({ pageChange }) => {
   return (
     <>
       <InfoText>
-        * Acesse seu e-mail e procure a mensagem enviada por nosso Suporte com o
-        título{' '}
+        * Caso seu endereço de email esteja correto, enviaremos um email de{' '}
+        recuperação de senha para o endereço informado com o titulo{' '}
         <b>
-          <Accent>Alteração de Senha</Accent>
+          <Accent>Recuperação de Senha.</Accent>
         </b>
       </InfoText>
       <InfoText>
-        * Informe o código destacada no e-mail que contem 5 caracteres (pode ser
-        letras e números) no campo{' '}
+        * Caso tenha dificuldades, fale com nosso suporte para mais informações
+        pelo email:{' '}
         <b>
-          <Accent>Código de Verificação</Accent>
+          <Accent>suporte@mentorfy.io</Accent>
         </b>
       </InfoText>
-      <InfoText sx={{ alignSelf: 'flex-start' }}>
-        * Clique em{' '}
-        <b>
-          <Accent>Recuperar</Accent>
-        </b>{' '}
-        para cadastrar uma nova senha e acessar o seu perfil
-      </InfoText>
-      <InputField
-        required
-        id="outlined-required"
-        label="E-mail"
-        placeholder="Digite seu e-mail"
-        onChange={(e) => setEmail(e.target.value)}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-      <LoginButton onClick={() => pageChange('trocar-senha')}>
-        Recuperar
+      <LoginButton onClick={() => pageChange('login')}>
+        Voltar ao Login
       </LoginButton>
-      <InfoText>
-        Já possui conta?{' '}
-        <Accent>
-          <LinkButton onClick={() => pageChange('login')}>
-            Clique Aqui
-          </LinkButton>
-        </Accent>
-      </InfoText>
     </>
   );
 };
