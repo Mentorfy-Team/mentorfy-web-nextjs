@@ -1,41 +1,22 @@
 import { FC } from 'react';
-import { Save } from '@mui/icons-material';
-import {
-  Box,
-  InputLabel,
-  MenuItem,
-  Select,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
+import Save from '@mui/icons-material/Save';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import SvgIcon from '@mui/material/SvgIcon';
+import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
-import { InputField, SelectField } from '~/components';
+import InputField from '~/components/atoms/InputField';
+import SelectField from '~/components/atoms/SelectField';
 import { Routes } from '~/consts';
 import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
+import { stringToColor } from '~/helpers/StringToColor';
 import { ActionButton, ReturnButton, SaveButton } from '../styles';
-import { chavron_left_svg } from '~/../public/svgs';
+import chavron_left_svg from '~/../public/svgs/chavron-left';
 
 const Geral: FC = () => {
   const route = useRouter();
-  function stringToColor(string: string) {
-    let hash = 0;
-    let i;
-
-    /* eslint-disable no-bitwise */
-    for (i = 0; i < string.length; i += 1) {
-      hash = string.charCodeAt(i) + ((hash << 5) - hash);
-    }
-
-    let color = '#';
-
-    for (i = 0; i < 3; i += 1) {
-      const value = (hash >> (i * 8)) & 0xff;
-      color += `00${value.toString(16)}`.slice(-2);
-    }
-    /* eslint-enable no-bitwise */
-
-    return color;
-  }
 
   function stringAvatar(name: string) {
     return {

@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
-import { Divider } from '@mui/material';
+import Divider from '@mui/material/Divider';
+import { PasswordRecover } from '~/services/auth/recover.service';
 import { AcessoSubPage } from '..';
 import {
   Accent,
@@ -19,10 +20,24 @@ type props = {
 
 const EsqueciMinhaSenha: FC<props> = ({ pageChange }) => {
   const [email, setEmail] = useState('');
-  const HandleLogin = (name: string, email: string): void => {};
+  const [isLoading, setIsLoading] = useState(false);
+
+  const HandleLogin = async () => {
+    setIsLoading(true);
+    await PasswordRecover(email);
+    setIsLoading(false);
+    pageChange('confirmar-conta');
+  };
 
   return (
     <>
+      <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
+        Para{' '}
+        <Accent>
+          <b>recuperar sua senha</b>
+        </Accent>
+        , digite seu email de acesso:
+      </SubTitle>
       <InputField
         required
         id="outlined-required"
@@ -33,7 +48,11 @@ const EsqueciMinhaSenha: FC<props> = ({ pageChange }) => {
           shrink: true,
         }}
       />
-      <LoginButton onClick={() => pageChange('confirmar-conta')}>
+      <LoginButton
+        loading={isLoading}
+        disabled={isLoading}
+        onClick={() => HandleLogin()}
+      >
         Confirmar e-mail
       </LoginButton>
       <InfoText>

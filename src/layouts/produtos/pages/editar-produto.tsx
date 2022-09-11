@@ -1,20 +1,22 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Box, SvgIcon, Typography, useMediaQuery } from '@mui/material';
+import Box from '@mui/material/Box';
+import SvgIcon from '@mui/material/SvgIcon';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import {
-  ContentWidthLimit,
-  MiniDrawer,
-  PageWrapper,
-  TabItem,
-  Tabbar,
-} from '~/components';
+import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
+import Tabbar from '~/components/modules/Tabbar';
+import { TabItem } from '~/components/modules/Tabbar/styles';
+import MiniDrawer from '~/components/partials/MiniDrawer';
+import PageWrapper from '~/components/partials/PageWrapper';
 import { Routes } from '~/consts';
-import { MembersAreaButton } from '../styles';
-import { HeaderWrapper } from './styles';
+import { HeaderWrapper, MembersAreaButton } from './styles';
 
 import GeralPage from './tabs/geral';
-import LinksPage from './tabs/links';
-import { graduation_cap_svg } from '~/../public/svgs';
+import graduation_cap_svg from '~/../public/svgs/graduation-cap';
+
+const LinksPage = dynamic(() => import('./tabs/links'));
 
 enum tabs {
   'Geral',
@@ -24,11 +26,8 @@ enum tabs {
 
 const EditarProduto: FC = () => {
   const [tabindex, setTabindex] = useState<tabs>(tabs.Geral);
-  const [products, setProducts] = useState([]);
-  const [openCreatePage, setOpenCreatePage] = useState(false);
   const isMobile = useMediaQuery('(max-width: 400px)');
   const route = useRouter();
-  useEffect(() => {}, []);
 
   const Header = (
     <HeaderWrapper>

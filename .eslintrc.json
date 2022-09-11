@@ -46,6 +46,12 @@
         "ignoreDeclarationSort": true
       }
     ],
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["@mui/*/*/*", "!@mui/material/test-utils/*"]
+      }
+    ],
     "space-in-parens": ["error", "never"],
     "prefer-const": ["error"],
     "react/jsx-curly-spacing": [

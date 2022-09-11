@@ -1,23 +1,24 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import {
-  Box,
-  Unstable_Grid2 as Grid,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
-import {
-  ContentWidthLimit,
-  MiniDrawer,
-  PageWrapper,
-  SearchInput,
-  TabItem,
-  Tabbar,
-} from '~/components';
-import CreateProductDialog from './components/CreateProductDialog';
+import Box from '@mui/material/Box';
+import SvgIcon from '@mui/material/SvgIcon';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Unstable_Grid2';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
+import dynamic from 'next/dynamic';
+import SearchInput from '~/components/atoms/SearchInput';
+import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
+import Tabbar from '~/components/modules/Tabbar';
+import { TabItem } from '~/components/modules/Tabbar/styles';
+import MiniDrawer from '~/components/partials/MiniDrawer';
+import PageWrapper from '~/components/partials/PageWrapper';
 import ProductsTable from './components/ProductsTable';
-import { AddProductButton, HeaderWrapper, MembersAreaButton } from './styles';
-import { graduation_cap_svg, plus_svg } from '~/../public/svgs';
+import { AddProductButton, HeaderWrapper } from './styles';
+import plus_svg from '~/../public/svgs/plus';
+
+const CreateProductDialog = dynamic(
+  () => import('./components/CreateProductDialog'),
+);
 
 const Produtos: FC = () => {
   const [tabindex, setTabindex] = useState(0);

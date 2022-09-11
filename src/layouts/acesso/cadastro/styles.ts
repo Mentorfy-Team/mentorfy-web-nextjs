@@ -1,4 +1,6 @@
-import { Box, Typography, styled } from '@mui/material';
+import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 export const PoliciesWrapper = styled(Box)`
   align-items: center;
@@ -20,4 +22,9 @@ export const Policies = styled(Typography)`
     color: ${({ theme }) => theme.palette.accent.main};
     text-decoration: none;
   }
+`;
+
+export const FormWrapper = styled('form')`
+  display: flex;
+  flex-direction: column;
 `;

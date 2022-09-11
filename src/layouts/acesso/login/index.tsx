@@ -1,12 +1,17 @@
-import { FC, useState } from 'react';
-import { Divider } from '@mui/material';
+import { FC, useCallback, useState } from 'react';
+import Divider from '@mui/material/Divider';
 import { useRouter } from 'next/router';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Auth } from '~/@types/api/auth/auth';
 import { routes } from '~/consts/routes/routes.consts';
+import { Authenticate } from '~/services/auth/auth.service';
 import { userStore } from '~/stores';
 import { AcessoSubPage } from '..';
+import { FormWrapper } from '../cadastro/styles';
 import {
   Accent,
   CreateAccountButton,
+  ErrorHelper,
   ForgotPassButton,
   InfoText,
   InputField,
@@ -21,12 +26,29 @@ type props = {
 
 const Login: FC<props> = ({ pageChange }) => {
   const [email, setEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>();
   const route = useRouter();
-  const store = userStore();
+  const { userLogin } = userStore();
+  const { register, handleSubmit } = useForm<Auth>();
 
-  const HandleLogin = (name: string, email: string): void => {
-    route.push(routes.home.path);
-  };
+  const onSubmit: SubmitHandler<Auth> = useCallback(
+    async (values) => {
+      setIsLoading(true);
+      const registerData = await Authenticate(values);
+
+      if (!registerData.error) {
+        userLogin(registerData.user);
+        route.push(routes.home.path);
+      } else {
+        if (registerData.error.includes('email')) {
+          setError('Email e ou senha incorretos, tente novamente!');
+        }
+      }
+      setIsLoading(false);
+    },
+    [route, userLogin],
+  );
 
   return (
     <>
@@ -40,30 +62,37 @@ const Login: FC<props> = ({ pageChange }) => {
       <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
         Preencha os campos abaixo para acessar a sua conta
       </SubTitle>
-      <InputField
-        required
-        id="outlined-required"
-        label="E-mail"
-        placeholder="Digite seu e-mail"
-        onChange={(e) => setEmail(e.target.value)}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-      <InputField
-        required
-        id="outlined-required"
-        label="Senha"
-        type={'password'}
-        placeholder="Digite sua senha"
-        onChange={(e) => setEmail(e.target.value)}
-        InputLabelProps={{
-          shrink: true,
-        }}
-      />
-      <LoginButton onClick={() => HandleLogin(email, email)}>
-        ENTRAR
-      </LoginButton>
+      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+        <InputField
+          required
+          id="outlined-required"
+          label="E-mail"
+          placeholder="Digite seu e-mail"
+          onChange={(e) => setEmail(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          {...register('email')}
+          error={!!error}
+        />
+        <InputField
+          required
+          id="outlined-required"
+          label="Senha"
+          type={'password'}
+          placeholder="Digite sua senha"
+          onChange={(e) => setEmail(e.target.value)}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          {...register('password')}
+          error={!!error}
+        />
+        {error && <ErrorHelper>{error}</ErrorHelper>}
+        <LoginButton loading={isLoading} disabled={isLoading} type="submit">
+          ENTRAR
+        </LoginButton>
+      </FormWrapper>
       <ForgotPassButton onClick={() => pageChange('esqueci-minha-senha')}>
         Esqueci minha senha
       </ForgotPassButton>

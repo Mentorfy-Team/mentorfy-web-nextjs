@@ -1,4 +1,5 @@
-import { styled, TextField as txtField } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import txtField from '@mui/material/TextField';
 
 export const TextField = styled(txtField)`
   margin: 1rem 0;

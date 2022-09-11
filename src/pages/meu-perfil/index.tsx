@@ -1,5 +1,5 @@
-import { default as  MyProfileLayout } from '~/layouts/myprofile';
-import { getProps as getProps } from '~/layouts/myprofile';
+import { default as MyProfileLayout } from '~/layouts/meu-perfil';
+import { getProps as getProps } from '~/layouts/meu-perfil';
 
 export default MyProfileLayout;
 

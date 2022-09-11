@@ -1,6 +1,9 @@
 import { FC, useState } from 'react';
-import { Tab, Tabs, Typography } from '@mui/material';
-import { MiniDrawer, PageWrapper, TabItem, Tabbar } from '~/components';
+import Typography from '@mui/material/Typography';
+import Tabbar from '~/components/modules/Tabbar';
+import { TabItem } from '~/components/modules/Tabbar/styles';
+import MiniDrawer from '~/components/partials/MiniDrawer';
+import PageWrapper from '~/components/partials/PageWrapper';
 
 const Dashboard: FC = () => {
   const [tabindex, setTabindex] = useState(0);
@@ -11,7 +14,7 @@ const Dashboard: FC = () => {
   );
 
   const SupportHeader = (
-    <Tabbar onChange={(_, value)=>setTabindex(value)} selected={tabindex}>
+    <Tabbar onChange={(_, value) => setTabindex(value)} selected={tabindex}>
       <TabItem label="Desempenho" />
       <TabItem label="Notificações" />
     </Tabbar>

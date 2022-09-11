@@ -1,5 +1,4 @@
-import { PaletteOptions } from '@mui/material';
-import { darken, lighten } from 'polished';
+import { PaletteOptions } from '@mui/material/styles';
 
 const primary = '#1C1B20';
 const secondary = '#7586EC';
@@ -17,60 +16,21 @@ export const colors: PaletteOptions = {
   primary: {
     light: '#29282D',
     main: primary,
-    dark: darken(0.2, primary),
+    dark: '#17171A',
   },
   secondary: {
-    light: lighten(0.2, secondary),
+    light: '#99A7F5',
     main: secondary,
-    dark: darken(0.2, secondary),
+    dark: '#5F6EC3',
   },
   tertiary: {
-    light: lighten(0.2, tertiary),
+    light: '#9F9F9F',
     main: tertiary,
-    dark: darken(0.2, tertiary),
+    dark: '#4E4E4E',
   },
   accent: {
-    light: lighten(0.2, accent),
+    light: '#FF964B',
     main: accent,
-    dark: darken(0.2, accent),
+    dark: '#B75917',
   },
 };
-
-// export const Colors: PaletteOptions ={
-//   text,
-//   info,
-//   success,
-//   warning,
-//   failure,
-//   palette: {
-//     black: '#000000',
-//     blue: '#47a8f6',
-//     green: '#66cd80',
-//     red: '#eb3447',
-//     white: '#ffffff',
-//     primary: {
-//       light: lighten(0.2, primary),
-//       main: primary,
-//       dark: darken(0.2, primary),
-//
-//     },
-//     secondary: {
-//       light: lighten(0.2, secondary),
-//       main: secondary,
-//       dark: darken(0.2, secondary),
-//       contrast: '#ffffff',
-//     },
-//     tertiary: {
-//       light: lighten(0.2, tertiary),
-//       main: tertiary,
-//       dark: darken(0.2, tertiary),
-//       contrast: '#ffffff',
-//     },
-//     accent: {
-//       light: lighten(0.2, accent),
-//       main: accent,
-//       dark: darken(0.2, accent),
-//       contrast: '#000000',
-//     },
-//   },
-// };

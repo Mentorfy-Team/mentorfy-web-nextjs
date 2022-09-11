@@ -1,2 +1,1 @@
-
-export {Routes} from './routes/routes.consts';
+export { Routes } from './routes/routes.consts';

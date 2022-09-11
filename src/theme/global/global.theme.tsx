@@ -15,6 +15,11 @@ export function GlobalStyles() {
         '.MuiPopover-paper': {
           'box-shadow': '-4px 4px 0px 0px #00000000',
         },
+        'button:disabled': {
+          'background-color': '#9e9e9e',
+          'border-radius': '5px',
+          color: 'rgb(255 255 255 / 26%)',
+        },
         '@media (min-width: 600px)': {
           '::-webkit-scrollbar': {
             width: '12px',

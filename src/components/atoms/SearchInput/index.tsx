@@ -1,10 +1,9 @@
-import * as React from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
 
-export default function CustomizedInputBase({ sx }: any) {
+export default function SearchInput({ sx }: any) {
   return (
     <Paper
       component="form"

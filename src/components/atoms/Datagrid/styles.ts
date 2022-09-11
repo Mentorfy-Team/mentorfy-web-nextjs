@@ -1,4 +1,6 @@
-import { Paper, TableRow, styled } from '@mui/material';
+import Paper from '@mui/material/Paper';
+import { styled } from '@mui/material/styles';
+import TableRow from '@mui/material/TableRow';
 
 export const PaperWrapper = styled(Paper)`
   background-color: transparent;

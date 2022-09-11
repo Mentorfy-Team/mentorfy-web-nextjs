@@ -1,5 +1,10 @@
-import { Box, Button, TextField, Typography, styled } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
 import MuiGrid from '@mui/material/Unstable_Grid2';
+import styled from '@mui/system/styled';
 
 export const Grid = styled(MuiGrid)``;
 
@@ -43,6 +48,11 @@ export const AlignSelf = styled(Box)`
   align-self: center;
 `;
 
+export const ErrorHelper = styled(Typography)`
+  color: ${({ theme }) => theme.palette.error.main};
+  text-align: center;
+`;
+
 export const Title = styled('h1')`
   color: ${({ theme }) => theme.palette.text.secondary};
   margin-bottom: 0.5rem;
@@ -74,7 +84,7 @@ export const InfoText = styled(Typography)`
   }
 `;
 
-export const LoginButton = styled(Button)`
+export const LoginButton = styled(LoadingButton)`
   background-color: ${({ theme }) => theme.palette.accent.main};
   color: white;
   font-weight: bold;

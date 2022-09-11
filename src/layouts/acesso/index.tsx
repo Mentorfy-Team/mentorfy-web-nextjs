@@ -1,15 +1,12 @@
-import { useCallback, useState } from 'react';
-import { useMediaQuery } from '@mui/material';
+import { useCallback, useEffect, useState } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { InferGetStaticPropsType } from 'next';
 import Image from 'next/image';
-import { PageWrapper } from '~/components';
-import Cadastro from './cadastro';
-import ConfirmarConta from './confirmar-conta';
-import EsqueciMinhaSenha from './esqueci-minha-senha';
-import Login from './login';
+import { useRouter } from 'next/router';
+import PageWrapper from '~/components/partials/PageWrapper';
+import { RecoveryProps } from '~/pages/_app';
+import { handleAcessoSubPage } from './helper/SwitchSubPages';
 import { AlignSelf, BackgroundHolder, Grid, Wrapper } from './styles';
-import Sucesso from './sucesso';
-import TrocarSenha from './trocar-senha';
 
 export type AcessoSubPage =
   | 'login'
@@ -19,27 +16,28 @@ export type AcessoSubPage =
   | 'sucesso'
   | 'confirmar-conta';
 
-function LoginView({}: InferGetStaticPropsType<typeof getProps>) {
+function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
   const mobile = useMediaQuery('(max-width:500px)');
   const [AcessosubPage, setAcessoSubPage] = useState<AcessoSubPage>('login');
+  const route = useRouter();
   const [info, setInfo] = useState<any>();
+  const [urlProps, setUrlProps] = useState<any>();
 
-  const handleAcessoSubPage = useCallback(() => {
-    switch (AcessosubPage) {
-      case 'login':
-        return <Login pageChange={setAcessoSubPage} />;
-      case 'cadastro':
-        return <Cadastro setInfo={setInfo} pageChange={setAcessoSubPage} />;
-      case 'trocar-senha':
-        return <TrocarSenha setInfo={setInfo} pageChange={setAcessoSubPage} />;
-      case 'esqueci-minha-senha':
-        return <EsqueciMinhaSenha pageChange={setAcessoSubPage} />;
-      case 'confirmar-conta':
-        return <ConfirmarConta pageChange={setAcessoSubPage} />;
-      case 'sucesso':
-        return <Sucesso info={info} pageChange={setAcessoSubPage} />;
+  useEffect(() => {
+    if ((props as any).urlParams) {
+      setUrlProps((props as any).urlParams);
     }
-  }, [AcessosubPage, info]);
+  }, [props, route.pathname]);
+
+  const handleSubPages = useCallback(() => {
+    return handleAcessoSubPage(
+      AcessosubPage,
+      setAcessoSubPage,
+      info,
+      setInfo,
+      urlProps,
+    );
+  }, [AcessosubPage, info, urlProps]);
 
   return (
     <PageWrapper darkMode={false}>
@@ -74,14 +72,14 @@ function LoginView({}: InferGetStaticPropsType<typeof getProps>) {
               alt="logo"
             />
           </AlignSelf>
-          <Wrapper p={5}>{handleAcessoSubPage()}</Wrapper>
+          <Wrapper p={5}>{handleSubPages()}</Wrapper>
         </Grid>
       </Grid>
     </PageWrapper>
   );
 }
 
-export async function getProps() {
+export async function getProps(params) {
   return {
     props: {},
   };

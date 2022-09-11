@@ -1,9 +1,7 @@
-import {
-  clients_svg,
-  home_svg,
-  my_products_svg,
-  settings_svg,
-} from '~/../public/svgs';
+import clients_svg from '~/../public/svgs/clients';
+import home_svg from '~/../public/svgs/home';
+import my_products_svg from '~/../public/svgs/my-products';
+import settings_svg from '~/../public/svgs/settings';
 
 export enum Routes {
   //* Rota de acesso inicial
@@ -23,29 +21,29 @@ export enum Routes {
   clients = '/clientes',
 
   //* Rota de Perfil/Configurações do usuário
-  settings = '/minha-conta',
+  settings = '/meu-perfil',
 }
 
 export const routes = {
   home: {
-    path: '/dashboard',
+    path: Routes.home,
     name: 'Dashboard',
     component: home_svg,
   },
   products: {
-    path: '/produtos',
-    subpaths: ['/membros'],
+    path: Routes.products,
+    subpaths: [Routes.member_area],
     name: 'Produtos',
     component: my_products_svg,
   },
   clients: {
-    path: '/clientes',
+    path: Routes.clients,
     name: 'Clientes',
     component: clients_svg,
   },
   settings: {
-    path: '/perfil',
-    name: 'Minha Conta',
+    path: Routes.settings,
+    name: 'Meu Perfil',
     component: settings_svg,
   },
 };

@@ -22,4 +22,5 @@ export const handler =
     else if (req.method === 'PATCH' && patch) await patch(req, res);
     else if (req.method === 'PUT' && put) await put(req, res);
     else if (req.method === 'DELETE' && del) await patch(req, res);
+    else res.status(405).end();
   };

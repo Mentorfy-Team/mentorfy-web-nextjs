@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Avatar, Box, SvgIcon, useMediaQuery } from '@mui/material';
-import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
+import Avatar from '@mui/material/Avatar';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -10,7 +9,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { routes } from '~/consts/routes/routes.consts';
@@ -25,8 +24,6 @@ import {
   UserName,
   WrapperSupportHeader,
 } from './styles';
-
-const drawerWidth = 240;
 
 type props = {
   children?: JSX.Element;
@@ -77,7 +74,7 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
             edge="start"
             sx={{
               marginRight: isMobile ? 2 : 5,
-              marginLeft: -1,
+              marginLeft: open ? -9.3 : -1,
             }}
           >
             <Image

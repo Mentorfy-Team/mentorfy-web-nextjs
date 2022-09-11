@@ -1,13 +1,17 @@
 import { useCallback, useMemo, useState } from 'react';
-import { Button, SvgIcon, Typography, useMediaQuery } from '@mui/material';
+import Button from '@mui/material/Button';
+import SvgIcon from '@mui/material/SvgIcon';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
-import { chavron_left_svg, chavron_right_svg } from '~/../public/svgs';
+import chavron_left_svg from '~/../public/svgs/chavron-left';
+import chavron_right_svg from '~/../public/svgs/chavron-right';
 
 export type Column = {
   id: string;
@@ -38,7 +42,6 @@ export default function StickyHeadTable({
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const isMobile = useMediaQuery('(max-width: 490px)');
   const handleChangePage = (event: unknown, newPage: number) => {
-    console.log('newPage', newPage);
     if (newPage >= 1) onPageChange(newPage);
   };
 
@@ -86,8 +89,6 @@ export default function StickyHeadTable({
                   {column.label}
                 </TableCell>
               ))}
-
-              <TableCell align="left" style={{ minWidth: 100 }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -125,7 +126,7 @@ export default function StickyHeadTable({
                           </TableCell>
                         );
                       })}
-                      {actionButtons(index)}
+                      {actionButtons && actionButtons(index)}
                     </CustomRow>
                   );
                 })}

@@ -1,7 +1,9 @@
 /* eslint-disable better-styled-components/sort-declarations-alphabetically */
-import { Box, Theme, Typography, css, styled } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
+import { Theme, css, styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -62,8 +64,6 @@ export const AppBar = styled(MuiAppBar, {
   background-color: transparent;
   box-shadow: none;
 
-  margin-left: 201px;
-
   ${({ theme, open }) =>
     open &&
     css`
@@ -73,6 +73,14 @@ export const AppBar = styled(MuiAppBar, {
       })};
       width: calc(100% - ${DrawerWidth});
     `}
+
+  button {
+    transition: ${({ theme }) =>
+      theme.transitions.create(['margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      })};
+  }
 `;
 
 export const Drawer = styled(MuiDrawer, {
@@ -87,6 +95,14 @@ export const Drawer = styled(MuiDrawer, {
     overflow: hidden;
   }
   white-space: nowrap;
+
+  * {
+    transition: ${({ theme }) =>
+      theme.transitions.create(['margin, opacity, width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      })};
+  }
 
   ${({ theme, open }) => {
     if (open) {

@@ -1,12 +1,14 @@
-import { useState } from 'react';
-
-import { InputLabel, MenuItem, Select } from '@mui/material';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
-import { BootstrapDialog, InputField, SelectField } from '~/components';
+import BootstrapDialog from '~/components/atoms/BootstrapDialog';
+import InputField from '~/components/atoms/InputField';
+import SelectField from '~/components/atoms/SelectField';
 import { Routes } from '~/consts';
 import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
 import { BootstrapDialogTitle } from './styles';
