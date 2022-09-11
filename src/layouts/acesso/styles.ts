@@ -48,6 +48,11 @@ export const AlignSelf = styled(Box)`
   align-self: center;
 `;
 
+export const ErrorHelper = styled(Typography)`
+  color: ${({ theme }) => theme.palette.error.main};
+  text-align: center;
+`;
+
 export const Title = styled('h1')`
   color: ${({ theme }) => theme.palette.text.secondary};
   margin-bottom: 0.5rem;

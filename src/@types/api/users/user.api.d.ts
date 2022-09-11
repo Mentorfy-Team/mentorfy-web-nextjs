@@ -4,14 +4,22 @@ declare namespace UsersApi {
       body: {
         email: string;
         password: string;
+        name: string;
+        role: string;
+        plan: string;
       };
     }
 
     type Result = {};
 
+    type User = ExternalModules.Supabase.Database.User &
+      ExternalModules.Supabase.Database.public.Tables.profile.Row;
+
     type Response = {
-      user?: ExternalModules.Supabase.User;
-      session?: ExternalModules.Supabase.Session;
+      user?: User;
+      session?: ExternalModules.Supabase.Session & {
+        user: User;
+      };
       error: string;
     };
   }

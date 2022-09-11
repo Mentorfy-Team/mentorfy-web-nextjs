@@ -2,11 +2,12 @@ import { HTMLInputTypeAttribute } from 'react';
 import { ApiError, Session, User } from '@supabase/supabase-js';
 import { AxiosRequestConfig } from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { Database } from './supabase';
 
 declare global {
   namespace ExternalModules {
     namespace Supabase {
-      export type { User, Session, ApiError };
+      export type { User, Session, ApiError, Database };
     }
     namespace Axios {
       export type { AxiosRequestConfig };

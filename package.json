@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "supabase": "supabase start",
-    "supabase:ts": "supabase gen types typescript --local > lib/database.types.ts",
+    "supabase:ts": "supabase gen types typescript --db-url postgresql://postgres:gydxkqwAxsDh6urN@db.piaapkoirennmamfzhzp.supabase.co:5432/postgres > ./src/@types/supabase.ts",
     "lint": "next lint"
   },
   "dependencies": {
