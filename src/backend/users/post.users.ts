@@ -1,4 +1,4 @@
-import { supabase } from '~/helpers/supabase';
+import { supabase } from '~/backend/supabase';
 type Request = UsersApi.Post.Request;
 type Response = UsersApi.Post.Response;
 

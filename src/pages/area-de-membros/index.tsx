@@ -3,4 +3,4 @@ import { getProps as getProps } from '~/layouts/area-de-membros';
 
 export default AreaDeMembrosLayout;
 
-export const getStaticProps = getProps;
+export const getServerSideProps = getProps;

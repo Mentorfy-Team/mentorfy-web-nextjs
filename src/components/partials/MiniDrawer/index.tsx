@@ -29,9 +29,15 @@ type props = {
   children?: JSX.Element;
   supportHeader?: JSX.Element;
   header?: JSX.Element;
+  profile?: UserClient.Profile;
 };
 
-const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
+const MiniDrawer: React.FC<props> = ({
+  children,
+  header,
+  supportHeader,
+  profile,
+}) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
   const isMobile = useMediaQuery('(max-width:500px)');
@@ -95,14 +101,18 @@ const MiniDrawer: React.FC<props> = ({ children, header, supportHeader }) => {
       <Drawer id="Drawer" variant="permanent" open={open}>
         <DrawerHeader id="DrawerHeader" />
         <UserField pl={1.5} display="flex">
-          <Avatar src="/images/avatar.png" />
+          <Avatar sx={{ backgroundColor: 'orange !important' }}>{`${
+            profile.name[0]
+          }${
+            profile.name.split(' ').length > 1 && profile.name.split(' ')[1][0]
+          }`}</Avatar>
           <Box pl={2.5}>
             <UserName variant="body2" noWrap>
-              {AdjustName('Débora Fernandes Rodrigues Soares')}
+              {profile?.name && AdjustName(profile?.name)}
             </UserName>
             <Box display="flex">
               <Kind variant="caption">Mentor</Kind>
-              <ProFree>PRO</ProFree>
+              <ProFree>{profile.plan.toUpperCase()}</ProFree>
             </Box>
           </Box>
         </UserField>

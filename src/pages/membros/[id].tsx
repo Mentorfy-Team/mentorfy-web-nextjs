@@ -6,6 +6,6 @@ import {
 
 export default MembrosLayout;
 
-export const getStaticProps = getProps;
+export const getServerSideProps = getProps;
 
 export const getStaticPaths = getPaths;

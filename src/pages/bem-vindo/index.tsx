@@ -3,4 +3,4 @@ import { getProps as getProps } from '~/layouts/bem-vindo';
 
 export default BemVindoLayout;
 
-export const getStaticProps = getProps;
+export const getServerSideProps = getProps;

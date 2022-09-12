@@ -3,4 +3,4 @@ import { getProps as getProps } from '~/layouts/meu-perfil';
 
 export default MyProfileLayout;
 
-export const getStaticProps = getProps;
+export const getServerSideProps = getProps;
