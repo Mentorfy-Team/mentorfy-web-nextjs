@@ -1,7 +1,7 @@
 import { FC, useCallback } from 'react';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Image from 'next/image';
+import Image from 'next/future/image';
 
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';

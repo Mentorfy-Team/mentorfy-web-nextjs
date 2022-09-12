@@ -10,7 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { useTheme } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import { routes } from '~/consts/routes/routes.consts';
 import AdjustName from './helper/AdjustName';
@@ -102,9 +102,10 @@ const MiniDrawer: React.FC<props> = ({
         <DrawerHeader id="DrawerHeader" />
         <UserField pl={1.5} display="flex">
           <Avatar sx={{ backgroundColor: 'orange !important' }}>{`${
-            profile.name[0]
+            profile?.name[0]
           }${
-            profile.name.split(' ').length > 1 && profile.name.split(' ')[1][0]
+            profile?.name.split(' ').length > 1 &&
+            profile?.name.split(' ')[1][0]
           }`}</Avatar>
           <Box pl={2.5}>
             <UserName variant="body2" noWrap>
@@ -112,7 +113,7 @@ const MiniDrawer: React.FC<props> = ({
             </UserName>
             <Box display="flex">
               <Kind variant="caption">Mentor</Kind>
-              <ProFree>{profile.plan.toUpperCase()}</ProFree>
+              <ProFree>{profile?.plan.toUpperCase()}</ProFree>
             </Box>
           </Box>
         </UserField>

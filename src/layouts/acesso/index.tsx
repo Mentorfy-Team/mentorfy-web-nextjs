@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { InferGetStaticPropsType } from 'next';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import PageWrapper from '~/components/partials/PageWrapper';
-import { RecoveryProps } from '~/pages/_app';
 import { handleAcessoSubPage } from './helper/SwitchSubPages';
 import { AlignSelf, BackgroundHolder, Grid, Wrapper } from './styles';
 import backgroundImage from '~/../public/images/background-login.jpg';
@@ -17,20 +16,6 @@ export type AcessoSubPage =
   | 'esqueci-minha-senha'
   | 'sucesso'
   | 'confirmar-conta';
-
-const keyStr =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
-
-const triplet = (e1: number, e2: number, e3: number) =>
-  keyStr.charAt(e1 >> 2) +
-  keyStr.charAt(((e1 & 3) << 4) | (e2 >> 4)) +
-  keyStr.charAt(((e2 & 15) << 2) | (e3 >> 6)) +
-  keyStr.charAt(e3 & 63);
-
-const rgbDataURL = (r: number, g: number, b: number) =>
-  `data:image/gif;base64,R0lGODlhAQABAPAA${
-    triplet(0, r, g) + triplet(b, 255, 255)
-  }/yH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==`;
 
 function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
   const mobile = useMediaQuery('(max-width:500px)');
@@ -61,10 +46,12 @@ function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
         <Grid xs={0} lg={6.5}>
           <BackgroundHolder>
             <Image
+              fill
+              style={{
+                objectFit: 'cover',
+              }}
               alt="some important man mentoring smart people"
               src={backgroundImage}
-              layout="fill"
-              objectFit="cover"
               quality={100}
               placeholder="blur"
             />
@@ -84,7 +71,6 @@ function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
             <Image
               width={300 / (1.75 + (mobile ? 0.5 : 0))}
               height={75 / (1.75 + (mobile ? 0.5 : 0))}
-              layout="fixed"
               src={tipografiaImage}
               placeholder="blur"
               alt="logo"

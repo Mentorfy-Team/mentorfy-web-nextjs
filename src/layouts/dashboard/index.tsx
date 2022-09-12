@@ -1,15 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import {
-  supabaseServerClient,
-  withPageAuth,
-} from '@supabase/auth-helpers-nextjs';
-import { InferGetServerSidePropsType } from 'next';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { LoadUserProfile } from '~/backend/users/repository';
 import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
-import { LoadUserProfile } from '~/helpers/ssrDefaultProps';
+import { Routes } from '~/consts';
 
 type Props = {
   user: UserClient.User;
@@ -33,8 +30,8 @@ const Dashboard: FC<Props> = ({ profile }) => {
   );
 
   useEffect(() => {
-    console.log('profile', profile);
-  }, [profile]);
+    //LoadClientsService();
+  }, []);
 
   return (
     <PageWrapper>
@@ -50,12 +47,9 @@ const Dashboard: FC<Props> = ({ profile }) => {
 // * ServerSideRender (SSR)
 export const getProps = withPageAuth({
   authRequired: true,
-  redirectTo: '/',
+  redirectTo: Routes.login,
   async getServerSideProps(ctx) {
-    const supabase = await supabaseServerClient(ctx);
-    const { user, token } = await supabase.auth.api.getUserByCookie(ctx.req);
-
-    const profile = await LoadUserProfile(supabase, user.id);
+    const profile = await LoadUserProfile(ctx);
 
     return {
       props: {
