@@ -60,7 +60,7 @@ const MyProfile: FC = () => {
             <InputField
               label="Nome"
               type="text"
-              color="accent"
+              color="secondary"
               autoComplete="off"
               placeholder="Digite seu nome"
               InputLabelProps={{
@@ -70,7 +70,7 @@ const MyProfile: FC = () => {
             <InputField
               label="E-mail"
               type="e-mail"
-              color="accent"
+              color="secondary"
               autoComplete="off"
               placeholder="Digite seu e-mail"
               InputLabelProps={{
@@ -80,7 +80,7 @@ const MyProfile: FC = () => {
             <InputField
               label="Telefone"
               type="tel"
-              color="accent"
+              color="secondary"
               autoComplete="off"
               placeholder="Digite seu telefone"
               InputLabelProps={{
@@ -90,7 +90,7 @@ const MyProfile: FC = () => {
             <InputField
               label="Senha"
               type="password"
-              color="accent"
+              color="secondary"
               autoComplete="off"
               placeholder="********"
               InputLabelProps={{
@@ -118,7 +118,7 @@ const MyProfile: FC = () => {
             <InputField
               label="CEP"
               type="text"
-              color="accent"
+              color="secondary"
               autoComplete="off"
               placeholder="Digite seu CEP"
               InputLabelProps={{
@@ -128,7 +128,7 @@ const MyProfile: FC = () => {
             <InputField
               label="Endereço"
               type="text"
-              color="accent"
+              color="secondary"
               autoComplete="off"
               placeholder="Ex: Rua João Neves"
               InputLabelProps={{
@@ -138,7 +138,7 @@ const MyProfile: FC = () => {
             <InputField
               label="Número"
               type="text"
-              color="accent"
+              color="secondary"
               autoComplete="off"
               placeholder="Digite o número"
               InputLabelProps={{
@@ -148,7 +148,7 @@ const MyProfile: FC = () => {
             <InputField
               label="Complemento"
               type="text"
-              color="accent"
+              color="secondary"
               autoComplete="off"
               placeholder="Ex: Casa/Trabalho"
               InputLabelProps={{
@@ -158,7 +158,7 @@ const MyProfile: FC = () => {
             <InputField
               label="Bairro"
               type="text"
-              color="accent"
+              color="secondary"
               autoComplete="off"
               placeholder="Ex: Vila Maria"
               InputLabelProps={{
@@ -168,7 +168,7 @@ const MyProfile: FC = () => {
             <InputField
               label="Cidade"
               type="text"
-              color="accent"
+              color="secondary"
               autoComplete="off"
               placeholder="Ex: São Paulo"
               InputLabelProps={{

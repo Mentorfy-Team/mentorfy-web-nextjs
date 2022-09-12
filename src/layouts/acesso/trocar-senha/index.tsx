@@ -75,12 +75,6 @@ const TrocarSenha: FC<props> = ({ pageChange, setInfo, access_token }) => {
           !passed || rePassword.length == 0 || !RePasswordCheck || isLoading
         }
         onClick={() => handlePasswordChange()}
-        sx={{
-          backgroundColor: ({ palette }) =>
-            passed && rePassword.length > 0 && RePasswordCheck
-              ? palette.accent.main
-              : palette.accent.light,
-        }}
       >
         Resetar senha
       </LoginButton>
