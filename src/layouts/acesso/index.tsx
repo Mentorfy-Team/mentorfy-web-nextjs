@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { InferGetStaticPropsType } from 'next';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { RecoveryProps } from '~/pages/_app';
@@ -61,10 +61,12 @@ function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
         <Grid xs={0} lg={6.5}>
           <BackgroundHolder>
             <Image
+              fill
+              style={{
+                objectFit: 'cover',
+              }}
               alt="some important man mentoring smart people"
               src={backgroundImage}
-              layout="fill"
-              objectFit="cover"
               quality={100}
               placeholder="blur"
             />
@@ -84,7 +86,6 @@ function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
             <Image
               width={300 / (1.75 + (mobile ? 0.5 : 0))}
               height={75 / (1.75 + (mobile ? 0.5 : 0))}
-              layout="fixed"
               src={tipografiaImage}
               placeholder="blur"
               alt="logo"

@@ -8,6 +8,7 @@ export const Authenticate = async (auth: Auth) => {
       ApiRoutes.auth,
       auth,
     );
+    await HttpClient.post<UsersApi.Post.Response>(ApiRoutes.auth_cookies, auth);
     if (response.data.error) {
       return {
         error: response.data.error,

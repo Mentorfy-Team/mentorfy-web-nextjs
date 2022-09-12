@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { supabaseClient, withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { LoadUserProfile } from '~/backend/users/repository';
 import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
@@ -28,6 +28,10 @@ const Dashboard: FC<Props> = ({ profile }) => {
       <TabItem label="Notificações" />
     </Tabbar>
   );
+
+  useEffect(() => {
+    //LoadClientsService();
+  }, []);
 
   return (
     <PageWrapper>

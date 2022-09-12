@@ -3,7 +3,7 @@ import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';

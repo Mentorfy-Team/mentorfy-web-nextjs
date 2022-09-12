@@ -38,8 +38,8 @@ const Login: FC<props> = ({ pageChange }) => {
       const registerData = await Authenticate(values);
 
       if (!registerData.error) {
-        userLogin(registerData.user);
-        route.push(routes.home.path);
+        //userLogin(registerData.user);
+        //route.push(routes.home.path);
       } else {
         if (registerData.error.includes('email')) {
           setError('Email e ou senha incorretos, tente novamente!');

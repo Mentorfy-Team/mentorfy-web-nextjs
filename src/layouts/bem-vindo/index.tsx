@@ -37,7 +37,7 @@ const BemVindo = () => {
   );
 
   const TextBanner = (
-    <Box sx={{ maxWidth: '14rem', height: '10rem', textAlign: 'start'}}>
+    <Box sx={{ maxWidth: '14rem', height: '10rem', textAlign: 'start' }}>
       <CollorFullTypography>The World´s Storytelling</CollorFullTypography>
     </Box>
   );
