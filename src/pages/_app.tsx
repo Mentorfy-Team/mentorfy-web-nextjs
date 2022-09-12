@@ -47,7 +47,6 @@ const App = (props: MyAppProps) => {
   }, [router]);
 
   supabase.auth.onAuthStateChange((event, session) => {
-    console.log('Changing');
     fetch('/api/auth/cookies', {
       method: 'POST',
       headers: new Headers({ 'Content-Type': 'application/json' }),
