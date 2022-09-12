@@ -2,9 +2,12 @@ import { type } from 'os';
 import { useEffect, useState } from 'react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
+import { UserProvider } from '@supabase/auth-helpers-react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { supabase } from '~/backend/supabase';
 import createEmotionCache from '~/createEmotionCache';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
@@ -43,6 +46,16 @@ const App = (props: MyAppProps) => {
     }
   }, [router]);
 
+  supabase.auth.onAuthStateChange((event, session) => {
+    console.log('Changing');
+    fetch('/api/auth/cookies', {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      credentials: 'same-origin',
+      body: JSON.stringify({ event, session }),
+    });
+  });
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -55,7 +68,9 @@ const App = (props: MyAppProps) => {
         {/* <HeaderPartial /> */}
         <Wrapper id="WrapperRoot">
           <PageWrapper>
-            <Component {...pageProps} {...{ urlParams: params }} />
+            <UserProvider supabaseClient={supabaseClient}>
+              <Component {...pageProps} {...{ urlParams: params }} />
+            </UserProvider>
           </PageWrapper>
         </Wrapper>
       </ThemeProvider>

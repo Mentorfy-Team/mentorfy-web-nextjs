@@ -3,4 +3,4 @@ import { getProps as getProps } from '~/layouts/dashboard';
 
 export default DashboardLayout;
 
-export const getStaticProps = getProps;
+export const getServerSideProps = getProps;

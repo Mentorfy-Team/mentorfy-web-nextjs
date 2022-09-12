@@ -7,6 +7,8 @@ import PageWrapper from '~/components/partials/PageWrapper';
 import { RecoveryProps } from '~/pages/_app';
 import { handleAcessoSubPage } from './helper/SwitchSubPages';
 import { AlignSelf, BackgroundHolder, Grid, Wrapper } from './styles';
+import backgroundImage from '~/../public/images/background-login.jpg';
+import tipografiaImage from '~/../public/images/tipografia.png';
 
 export type AcessoSubPage =
   | 'login'
@@ -15,6 +17,20 @@ export type AcessoSubPage =
   | 'esqueci-minha-senha'
   | 'sucesso'
   | 'confirmar-conta';
+
+const keyStr =
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+
+const triplet = (e1: number, e2: number, e3: number) =>
+  keyStr.charAt(e1 >> 2) +
+  keyStr.charAt(((e1 & 3) << 4) | (e2 >> 4)) +
+  keyStr.charAt(((e2 & 15) << 2) | (e3 >> 6)) +
+  keyStr.charAt(e3 & 63);
+
+const rgbDataURL = (r: number, g: number, b: number) =>
+  `data:image/gif;base64,R0lGODlhAQABAPAA${
+    triplet(0, r, g) + triplet(b, 255, 255)
+  }/yH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==`;
 
 function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
   const mobile = useMediaQuery('(max-width:500px)');
@@ -46,10 +62,11 @@ function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
           <BackgroundHolder>
             <Image
               alt="some important man mentoring smart people"
-              src="/images/background-login.jpg"
+              src={backgroundImage}
               layout="fill"
               objectFit="cover"
               quality={100}
+              placeholder="blur"
             />
           </BackgroundHolder>
         </Grid>
@@ -68,7 +85,8 @@ function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
               width={300 / (1.75 + (mobile ? 0.5 : 0))}
               height={75 / (1.75 + (mobile ? 0.5 : 0))}
               layout="fixed"
-              src="/images/tipografia.png"
+              src={tipografiaImage}
+              placeholder="blur"
               alt="logo"
             />
           </AlignSelf>

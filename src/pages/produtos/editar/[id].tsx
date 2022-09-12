@@ -6,6 +6,6 @@ import {
 
 export default EditarProdutosLayout;
 
-export const getStaticProps = getProps;
+export const getServerSideProps = getProps;
 
 export const getStaticPaths = getPaths;

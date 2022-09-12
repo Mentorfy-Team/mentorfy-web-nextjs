@@ -3,4 +3,4 @@ import { getProps as getProps } from '~/layouts/clientes';
 
 export default ClientsLayout;
 
-export const getStaticProps = getProps;
+export const getServerSideProps = getProps;

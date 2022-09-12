@@ -7,6 +7,8 @@ declare namespace UsersApi {
         name: string;
         role: string;
         plan: string;
+        session?: any;
+        event?: string;
       };
     }
 

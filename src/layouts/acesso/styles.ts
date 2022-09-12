@@ -113,6 +113,7 @@ export const CreateAccountButton = styled(Button)`
 `;
 
 export const BackgroundHolder = styled('div')`
+  background-color: black;
   height: 100%;
   overflow: hidden;
   position: relative;
