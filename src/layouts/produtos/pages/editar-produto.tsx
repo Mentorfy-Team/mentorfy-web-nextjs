@@ -91,13 +91,6 @@ const EditarProduto: FC = () => {
   );
 };
 
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: 'blocking', // can also be true or 'blocking'
-  };
-}
-
 export async function getProps() {
   return {
     props: { post: {} },
