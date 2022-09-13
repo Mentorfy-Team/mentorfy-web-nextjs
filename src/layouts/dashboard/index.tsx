@@ -1,12 +1,14 @@
 import { FC, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { LoadUserProfile } from '~/backend/users/repository';
 import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { Routes } from '~/consts';
+import { ApiRoutes } from '~/consts/routes/api.routes';
+import { HttpClient } from '~/services/HttpClient';
+import { GetProfile } from '~/services/profile.service';
 
 type Props = {
   user: UserClient.User;
@@ -30,6 +32,10 @@ const Dashboard: FC<Props> = ({ profile }) => {
   );
 
   useEffect(() => {
+    // const LoadClientsService = async () => {
+    //   const response = await HttpClient.get(ApiRoutes.users_profile);
+    //   console.log(response?.data);
+    // };
     //LoadClientsService();
   }, []);
 
@@ -49,11 +55,11 @@ export const getProps = withPageAuth({
   authRequired: true,
   redirectTo: Routes.login,
   async getServerSideProps(ctx) {
-    const profile = await LoadUserProfile(ctx);
-
+    const profile = await GetProfile(ctx.req.cookies['sb-access-token']);
+    console.log('profile', profile);
     return {
       props: {
-        profile,
+        profile: null,
       },
     };
   },

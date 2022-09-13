@@ -18,10 +18,7 @@ export class CookieUtil {
 
   public static get(): any {
     this.checkEnv();
-    const { accessToken } = this.toJson(document.cookie);
-    return {
-      accessToken: accessToken === 'null' ? null : accessToken,
-    };
+    return this.toJson(document.cookie);
   }
 
   public static set(cookie: { [key: string]: string }): string {

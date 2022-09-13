@@ -1,6 +1,7 @@
 export enum ApiRoutes {
   //* Rotas para api de usuários
   users = '/api/users',
+  users_profile = '/api/users/profile',
 
   //* Rotas para api de autenticação
   auth = '/api/auth',
