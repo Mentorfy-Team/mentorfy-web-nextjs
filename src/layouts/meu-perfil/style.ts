@@ -1,3 +1,4 @@
+import  LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
@@ -60,7 +61,7 @@ export const AvatarWrapper = styled('div')`
   justify-content: center;
 `;
 
-export const Buttons = styled(Button)`
+export const Buttons = styled(LoadingButton)`
   font-size: 0.8rem;
   font-weight: 500;
   height: 0rem;

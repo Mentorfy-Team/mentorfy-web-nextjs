@@ -24,3 +24,22 @@ export const GetProfile = async (req) => {
     };
   }
 };
+export const UpdateProfile = async (values) => {
+  try {
+    const response = await HttpClient.post<UsersApi.Post.Response>(
+      ApiRoutes.users_profile,
+      values
+    );
+
+    if (response.data.error) {
+      return {
+        error: response.data.error,
+      };
+    }
+    return response.data;
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
+  }
+};

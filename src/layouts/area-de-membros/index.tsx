@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
@@ -10,7 +11,8 @@ import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { CreatAreaButton, EmptyBox, ImageButton } from './style';
 import SvgComponent from '~/../public/svgs/graduation-cap';
-const AreaDeMembros = () => {
+
+const AreaDeMembros: FC = () => {
   const Header = <Typography variant="h6">Área de Membros</Typography>;
   const isMobile = useMediaQuery('(max-width: 500px)');
   const theme = useTheme();

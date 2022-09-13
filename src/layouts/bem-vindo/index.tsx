@@ -1,3 +1,4 @@
+import { FC } from 'react';
 import StarIcon from '@mui/icons-material/Star';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
@@ -15,7 +16,7 @@ import {
   RatingBox,
 } from './style';
 
-const BemVindo = () => {
+const BemVindo: FC = () => {
   const Header = (
     <Box
       sx={{

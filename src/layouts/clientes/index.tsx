@@ -41,8 +41,8 @@ const Clients: FC = () => {
               <Image
                 alt="exportar-clientes"
                 src="/svgs/export-clients.svg"
-                height={'22px'}
-                width={'22px'}
+                height={22}
+                width={22}
               />
               {exportClientsText}
             </ClientsOptionsButton>
@@ -50,8 +50,8 @@ const Clients: FC = () => {
               <Image
                 alt="exportar-clientes"
                 src="/svgs/filter-clients.svg"
-                height={'22px'}
-                width={'22px'}
+                height={22}
+                width={22}
               />
               {filterClientsText}
             </ClientsOptionsButton>
@@ -59,8 +59,8 @@ const Clients: FC = () => {
               <Image
                 alt="exportar-clientes"
                 src="/svgs/plus.svg"
-                height={'31px'}
-                width={'18px'}
+                height={31}
+                width={22}
               />
               {createdClientsText}
             </ClientsOptionsButton>

@@ -1,15 +1,24 @@
 /* eslint-disable no-restricted-imports */
-import { FC } from 'react';
-import { OutlinedInput } from '@mui/material';
+import { FC, useCallback, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/router';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { Auth } from '~/@types/api/address/address';
+import { LoadUserProfile } from '~/backend/users/repository';
+import { LoadUserAddress } from '~/backend/users/repository/LoadUserAddress';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
+import { Routes } from '~/consts';
+import { routes } from '~/consts/routes/routes.consts';
+import { UpdateProfile } from '~/services/auth/auth.service';
+import { userStore } from '~/stores';
 import {
   AvatarWrapper,
   BOX,
@@ -20,12 +29,32 @@ import {
   Header,
   InputField,
 } from './style';
+type props = {
+  profile: UserClient.Profile;
+  address: UserClient.Address;
+  user: UserClient.User;
+}
+const MyProfile: FC<props> = ({ profile, address, user}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>();
+  const { register, handleSubmit } = useForm<Auth>();
+  const route = useRouter();
+  const States = ['AC', 'SP', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO'];
 
-const MyProfile: FC = () => {
-  const States = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO'];
+  const onSubmit: SubmitHandler<Auth> = useCallback(
+    async (values) => {
+      setIsLoading(true);
+      const registerData = await UpdateProfile(values);
 
-  // const handleChange = (event: SelectChangeEvent) => {
-  //   setAge(event.target.value as string);
+      if (!registerData.error) {
+        route.push(routes.home.path);
+      } else {
+          setError('Ocorreu um erro na hora de salvar os seus dados');
+      };
+      setIsLoading(false);
+    },
+    [route],
+  );
 
   const HeaderDrawer = <Typography variant="h6">Meu Perfil</Typography>;
   return (
@@ -40,7 +69,7 @@ const MyProfile: FC = () => {
               Informações sobre a sua conta
             </CustomTypography>
           </Header>
-          <Form>
+          <Form onSubmit={handleSubmit(onSubmit)}>
             <AvatarWrapper>
               <Avatar
                 alt="foto-perfil"
@@ -62,6 +91,7 @@ const MyProfile: FC = () => {
               type="text"
               color="secondary"
               autoComplete="off"
+              defaultValue={profile.name}
               placeholder="Digite seu nome"
               InputLabelProps={{
                 shrink: true,
@@ -72,6 +102,7 @@ const MyProfile: FC = () => {
               type="e-mail"
               color="secondary"
               autoComplete="off"
+              defaultValue={user.email}
               placeholder="Digite seu e-mail"
               InputLabelProps={{
                 shrink: true,
@@ -82,6 +113,7 @@ const MyProfile: FC = () => {
               type="tel"
               color="secondary"
               autoComplete="off"
+              defaultValue={user.phone}
               placeholder="Digite seu telefone"
               InputLabelProps={{
                 shrink: true,
@@ -121,6 +153,7 @@ const MyProfile: FC = () => {
               color="secondary"
               autoComplete="off"
               placeholder="Digite seu CEP"
+              {...register('zipcode')}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -131,6 +164,7 @@ const MyProfile: FC = () => {
               color="secondary"
               autoComplete="off"
               placeholder="Ex: Rua João Neves"
+              {...register('street')}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -141,6 +175,7 @@ const MyProfile: FC = () => {
               color="secondary"
               autoComplete="off"
               placeholder="Digite o número"
+              {...register('number')}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -151,6 +186,7 @@ const MyProfile: FC = () => {
               color="secondary"
               autoComplete="off"
               placeholder="Ex: Casa/Trabalho"
+              {...register('complement')}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -161,6 +197,7 @@ const MyProfile: FC = () => {
               color="secondary"
               autoComplete="off"
               placeholder="Ex: Vila Maria"
+              {...register('neighborhood')}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -171,6 +208,7 @@ const MyProfile: FC = () => {
               color="secondary"
               autoComplete="off"
               placeholder="Ex: São Paulo"
+              {...register('city')}
               InputLabelProps={{
                 shrink: true,
               }}
@@ -195,6 +233,8 @@ const MyProfile: FC = () => {
               variant="contained"
               type="submit"
               className="submit-button"
+              loading={isLoading}
+              disabled={isLoading}
             >
               Salvar alterações
             </Buttons>
@@ -204,10 +244,22 @@ const MyProfile: FC = () => {
     </PageWrapper>
   );
 };
-export async function getProps() {
-  return {
-    props: {},
-  };
-}
+
+// * ServerSideRender (SSR)
+export const getProps = withPageAuth({
+  authRequired: true,
+  redirectTo: Routes.login,
+  async getServerSideProps(ctx) {
+    const profile = await LoadUserProfile(ctx);
+    const address = await LoadUserAddress(ctx);
+
+    return {
+      props: {
+        profile,
+        address,
+      },
+    };
+  },
+});
 
 export default MyProfile;

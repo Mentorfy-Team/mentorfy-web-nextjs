@@ -37,7 +37,7 @@ export const BannerBox = styled(Box)`
     flex-direction: column;
     gap: 1rem;
     height: 23rem;
-    max-width: 73rem;
+    max-width: 100%;
     padding: 1.6rem 0 4.7rem 2.5rem;
 
     @media (max-width: 500px) { 
