@@ -32,11 +32,12 @@ export const CourseBox = styled(Box)`
 
 export const BannerBox = styled(Box)`
     background-image: url('/images/banner.png');
+    background-size: cover;
     display: flex;
     flex-direction: column;
     gap: 1rem;
     height: 23rem;
-    max-width: 71.2rem;
+    max-width: 73rem;
     padding: 1.6rem 0 4.7rem 2.5rem;
 
     @media (max-width: 500px) { 
