@@ -26,9 +26,9 @@ export const GetProfile = async (req) => {
 };
 
 type UpdateProfileProps = {
-  profile: UserClient.Profile;
-  user: UserClient.User;
-  Address: UserClient.Address;
+  profile: Partial<UserClient.Profile>;
+  user: Partial<UserClient.User>;
+  Address: Partial<UserClient.Address>;
 };
 
 export const UpdateProfile = async (values: UpdateProfileProps) => {

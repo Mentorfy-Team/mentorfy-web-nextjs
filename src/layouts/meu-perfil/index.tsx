@@ -33,7 +33,9 @@ type props = {
   user: UserClient.User;
 };
 
-type UpdateForm = UserClient.User & UserClient.Profile & UserClient.Address;
+type UpdateForm = Partial<UserClient.User> &
+  Partial<UserClient.Profile> &
+  Partial<UserClient.Address>;
 
 const MyProfile: FC<props> = ({ profile, address, user }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -77,10 +79,11 @@ const MyProfile: FC<props> = ({ profile, address, user }) => {
       if (values.complement !== address.complement)
         Object.assign(propAddress, { name: values.name });
 
+      //
       const registerData = await UpdateProfile({
-        profile: propProfile as UserClient.Profile,
-        address: propAddress as UserClient.Address,
-        user: propUser as UserClient.User,
+        profile: propProfile,
+        address: propAddress,
+        user: propUser,
       });
 
       if (!registerData.error) {
