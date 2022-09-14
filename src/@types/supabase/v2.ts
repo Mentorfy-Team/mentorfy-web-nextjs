@@ -9,44 +9,6 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      address: {
-        Row: {
-          id: string;
-          created_at: string | null;
-          zipcode: string | null;
-          street: string | null;
-          number: number | null;
-          complent: string | null;
-          neiborhood: string | null;
-          city: string | null;
-          state: string | null;
-          country: string | null;
-        };
-        Insert: {
-          id: string;
-          created_at?: string | null;
-          zipcode?: string | null;
-          street?: string | null;
-          number?: number | null;
-          complent?: string | null;
-          neiborhood?: string | null;
-          city?: string | null;
-          state?: string | null;
-          country?: string | null;
-        };
-        Update: {
-          id?: string;
-          created_at?: string | null;
-          zipcode?: string | null;
-          street?: string | null;
-          number?: number | null;
-          complent?: string | null;
-          neiborhood?: string | null;
-          city?: string | null;
-          state?: string | null;
-          country?: string | null;
-        };
-      };
       product: {
         Row: {
           id: number;
@@ -109,6 +71,44 @@ export interface Database {
           plan?: string;
           id?: string;
           avatar?: string | null;
+        };
+      };
+      address: {
+        Row: {
+          id: string;
+          created_at: string | null;
+          zipcode: string | null;
+          street: string | null;
+          number: number | null;
+          city: string | null;
+          state: string | null;
+          complement: string | null;
+          country: string | null;
+          neighborhood: string | null;
+        };
+        Insert: {
+          id: string;
+          created_at?: string | null;
+          zipcode?: string | null;
+          street?: string | null;
+          number?: number | null;
+          city?: string | null;
+          state?: string | null;
+          complement?: string | null;
+          country?: string | null;
+          neighborhood?: string | null;
+        };
+        Update: {
+          id?: string;
+          created_at?: string | null;
+          zipcode?: string | null;
+          street?: string | null;
+          number?: number | null;
+          city?: string | null;
+          state?: string | null;
+          complement?: string | null;
+          country?: string | null;
+          neighborhood?: string | null;
         };
       };
     };

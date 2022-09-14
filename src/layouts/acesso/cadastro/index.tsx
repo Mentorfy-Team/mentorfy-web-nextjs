@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { NewUserForm } from '~/@types/api/users/user';
 import { RegisterNewUser } from '~/services/user.service';
 import { userStore } from '~/stores';
 import { AcessoSubPage } from '..';
@@ -31,7 +30,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
   const [error, setError] = useState<string>();
   const [rePassword, setRePassword] = useState('');
   const [acceptPolices, setAcceptPolices] = useState(false);
-  const { register, handleSubmit } = useForm<NewUserForm>();
+  const { register, handleSubmit } = useForm<UserClient.SignUp>();
   const { userLogin } = userStore();
 
   const RePasswordCheck = useMemo(() => {
@@ -61,7 +60,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
     return false;
   }, [RePasswordCheck, acceptPolices, passed]);
 
-  const onSubmit: SubmitHandler<NewUserForm> = useCallback(
+  const onSubmit: SubmitHandler<UserClient.SignUp> = useCallback(
     async (values) => {
       setIsLoading(true);
       if (values.password.length <= 0) values.password = password;

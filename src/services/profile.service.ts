@@ -24,11 +24,23 @@ export const GetProfile = async (req) => {
     };
   }
 };
-export const UpdateProfile = async (values) => {
+
+type UpdateProfileProps = {
+  profile: UserClient.Profile;
+  user: UserClient.User;
+  Address: UserClient.Address;
+};
+
+export const UpdateProfile = async (values: UpdateProfileProps) => {
   try {
+    const bundle = {};
+    if (values.profile) bundle['profile'] = values.profile;
+    if (values.user) bundle['user'] = values.user;
+    if (values.Address) bundle['address'] = values.Address;
+
     const response = await HttpClient.post<UsersApi.Post.Response>(
       ApiRoutes.users_profile,
-      values
+      bundle,
     );
 
     if (response.data.error) {

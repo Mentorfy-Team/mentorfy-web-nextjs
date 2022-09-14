@@ -9,16 +9,13 @@ import Typography from '@mui/material/Typography';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Auth } from '~/@types/api/address/address';
-import { LoadUserProfile } from '~/backend/users/repository';
-import { LoadUserAddress } from '~/backend/users/repository/LoadUserAddress';
+import { LoadUserAddress, LoadUserProfile } from '~/backend/users/repository';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { Routes } from '~/consts';
 import { routes } from '~/consts/routes/routes.consts';
-import { UpdateProfile } from '~/services/auth/auth.service';
-import { userStore } from '~/stores';
+import { UpdateProfile } from '~/services/profile.service';
 import {
   AvatarWrapper,
   BOX,
@@ -29,28 +26,68 @@ import {
   Header,
   InputField,
 } from './style';
+
 type props = {
   profile: UserClient.Profile;
   address: UserClient.Address;
   user: UserClient.User;
-}
-const MyProfile: FC<props> = ({ profile, address, user}) => {
+};
+
+type UpdateForm = UserClient.User & UserClient.Profile & UserClient.Address;
+
+const MyProfile: FC<props> = ({ profile, address, user }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>();
-  const { register, handleSubmit } = useForm<Auth>();
+  const { register, handleSubmit } = useForm<UpdateForm>();
   const route = useRouter();
   const States = ['AC', 'SP', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO'];
 
-  const onSubmit: SubmitHandler<Auth> = useCallback(
+  const onSubmit: SubmitHandler<UpdateForm> = useCallback(
     async (values) => {
       setIsLoading(true);
-      const registerData = await UpdateProfile(values);
+      const propProfile = {};
+      const propAddress = {};
+      const propUser = {};
+
+      // * verificar se as propriedades de values são iguais as do profile, se for adicionar a um objeto
+      if (values.name !== profile.name)
+        Object.assign(propProfile, { name: values.name });
+      if (values.avatar !== profile.avatar)
+        Object.assign(propProfile, { avatar: values.avatar });
+
+      // * verificar se as propriedades de values são iguais as do user, se for adicionar a um objeto
+      if (values.email !== user.email)
+        Object.assign(propUser, { email: values.email });
+      if (values.phone !== user.phone)
+        Object.assign(propUser, { phone: values.phone });
+
+      // * verificar se as propriedades de values são iguais as do address, se for adicionar a um objeto
+      if (values.zipcode !== address.zipcode)
+        Object.assign(propAddress, { name: values.name });
+      if (values.street !== address.street)
+        Object.assign(propAddress, { name: values.name });
+      if (values.number !== address.number)
+        Object.assign(propAddress, { name: values.name });
+      if (values.neighborhood !== address.neighborhood)
+        Object.assign(propAddress, { name: values.name });
+      if (values.city !== address.city)
+        Object.assign(propAddress, { name: values.name });
+      if (values.state !== address.state)
+        Object.assign(propAddress, { name: values.name });
+      if (values.complement !== address.complement)
+        Object.assign(propAddress, { name: values.name });
+
+      const registerData = await UpdateProfile({
+        profile: propProfile as UserClient.Profile,
+        address: propAddress as UserClient.Address,
+        user: propUser as UserClient.User,
+      });
 
       if (!registerData.error) {
         route.push(routes.home.path);
       } else {
-          setError('Ocorreu um erro na hora de salvar os seus dados');
-      };
+        setError('Ocorreu um erro na hora de salvar os seus dados');
+      }
       setIsLoading(false);
     },
     [route],

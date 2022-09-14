@@ -1,8 +1,7 @@
-import { NewUserForm } from '~/@types/api/users/user';
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from './HttpClient';
 
-export const RegisterNewUser = async (user: NewUserForm) => {
+export const RegisterNewUser = async (user: UserClient.SignUp) => {
   try {
     const response = await HttpClient.post<UsersApi.Post.Response>(
       ApiRoutes.users,
