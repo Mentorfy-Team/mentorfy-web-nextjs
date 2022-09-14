@@ -12,7 +12,7 @@ import Toolbar from '@mui/material/Toolbar';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
-import { routes } from '~/consts/routes/routes.consts';
+import { MentorMenu, MentoredMenu } from '~/consts/routes/routes.consts';
 import AdjustName from './helper/AdjustName';
 import {
   AppBar,
@@ -39,7 +39,7 @@ const MiniDrawer: React.FC<props> = ({
   profile,
 }) => {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
   const isMobile = useMediaQuery('(max-width:500px)');
   const router = useRouter();
 
@@ -118,9 +118,9 @@ const MiniDrawer: React.FC<props> = ({
           </Box>
         </UserField>
         <List>
-          {Object.keys(routes).map((route, index) => (
+          {Object.keys(MentorMenu).map((route, index) => (
             <ListItem
-              key={routes[route].name}
+              key={MentorMenu[route].name}
               disablePadding
               sx={{ display: 'block' }}
             >
@@ -131,7 +131,7 @@ const MiniDrawer: React.FC<props> = ({
                   px: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => router.push(routes[route].path)}
+                onClick={() => router.push(MentorMenu[route].path)}
               >
                 <ListItemIcon
                   sx={{
@@ -141,18 +141,18 @@ const MiniDrawer: React.FC<props> = ({
                   }}
                 >
                   {getIcon(
-                    routes[route].component,
-                    routes[route].path,
-                    routes[route].subpaths,
+                    MentorMenu[route].component,
+                    MentorMenu[route].path,
+                    MentorMenu[route].subpaths,
                   )}
                 </ListItemIcon>
                 <ListItemText
-                  primary={routes[route].name}
+                  primary={MentorMenu[route].name}
                   sx={{
                     opacity: open ? 1 : 0,
                     color: IsActiveValidator(
-                      routes[route].path,
-                      routes[route].subpaths,
+                      MentorMenu[route].path,
+                      MentorMenu[route].subpaths,
                     )
                       ? theme.palette.accent.main
                       : theme.palette.text.primary,

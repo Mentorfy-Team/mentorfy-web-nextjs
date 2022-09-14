@@ -1,1 +1,5 @@
-export { Routes } from './routes/routes.consts';
+export {
+  MentorRoutes,
+  MentoredRoutes,
+  PublicRoutes,
+} from './routes/routes.consts';

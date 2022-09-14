@@ -3,7 +3,7 @@ import Divider from '@mui/material/Divider';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
-import { routes } from '~/consts/routes/routes.consts';
+import { MentorRoutes } from '~/consts/routes/routes.consts';
 import { Authenticate } from '~/services/auth/auth.service';
 import { userStore } from '~/stores';
 import { AcessoSubPage } from '..';
@@ -39,7 +39,7 @@ const Login: FC<props> = ({ pageChange }) => {
 
       if (!registerData.error) {
         userLogin(registerData.user);
-        route.push(routes.home.path);
+        route.push(MentorRoutes.home);
       } else {
         if (registerData.error.includes('email')) {
           setError('Email e ou senha incorretos, tente novamente!');

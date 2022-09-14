@@ -89,6 +89,7 @@ export default function StickyHeadTable({
                   {column.label}
                 </TableCell>
               ))}
+              {actionButtons && <TableCell key="actions"></TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
