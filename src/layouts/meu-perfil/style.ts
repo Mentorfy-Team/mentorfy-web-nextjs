@@ -1,4 +1,4 @@
-import  LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';

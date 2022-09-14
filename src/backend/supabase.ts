@@ -18,3 +18,16 @@ export const CreateSupabaseWithAuth = (req) => {
     },
   );
 };
+
+export const CreateSupabaseWithAdmin = (req) => {
+  const token = CookieUtil.fromReq(req);
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+};

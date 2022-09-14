@@ -13,7 +13,6 @@ import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { Routes } from '~/consts';
-import { routes } from '~/consts/routes/routes.consts';
 import { GetProfile, UpdateProfile } from '~/services/profile.service';
 import {
   AvatarWrapper,
@@ -36,7 +35,7 @@ type UpdateForm = Partial<UserClient.User> &
   Partial<UserClient.Profile> &
   Partial<UserClient.Address>;
 
-const MyProfile: FC<props> = ({ profile = {}, address = {}, user }) => {
+const MyProfile: FC<props> = ({ profile, address, user }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>();
   const { register, handleSubmit } = useForm<UpdateForm>();
@@ -51,47 +50,51 @@ const MyProfile: FC<props> = ({ profile = {}, address = {}, user }) => {
       const propUser = {};
 
       // * verificar se as propriedades de values são iguais as do profile, se for adicionar a um objeto
-      if (values.name !== profile.name)
+      if (values.name && values.name !== profile?.name)
         Object.assign(propProfile, { name: values.name });
-      if (values.avatar !== profile.avatar)
+      if (values.avatar && values.avatar !== profile?.avatar)
         Object.assign(propProfile, { avatar: values.avatar });
 
       // * verificar se as propriedades de values são iguais as do user, se for adicionar a um objeto
-      if (values.email !== user.email)
+      if (values.email && values.email !== user.email)
         Object.assign(propUser, { email: values.email });
-      if (values.phone !== user.phone)
+      if (values.phone && values.phone !== user.phone)
         Object.assign(propUser, { phone: values.phone });
 
       // * verificar se as propriedades de values são iguais as do address, se for adicionar a um objeto
-      if (values.zipcode !== address.zipcode)
-        Object.assign(propAddress, { name: values.name });
-      if (values.street !== address.street)
-        Object.assign(propAddress, { name: values.name });
-      if (values.number !== address.number)
-        Object.assign(propAddress, { name: values.name });
-      if (values.neighborhood !== address.neighborhood)
-        Object.assign(propAddress, { name: values.name });
-      if (values.city !== address.city)
-        Object.assign(propAddress, { name: values.name });
-      if (values.state !== address.state)
-        Object.assign(propAddress, { name: values.name });
-      if (values.complement !== address.complement)
-        Object.assign(propAddress, { name: values.name });
+      if (values.zipcode && values.zipcode !== address?.zipcode)
+        Object.assign(propAddress, { zipcode: values.zipcode });
+
+      if (values.street && values.street !== address?.street)
+        Object.assign(propAddress, { street: values.street });
+
+      // ? o number é um number, por isso não pode ser comparado com !==
+      if (values.number && values.number != address?.number)
+        Object.assign(propAddress, { number: values.number });
+
+      if (values.neighborhood && values.neighborhood !== address?.neighborhood)
+        Object.assign(propAddress, { neighborhood: values.neighborhood });
+
+      if (values.city && values.city !== address?.city)
+        Object.assign(propAddress, { city: values.city });
+
+      if (values.state && values.state !== address?.state)
+        Object.assign(propAddress, { state: values.state });
+
+      if (values.complement && values.complement !== address?.complement)
+        Object.assign(propAddress, { complement: values.complement });
 
       const registerData = await UpdateProfile({
         profile: propProfile,
         address: propAddress,
         user: propUser,
       });
-
-      if (!registerData.error) {
-        route.push(routes.home.path);
-      } else {
-        setError('Ocorreu um erro na hora de salvar os seus dados');
+      if (registerData.error) {
+        setError('Ocorreu um erro na hora de salvar os seus dados.');
       }
       setIsLoading(false);
     },
-    [route, address, profile, user],
+    [address, profile, user],
   );
 
   const HeaderDrawer = <Typography variant="h6">Meu Perfil</Typography>;
@@ -134,6 +137,7 @@ const MyProfile: FC<props> = ({ profile = {}, address = {}, user }) => {
               InputLabelProps={{
                 shrink: true,
               }}
+              {...register('name')}
             />
             <InputField
               label="E-mail"
@@ -145,6 +149,7 @@ const MyProfile: FC<props> = ({ profile = {}, address = {}, user }) => {
               InputLabelProps={{
                 shrink: true,
               }}
+              {...register('email')}
             />
             <InputField
               label="Telefone"
@@ -156,6 +161,7 @@ const MyProfile: FC<props> = ({ profile = {}, address = {}, user }) => {
               InputLabelProps={{
                 shrink: true,
               }}
+              {...register('phone')}
             />
             <InputField
               label="Senha"
@@ -184,10 +190,11 @@ const MyProfile: FC<props> = ({ profile = {}, address = {}, user }) => {
               Para entrega das suas premiações
             </CustomTypography>
           </Header>
-          <Form>
+          <Form onSubmit={handleSubmit(onSubmit)}>
             <InputField
+              defaultValue={address?.zipcode}
               label="CEP"
-              type="text"
+              type="tel"
               color="secondary"
               autoComplete="off"
               placeholder="Digite seu CEP"
@@ -197,6 +204,7 @@ const MyProfile: FC<props> = ({ profile = {}, address = {}, user }) => {
               }}
             />
             <InputField
+              defaultValue={address?.street}
               label="Endereço"
               type="text"
               color="secondary"
@@ -208,8 +216,9 @@ const MyProfile: FC<props> = ({ profile = {}, address = {}, user }) => {
               }}
             />
             <InputField
+              defaultValue={address?.number}
               label="Número"
-              type="text"
+              type="tel"
               color="secondary"
               autoComplete="off"
               placeholder="Digite o número"
@@ -219,6 +228,19 @@ const MyProfile: FC<props> = ({ profile = {}, address = {}, user }) => {
               }}
             />
             <InputField
+              defaultValue={address?.neighborhood}
+              type="text"
+              color="secondary"
+              autoComplete="off"
+              placeholder="Ex: Vila Maria"
+              {...register('neighborhood')}
+              label="Bairro"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <InputField
+              defaultValue={address?.complement}
               label="Complemento"
               type="text"
               color="secondary"
@@ -230,17 +252,7 @@ const MyProfile: FC<props> = ({ profile = {}, address = {}, user }) => {
               }}
             />
             <InputField
-              label="Bairro"
-              type="text"
-              color="secondary"
-              autoComplete="off"
-              placeholder="Ex: Vila Maria"
-              {...register('neighborhood')}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <InputField
+              defaultValue={address?.city}
               label="Cidade"
               type="text"
               color="secondary"
@@ -251,14 +263,18 @@ const MyProfile: FC<props> = ({ profile = {}, address = {}, user }) => {
                 shrink: true,
               }}
             />
-            <CustomSelectField required sx={{ width: '100%', margin: '0px' }}>
+            <CustomSelectField
+              required={false}
+              sx={{ width: '100%', margin: '0px' }}
+            >
               <InputLabel shrink={true}>Estado</InputLabel>
               <Select
                 placeholder="Ex: SP"
                 label="Estado"
-                onChange={() => {}}
                 color="secondary"
+                defaultValue={address?.state}
                 notched={true}
+                {...register('state')}
               >
                 {States.map((state) => (
                   <MenuItem key={state} value={state}>

@@ -34,7 +34,6 @@ const Dashboard: FC<Props> = ({ profile }) => {
   useEffect(() => {
     // const LoadClientsService = async () => {
     //   const response = await HttpClient.get(ApiRoutes.users_profile);
-    //   console.log(response?.data);
     // };
     //LoadClientsService();
   }, []);
@@ -56,7 +55,6 @@ export const getProps = withPageAuth({
   redirectTo: Routes.login,
   async getServerSideProps(ctx) {
     const profile = await GetProfile(ctx.req);
-    console.log('profile', profile);
     return {
       props: {
         profile: null,
