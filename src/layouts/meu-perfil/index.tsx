@@ -14,7 +14,9 @@ import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { Routes } from '~/consts';
+import { ApiRoutes } from '~/consts/routes/api.routes';
 import { routes } from '~/consts/routes/routes.consts';
+import { HttpClient } from '~/services/HttpClient';
 import { UpdateProfile } from '~/services/profile.service';
 import {
   AvatarWrapper,
@@ -79,7 +81,6 @@ const MyProfile: FC<props> = ({ profile, address, user }) => {
       if (values.complement !== address.complement)
         Object.assign(propAddress, { name: values.name });
 
-      //
       const registerData = await UpdateProfile({
         profile: propProfile,
         address: propAddress,
@@ -93,7 +94,7 @@ const MyProfile: FC<props> = ({ profile, address, user }) => {
       }
       setIsLoading(false);
     },
-    [route],
+    [route, address, profile, user],
   );
 
   const HeaderDrawer = <Typography variant="h6">Meu Perfil</Typography>;

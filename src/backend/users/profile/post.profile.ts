@@ -1,11 +1,13 @@
-import { CreateSupabaseClient, supabase } from '~/backend/supabase';
+import { CreateSupabaseWithAuth, SupabaseWithouAuth } from '~/backend/supabase';
 type Request = ProfileApi.Post.Request;
 type Response = ProfileApi.Post.Response | any;
 
 export const get: Handler.Callback<Request, Response> = async (req, res) => {
-  console.log('cookies', req.headers);
+  const { user, token } = await SupabaseWithouAuth.auth.api.getUserByCookie(
+    req,
+  );
+  const supabase = CreateSupabaseWithAuth(token);
 
-  const { user, token } = await supabase.auth.api.getUserByCookie(req);
   const errors = [];
   if (req.body.address) {
     const { error } = await supabase

@@ -1,11 +1,11 @@
-import { CreateSupabaseClient, supabase } from '~/backend/supabase';
+import { CreateSupabase, supabase } from '~/backend/supabase';
 type Request = UsersApi.Post.Request;
 type Response = UsersApi.Post.Response | any;
 
 export const get: Handler.Callback<Request, Response> = async (req, res) => {
   console.log('cookies', req.headers);
-  // const supabase = CreateSupabaseClient(req.cookies['sb-access-token']);
-  // const { user, token } = await supabase.auth.api.getUserByCookie(req);
+  // const supabase = CreateSupabase(req.cookies['sb-access-token']);
+  // const { user, token } = await SupabaseWithouAuth.auth.api.getUserByCookie(req);
 
   // const { data: profile, error } = await supabase
   //   .from('profile')

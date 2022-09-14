@@ -12,7 +12,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   }
 
   // * Cria a autenticação do usuário no banco de dados
-  const { user, error } = await supabase.auth.signUp({
+  const { user, error } = await SupabaseWithouAuth.auth.signUp({
     email,
     password,
   });

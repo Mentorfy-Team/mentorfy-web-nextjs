@@ -28,7 +28,7 @@ export const GetProfile = async (req) => {
 type UpdateProfileProps = {
   profile: Partial<UserClient.Profile>;
   user: Partial<UserClient.User>;
-  Address: Partial<UserClient.Address>;
+  address: Partial<UserClient.Address>;
 };
 
 export const UpdateProfile = async (values: UpdateProfileProps) => {
@@ -36,7 +36,7 @@ export const UpdateProfile = async (values: UpdateProfileProps) => {
     const bundle = {};
     if (values.profile) bundle['profile'] = values.profile;
     if (values.user) bundle['user'] = values.user;
-    if (values.Address) bundle['address'] = values.Address;
+    if (values.address) bundle['address'] = values.address;
 
     const response = await HttpClient.post<UsersApi.Post.Response>(
       ApiRoutes.users_profile,

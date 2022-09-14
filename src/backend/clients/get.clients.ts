@@ -1,12 +1,12 @@
-import { CreateSupabaseClient } from '~/backend/supabase';
+import { CreateSupabaseWithAuth } from '~/backend/supabase';
 
 export const get = async (req, res) => {
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  const supabase = CreateSupabaseClient(req.cookies['sb-access-token']);
+  const supabase = CreateSupabaseWithAuth(req.cookies['sb-access-token']);
 
-  //supabase...
+  //SupabaseWithouAuth...
 
-  ///supabase....
+  ///SupabaseWithouAuth....
   res.status(200);
 };
