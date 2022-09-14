@@ -1,4 +1,4 @@
-import { supabase } from '~/backend/supabase';
+import { SupabaseWithouAuth } from '~/backend/supabase';
 type Request = UsersApi.Post.Request;
 type Response = UsersApi.Post.Response;
 
@@ -19,8 +19,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
 
   // * Se tudo estiver certo, atualiza o perfil do usuário
   if (!error) {
-    await supabase
-      .from('profile')
+    await SupabaseWithouAuth.from('profile')
       .update({ name, plan: 'pro' })
       .eq('id', user.id);
   }

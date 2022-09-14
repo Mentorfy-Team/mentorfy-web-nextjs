@@ -55,7 +55,7 @@ export const getProps = withPageAuth({
   authRequired: true,
   redirectTo: Routes.login,
   async getServerSideProps(ctx) {
-    const profile = await GetProfile(ctx.req.cookies['sb-access-token']);
+    const profile = await GetProfile(ctx.req);
     console.log('profile', profile);
     return {
       props: {

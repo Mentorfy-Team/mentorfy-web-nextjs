@@ -1,17 +1,27 @@
-import { CreateSupabase, supabase } from '~/backend/supabase';
-type Request = UsersApi.Post.Request;
-type Response = UsersApi.Post.Response | any;
+import { CreateSupabaseWithAuth } from '~/backend/supabase';
+type Request = ProfileApi.Get.Request;
+type Response = ProfileApi.Get.Response | any;
 
 export const get: Handler.Callback<Request, Response> = async (req, res) => {
-  console.log('cookies', req.headers);
-  // const supabase = CreateSupabase(req.cookies['sb-access-token']);
-  // const { user, token } = await SupabaseWithouAuth.auth.api.getUserByCookie(req);
+  const supabase = CreateSupabaseWithAuth(req);
+  const { user, token } = await supabase.auth.api.getUserByCookie(req);
+  const result = {};
 
-  // const { data: profile, error } = await supabase
-  //   .from('profile')
-  //   .select('*')
-  //   .eq('id', user.id)
-  //   .single();
+  const { data: profile, error } = await supabase
+    .from('profile')
+    .select('*')
+    .eq('id', user.id)
+    .single();
 
-  return res.status(200).json({});
+  result['profile'] = profile;
+
+  if (req.query?.withAddress) {
+    const { data: address, error } = await supabase
+      .from('address')
+      .select('*')
+      .eq('id', user.id)
+      .single();
+    result['address'] = address;
+  }
+  return res.status(200).json(result);
 };

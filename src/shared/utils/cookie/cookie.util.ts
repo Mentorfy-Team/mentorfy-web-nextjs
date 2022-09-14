@@ -2,6 +2,19 @@ import { default as cookieHelper } from 'cookie';
 import { AppUtil } from '..';
 
 export class CookieUtil {
+  public static fromReq(req: any) {
+    if (!req?.headers?.cookie) {
+      throw new Error('Não foi possível encontrar os cookies.');
+    }
+    const cookie = this.toJson(req?.headers?.cookie)['sb-access-token'];
+    if (!cookie) {
+      throw new Error(
+        'Não foi possível encontrar os cookies. Verifique seu serviço.',
+      );
+    }
+    return this.toJson(req.headers.cookie)['sb-access-token'];
+  }
+
   public static toJson(cookie: string) {
     const parsed = cookieHelper.parse(cookie);
     return parsed;

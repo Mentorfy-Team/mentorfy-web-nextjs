@@ -9,15 +9,12 @@ import Typography from '@mui/material/Typography';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { LoadUserAddress, LoadUserProfile } from '~/backend/users/repository';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { Routes } from '~/consts';
-import { ApiRoutes } from '~/consts/routes/api.routes';
 import { routes } from '~/consts/routes/routes.consts';
-import { HttpClient } from '~/services/HttpClient';
-import { UpdateProfile } from '~/services/profile.service';
+import { GetProfile, UpdateProfile } from '~/services/profile.service';
 import {
   AvatarWrapper,
   BOX,
@@ -39,7 +36,7 @@ type UpdateForm = Partial<UserClient.User> &
   Partial<UserClient.Profile> &
   Partial<UserClient.Address>;
 
-const MyProfile: FC<props> = ({ profile, address, user }) => {
+const MyProfile: FC<props> = ({ profile = {}, address = {}, user }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>();
   const { register, handleSubmit } = useForm<UpdateForm>();
@@ -291,14 +288,9 @@ export const getProps = withPageAuth({
   authRequired: true,
   redirectTo: Routes.login,
   async getServerSideProps(ctx) {
-    const profile = await LoadUserProfile(ctx);
-    const address = await LoadUserAddress(ctx);
-
+    const profileWithAddress = await GetProfile(ctx.req, true);
     return {
-      props: {
-        profile,
-        address,
-      },
+      props: profileWithAddress,
     };
   },
 });

@@ -2,7 +2,7 @@ import { CreateSupabaseWithAuth, SupabaseWithouAuth } from '~/backend/supabase';
 type Request = ProfileApi.Post.Request;
 type Response = ProfileApi.Post.Response | any;
 
-export const get: Handler.Callback<Request, Response> = async (req, res) => {
+export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const { user, token } = await SupabaseWithouAuth.auth.api.getUserByCookie(
     req,
   );

@@ -1,4 +1,15 @@
 declare namespace ProfileApi {
+  namespace Get {
+    interface Request {
+      query: {
+        withAddress?: boolean;
+      };
+    }
+    interface Response {
+      profile: ExternalModules.Supabase.Database.public.Tables.profile.Row;
+      address: ExternalModules.Supabase.Database.public.Tables.address.Row;
+    }
+  }
   namespace Post {
     interface Request extends ExternalModules.Next.NextApiRequest {
       body: {

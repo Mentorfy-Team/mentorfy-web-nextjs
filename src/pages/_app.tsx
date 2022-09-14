@@ -1,4 +1,3 @@
-import { type } from 'os';
 import { useEffect, useState } from 'react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -7,7 +6,7 @@ import { UserProvider } from '@supabase/auth-helpers-react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { supabase } from '~/backend/supabase';
+import { SupabaseWithouAuth } from '~/backend/supabase';
 import createEmotionCache from '~/createEmotionCache';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
