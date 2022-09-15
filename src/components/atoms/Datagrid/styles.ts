@@ -48,8 +48,7 @@ export const CustomNavigation = styled('div')`
     width: 2.5rem;
     font-size: 1.3rem;
     font-weight: 300;
-    padding-left: 1.6rem;
-    padding-top: 0.7rem;
+    padding-left: 0.8rem;
   }
   button:disabled {
     background-color: ${({ theme }) => theme.palette.caption.dark};

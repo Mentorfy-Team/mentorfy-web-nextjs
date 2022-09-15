@@ -48,8 +48,8 @@ const Clients: FC<PageTypes.Props> = ({ profile }) => {
               <Image
                 alt="exportar-clientes"
                 src="/svgs/export-clients.svg"
-                height={22}
-                width={22}
+                height={18}
+                width={18}
               />
               {exportClientsText}
             </ClientsOptionsButton>
@@ -57,8 +57,8 @@ const Clients: FC<PageTypes.Props> = ({ profile }) => {
               <Image
                 alt="exportar-clientes"
                 src="/svgs/filter-clients.svg"
-                height={22}
-                width={22}
+                height={18}
+                width={18}
               />
               {filterClientsText}
             </ClientsOptionsButton>
@@ -66,8 +66,8 @@ const Clients: FC<PageTypes.Props> = ({ profile }) => {
               <Image
                 alt="exportar-clientes"
                 src="/svgs/plus.svg"
-                height={31}
-                width={22}
+                height={16}
+                width={16}
               />
               {createdClientsText}
             </ClientsOptionsButton>

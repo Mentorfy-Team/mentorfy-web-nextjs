@@ -17,7 +17,7 @@ import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
 import ProductsTable from './components/ProductsTable';
 import { AddProductButton, HeaderWrapper } from './styles';
-import plus_svg from '~/../public/svgs/plus';
+import PlusSvg from '~/../public/svgs/plus';
 
 const CreateProductDialog = dynamic(
   () => import('./components/CreateProductDialog'),
@@ -74,12 +74,14 @@ const Produtos: FC<PageTypes.Props> = ({ profile }) => {
                     float: 'right',
                     marginTop: isMobile ? '1rem' : '0px',
                   }}
-                  variant="contained"
+                  variant="outlined"
                   color="primary"
                   onClick={() => setOpenCreatePage(true)}
                 >
-                  <SvgIcon sx={{ paddingTop: '0.4rem' }} component={plus_svg} />
-                  Criar produto
+                  <PlusSvg />
+                  <Typography fontWeight="bold" variant="body2" ml={1}>
+                    Criar produto
+                  </Typography>
                 </AddProductButton>
               </Grid>
             </Grid>
