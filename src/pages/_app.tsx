@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
@@ -7,6 +7,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { SupabaseWithouAuth } from '~/backend/supabase';
+import MiniDrawer from '~/components/partials/MiniDrawer';
 import createEmotionCache from '~/createEmotionCache';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
@@ -54,6 +55,20 @@ const App = (props: MyAppProps) => {
     });
   });
 
+  const RenderWithLayout = useCallback(() => {
+    if (!router.pathname.includes('mentor')) {
+      return <Component {...pageProps} {...{ urlParams: params }} />;
+    }
+    console.log('RenderWithLayout');
+    return (
+      <PageWrapper>
+        <MiniDrawer>
+          <Component {...pageProps} {...{ urlParams: params }} />
+        </MiniDrawer>
+      </PageWrapper>
+    );
+  }, [Component, pageProps, params, router.pathname]);
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -67,7 +82,7 @@ const App = (props: MyAppProps) => {
         <Wrapper id="WrapperRoot">
           <PageWrapper>
             <UserProvider supabaseClient={supabaseClient}>
-              <Component {...pageProps} {...{ urlParams: params }} />
+              <RenderWithLayout />
             </UserProvider>
           </PageWrapper>
         </Wrapper>

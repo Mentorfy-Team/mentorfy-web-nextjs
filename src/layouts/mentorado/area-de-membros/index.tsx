@@ -12,7 +12,7 @@ import PageWrapper from '~/components/partials/PageWrapper';
 import { CreatAreaButton, EmptyBox, ImageButton } from './style';
 import SvgComponent from '~/../public/svgs/graduation-cap';
 
-const AreaDeMembros: FC = () => {
+const MembersArea: FC = () => {
   const Header = <Typography variant="h6">Área de Membros</Typography>;
   const isMobile = useMediaQuery('(max-width: 500px)');
   const theme = useTheme();
@@ -91,4 +91,4 @@ export async function getProps() {
   };
 }
 
-export default AreaDeMembros;
+export default MembersArea;

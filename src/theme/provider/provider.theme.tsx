@@ -31,6 +31,11 @@ const Provider: FC<{ children: React.ReactNode }> = ({ children }) => {
           color: theme.palette.accent.main,
           borderColor: theme.palette.accent.main,
           fontWeight: 'bold',
+          svg: {
+            path: {
+              fill: theme.palette.accent.main,
+            },
+          },
         }),
       }),
     },

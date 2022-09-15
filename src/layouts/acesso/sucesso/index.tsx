@@ -1,6 +1,5 @@
 import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
-import { Routes } from '~/consts';
 import { AcessoSubPage } from '..';
 import { LoginButton, SubTitle } from '../styles';
 

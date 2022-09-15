@@ -39,12 +39,12 @@ export const OptionsButton = styled(Button)`
   align-items: center;
   background-color: ${({ theme }) => theme.palette.caption.dark};
   display: flex;
-  height: 32px;
+  height: 2rem;
   justify-content: center;
-  min-width: 32px;
+  min-width: 2rem;
   padding-bottom: 0.6rem;
-  padding-left: 10px;
-  padding-top: 10px;
+  padding-left: 0.6rem;
+  padding-top: 0.6rem;
   right: auto !important;
-  width: 32px;
+  width: 2rem;
 `;

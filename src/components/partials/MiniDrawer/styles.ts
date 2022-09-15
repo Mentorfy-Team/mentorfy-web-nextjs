@@ -41,48 +41,6 @@ export const DrawerHeader = styled(Box)`
   ${({ theme }) => theme.mixins.toolbar}
 `;
 
-export const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>`
-  z-index: ${({ theme }) => theme.zIndex.drawer + 1};
-
-  transition: ${({ theme }) =>
-    theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    })};
-
-  > div {
-    background-color: ${({ theme }) => theme.palette.primary.light};
-    transition: ${({ theme }) =>
-      theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      })};
-  }
-
-  background-color: transparent;
-  box-shadow: none;
-
-  ${({ theme, open }) =>
-    open &&
-    css`
-      transition: ${theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      })};
-      width: calc(100% - ${DrawerWidth});
-    `}
-
-  button {
-    transition: ${({ theme }) =>
-      theme.transitions.create(['margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      })};
-  }
-`;
-
 export const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
 })`
@@ -157,15 +115,4 @@ export const ProFree = styled(Box)`
   border-radius: 10px;
   background-color: ${({ theme }) => theme.palette.accent.main} !important;
   color: ${({ theme }) => theme.palette.text.primary} !important;
-`;
-
-export const WrapperSupportHeader = styled(Box)<AppBarProps>`
-  width: 100%;
-
-  ${({ theme, open }) => css`
-    ${theme.breakpoints.up('sm')} {
-      margin-left: ${!open && '4rem'};
-      padding-left: 0.45rem;
-    }
-  `}
 `;
