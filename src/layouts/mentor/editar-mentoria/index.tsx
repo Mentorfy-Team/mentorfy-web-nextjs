@@ -1,24 +1,21 @@
 import { FC, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
-<<<<<<< HEAD
 import { useTheme } from '@mui/material';
-=======
->>>>>>> 01be5d02002202e95471d7ba32eb75381014263a
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import { useTheme } from '@mui/material/styles';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import InputField from '~/components/atoms/InputField';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
-<<<<<<< HEAD
-import { CustomAppBar } from '~/components/partials/MiniDrawer/components/CustomAppBar';
-import { WrapperSupportHeader } from '~/components/partials/MiniDrawer/components/SupportHeader';
+import MiniDrawer from '~/components/partials/MiniDrawer';
+import PageWrapper from '~/components/partials/PageWrapper';
+import { PublicRoutes } from '~/consts';
+import { GetProfile } from '~/services/profile.service';
 import { AddImgButton, BoxHeader, ButtonsWrapper, CustomTypograpy, Input, Steps, Task, TaskBox, WrapperContent } from './styles';
 
 const EditarMentoria: FC = () => {
@@ -35,17 +32,8 @@ const EditarMentoria: FC = () => {
   };
 
   const InpuText = 'Tarefa 01 Lorem ipsum dolor win.';
-=======
-import MiniDrawer from '~/components/partials/MiniDrawer';
-import PageWrapper from '~/components/partials/PageWrapper';
-import { BoxHeader, ButtonsWrapper, CustomTypograpy, StepOne } from './styles';
-
-const EditarMentoria: FC = () => {
-  const [tabindex, setTabindex] = useState(0);
-  const theme = useTheme();
 
   const Header = <Typography>Nova Mentoria 4S</Typography>;
->>>>>>> 01be5d02002202e95471d7ba32eb75381014263a
 
   const SupportHeader = (
     <Tabbar selected={tabindex} onChange={(_, value) => setTabindex(value)}>
@@ -85,7 +73,6 @@ const EditarMentoria: FC = () => {
             também pode mover de ordem as etapas e tarefas.
           </CustomTypograpy>
 
-<<<<<<< HEAD
         <Divider sx={{ borderColor: `${theme.palette.tertiary.light}`, marginBottom: '1.8rem' }} />
         <Steps>
           <BoxHeader>
@@ -165,20 +152,8 @@ const EditarMentoria: FC = () => {
           </Box>
         </Steps>
       </ContentWidthLimit>
-    </>
-=======
-          <Divider sx={{ borderColor: '#9F9F9F' }} />
-          <StepOne>
-            <BoxHeader>
-              <IconButton aria-label="menu" color="inherit" sx={{ ml: 0 }}>
-                <MenuIcon />
-              </IconButton>
-            </BoxHeader>
-          </StepOne>
-        </ContentWidthLimit>
       </MiniDrawer>
     </PageWrapper>
->>>>>>> 01be5d02002202e95471d7ba32eb75381014263a
   );
 };
 
@@ -187,4 +162,5 @@ export async function getProps() {
     props: {},
   };
 }
+
 export default EditarMentoria;
