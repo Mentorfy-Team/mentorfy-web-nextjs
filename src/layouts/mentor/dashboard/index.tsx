@@ -48,10 +48,10 @@ export const getProps = withPageAuth({
   authRequired: true,
   redirectTo: PublicRoutes.login,
   async getServerSideProps(ctx) {
-    const profile = await GetProfile(ctx.req);
+    const { profile } = await GetProfile(ctx.req);
     return {
       props: {
-        profile: null,
+        profile: profile,
       },
     };
   },

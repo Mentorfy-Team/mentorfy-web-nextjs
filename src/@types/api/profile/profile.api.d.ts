@@ -6,8 +6,9 @@ declare namespace ProfileApi {
       };
     }
     interface Response {
-      profile: ExternalModules.Supabase.Database.public.Tables.profile.Row;
-      address: ExternalModules.Supabase.Database.public.Tables.address.Row;
+      profile?: ExternalModules.Supabase.Database.public.Tables.profile.Row;
+      address?: ExternalModules.Supabase.Database.public.Tables.address.Row;
+      error?: string;
     }
   }
   namespace Post {

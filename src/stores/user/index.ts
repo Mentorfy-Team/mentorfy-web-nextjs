@@ -3,32 +3,20 @@ import create from 'zustand';
 import { persist } from 'zustand/middleware';
 
 type UserStateType = {
-  userLogin: (user: ExternalModules.Supabase.User) => void;
-  userLogout: () => void;
-  user?: ExternalModules.Supabase.User | null;
+  setProfile: (profile: UserClient.Profile) => void;
+  profile?: UserClient.Profile;
 } & typeof initialUserStore;
 
-const initialUserStore = {
-  isLoggedIn: false,
-};
+const initialUserStore = {};
 
 const userStore = create(
   persist<UserStateType>(
     (set, get) => ({
       ...initialUserStore,
-      userLogin: (user: ExternalModules.Supabase.User) => {
+      setProfile: (profile) => {
         set(
           produce((draft: UserStateType) => {
-            draft.isLoggedIn = true;
-            draft.user = user;
-          }),
-        );
-      },
-      userLogout: () => {
-        set(
-          produce((draft: UserStateType) => {
-            draft.isLoggedIn = false;
-            draft.user = null;
+            draft.profile = profile;
           }),
         );
       },

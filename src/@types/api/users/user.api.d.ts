@@ -19,6 +19,7 @@ declare namespace UsersApi {
 
     type Response = {
       user?: User;
+      profile?: ExternalModules.Supabase.Database.public.Tables.profile.Row;
       session?: ExternalModules.Supabase.Session & {
         user: User;
       };

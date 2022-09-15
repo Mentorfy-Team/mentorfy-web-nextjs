@@ -1,8 +1,10 @@
 import { FC, useCallback, useState } from 'react';
 import Divider from '@mui/material/Divider';
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
+import { CreateSupabaseWithAuth } from '~/backend/supabase';
 import { MentorRoutes } from '~/consts/routes/routes.consts';
 import { Authenticate } from '~/services/auth/auth.service';
 import { userStore } from '~/stores';
@@ -29,25 +31,40 @@ const Login: FC<props> = ({ pageChange }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>();
   const route = useRouter();
-  const { userLogin } = userStore();
+  const { setProfile } = userStore();
   const { register, handleSubmit } = useForm<Auth>();
 
   const onSubmit: SubmitHandler<Auth> = useCallback(
     async (values) => {
       setIsLoading(true);
-      const registerData = await Authenticate(values);
+      const auth = await Authenticate(values);
 
-      if (!registerData.error) {
-        userLogin(registerData.user);
-        route.push(MentorRoutes.home);
+      if (!auth?.error) {
+        const supabase = CreateSupabaseWithAuth(
+          null,
+          supabaseClient.auth.session()['access_token'],
+        );
+        const { user } = await supabase.auth.api.getUser(
+          supabaseClient.auth.session()['access_token'],
+        );
+        const { data, error } = await supabase
+          .from('profile')
+          .select('*')
+          .eq('id', user.id)
+          .single();
+
+        if (!error) {
+          setProfile(data as any);
+          route.push(MentorRoutes.home);
+        }
       } else {
-        if (registerData.error.includes('email')) {
+        if (auth?.error.includes('email')) {
           setError('Email e ou senha incorretos, tente novamente!');
         }
       }
       setIsLoading(false);
     },
-    [route, userLogin],
+    [route, setProfile],
   );
 
   return (

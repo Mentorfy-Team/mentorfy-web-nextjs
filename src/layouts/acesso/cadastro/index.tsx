@@ -31,7 +31,6 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
   const [rePassword, setRePassword] = useState('');
   const [acceptPolices, setAcceptPolices] = useState(false);
   const { register, handleSubmit } = useForm<UserClient.SignUp>();
-  const { userLogin } = userStore();
 
   const RePasswordCheck = useMemo(() => {
     return rePassword === password && rePassword.length > 0;
@@ -67,7 +66,6 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
       const registerData = await RegisterNewUser(values);
 
       if (!registerData.error) {
-        userLogin(registerData.user);
         setInfo(
           <>
             <Text>Seu cadastro foi concluido com sucesso!</Text>
@@ -82,7 +80,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
       }
       setIsLoading(false);
     },
-    [pageChange, password, setInfo, userLogin],
+    [pageChange, password, setInfo],
   );
 
   return (
