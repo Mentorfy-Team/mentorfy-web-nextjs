@@ -105,8 +105,6 @@ const ProductsTable = () => {
 
   useEffect(() => {
     setRows([createData('Método em 4 Semanas', 597.0, 'Mentoria 4S', 'Ativo')]);
-    setRows([createData('Método em 4 Semanas', 597.0, 'Mentoria 4S', 'Ativo')]);
-    setRows([createData('Método em 4 Semanas', 597.0, 'Mentoria 4S', 'Ativo')]);
   }, [createData]);
 
   return (
@@ -146,7 +144,7 @@ const ProductsTable = () => {
             transitionDuration={1}
           >
             <PopoverBox display="flex" flexDirection="column">
-              <Link href={'/mentor/editar-mentoria'} passHref>
+              <Link href={'/mentor/editar-mentoria'}>
                 <Button>
                   <SvgIcon
                     sx={{ marginRight: '0.5rem', width: '1.2rem' }}
