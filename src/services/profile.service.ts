@@ -1,9 +1,12 @@
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from './HttpClient';
 
-export const GetProfile = async (req, withAddress = false) => {
+export const GetProfile = async (
+  req,
+  withAddress = false,
+): Promise<ProfileApi.Get.Response> => {
   try {
-    const response = await HttpClient.get<UsersApi.Post.Response>(
+    const response = await HttpClient.get<ProfileApi.Get.Response>(
       ApiRoutes.users_profile,
       {
         // * Passa a autenticação para frente

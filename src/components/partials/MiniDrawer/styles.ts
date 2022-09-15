@@ -9,7 +9,7 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-const DrawerWidth = '205px';
+const DrawerWidth = '220px';
 
 const openedMixin = (theme: Theme) => `
   width: ${DrawerWidth};

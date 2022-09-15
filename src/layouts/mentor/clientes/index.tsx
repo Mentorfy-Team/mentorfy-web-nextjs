@@ -1,17 +1,20 @@
 import { FC, useCallback } from 'react';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/future/image';
 
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
+import { PublicRoutes } from '~/consts';
+import { GetProfile } from '~/services/profile.service';
 import ClientsGrid from './components/ClientsGrid';
 import ClientsTable from './components/ClientsTable';
 import { ButtonsWrapper, ClientsOptionsButton } from './style';
 
-const Clients: FC = () => {
+const Clients: FC<PageTypes.Props> = ({ profile }) => {
   const isMobile = useMediaQuery('(max-width: 500px)');
 
   const ProductsTableComponent = useCallback(() => {
@@ -33,7 +36,11 @@ const Clients: FC = () => {
   const createdClientsText = isMobile ? '' : 'Cadastrar Clientes';
   return (
     <PageWrapper>
-      <MiniDrawer header={Header} supportHeader={SupportHeader}>
+      <MiniDrawer
+        profile={profile}
+        header={Header}
+        supportHeader={SupportHeader}
+      >
         <ContentWidthLimit>
           <ClientsGrid />
           <ButtonsWrapper>
@@ -72,11 +79,19 @@ const Clients: FC = () => {
   );
 };
 
-export async function getProps() {
-  return {
-    props: {},
-  };
-}
+// * ServerSideRender (SSR)
+export const getProps = withPageAuth({
+  authRequired: true,
+  redirectTo: PublicRoutes.login,
+  async getServerSideProps(ctx) {
+    const { profile } = await GetProfile(ctx.req);
+    return {
+      props: {
+        profile: profile,
+      },
+    };
+  },
+});
 
 export default Clients;
 function px(arg0: number, arg1: number, px: any) {

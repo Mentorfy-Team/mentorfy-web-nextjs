@@ -25,17 +25,11 @@ import {
   InputField,
 } from './style';
 
-type props = {
-  profile: UserClient.Profile;
-  address: UserClient.Address;
-  user: UserClient.User;
-};
-
 type UpdateForm = Partial<UserClient.User> &
   Partial<UserClient.Profile> &
   Partial<UserClient.Address>;
 
-const MyProfile: FC<props> = ({ profile, address, user }) => {
+const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>();
   const { register, handleSubmit } = useForm<UpdateForm>();
@@ -100,7 +94,7 @@ const MyProfile: FC<props> = ({ profile, address, user }) => {
   const HeaderDrawer = <Typography variant="h6">Meu Perfil</Typography>;
   return (
     <PageWrapper>
-      <MiniDrawer header={HeaderDrawer}>
+      <MiniDrawer profile={profile} header={HeaderDrawer}>
         <ContentWidthLimit maxWidth={600}>
           <Header>
             <CustomTypography variant="h6">Dados Gerais</CustomTypography>

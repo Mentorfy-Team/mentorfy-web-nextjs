@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import LinkIcon from '@mui/icons-material/Link';
 import Box from '@mui/material/Box';
@@ -59,46 +59,49 @@ const ProductsTable = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  function createData(
-    name: string,
-    price: number,
-    status: string,
-    memberArea?: number,
-    actions?: any,
-  ): Data {
-    return {
-      name,
-      price,
-      memberArea: memberArea ? (
-        <EnterMemberArea
-          onClick={() => route.push(MentorRoutes.members_area + '/1')}
-          display="flex"
-        >
-          <Box>
-            <DoorSvg />
+  const createData = useCallback(
+    (
+      name: string,
+      price: number,
+      status: string,
+      memberArea?: number,
+      actions?: any,
+    ): Data => {
+      return {
+        name,
+        price,
+        memberArea: memberArea ? (
+          <EnterMemberArea
+            onClick={() => route.push(MentorRoutes.members_area + '/1')}
+            display="flex"
+          >
+            <Box>
+              <DoorSvg />
+            </Box>
+            <Typography pl={2} fontSize="0.959rem" lineHeight="1.15rem">
+              Entrar
+            </Typography>
+          </EnterMemberArea>
+        ) : null,
+        status: (
+          <Box
+            sx={{
+              backgroundColor: status === 'Ativo' ? '#86ffb9' : '#ff98ac',
+              color: status === 'Ativo' ? '#075327' : '#6b1728',
+              fontWeight: 'bold',
+              width: 60,
+              textAlign: 'center',
+              borderRadius: 10,
+            }}
+          >
+            <Typography variant="body2">{status}</Typography>
           </Box>
-          <Typography pl={2} fontSize="0.959rem" lineHeight="1.15rem">
-            Entrar
-          </Typography>
-        </EnterMemberArea>
-      ) : null,
-      status: (
-        <Box
-          sx={{
-            backgroundColor: status === 'Ativo' ? '#86ffb9' : '#ff98ac',
-            color: status === 'Ativo' ? '#075327' : '#6b1728',
-            fontWeight: 'bold',
-            width: 60,
-            textAlign: 'center',
-            borderRadius: 10,
-          }}
-        >
-          <Typography variant="body2">{status}</Typography>
-        </Box>
-      ),
-      actions: '',
-    };
-  }
+        ),
+        actions: '',
+      };
+    },
+    [],
+  );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

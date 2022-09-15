@@ -6,17 +6,9 @@ import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { PublicRoutes } from '~/consts';
-import { ApiRoutes } from '~/consts/routes/api.routes';
-import { HttpClient } from '~/services/HttpClient';
 import { GetProfile } from '~/services/profile.service';
 
-type Props = {
-  user: UserClient.User;
-  profile: UserClient.Profile;
-  accessToken: string;
-};
-
-const Dashboard: FC<Props> = ({ profile }) => {
+const Dashboard: FC<PageTypes.Props> = ({ profile }) => {
   const [tabindex, setTabindex] = useState(0);
   const Header = (
     <Typography variant="h6" noWrap component="div">
@@ -54,10 +46,10 @@ export const getProps = withPageAuth({
   authRequired: true,
   redirectTo: PublicRoutes.login,
   async getServerSideProps(ctx) {
-    const profile = await GetProfile(ctx.req);
+    const { profile } = await GetProfile(ctx.req);
     return {
       props: {
-        profile: null,
+        profile: profile,
       },
     };
   },

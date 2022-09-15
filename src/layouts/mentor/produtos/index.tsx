@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
 import SearchInput from '~/components/atoms/SearchInput';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
@@ -12,6 +13,8 @@ import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
+import { PublicRoutes } from '~/consts';
+import { GetProfile } from '~/services/profile.service';
 import ProductsTable from './components/ProductsTable';
 import { AddProductButton, HeaderWrapper } from './styles';
 import plus_svg from '~/../public/svgs/plus';
@@ -20,7 +23,7 @@ const CreateProductDialog = dynamic(
   () => import('./components/CreateProductDialog'),
 );
 
-const Produtos: FC = () => {
+const Produtos: FC<PageTypes.Props> = ({ profile }) => {
   const [tabindex, setTabindex] = useState(0);
   const [products, setProducts] = useState([]);
   const [openCreatePage, setOpenCreatePage] = useState(false);
@@ -49,7 +52,11 @@ const Produtos: FC = () => {
   return (
     <>
       <PageWrapper>
-        <MiniDrawer header={Header} supportHeader={SupportHeader}>
+        <MiniDrawer
+          profile={profile}
+          header={Header}
+          supportHeader={SupportHeader}
+        >
           <ContentWidthLimit>
             <Grid container>
               <Grid xs={12} lg={6}>
@@ -85,10 +92,18 @@ const Produtos: FC = () => {
   );
 };
 
-export async function getProps() {
-  return {
-    props: {},
-  };
-}
+// * ServerSideRender (SSR)
+export const getProps = withPageAuth({
+  authRequired: true,
+  redirectTo: PublicRoutes.login,
+  async getServerSideProps(ctx) {
+    const { profile } = await GetProfile(ctx.req);
+    return {
+      props: {
+        profile: profile,
+      },
+    };
+  },
+});
 
 export default Produtos;

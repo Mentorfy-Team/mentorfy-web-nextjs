@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
 import Box from '@mui/material/Box';
 import SvgIcon from '@mui/material/SvgIcon';
@@ -39,35 +39,33 @@ interface Data {
 const ClientsTable = () => {
   const [page, setPage] = useState(1);
 
-  function createData(
-    name: string,
-    email: string,
-    product: string,
-    date: string,
-  ): Data {
-    return {
-      name,
-      email,
-      product: <ProductBox>{product}</ProductBox>,
-      date: (
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          <Box>
-            <P>{date}</P>
-            <Typography>{date}</Typography>
+  const createData = useCallback(
+    (name: string, email: string, product: string, date: string): Data => {
+      return {
+        name,
+        email,
+        product: <ProductBox>{product}</ProductBox>,
+        date: (
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Box>
+              <P>{date}</P>
+              <Typography>{date}</Typography>
+            </Box>
+            <ArrowButton>
+              <SvgIcon id="Arrow" component={ArrowForwardIos} />
+            </ArrowButton>
           </Box>
-          <ArrowButton>
-            <SvgIcon id="Arrow" component={ArrowForwardIos} />
-          </ArrowButton>
-        </Box>
-      ),
-    };
-  }
+        ),
+      };
+    },
+    [],
+  );
 
   const rows = [
     createData(
