@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
@@ -9,6 +9,8 @@ import SearchInput from '~/components/atoms/SearchInput';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
+import { CustomAppBar } from '~/components/partials/MiniDrawer/components/CustomAppBar';
+import { WrapperSupportHeader } from '~/components/partials/MiniDrawer/components/SupportHeader';
 import ProductsTable from './components/ProductsTable';
 import { AddProductButton, HeaderWrapper } from './styles';
 import PlusSvg from '~/../public/svgs/plus';
@@ -25,9 +27,9 @@ const Produtos: FC = () => {
   const isMobile = useMediaQuery('(max-width: 600px)');
 
   const Header = (
-    <HeaderWrapper>
-      <Typography variant="h6">Produtos</Typography>
-    </HeaderWrapper>
+    <Typography variant="h6" color="white" noWrap component="p">
+      Produtos
+    </Typography>
   );
 
   const SupportHeader = (
@@ -43,6 +45,12 @@ const Produtos: FC = () => {
 
   return (
     <>
+      <CustomAppBar id="AppBar">
+        {Header}
+        {SupportHeader && (
+          <WrapperSupportHeader>{SupportHeader}</WrapperSupportHeader>
+        )}
+      </CustomAppBar>
       <ContentWidthLimit>
         <Grid container>
           <Grid xs={12} lg={6}>
