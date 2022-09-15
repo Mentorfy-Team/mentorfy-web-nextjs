@@ -8,12 +8,22 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useTheme } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import { MentorMenu, MentoredMenu } from '~/consts/routes/routes.consts';
 import AdjustName from './helper/AdjustName';
-import { Drawer, Kind, ProFree, UserField, UserName } from './styles';
+import {
+  AppBar,
+  Drawer,
+  DrawerHeader,
+  Kind,
+  ProFree,
+  UserField,
+  UserName,
+  WrapperSupportHeader,
+} from './styles';
 
 type props = {
   children?: JSX.Element;
@@ -30,6 +40,7 @@ const MiniDrawer: React.FC<props> = ({
 }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+  const isMobile = useMediaQuery('(max-width:500px)');
   const router = useRouter();
 
   const handleDrawerOpen = () => {
@@ -60,23 +71,35 @@ const MiniDrawer: React.FC<props> = ({
 
   return (
     <Box sx={{ display: 'flex', overflow: 'hidden', minHeight: 'inherit' }}>
+      <AppBar id="AppBar" position="fixed" open={open}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={open ? handleDrawerClose : handleDrawerOpen}
+            edge="start"
+            sx={{
+              marginRight: isMobile ? 2 : 5,
+              marginLeft: open ? -9.3 : -1,
+            }}
+          >
+            <Image
+              alt="menu"
+              width="18"
+              height="18"
+              src={open ? '/svgs/arrows-left.svg' : '/svgs/menu.svg'}
+            />
+          </IconButton>
+          {header}
+        </Toolbar>
+        {supportHeader && (
+          <WrapperSupportHeader open={open}>
+            {supportHeader}
+          </WrapperSupportHeader>
+        )}
+      </AppBar>
       <Drawer id="Drawer" variant="permanent" open={open}>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          onClick={open ? handleDrawerClose : handleDrawerOpen}
-          edge="start"
-          sx={{
-            justifyContent: 'right',
-          }}
-        >
-          <Image
-            alt="menu"
-            width="18"
-            height="18"
-            src={open ? '/svgs/arrows-left.svg' : '/svgs/menu.svg'}
-          />
-        </IconButton>
+        <DrawerHeader id="DrawerHeader" />
         <UserField pl={1.5} display="flex">
           <Avatar sx={{ backgroundColor: 'orange !important' }}>{`${
             profile?.name[0]
@@ -144,8 +167,9 @@ const MiniDrawer: React.FC<props> = ({
         component="main"
         sx={{
           flexGrow: 1,
+          pt: 3,
+          marginTop: supportHeader ? '114px' : '60px',
           overflow: 'auto',
-          backgroundColor: theme.palette.primary.main,
         }}
       >
         <Box

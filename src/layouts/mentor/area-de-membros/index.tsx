@@ -15,6 +15,9 @@ import { AddProductButton, HeaderWrapper } from './styles';
 import plus_svg from '~/../public/svgs/plus';
 
 const MembersArea: FC = () => {
+  const [products, setProducts] = useState([]);
+  const [openCreatePage, setOpenCreatePage] = useState(false);
+
   const isMobile = useMediaQuery('(max-width: 600px)');
 
   useEffect(() => {}, []);
@@ -31,16 +34,20 @@ const MembersArea: FC = () => {
 
   return (
     <>
-      <ContentWidthLimit>
-        <Box sx={{ float: 'left', width: '30%' }}>
-          <SearchInput
-            sx={{
-              width: isMobile ? '90vw' : 'unset',
-            }}
-          />
-        </Box>
-        <ProductsTableComponent />
-      </ContentWidthLimit>
+      <PageWrapper>
+        <MiniDrawer header={Header}>
+          <ContentWidthLimit>
+            <Box sx={{ float: 'left', width: '30%' }}>
+              <SearchInput
+                sx={{
+                  width: isMobile ? '90vw' : 'unset',
+                }}
+              />
+            </Box>
+            <ProductsTableComponent />
+          </ContentWidthLimit>
+        </MiniDrawer>
+      </PageWrapper>
     </>
   );
 };

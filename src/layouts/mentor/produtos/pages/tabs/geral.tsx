@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
 import InputField from '~/components/atoms/InputField';
 import SelectField from '~/components/atoms/SelectField';
-import { MentorRoutes } from '~/consts';
+import { Routes } from '~/consts';
 import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
 import { stringToColor } from '~/helpers/StringToColor';
 import { ActionButton, ReturnButton, SaveButton } from '../styles';

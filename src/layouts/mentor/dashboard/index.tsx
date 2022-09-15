@@ -1,14 +1,13 @@
 import { FC, useEffect, useState } from 'react';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
-import { CustomAppBar } from '~/components/partials/MiniDrawer/components/CustomAppBar';
-import { WrapperSupportHeader } from '~/components/partials/MiniDrawer/components/SupportHeader';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { PublicRoutes } from '~/consts';
+import { ApiRoutes } from '~/consts/routes/api.routes';
+import { HttpClient } from '~/services/HttpClient';
 import { GetProfile } from '~/services/profile.service';
 
 type Props = {
@@ -40,12 +39,13 @@ const Dashboard: FC<Props> = ({ profile }) => {
   }, []);
 
   return (
-    <CustomAppBar id="AppBar">
-      <Toolbar>{Header}</Toolbar>
-      {SupportHeader && (
-        <WrapperSupportHeader>{SupportHeader}</WrapperSupportHeader>
-      )}
-    </CustomAppBar>
+    <PageWrapper>
+      <MiniDrawer
+        profile={profile}
+        header={Header}
+        supportHeader={SupportHeader}
+      ></MiniDrawer>
+    </PageWrapper>
   );
 };
 

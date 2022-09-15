@@ -15,7 +15,7 @@ const Clients: FC = () => {
   const isMobile = useMediaQuery('(max-width: 500px)');
 
   const ProductsTableComponent = useCallback(() => {
-    return <ClientsTable data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} />;
+    return <ClientsTable />;
   }, []);
   const Header = <Typography variant="h6">Meus Clientes</Typography>;
 
@@ -32,39 +32,43 @@ const Clients: FC = () => {
   const filterClientsText = isMobile ? '' : 'Filtrar Clientes';
   const createdClientsText = isMobile ? '' : 'Cadastrar Clientes';
   return (
-    <ContentWidthLimit>
-      <ClientsGrid />
-      <ButtonsWrapper>
-        <ClientsOptionsButton variant="outlined">
-          <Image
-            alt="exportar-clientes"
-            src="/svgs/export-clients.svg"
-            height={22}
-            width={22}
-          />
-          {exportClientsText}
-        </ClientsOptionsButton>
-        <ClientsOptionsButton variant="outlined">
-          <Image
-            alt="exportar-clientes"
-            src="/svgs/filter-clients.svg"
-            height={22}
-            width={22}
-          />
-          {filterClientsText}
-        </ClientsOptionsButton>
-        <ClientsOptionsButton variant="contained">
-          <Image
-            alt="exportar-clientes"
-            src="/svgs/plus.svg"
-            height={31}
-            width={22}
-          />
-          {createdClientsText}
-        </ClientsOptionsButton>
-      </ButtonsWrapper>
-      <ProductsTableComponent />
-    </ContentWidthLimit>
+    <PageWrapper>
+      <MiniDrawer header={Header} supportHeader={SupportHeader}>
+        <ContentWidthLimit>
+          <ClientsGrid />
+          <ButtonsWrapper>
+            <ClientsOptionsButton variant="outlined">
+              <Image
+                alt="exportar-clientes"
+                src="/svgs/export-clients.svg"
+                height={22}
+                width={22}
+              />
+              {exportClientsText}
+            </ClientsOptionsButton>
+            <ClientsOptionsButton variant="outlined">
+              <Image
+                alt="exportar-clientes"
+                src="/svgs/filter-clients.svg"
+                height={22}
+                width={22}
+              />
+              {filterClientsText}
+            </ClientsOptionsButton>
+            <ClientsOptionsButton variant="contained">
+              <Image
+                alt="exportar-clientes"
+                src="/svgs/plus.svg"
+                height={31}
+                width={22}
+              />
+              {createdClientsText}
+            </ClientsOptionsButton>
+          </ButtonsWrapper>
+          <ProductsTableComponent />
+        </ContentWidthLimit>
+      </MiniDrawer>
+    </PageWrapper>
   );
 };
 

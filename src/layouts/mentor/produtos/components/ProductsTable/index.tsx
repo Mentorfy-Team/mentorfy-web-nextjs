@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import LinkIcon from '@mui/icons-material/Link';
 import Box from '@mui/material/Box';
@@ -52,55 +52,53 @@ interface Data {
   actions: any;
 }
 
-const ProductsTable = ({ data }) => {
+const ProductsTable = () => {
   const [page, setPage] = useState(1);
   const [rows, setRows] = useState([]);
   const route = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const createData = useCallback(
-    (
-      name: string,
-      price: number,
-      status: string,
-      memberArea?: number,
-      actions?: any,
-    ): Data => {
-      return {
-        name,
-        price,
-        memberArea: memberArea ? (
-          <EnterMemberArea
-            onClick={() => route.push(MentorRoutes.members_area + '/1')}
-            display="flex"
-          >
-            <Box>
-              <DoorSvg />
-            </Box>
-            <Typography pl={2} fontSize="0.959rem" lineHeight="1.15rem">
-              Entrar
-            </Typography>
-          </EnterMemberArea>
-        ) : null,
-        status: (
-          <Box
-            sx={{
-              backgroundColor: status === 'Ativo' ? '#86ffb9' : '#ff98ac',
-              color: status === 'Ativo' ? '#075327' : '#6b1728',
-              fontWeight: 'bold',
-              width: 60,
-              textAlign: 'center',
-              borderRadius: 10,
-            }}
-          >
-            <Typography variant="body2">{status}</Typography>
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  function createData(
+    name: string,
+    price: number,
+    status: string,
+    memberArea?: number,
+    actions?: any,
+  ): Data {
+    return {
+      name,
+      price,
+      memberArea: memberArea ? (
+        <EnterMemberArea
+          onClick={() => route.push(MentorRoutes.members_area + '/1')}
+          display="flex"
+        >
+          <Box>
+            <DoorSvg />
           </Box>
-        ),
-        actions: '',
-      };
-    },
-    [route],
-  );
+          <Typography pl={2} fontSize="0.959rem" lineHeight="1.15rem">
+            Entrar
+          </Typography>
+        </EnterMemberArea>
+      ) : null,
+      status: (
+        <Box
+          sx={{
+            backgroundColor: status === 'Ativo' ? '#86ffb9' : '#ff98ac',
+            color: status === 'Ativo' ? '#075327' : '#6b1728',
+            fontWeight: 'bold',
+            width: 60,
+            textAlign: 'center',
+            borderRadius: 10,
+          }}
+        >
+          <Typography variant="body2">{status}</Typography>
+        </Box>
+      ),
+      actions: '',
+    };
+  }
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -118,8 +116,24 @@ const ProductsTable = ({ data }) => {
   const id = open ? 'simple-popover' : undefined;
 
   useEffect(() => {
-    setRows(data?.map((item) => createData('Mentoria S1', 597.0, 'Ativo', 1)));
-  }, [createData, data]);
+    setRows([
+      createData('Mentoria S1', 597.0, 'Ativo', 1),
+      createData('Mentoria S2', 597.0, 'Ativo'),
+      createData('Mentoria S3', 597.0, 'Ativo'),
+      createData('Mentoria S4', 597.0, 'Ativo'),
+      createData('Mentoria S5', 597.0, 'Ativo'),
+      createData('Mentoria S6', 597.0, 'Ativo'),
+      createData('Mentoria S7', 597.0, 'Ativo'),
+      createData('Mentoria S8', 597.0, 'Ativo'),
+      createData('Mentoria S9', 597.0, 'Ativo'),
+      createData('Mentoria S10', 597.0, 'Ativo'),
+      createData('Mentoria S11', 597.0, 'Ativo'),
+      createData('Mentoria S12', 597.0, 'Ativo'),
+      createData('Mentoria S13', 597.0, 'Ativo'),
+      createData('Mentoria S14', 597.0, 'Ativo'),
+      createData('Mentoria S15', 597.0, 'Ativo'),
+    ]);
+  }, [createData]);
 
   return (
     <Datagrid
@@ -135,7 +149,7 @@ const ProductsTable = ({ data }) => {
           style={{ minWidth: 100, padding: '0px' }}
         >
           <MarginPopopver
-            sx={{ width: 35, height: 28 }}
+            sx={{ width: 35, height: 32 }}
             onClick={(e) => handleClick(e as any)}
           >
             <OptionsButton>
@@ -162,7 +176,7 @@ const ProductsTable = ({ data }) => {
                 href={'/mentor/produtos/editar/1516-qwe45-dw48i-ghhg7'}
                 passHref
               >
-                <Button sx={{ padding: '8px' }}>
+                <Button>
                   <SvgIcon
                     sx={{ marginRight: '0.5rem', width: '1.2rem' }}
                     component={LinkIcon}

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
 import Box from '@mui/material/Box';
 import SvgIcon from '@mui/material/SvgIcon';
@@ -36,52 +36,100 @@ interface Data {
   date: JSX.Element;
 }
 
-const ClientsTable = ({ data }) => {
+const ClientsTable = () => {
   const [page, setPage] = useState(1);
 
-  const createData = useCallback(
-    (name: string, email: string, product: string, date: string): Data => {
-      return {
-        name,
-        email,
-        product: <ProductBox>{product}</ProductBox>,
-        date: (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }}
-          >
-            <Box>
-              <Typography variant="body2">{date.replace('T', ' ')}</Typography>
-            </Box>
-            <ArrowButton>
-              <SvgIcon id="Arrow" component={ArrowForwardIos} />
-            </ArrowButton>
+  function createData(
+    name: string,
+    email: string,
+    product: string,
+    date: string,
+  ): Data {
+    return {
+      name,
+      email,
+      product: <ProductBox>{product}</ProductBox>,
+      date: (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box>
+            <P>{date}</P>
+            <Typography>{date}</Typography>
           </Box>
-        ),
-      };
-    },
-    [],
-  );
-
-  const rows = useCallback(() => {
-    return data.map((row) =>
-      createData(
-        'Alexandre Mendes',
-        'alexandremendes@gmail.com',
-        'Mentoria 4S',
-        '10/09/2022T13:30',
+          <ArrowButton>
+            <SvgIcon id="Arrow" component={ArrowForwardIos} />
+          </ArrowButton>
+        </Box>
       ),
-    );
-  }, [createData, data]);
+    };
+  }
 
+  const rows = [
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+    createData(
+      'Alexandre Mendes',
+      'alexandremendes@gmail.com',
+      'Mentoria 4S',
+      'Cerca de 8 horas',
+    ),
+  ];
   return (
     <Datagrid
       page={page}
       columns={columns}
-      rows={rows()}
+      rows={rows}
       onPageChange={setPage}
     />
   );

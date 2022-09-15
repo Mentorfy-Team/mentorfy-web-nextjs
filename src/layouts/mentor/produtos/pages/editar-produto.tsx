@@ -10,7 +10,7 @@ import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
-import { MentorRoutes } from '~/consts';
+import { Routes } from '~/consts';
 import { HeaderWrapper, MembersAreaButton } from './styles';
 
 import GeralPage from './tabs/geral';
@@ -41,7 +41,7 @@ const EditarProduto: FC = () => {
         }}
         variant="contained"
         color="primary"
-        onClick={() => route.push(MentorRoutes.members_area + '/mentoria-4s')}
+        onClick={() => route.push(MentorRoutes.member_area + '/mentoria-4s')}
       >
         <SvgIcon
           sx={{ paddingRight: '1rem', width: '40px' }}
@@ -72,17 +72,21 @@ const EditarProduto: FC = () => {
 
   return (
     <>
-      <ContentWidthLimit maxWidth={700}>
-        <Box
-          sx={{
-            padding: isMobile ? 2 : 4,
-            backgroundColor: (theme) => theme.palette.primary.light,
-            borderRadius: 1,
-          }}
-        >
-          {SwitchTabs()}
-        </Box>
-      </ContentWidthLimit>
+      <PageWrapper>
+        <MiniDrawer header={Header} supportHeader={SupportHeader}>
+          <ContentWidthLimit maxWidth={700}>
+            <Box
+              sx={{
+                padding: isMobile ? 2 : 4,
+                backgroundColor: (theme) => theme.palette.primary.light,
+                borderRadius: 1,
+              }}
+            >
+              {SwitchTabs()}
+            </Box>
+          </ContentWidthLimit>
+        </MiniDrawer>
+      </PageWrapper>
     </>
   );
 };
