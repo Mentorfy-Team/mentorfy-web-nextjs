@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import LinkIcon from '@mui/icons-material/Link';
 import Box from '@mui/material/Box';
@@ -58,35 +58,32 @@ const ProductsTable = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const createData = useCallback(
-    (
-      name: string,
-      mentorados: number,
-      produto: string,
-      status: string,
-    ): Data => {
-      return {
-        name,
-        mentorados,
-        produto,
-        status: (
-          <Box
-            sx={{
-              backgroundColor: status === 'Ativo' ? '#86ffb9' : '#ff98ac',
-              color: status === 'Ativo' ? '#075327' : '#6b1728',
-              fontWeight: 'bold',
-              width: 60,
-              textAlign: 'center',
-              borderRadius: 10,
-            }}
-          >
-            <Typography variant="body2">{status}</Typography>
-          </Box>
-        ),
-      };
-    },
-    [],
-  );
+  function createData(
+    name: string,
+    mentorados: number,
+    produto: string,
+    status: string,
+  ): Data {
+    return {
+      name,
+      mentorados,
+      produto,
+      status: (
+        <Box
+          sx={{
+            backgroundColor: status === 'Ativo' ? '#86ffb9' : '#ff98ac',
+            color: status === 'Ativo' ? '#075327' : '#6b1728',
+            fontWeight: 'bold',
+            width: 60,
+            textAlign: 'center',
+            borderRadius: 10,
+          }}
+        >
+          <Typography variant="body2">{status}</Typography>
+        </Box>
+      ),
+    };
+  }
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);

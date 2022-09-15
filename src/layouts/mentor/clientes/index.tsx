@@ -5,8 +5,8 @@ import Image from 'next/future/image';
 
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';
-import { CustomAppBar } from '~/components/partials/MiniDrawer/components/CustomAppBar';
-import { WrapperSupportHeader } from '~/components/partials/MiniDrawer/components/SupportHeader';
+import MiniDrawer from '~/components/partials/MiniDrawer';
+import PageWrapper from '~/components/partials/PageWrapper';
 import ClientsGrid from './components/ClientsGrid';
 import ClientsTable from './components/ClientsTable';
 import { ButtonsWrapper, ClientsOptionsButton } from './style';
@@ -17,6 +17,7 @@ const Clients: FC = () => {
   const ProductsTableComponent = useCallback(() => {
     return <ClientsTable data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} />;
   }, []);
+  const Header = <Typography variant="h6">Meus Clientes</Typography>;
 
   const SupportHeader = (
     <TabWrapper>
@@ -31,49 +32,39 @@ const Clients: FC = () => {
   const filterClientsText = isMobile ? '' : 'Filtrar Clientes';
   const createdClientsText = isMobile ? '' : 'Cadastrar Clientes';
   return (
-    <>
-      <CustomAppBar id="AppBar">
-        <Typography variant="h6" color="white" noWrap component="p">
-          Clientes
-        </Typography>
-        {SupportHeader && (
-          <WrapperSupportHeader>{SupportHeader}</WrapperSupportHeader>
-        )}
-      </CustomAppBar>
-      <ContentWidthLimit>
-        <ClientsGrid />
-        <ButtonsWrapper>
-          <ClientsOptionsButton variant="outlined">
-            <Image
-              alt="exportar-clientes"
-              src="/svgs/export-clients.svg"
-              height={22}
-              width={22}
-            />
-            {exportClientsText}
-          </ClientsOptionsButton>
-          <ClientsOptionsButton variant="outlined">
-            <Image
-              alt="exportar-clientes"
-              src="/svgs/filter-clients.svg"
-              height={22}
-              width={22}
-            />
-            {filterClientsText}
-          </ClientsOptionsButton>
-          <ClientsOptionsButton variant="contained">
-            <Image
-              alt="exportar-clientes"
-              src="/svgs/plus.svg"
-              height={31}
-              width={22}
-            />
-            {createdClientsText}
-          </ClientsOptionsButton>
-        </ButtonsWrapper>
-        <ProductsTableComponent />
-      </ContentWidthLimit>
-    </>
+    <ContentWidthLimit>
+      <ClientsGrid />
+      <ButtonsWrapper>
+        <ClientsOptionsButton variant="outlined">
+          <Image
+            alt="exportar-clientes"
+            src="/svgs/export-clients.svg"
+            height={22}
+            width={22}
+          />
+          {exportClientsText}
+        </ClientsOptionsButton>
+        <ClientsOptionsButton variant="outlined">
+          <Image
+            alt="exportar-clientes"
+            src="/svgs/filter-clients.svg"
+            height={22}
+            width={22}
+          />
+          {filterClientsText}
+        </ClientsOptionsButton>
+        <ClientsOptionsButton variant="contained">
+          <Image
+            alt="exportar-clientes"
+            src="/svgs/plus.svg"
+            height={31}
+            width={22}
+          />
+          {createdClientsText}
+        </ClientsOptionsButton>
+      </ButtonsWrapper>
+      <ProductsTableComponent />
+    </ContentWidthLimit>
   );
 };
 

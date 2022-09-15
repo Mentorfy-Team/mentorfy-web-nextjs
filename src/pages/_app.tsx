@@ -4,16 +4,14 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { UserProvider } from '@supabase/auth-helpers-react';
 import type { AppProps } from 'next/app';
-import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { SupabaseWithouAuth } from '~/backend/supabase';
+import MiniDrawer from '~/components/partials/MiniDrawer';
 import createEmotionCache from '~/createEmotionCache';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
 const clientSideEmotionCache = createEmotionCache();
-
-const MiniDrawer = dynamic(() => import('~/components/partials/MiniDrawer'));
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
@@ -63,9 +61,11 @@ const App = (props: MyAppProps) => {
     }
     console.log('RenderWithLayout');
     return (
-      <MiniDrawer>
-        <Component {...pageProps} {...{ urlParams: params }} />
-      </MiniDrawer>
+      <PageWrapper>
+        <MiniDrawer>
+          <Component {...pageProps} {...{ urlParams: params }} />
+        </MiniDrawer>
+      </PageWrapper>
     );
   }, [Component, pageProps, params, router.pathname]);
 
