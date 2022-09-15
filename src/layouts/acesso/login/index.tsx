@@ -1,10 +1,8 @@
 import { FC, useCallback, useState } from 'react';
 import Divider from '@mui/material/Divider';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
-import { CreateSupabaseWithAuth } from '~/backend/supabase';
 import { MentorRoutes } from '~/consts/routes/routes.consts';
 import { Authenticate } from '~/services/auth/auth.service';
 import { userStore } from '~/stores';
@@ -31,40 +29,25 @@ const Login: FC<props> = ({ pageChange }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>();
   const route = useRouter();
-  const { setProfile } = userStore();
+  const { userLogin } = userStore();
   const { register, handleSubmit } = useForm<Auth>();
 
   const onSubmit: SubmitHandler<Auth> = useCallback(
     async (values) => {
       setIsLoading(true);
-      const auth = await Authenticate(values);
+      const registerData = await Authenticate(values);
 
-      if (!auth?.error) {
-        const supabase = CreateSupabaseWithAuth(
-          null,
-          supabaseClient.auth.session()['access_token'],
-        );
-        const { user } = await supabase.auth.api.getUser(
-          supabaseClient.auth.session()['access_token'],
-        );
-        const { data, error } = await supabase
-          .from('profile')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-
-        if (!error) {
-          setProfile(data as any);
-          route.push(MentorRoutes.home);
-        }
+      if (!registerData.error) {
+        userLogin(registerData.user);
+        route.push(MentorRoutes.home);
       } else {
-        if (auth?.error.includes('email')) {
+        if (registerData.error.includes('email')) {
           setError('Email e ou senha incorretos, tente novamente!');
         }
       }
       setIsLoading(false);
     },
-    [route, setProfile],
+    [route, userLogin],
   );
 
   return (

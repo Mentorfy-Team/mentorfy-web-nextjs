@@ -4,21 +4,16 @@ import { CookieUtil } from '~/shared/utils';
 export const SupabaseWithouAuth = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,
-  },
 );
 
-export const CreateSupabaseWithAuth = (req?, token?) => {
-  const _token = token ? token : CookieUtil.fromReq(req);
+export const CreateSupabaseWithAuth = (req) => {
+  const token = CookieUtil.fromReq(req);
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       headers: {
-        Authorization: `Bearer ${_token}`,
+        Authorization: `Bearer ${token}`,
       },
     },
   );
