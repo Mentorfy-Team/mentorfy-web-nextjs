@@ -56,7 +56,7 @@ export const ButtonsWrapper = styled('div')`
 
 export const ClientsOptionsButton = styled(Button)`
   align-items: center;
-  border-radius: 10px;
+  border-radius: 5px;
   display: flex;
 
   font-size: 0.875rem;

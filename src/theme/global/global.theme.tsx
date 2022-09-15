@@ -5,7 +5,7 @@ export function GlobalStyles() {
     <Global
       styles={(theme: any) => ({
         '.MuiDialog-paper': {
-          backgroundColor: 'transparent',
+          'background-color': 'transparent',
           '@media (max-width: 490px)': {
             position: 'absolute',
             bottom: -34,
@@ -13,11 +13,11 @@ export function GlobalStyles() {
           },
         },
         '.MuiPopover-paper': {
-          boxShadow: '-4px 4px 0px 0px #00000000',
+          'box-shadow': '-4px 4px 0px 0px #00000000',
         },
         'button:disabled': {
-          backgroundColor: '#9e9e9e',
-          borderRadius: '5px',
+          'background-color': '#9e9e9e',
+          'border-radius': '5px',
           color: 'rgb(255 255 255 / 26%)',
         },
         '@media (min-width: 600px)': {
@@ -27,11 +27,11 @@ export function GlobalStyles() {
           },
           '::-webkit-scrollbar-track': {
             border: '1px solid #6e6e6e',
-            borderRadius: '10px',
+            'border-radius': '10px',
           },
           '::-webkit-scrollbar-thumb': {
             background: '#6e6e6e',
-            borderRadius: '10px',
+            'border-radius': '10px',
           },
           '::-webkit-scrollbar-thumb:hover': {
             background: '#6e6e6e',

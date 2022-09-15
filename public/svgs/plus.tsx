@@ -2,8 +2,8 @@ import { SVGProps } from 'react';
 import { DefaultProps } from './type';
 
 const SvgComponent = ({
-  width = 13,
-  height = 13,
+  width = 14,
+  height = 14,
   fill = '#fff',
 }: DefaultProps) => (
   <svg

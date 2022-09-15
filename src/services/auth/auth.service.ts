@@ -1,3 +1,4 @@
+import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Auth } from '~/@types/api/auth/auth';
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from '../HttpClient';
@@ -14,7 +15,7 @@ export const Authenticate = async (auth: Auth) => {
         error: response.data.error,
       };
     }
-    return response.data.profile;
+    return response.data;
   } catch (error) {
     return {
       error: 'Erro ao cadastrar usuário',

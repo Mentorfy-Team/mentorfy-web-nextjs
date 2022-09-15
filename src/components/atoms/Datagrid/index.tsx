@@ -10,8 +10,8 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
-import chavron_left_svg from '~/../public/svgs/chavron-left';
-import chavron_right_svg from '~/../public/svgs/chavron-right';
+import ChavronLeftSvg from '~/../public/svgs/chavron-left';
+import ChavronRightSvg from '~/../public/svgs/chavron-right';
 
 export type Column = {
   id: string;
@@ -140,7 +140,7 @@ export default function StickyHeadTable({
           disabled={page !== maxPages || page === 1}
           onClick={(e) => handleChangePage(e, page - 1)}
         >
-          <SvgIcon component={chavron_left_svg} />
+          <ChavronLeftSvg />
         </Button>
         <Typography marginX={isMobile ? 0 : 4} mt={1}>{`${
           isMobile ? page : `Página ${page}`
@@ -149,7 +149,7 @@ export default function StickyHeadTable({
           disabled={page === maxPages || maxPages === 0}
           onClick={(e) => handleChangePage(e, page + 1)}
         >
-          <SvgIcon component={chavron_right_svg} />
+          <ChavronRightSvg />
         </Button>
       </CustomNavigation>
     </PaperWrapper>

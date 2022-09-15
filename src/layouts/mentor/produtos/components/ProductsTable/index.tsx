@@ -52,12 +52,13 @@ interface Data {
   actions: any;
 }
 
-const ProductsTable = ({ data }) => {
+const ProductsTable = () => {
   const [page, setPage] = useState(1);
   const [rows, setRows] = useState([]);
   const route = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const createData = useCallback(
     (
       name: string,
@@ -99,7 +100,7 @@ const ProductsTable = ({ data }) => {
         actions: '',
       };
     },
-    [route],
+    [],
   );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -118,8 +119,24 @@ const ProductsTable = ({ data }) => {
   const id = open ? 'simple-popover' : undefined;
 
   useEffect(() => {
-    setRows(data?.map((item) => createData('Mentoria S1', 597.0, 'Ativo', 1)));
-  }, [createData, data]);
+    setRows([
+      createData('Mentoria S1', 597.0, 'Ativo', 1),
+      createData('Mentoria S2', 597.0, 'Ativo'),
+      createData('Mentoria S3', 597.0, 'Ativo'),
+      createData('Mentoria S4', 597.0, 'Ativo'),
+      createData('Mentoria S5', 597.0, 'Ativo'),
+      createData('Mentoria S6', 597.0, 'Ativo'),
+      createData('Mentoria S7', 597.0, 'Ativo'),
+      createData('Mentoria S8', 597.0, 'Ativo'),
+      createData('Mentoria S9', 597.0, 'Ativo'),
+      createData('Mentoria S10', 597.0, 'Ativo'),
+      createData('Mentoria S11', 597.0, 'Ativo'),
+      createData('Mentoria S12', 597.0, 'Ativo'),
+      createData('Mentoria S13', 597.0, 'Ativo'),
+      createData('Mentoria S14', 597.0, 'Ativo'),
+      createData('Mentoria S15', 597.0, 'Ativo'),
+    ]);
+  }, [createData]);
 
   return (
     <Datagrid
@@ -135,7 +152,7 @@ const ProductsTable = ({ data }) => {
           style={{ minWidth: 100, padding: '0px' }}
         >
           <MarginPopopver
-            sx={{ width: 35, height: 28 }}
+            sx={{ width: 35, height: 32 }}
             onClick={(e) => handleClick(e as any)}
           >
             <OptionsButton>
@@ -162,7 +179,7 @@ const ProductsTable = ({ data }) => {
                 href={'/mentor/produtos/editar/1516-qwe45-dw48i-ghhg7'}
                 passHref
               >
-                <Button sx={{ padding: '8px' }}>
+                <Button>
                   <SvgIcon
                     sx={{ marginRight: '0.5rem', width: '1.2rem' }}
                     component={LinkIcon}

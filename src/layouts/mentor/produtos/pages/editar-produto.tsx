@@ -72,17 +72,21 @@ const EditarProduto: FC = () => {
 
   return (
     <>
-      <ContentWidthLimit maxWidth={700}>
-        <Box
-          sx={{
-            padding: isMobile ? 2 : 4,
-            backgroundColor: (theme) => theme.palette.primary.light,
-            borderRadius: 1,
-          }}
-        >
-          {SwitchTabs()}
-        </Box>
-      </ContentWidthLimit>
+      <PageWrapper>
+        <MiniDrawer header={Header} supportHeader={SupportHeader}>
+          <ContentWidthLimit maxWidth={700}>
+            <Box
+              sx={{
+                padding: isMobile ? 2 : 4,
+                backgroundColor: (theme) => theme.palette.primary.light,
+                borderRadius: 1,
+              }}
+            >
+              {SwitchTabs()}
+            </Box>
+          </ContentWidthLimit>
+        </MiniDrawer>
+      </PageWrapper>
     </>
   );
 };

@@ -1,22 +1,26 @@
 import { FC, useCallback } from 'react';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/future/image';
 
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';
-import { CustomAppBar } from '~/components/partials/MiniDrawer/components/CustomAppBar';
-import { WrapperSupportHeader } from '~/components/partials/MiniDrawer/components/SupportHeader';
+import MiniDrawer from '~/components/partials/MiniDrawer';
+import PageWrapper from '~/components/partials/PageWrapper';
+import { PublicRoutes } from '~/consts';
+import { GetProfile } from '~/services/profile.service';
 import ClientsGrid from './components/ClientsGrid';
 import ClientsTable from './components/ClientsTable';
 import { ButtonsWrapper, ClientsOptionsButton } from './style';
 
-const Clients: FC = () => {
+const Clients: FC<PageTypes.Props> = ({ profile }) => {
   const isMobile = useMediaQuery('(max-width: 500px)');
 
   const ProductsTableComponent = useCallback(() => {
-    return <ClientsTable data={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]} />;
+    return <ClientsTable />;
   }, []);
+  const Header = <Typography variant="h6">Meus Clientes</Typography>;
 
   const SupportHeader = (
     <TabWrapper>
@@ -31,57 +35,63 @@ const Clients: FC = () => {
   const filterClientsText = isMobile ? '' : 'Filtrar Clientes';
   const createdClientsText = isMobile ? '' : 'Cadastrar Clientes';
   return (
-    <>
-      <CustomAppBar id="AppBar">
-        <Typography variant="h6" color="white" noWrap component="p">
-          Clientes
-        </Typography>
-        {SupportHeader && (
-          <WrapperSupportHeader>{SupportHeader}</WrapperSupportHeader>
-        )}
-      </CustomAppBar>
-      <ContentWidthLimit>
-        <ClientsGrid />
-        <ButtonsWrapper>
-          <ClientsOptionsButton variant="outlined">
-            <Image
-              alt="exportar-clientes"
-              src="/svgs/export-clients.svg"
-              height={22}
-              width={22}
-            />
-            {exportClientsText}
-          </ClientsOptionsButton>
-          <ClientsOptionsButton variant="outlined">
-            <Image
-              alt="exportar-clientes"
-              src="/svgs/filter-clients.svg"
-              height={22}
-              width={22}
-            />
-            {filterClientsText}
-          </ClientsOptionsButton>
-          <ClientsOptionsButton variant="contained">
-            <Image
-              alt="exportar-clientes"
-              src="/svgs/plus.svg"
-              height={31}
-              width={22}
-            />
-            {createdClientsText}
-          </ClientsOptionsButton>
-        </ButtonsWrapper>
-        <ProductsTableComponent />
-      </ContentWidthLimit>
-    </>
+    <PageWrapper>
+      <MiniDrawer
+        profile={profile}
+        header={Header}
+        supportHeader={SupportHeader}
+      >
+        <ContentWidthLimit>
+          <ClientsGrid />
+          <ButtonsWrapper>
+            <ClientsOptionsButton variant="outlined">
+              <Image
+                alt="exportar-clientes"
+                src="/svgs/export-clients.svg"
+                height={18}
+                width={18}
+              />
+              {exportClientsText}
+            </ClientsOptionsButton>
+            <ClientsOptionsButton variant="outlined">
+              <Image
+                alt="exportar-clientes"
+                src="/svgs/filter-clients.svg"
+                height={18}
+                width={18}
+              />
+              {filterClientsText}
+            </ClientsOptionsButton>
+            <ClientsOptionsButton variant="contained">
+              <Image
+                alt="exportar-clientes"
+                src="/svgs/plus.svg"
+                height={16}
+                width={16}
+              />
+              {createdClientsText}
+            </ClientsOptionsButton>
+          </ButtonsWrapper>
+          <ProductsTableComponent />
+        </ContentWidthLimit>
+      </MiniDrawer>
+    </PageWrapper>
   );
 };
 
-export async function getProps() {
-  return {
-    props: {},
-  };
-}
+// * ServerSideRender (SSR)
+export const getProps = withPageAuth({
+  authRequired: true,
+  redirectTo: PublicRoutes.login,
+  async getServerSideProps(ctx) {
+    const { profile } = await GetProfile(ctx.req);
+    return {
+      props: {
+        profile: profile,
+      },
+    };
+  },
+});
 
 export default Clients;
 function px(arg0: number, arg1: number, px: any) {
