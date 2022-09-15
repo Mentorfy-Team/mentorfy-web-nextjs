@@ -14,8 +14,9 @@ export const SelectFormControl = styled(FormControl)`
   }
 
   .Mui-focused {
-    color: ${({ theme }) => theme.palette.accent.main};
+    color: ${({ theme }) => theme.palette.secondary.main} !important;
   }
+
   .MuiInputBase-root {
     fieldset {
       border: 1px solid white;

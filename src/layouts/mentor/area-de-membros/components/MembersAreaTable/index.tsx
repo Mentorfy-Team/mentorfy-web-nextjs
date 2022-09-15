@@ -57,7 +57,6 @@ const ProductsTable = () => {
   const route = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const createData = useCallback(
     (
       name: string,
@@ -97,7 +96,7 @@ const ProductsTable = () => {
   };
 
   const handleEdit = (id = 'hud2-ioqdf-002e-eee7') => {
-    route.push(MentorRoutes.products_edit + '/' + id);
+    route.push(MentorRoutes.members_area_editar + '/' + id);
   };
 
   const open = Boolean(anchorEl);
@@ -144,7 +143,7 @@ const ProductsTable = () => {
             transitionDuration={1}
           >
             <PopoverBox display="flex" flexDirection="column">
-              <Link href={'/mentor/editar-mentoria'}>
+              <Link href={MentorRoutes.members_area_editar}>
                 <Button>
                   <SvgIcon
                     sx={{ marginRight: '0.5rem', width: '1.2rem' }}

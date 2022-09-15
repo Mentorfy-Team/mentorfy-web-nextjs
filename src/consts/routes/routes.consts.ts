@@ -19,6 +19,7 @@ export enum MentorRoutes {
 
   //* Rotas de área de membros
   members_area = '/mentor/area-de-membros',
+  members_area_editar = '/mentor/area-de-membros/editar',
 
   //* Rotas de clientes
   clients = '/mentor/clientes',

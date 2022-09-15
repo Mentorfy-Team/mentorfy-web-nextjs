@@ -1,6 +1,7 @@
 import CloseIcon from '@mui/icons-material/Close';
 import DialogTitle from '@mui/material/DialogTitle';
 import IconButton from '@mui/material/IconButton';
+import { styled } from '@mui/material/styles';
 export interface DialogTitleProps {
   id: string;
   children?: React.ReactNode;
@@ -37,3 +38,5 @@ export const BootstrapDialogTitle = (props: DialogTitleProps) => {
     </DialogTitle>
   );
 };
+
+export const Form = styled('form')``;

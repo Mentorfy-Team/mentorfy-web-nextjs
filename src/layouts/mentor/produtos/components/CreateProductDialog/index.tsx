@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -6,21 +7,31 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import { useRouter } from 'next/router';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import BootstrapDialog from '~/components/atoms/BootstrapDialog';
 import InputField from '~/components/atoms/InputField';
 import SelectField from '~/components/atoms/SelectField';
 import { MentorRoutes } from '~/consts';
 import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
-import { BootstrapDialogTitle } from './styles';
+import { BootstrapDialogTitle, Form } from './styles';
 
 export default function CreateProduct({ open, setOpen }) {
   const route = useRouter();
+  const { register, handleSubmit } = useForm<ProductClient.CreateProduct>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleClose = () => {
-    setOpen(false);
-    // TODO: salvar novo produto
-    route.push(MentorRoutes.products_edit + '/' + 'hud2-ioqdf-002e-eee7');
+    if (!isLoading) setOpen(false);
   };
+
+  const onSubmit: SubmitHandler<ProductClient.CreateProduct> = useCallback(
+    async (values) => {
+      setIsLoading(true);
+      console.log(values);
+      setIsLoading(false);
+    },
+    [setIsLoading],
+  );
 
   return (
     <div>
@@ -36,62 +47,65 @@ export default function CreateProduct({ open, setOpen }) {
         >
           Novo Produto
         </BootstrapDialogTitle>
-        <DialogContent dividers>
-          <Typography gutterBottom>
-            Para criar seu novo produto, preencha os campos a seguir.
-          </Typography>
-          <InputField
-            required
-            color="secondary"
-            id="outlined-required"
-            label="Nome do Produto"
-            placeholder=""
-            onChange={(e) => {}}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <InputField
-            required
-            color="secondary"
-            id="outlined-required"
-            label="Preço"
-            placeholder="R$ "
-            onChange={(e) => {}}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            InputProps={{
-              inputComponent: MoneyFormatComponent as any,
-            }}
-          />
-          <SelectField required sx={{ width: '100%' }}>
-            <InputLabel>Entrega de Conteúdo</InputLabel>
-            <Select
-              value={2}
-              label="Entrega de Conteúdo"
-              onChange={() => {}}
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <DialogContent dividers>
+            <Typography gutterBottom>
+              Para criar seu novo produto, preencha os campos a seguir.
+            </Typography>
+            <InputField
+              required
               color="secondary"
-            >
-              <MenuItem value={2}>
-                Área de Membros
-                <Typography
-                  component="b"
-                  color={(theme) => theme.palette.accent.main}
-                >
-                  &nbsp;Mentorfy
-                </Typography>
-              </MenuItem>
-              <MenuItem value={1}>Área de Membros Externa</MenuItem>
-              <MenuItem value={0}>Apenas cadastros</MenuItem>
-            </Select>
-          </SelectField>
-        </DialogContent>
-        <DialogActions sx={{ paddingRight: 3, paddingBottom: 3 }}>
-          <Button variant="contained" autoFocus onClick={handleClose}>
-            Continuar
-          </Button>
-        </DialogActions>
+              id="outlined-required"
+              label="Nome do Produto"
+              placeholder=""
+              InputLabelProps={{
+                shrink: true,
+              }}
+              {...register('title')}
+            />
+            <InputField
+              required
+              color="secondary"
+              id="outlined-required"
+              label="Preço"
+              placeholder="R$ "
+              InputLabelProps={{
+                shrink: true,
+              }}
+              {...register('price')}
+              InputProps={{
+                inputComponent: MoneyFormatComponent as any,
+              }}
+            />
+            <SelectField required sx={{ width: '100%' }}>
+              <InputLabel>Entrega de Conteúdo</InputLabel>
+              <Select
+                value={2}
+                label="Entrega de Conteúdo"
+                onChange={() => {}}
+                color="secondary"
+                {...register('deliver')}
+              >
+                <MenuItem value={2}>
+                  Área de Membros
+                  <Typography
+                    component="b"
+                    color={(theme) => theme.palette.accent.main}
+                  >
+                    &nbsp;Mentorfy
+                  </Typography>
+                </MenuItem>
+                <MenuItem value={1}>Área de Membros Externa</MenuItem>
+                <MenuItem value={0}>Apenas cadastros</MenuItem>
+              </Select>
+            </SelectField>
+          </DialogContent>
+          <DialogActions sx={{ paddingRight: 3, paddingBottom: 3 }}>
+            <Button type="submit" variant="contained">
+              Continuar
+            </Button>
+          </DialogActions>
+        </Form>
       </BootstrapDialog>
     </div>
   );
