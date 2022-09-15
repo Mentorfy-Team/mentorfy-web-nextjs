@@ -41,7 +41,7 @@ const EditarProduto: FC = () => {
         }}
         variant="contained"
         color="primary"
-        onClick={() => route.push(MentorRoutes.member_area + '/mentoria-4s')}
+        onClick={() => route.push(MentorRoutes.members_area + '/mentoria-4s')}
       >
         <SvgIcon
           sx={{ paddingRight: '1rem', width: '40px' }}
