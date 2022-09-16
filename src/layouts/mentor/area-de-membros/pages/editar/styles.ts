@@ -88,21 +88,27 @@ export const Task = styled(Box)`
   padding: 0.5rem;
 `;
 
-export const Input = styled('input')`
-  background-color: inherit;
-  border: 1px solid transparent;
+export const TaskTitle = styled(Box)`
+  align-items: center;
   border-radius: 0.3rem;
   color: ${({theme}) => theme.palette.text.primary};
+  
+  display: flex;
+  flex-wrap: nowrap;
   font-size: 1rem;
   
   font-weight: 400;
   height: 1.8rem;
-  
-  line-height: 1.2rem;
-  width: 70%;
 
-  &:focus {
-  border: 1px solid #7D7D7D;
-  };
+  line-height: 1.2rem;
+  overflow: hidden;
+  width: 70%;
   `;
+
+export const ModalBox = styled(Box)`
+  background-color: ${({ theme }) => theme.palette.primary.light};
+  border-radius: 0.6rem;
+  padding: 1rem 2.5rem;
+  width: 35%;
+`;
 
