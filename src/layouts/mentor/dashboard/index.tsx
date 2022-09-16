@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import DragNDrop from '~/components/modules/DragNDrop';
 import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
@@ -36,7 +37,9 @@ const Dashboard: FC<PageTypes.Props> = ({ profile }) => {
         profile={profile}
         header={Header}
         supportHeader={SupportHeader}
-      ></MiniDrawer>
+      >
+        <DragNDrop />
+      </MiniDrawer>
     </PageWrapper>
   );
 };
