@@ -141,6 +141,17 @@ export const Kind = styled(Typography)`
   color: ${({ theme }) => theme.palette.caption.main};
 `;
 
+export const AnimatedBox = styled(Box)<{ isLoading: boolean }>`
+  opacity: ${({ isLoading }) => (isLoading ? 0 : 1)};
+
+  ${({ theme }) => css`
+    transition: ${theme.transitions.create('opacity', {
+      easing: theme.transitions.easing.sharp,
+      duration: 50,
+    })};
+  `}
+`;
+
 export const UserField = styled(Box)`
   background-color: ${({ theme }) => theme.palette.caption.dark} !important;
   height: 4rem;

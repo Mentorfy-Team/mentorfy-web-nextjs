@@ -7,7 +7,9 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { SupabaseWithouAuth } from '~/backend/supabase';
+import LoadingPartial from '~/components/partials/loading/loading.partial';
 import createEmotionCache from '~/createEmotionCache';
+import { userStore } from '~/stores';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
 const clientSideEmotionCache = createEmotionCache();
@@ -63,16 +65,16 @@ const App = (props: MyAppProps) => {
       <GlobalStyles />
       <CssBaseline />
       <ThemeProvider>
-        {/* <HeaderPartial /> */}
         <Wrapper id="WrapperRoot">
           <PageWrapper>
             <UserProvider supabaseClient={supabaseClient}>
+              {/* <HeaderPartial /> */}
               <Component {...pageProps} {...{ urlParams: params }} />
             </UserProvider>
           </PageWrapper>
+          <LoadingPartial />
         </Wrapper>
       </ThemeProvider>
-      {/* <LoadingPartial /> */}
     </CacheProvider>
   );
 };

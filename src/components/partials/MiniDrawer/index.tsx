@@ -13,8 +13,11 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import { MentorMenu, MentoredMenu } from '~/consts/routes/routes.consts';
+import { userStore } from '~/stores';
+import LoadingPartial from '../loading/loading.partial';
 import AdjustName from './helper/AdjustName';
 import {
+  AnimatedBox,
   AppBar,
   Drawer,
   DrawerHeader,
@@ -42,7 +45,7 @@ const MiniDrawer: React.FC<props> = ({
   const [open, setOpen] = React.useState(true);
   const isMobile = useMediaQuery('(max-width:500px)');
   const router = useRouter();
-
+  const { isLoading, setLoading } = userStore();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -90,11 +93,11 @@ const MiniDrawer: React.FC<props> = ({
               src={open ? '/svgs/arrows-left.svg' : '/svgs/menu.svg'}
             />
           </IconButton>
-          {header}
+          <AnimatedBox isLoading={isLoading}>{header}</AnimatedBox>
         </Toolbar>
         {supportHeader && (
           <WrapperSupportHeader open={open}>
-            {supportHeader}
+            <AnimatedBox isLoading={isLoading}>{supportHeader}</AnimatedBox>
           </WrapperSupportHeader>
         )}
       </AppBar>
@@ -131,7 +134,9 @@ const MiniDrawer: React.FC<props> = ({
                   px: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => router.push(MentorMenu[route].path)}
+                onClick={() => {
+                  router.push(MentorMenu[route].path);
+                }}
               >
                 <ListItemIcon
                   sx={{
@@ -172,13 +177,14 @@ const MiniDrawer: React.FC<props> = ({
           overflow: 'auto',
         }}
       >
-        <Box
+        <AnimatedBox
+          isLoading={isLoading}
           sx={{
             height: '0vh',
           }}
         >
           {children}
-        </Box>
+        </AnimatedBox>
       </Box>
     </Box>
   );
