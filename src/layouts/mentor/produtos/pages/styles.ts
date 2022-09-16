@@ -1,3 +1,4 @@
+import { LoadingButton } from '@mui/lab';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
@@ -9,7 +10,7 @@ export const HeaderWrapper = styled(Box)`
   justify-content: space-between;
 `;
 
-export const SaveButton = styled(Button)`
+export const SaveButton = styled(LoadingButton)`
   svg {
     margin-right: 8px;
   }
