@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
@@ -17,7 +16,19 @@ import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
-import { AddImgButton, BoxHeader, ButtonsWrapper, CustomTypograpy, ModalBox, Steps, Task, TaskBox, TaskTitle, WrapperContent } from './styles';
+import {
+  AddImgButton,
+  BoxHeader,
+  Button,
+  ButtonsWrapper,
+  CustomTypograpy,
+  ModalBox,
+  Steps,
+  Task,
+  TaskBox,
+  TaskTitle,
+  WrapperContent,
+} from './styles';
 
 const EditarMentoria: FC = () => {
   const [tabindex, setTabindex] = useState(0);
@@ -80,27 +91,76 @@ const EditarMentoria: FC = () => {
             Você poderá adicionar, remover ou alterar posteriormente. Você
             também pode mover de ordem as etapas e tarefas.
           </CustomTypograpy>
-          <Divider sx={{ borderColor: `${theme.palette.tertiary.light}`, marginBottom: '1.8rem' }} />
+          <Divider
+            sx={{
+              borderColor: `${theme.palette.tertiary.light}`,
+              marginBottom: '1.8rem',
+            }}
+          />
           <Steps>
             <BoxHeader>
               <Box sx={{ display: 'flex', gap: '0.5rem' }}>
-                <IconButton aria-label="menu" sx={{ ml: 0, color: `${theme.palette.tertiary.main}` }}>
+                <IconButton
+                  aria-label="menu"
+                  sx={{ ml: 0, color: `${theme.palette.tertiary.main}` }}
+                >
                   <MenuIcon />
                 </IconButton>
-                <Image alt='' src='/svgs/step-image.svg' width={60} height={60}></Image>
+                <Image
+                  alt=""
+                  src="/svgs/step-image.svg"
+                  width={60}
+                  height={60}
+                ></Image>
                 <Box sx={{ textAlign: 'left' }}>
-                  <Typography sx={{ color: `${theme.palette.text.primary}`, fontSize: '1rem', fontWeight: '700' }}>ETAPA 01</Typography>
-                  <Typography sx={{ color: `${theme.palette.success.main}`, fontSize: '1rem' }}>Vídeo de Apresentação</Typography>
+                  <Typography
+                    sx={{
+                      color: `${theme.palette.text.primary}`,
+                      fontSize: '1rem',
+                      fontWeight: '700',
+                    }}
+                  >
+                    ETAPA 01
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: `${theme.palette.success.main}`,
+                      fontSize: '1rem',
+                    }}
+                  >
+                    Vídeo de Apresentação
+                  </Typography>
                 </Box>
               </Box>
-              <Button onClick={open ? handleClose : handleOpen} sx={{ textTransform: 'none' }}>Editar</Button>
+              <Button
+                onClick={open ? handleClose : handleOpen}
+                sx={{ textTransform: 'none' }}
+              >
+                Editar
+              </Button>
             </BoxHeader>
             <WrapperContent sx={{ display: `${open ? 'flex' : 'none'}` }}>
-              <InputField label='Nome da Etapa' placeholder='Lorem ipsum dolor win'></InputField>
-              <InputField label='Descrição' placeholder='Lorem ipsum dolor win'></InputField>
+              <InputField
+                label="Nome da Etapa"
+                placeholder="Lorem ipsum dolor win"
+              ></InputField>
+              <InputField
+                label="Descrição"
+                placeholder="Lorem ipsum dolor win"
+              ></InputField>
               <Box sx={{ display: 'flex' }}>
-                <Image alt='' src='/svgs/step-image.svg' width={70} height={70}></Image>
-                <Box sx={{ textAlign: 'left', color: `${theme.palette.text.primary}` }}>
+                <Image
+                  alt=""
+                  src="/svgs/step-image.svg"
+                  width={70}
+                  height={70}
+                ></Image>
+                <Box
+                  sx={{
+                    textAlign: 'left',
+                    color: `${theme.palette.text.primary}`,
+                  }}
+                >
                   <Typography variant="body1">Thumbnail</Typography>
                   <AddImgButton>Adicionar Imagem</AddImgButton>
                   <Typography sx={{ opacity: '0.4', fontSize: '0.8rem' }}>
@@ -108,30 +168,77 @@ const EditarMentoria: FC = () => {
                   </Typography>
                 </Box>
               </Box>
-              <InputField label='Link do Video' placeholder='https://youtube.com'></InputField>
+              <InputField
+                label="Link do Video"
+                placeholder="https://youtube.com"
+              ></InputField>
             </WrapperContent>
           </Steps>
           <Steps>
             <BoxHeader>
               <Box sx={{ display: 'flex', gap: '0.5rem' }}>
-                <IconButton aria-label="menu" sx={{ ml: 0, color: `${theme.palette.tertiary.main}` }}>
+                <IconButton
+                  aria-label="menu"
+                  sx={{ ml: 0, color: `${theme.palette.tertiary.main}` }}
+                >
                   <MenuIcon />
                 </IconButton>
-                <Image alt='' src='/svgs/step-image.svg' width={60} height={60}></Image>
+                <Image
+                  alt=""
+                  src="/svgs/step-image.svg"
+                  width={60}
+                  height={60}
+                ></Image>
                 <Box sx={{ textAlign: 'left' }}>
-                  <Typography sx={{ color: `${theme.palette.text.primary}`, fontSize: '1rem', fontWeight: '700' }}>ETAPA 02</Typography>
-                  <Typography sx={{ color: `${theme.palette.success.main}`, fontSize: '1rem' }}>Formulário de Perguntas</Typography>
+                  <Typography
+                    sx={{
+                      color: `${theme.palette.text.primary}`,
+                      fontSize: '1rem',
+                      fontWeight: '700',
+                    }}
+                  >
+                    ETAPA 02
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: `${theme.palette.success.main}`,
+                      fontSize: '1rem',
+                    }}
+                  >
+                    Formulário de Perguntas
+                  </Typography>
                 </Box>
               </Box>
-              <Button onClick={open2 ? handleClose2 : handleOpen2} sx={{ textTransform: 'none' }}>Editar</Button>
+              <Button
+                onClick={open2 ? handleClose2 : handleOpen2}
+                sx={{ textTransform: 'none' }}
+              >
+                Editar
+              </Button>
             </BoxHeader>
             <WrapperContent sx={{ display: `${open2 ? 'flex' : 'none'}` }}>
-              <InputField label='Nome da Etapa' placeholder='Lorem ipsum dolor win'></InputField>
-              <InputField label='Descrição' placeholder='Lorem ipsum dolor win'></InputField>
+              <InputField
+                label="Nome da Etapa"
+                placeholder="Lorem ipsum dolor win"
+              ></InputField>
+              <InputField
+                label="Descrição"
+                placeholder="Lorem ipsum dolor win"
+              ></InputField>
 
               <Box sx={{ display: 'flex' }}>
-                <Image alt='' src='/svgs/step-image.svg' width={70} height={70}></Image>
-                <Box sx={{ textAlign: 'left', color: `${theme.palette.text.primary}` }}>
+                <Image
+                  alt=""
+                  src="/svgs/step-image.svg"
+                  width={70}
+                  height={70}
+                ></Image>
+                <Box
+                  sx={{
+                    textAlign: 'left',
+                    color: `${theme.palette.text.primary}`,
+                  }}
+                >
                   <Typography variant="body1">Imagem Principal</Typography>
                   <AddImgButton>Adicionar Imagem</AddImgButton>
                   <Typography sx={{ opacity: '0.4', fontSize: '0.8rem' }}>
@@ -142,16 +249,42 @@ const EditarMentoria: FC = () => {
               <TaskBox>
                 <Task>
                   <MenuIcon />
-                  <TaskTitle>lorem ipsum in dolor win lorem ipsum ind dolor win</TaskTitle>
-                  <Button onClick={setOpenmodal} sx={{ textTransform: 'none', fontSize: '0.75rem' }}>Editar</Button>
-                  <Modal open={openModal} onClose={handleCloseModal} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <TaskTitle>
+                    lorem ipsum in dolor win lorem ipsum ind dolor win
+                  </TaskTitle>
+                  <Button
+                    onClick={handleCloseModal}
+                    sx={{ textTransform: 'none', fontSize: '0.75rem' }}
+                  >
+                    Editar
+                  </Button>
+                  <Modal
+                    open={openModal}
+                    onClose={handleCloseModal}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
                     <ModalBox>
-                      <InputField label='Nome da Etapa' placeholder='Lorem ipsum dolor win'></InputField>
-                      <InputField label='Descrição' placeholder='Lorem ipsum dolor win'></InputField>
+                      <InputField
+                        label="Nome da Etapa"
+                        placeholder="Lorem ipsum dolor win"
+                      ></InputField>
+                      <InputField
+                        label="Descrição"
+                        placeholder="Lorem ipsum dolor win"
+                      ></InputField>
                       <Button
                         variant="contained"
                         onClick={handleCloseModal}
-                        sx={{ height: '2.5rem', textTransform: 'none', float: 'right', width: '40%' }}
+                        sx={{
+                          height: '2.5rem',
+                          textTransform: 'none',
+                          float: 'right',
+                          width: '40%',
+                        }}
                       >
                         Salvar
                       </Button>
@@ -160,16 +293,42 @@ const EditarMentoria: FC = () => {
                 </Task>
                 <Task>
                   <MenuIcon />
-                  <TaskTitle>lorem ipsum in dolor win lorem ipsum ind dolor win</TaskTitle>
-                  <Button onClick={setOpenmodal} sx={{textTransform: 'none', fontSize: '0.75rem' }}>Editar</Button>
-                  <Modal open={openModal} onClose={handleCloseModal} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <TaskTitle>
+                    lorem ipsum in dolor win lorem ipsum ind dolor win
+                  </TaskTitle>
+                  <Button
+                    onClick={handleCloseModal}
+                    sx={{ textTransform: 'none', fontSize: '0.75rem' }}
+                  >
+                    Editar
+                  </Button>
+                  <Modal
+                    open={openModal}
+                    onClose={handleCloseModal}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
                     <ModalBox>
-                      <InputField label='Nome da Etapa' placeholder='Lorem ipsum dolor win'></InputField>
-                      <InputField label='Descrição' placeholder='Lorem ipsum dolor win'></InputField>
+                      <InputField
+                        label="Nome da Etapa"
+                        placeholder="Lorem ipsum dolor win"
+                      ></InputField>
+                      <InputField
+                        label="Descrição"
+                        placeholder="Lorem ipsum dolor win"
+                      ></InputField>
                       <Button
                         variant="contained"
                         onClick={handleCloseModal}
-                        sx={{ height: '2.5rem', textTransform: 'none', float: 'right', width: '40%' }}
+                        sx={{
+                          height: '2.5rem',
+                          textTransform: 'none',
+                          float: 'right',
+                          width: '40%',
+                        }}
                       >
                         Salvar
                       </Button>
@@ -178,27 +337,67 @@ const EditarMentoria: FC = () => {
                 </Task>
                 <Task>
                   <MenuIcon />
-                  <TaskTitle>lorem ipsum in dolor win lorem ipsum ind dolor win</TaskTitle>
-                  <Button onClick={setOpenmodal} sx={{ textTransform: 'none', fontSize: '0.75rem' }} >Editar</Button>
-                  <Modal open={openModal} onClose={handleCloseModal} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <TaskTitle>
+                    lorem ipsum in dolor win lorem ipsum ind dolor win
+                  </TaskTitle>
+                  <Button
+                    onClick={handleCloseModal}
+                    sx={{ textTransform: 'none', fontSize: '0.75rem' }}
+                  >
+                    Editar
+                  </Button>
+                  <Modal
+                    open={openModal}
+                    onClose={handleCloseModal}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
                     <ModalBox>
-                      <InputField label='Nome da Etapa' placeholder='Lorem ipsum dolor win'></InputField>
-                      <InputField label='Descrição' placeholder='Lorem ipsum dolor win'></InputField>
+                      <InputField
+                        label="Nome da Etapa"
+                        placeholder="Lorem ipsum dolor win"
+                      ></InputField>
+                      <InputField
+                        label="Descrição"
+                        placeholder="Lorem ipsum dolor win"
+                      ></InputField>
                       <Button
                         variant="contained"
                         onClick={handleCloseModal}
-                        sx={{ height: '2.5rem', textTransform: 'none', float: 'right', width: '40%' }}
+                        sx={{
+                          height: '2.5rem',
+                          textTransform: 'none',
+                          float: 'right',
+                          width: '40%',
+                        }}
                       >
                         Salvar
                       </Button>
                     </ModalBox>
                   </Modal>
                 </Task>
-                <Button sx={{ color: `${theme.palette.caption.main}`, width: '100%' }}>+ ADICIONAR TAREFA</Button>
+                <Button
+                  sx={{ color: `${theme.palette.caption.main}`, width: '100%' }}
+                >
+                  + ADICIONAR TAREFA
+                </Button>
               </TaskBox>
               <Box sx={{ display: 'flex' }}>
-                <Image alt='' src='/svgs/step-image.svg' width={70} height={70}></Image>
-                <Box sx={{ textAlign: 'left', color: `${theme.palette.text.primary}` }}>
+                <Image
+                  alt=""
+                  src="/svgs/step-image.svg"
+                  width={70}
+                  height={70}
+                ></Image>
+                <Box
+                  sx={{
+                    textAlign: 'left',
+                    color: `${theme.palette.text.primary}`,
+                  }}
+                >
                   <Typography variant="body1">Imagem de Conclusão</Typography>
                   <AddImgButton>Adicionar Imagem</AddImgButton>
                   <Typography sx={{ opacity: '0.4', fontSize: '0.8rem' }}>
@@ -207,9 +406,25 @@ const EditarMentoria: FC = () => {
                 </Box>
               </Box>
             </WrapperContent>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Divider orientation='vertical' sx={{ borderColor: `${theme.palette.caption.main}`, height: '1rem', width: '0', marginTop: '1.5rem' }} />
-              <Button sx={{ color: `${theme.palette.caption.main}` }}>+ ADICIONAR ETAPA</Button>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Divider
+                orientation="vertical"
+                sx={{
+                  borderColor: `${theme.palette.caption.main}`,
+                  height: '1rem',
+                  width: '0',
+                  marginTop: '1.5rem',
+                }}
+              />
+              <Button sx={{ color: `${theme.palette.caption.main}` }}>
+                + ADICIONAR ETAPA
+              </Button>
             </Box>
           </Steps>
         </ContentWidthLimit>
