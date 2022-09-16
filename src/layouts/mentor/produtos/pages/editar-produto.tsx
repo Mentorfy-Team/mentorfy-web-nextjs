@@ -12,6 +12,7 @@ import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { MentorRoutes, PublicRoutes } from '~/consts';
+import SsrIsLogged from '~/helpers/SsrIsLogged';
 import { GetProduct } from '~/services/product.service';
 import { GetProfile } from '~/services/profile.service';
 import { HeaderWrapper, MembersAreaButton } from './styles';
@@ -111,11 +112,13 @@ export const getProps = withPageAuth({
     const { profile } = await GetProfile(ctx.req);
     const product = await GetProduct(ctx.req, ctx.params.id);
 
+    SsrIsLogged(profile);
+
     return {
       props: {
         profile: profile,
         product: product,
-        tab: ctx.query.tab ? tabs[ctx.query.tab as string] : null,
+        tab: ctx.query.tab ? tabs[ctx.query.tab as string] : tabs.Geral,
       },
     };
   },

@@ -20,8 +20,8 @@ export const CreateSupabaseWithAuth = (req?, _token?) => {
   );
 };
 
-export const CreateSupabaseWithAdmin = (req) => {
-  const token = CookieUtil.fromReq(req);
+export const CreateSupabaseWithAdmin = (req?) => {
+  const token = req ? CookieUtil.fromReq(req) : '';
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE,

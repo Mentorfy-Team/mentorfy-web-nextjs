@@ -79,3 +79,22 @@ export const CreateProduct = async (product: ProductClient.CreateProduct) => {
     };
   }
 };
+
+export const UpdateProduct = async (product: ProductClient.CreateProduct) => {
+  try {
+    const response = await HttpClient.put<ProductApi.Post.Response>(
+      ApiRoutes.products,
+      product,
+    );
+    if (response.data.error) {
+      return {
+        error: response.data.error,
+      };
+    }
+    return response.data;
+  } catch (error) {
+    return {
+      error: 'Erro ao atualizar o produto',
+    };
+  }
+};
