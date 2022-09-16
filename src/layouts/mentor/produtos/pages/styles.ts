@@ -25,6 +25,8 @@ export const ReturnButton = styled(Button)`
 `;
 
 export const ActionButton = styled(Button)`
+  color: ${({ theme }) => theme.palette.accent.main};
+  font-weight: bold;
   path {
     fill: ${({ theme }) => theme.palette.accent.main};
   }

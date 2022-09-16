@@ -38,7 +38,7 @@ const Login: FC<props> = ({ pageChange }) => {
       const registerData = await Authenticate(values);
 
       if (!registerData.error) {
-        userLogin(registerData.user);
+        //userLogin(registerData.user);
         route.push(MentorRoutes.home);
       } else {
         if (registerData.error.includes('email')) {

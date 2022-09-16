@@ -110,7 +110,7 @@ export default function StickyHeadTable({
                             onClick={() =>
                               index === 0 &&
                               onTitleClick &&
-                              onTitleClick(column.id)
+                              onTitleClick(row.id)
                             }
                             sx={{
                               cursor:

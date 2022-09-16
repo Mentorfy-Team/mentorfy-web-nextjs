@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import InputLabel from '@mui/material/InputLabel';
@@ -13,25 +13,41 @@ import InputField from '~/components/atoms/InputField';
 import SelectField from '~/components/atoms/SelectField';
 import { MentorRoutes } from '~/consts';
 import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
+import { CreateProduct } from '~/services/product.service';
 import { BootstrapDialogTitle, Form } from './styles';
 
-export default function CreateProduct({ open, setOpen }) {
+export default function CreateProductDialog({ open, setOpen }) {
   const route = useRouter();
-  const { register, handleSubmit } = useForm<ProductClient.CreateProduct>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleClose = () => {
-    if (!isLoading) setOpen(false);
+  const { register, setValue, watch, handleSubmit } =
+    useForm<ProductClient.CreateProduct>();
+  const { title, price } = watch();
+
+  const handleChange = (e, name) => {
+    setValue(name, e.target.value);
   };
 
   const onSubmit: SubmitHandler<ProductClient.CreateProduct> = useCallback(
     async (values) => {
       setIsLoading(true);
-      console.log(values);
+      const { product, error } = await CreateProduct(values);
+      if (error) {
+        setIsLoading(false);
+        return;
+      }
+      setValue('title', '');
+      setValue('price', '');
+      route.push(MentorRoutes.products_edit + '/' + product.id);
+      setOpen(false);
       setIsLoading(false);
     },
-    [setIsLoading],
+    [route, setOpen, setValue],
   );
+
+  const handleClose = () => {
+    if (!isLoading) setOpen(false);
+  };
 
   return (
     <div>
@@ -55,38 +71,39 @@ export default function CreateProduct({ open, setOpen }) {
             <InputField
               required
               color="secondary"
-              id="outlined-required"
               label="Nome do Produto"
               placeholder=""
               InputLabelProps={{
                 shrink: true,
               }}
-              {...register('title')}
+              {...register('price')}
+              onChange={(e) => handleChange(e, 'title')}
+              value={title}
             />
             <InputField
               required
               color="secondary"
-              id="outlined-required"
               label="Preço"
               placeholder="R$ "
               InputLabelProps={{
                 shrink: true,
               }}
-              {...register('price')}
               InputProps={{
                 inputComponent: MoneyFormatComponent as any,
               }}
+              {...register('price')}
+              onChange={(e) => handleChange(e, 'price')}
+              value={price}
             />
             <SelectField required sx={{ width: '100%' }}>
               <InputLabel>Entrega de Conteúdo</InputLabel>
               <Select
-                value={2}
                 label="Entrega de Conteúdo"
-                onChange={() => {}}
                 color="secondary"
+                defaultValue="mentorfy"
                 {...register('deliver')}
               >
-                <MenuItem value={2}>
+                <MenuItem value="mentorfy">
                   Área de Membros
                   <Typography
                     component="b"
@@ -95,15 +112,20 @@ export default function CreateProduct({ open, setOpen }) {
                     &nbsp;Mentorfy
                   </Typography>
                 </MenuItem>
-                <MenuItem value={1}>Área de Membros Externa</MenuItem>
-                <MenuItem value={0}>Apenas cadastros</MenuItem>
+                <MenuItem value="external">Área de Membros Externa</MenuItem>
+                <MenuItem value="signup">Apenas cadastros</MenuItem>
               </Select>
             </SelectField>
           </DialogContent>
           <DialogActions sx={{ paddingRight: 3, paddingBottom: 3 }}>
-            <Button type="submit" variant="contained">
+            <LoadingButton
+              loading={isLoading}
+              disabled={isLoading}
+              type="submit"
+              variant="contained"
+            >
               Continuar
-            </Button>
+            </LoadingButton>
           </DialogActions>
         </Form>
       </BootstrapDialog>

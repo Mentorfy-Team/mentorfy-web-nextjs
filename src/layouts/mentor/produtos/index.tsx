@@ -14,6 +14,7 @@ import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { PublicRoutes } from '~/consts';
+import { GetProduct, ListProducts } from '~/services/product.service';
 import { GetProfile } from '~/services/profile.service';
 import ProductsTable from './components/ProductsTable';
 import { AddProductButton, HeaderWrapper } from './styles';
@@ -23,14 +24,20 @@ const CreateProductDialog = dynamic(
   () => import('./components/CreateProductDialog'),
 );
 
-const Produtos: FC<PageTypes.Props> = ({ profile }) => {
+const Produtos: FC<PageTypes.Props> = ({ profile, access_token, user }) => {
   const [tabindex, setTabindex] = useState(0);
   const [products, setProducts] = useState([]);
   const [openCreatePage, setOpenCreatePage] = useState(false);
 
   const isMobile = useMediaQuery('(max-width: 600px)');
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const firstLoad = async () => {
+      const { products } = await ListProducts(access_token, user.id);
+      setProducts(products);
+    };
+    firstLoad();
+  }, [access_token, user.id]);
 
   const Header = (
     <HeaderWrapper>
@@ -41,13 +48,14 @@ const Produtos: FC<PageTypes.Props> = ({ profile }) => {
   const SupportHeader = (
     <Tabbar selected={tabindex} onChange={(_, value) => setTabindex(value)}>
       <TabItem label="Meus produtos" />
-      <TabItem label="Minhas co-produções" />
+      {/* // TODO: Criar co-produções */}
+      {/* <TabItem label="Minhas co-produções" /> */}
     </Tabbar>
   );
 
   const ProductsTableComponent = useCallback(() => {
-    return <ProductsTable />;
-  }, []);
+    return <ProductsTable rows={products} />;
+  }, [products]);
 
   return (
     <>
@@ -100,6 +108,7 @@ export const getProps = withPageAuth({
   redirectTo: PublicRoutes.login,
   async getServerSideProps(ctx) {
     const { profile } = await GetProfile(ctx.req);
+
     return {
       props: {
         profile: profile,

@@ -6,8 +6,9 @@ export const SupabaseWithouAuth = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
 );
 
-export const CreateSupabaseWithAuth = (req) => {
-  const token = CookieUtil.fromReq(req);
+export const CreateSupabaseWithAuth = (req?, _token?) => {
+  const token = _token ? _token : CookieUtil.fromReq(req);
+
   return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,

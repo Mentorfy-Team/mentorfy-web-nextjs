@@ -27,7 +27,7 @@ const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
 });
 
 const columns: Column[] = [
-  { id: 'name', label: 'NOME', minWidth: 140 },
+  { id: 'title', label: 'NOME', minWidth: 140 },
   {
     id: 'price',
     label: 'PREÇO',
@@ -45,62 +45,69 @@ const columns: Column[] = [
 ];
 
 interface Data {
-  name: string;
+  title: string;
   price: number;
   memberArea?: JSX.Element;
   status: JSX.Element;
   actions: any;
+  id: string;
 }
 
-const ProductsTable = () => {
+const ProductsTable = ({ rows }: { rows: ProductClient.Product[] }) => {
   const [page, setPage] = useState(1);
-  const [rows, setRows] = useState([]);
   const route = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const createData = useCallback(
-    (
-      name: string,
-      price: number,
-      status: string,
-      memberArea?: number,
-      actions?: any,
-    ): Data => {
+    ({
+      title,
+      price,
+      deliver,
+      access_link,
+      status,
+      id,
+    }: ProductClient.Product): Data => {
       return {
-        name,
+        title,
         price,
-        memberArea: memberArea ? (
-          <EnterMemberArea
-            onClick={() => route.push(MentorRoutes.members_area + '/1')}
-            display="flex"
-          >
-            <Box>
-              <DoorSvg />
-            </Box>
-            <Typography pl={2} fontSize="0.959rem" lineHeight="1.15rem">
-              Entrar
-            </Typography>
-          </EnterMemberArea>
-        ) : null,
+        memberArea:
+          deliver !== 'signup' ? (
+            <EnterMemberArea
+              onClick={() =>
+                route.push(MentorRoutes.members_area + `/${access_link}`)
+              }
+              display="flex"
+            >
+              <Box>
+                <DoorSvg />
+              </Box>
+              <Typography pl={2} fontSize="0.959rem" lineHeight="1.15rem">
+                Entrar
+              </Typography>
+            </EnterMemberArea>
+          ) : null,
         status: (
           <Box
             sx={{
-              backgroundColor: status === 'Ativo' ? '#86ffb9' : '#ff98ac',
-              color: status === 'Ativo' ? '#075327' : '#6b1728',
+              backgroundColor: status ? '#86ffb9' : '#ff98ac',
+              color: status ? '#075327' : '#6b1728',
               fontWeight: 'bold',
               width: 60,
               textAlign: 'center',
               borderRadius: 10,
             }}
           >
-            <Typography variant="body2">{status}</Typography>
+            <Typography variant="body2">
+              {status ? 'Ativo' : 'Desativado'}
+            </Typography>
           </Box>
         ),
         actions: '',
+        id,
       };
     },
-    [],
+    [route],
   );
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -111,39 +118,19 @@ const ProductsTable = () => {
     setAnchorEl(null);
   };
 
-  const handleEdit = (id = 'hud2-ioqdf-002e-eee7') => {
+  const handleEdit = (id) => {
     route.push(MentorRoutes.products_edit + '/' + id);
   };
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  useEffect(() => {
-    setRows([
-      createData('Mentoria S1', 597.0, 'Ativo', 1),
-      createData('Mentoria S2', 597.0, 'Ativo'),
-      createData('Mentoria S3', 597.0, 'Ativo'),
-      createData('Mentoria S4', 597.0, 'Ativo'),
-      createData('Mentoria S5', 597.0, 'Ativo'),
-      createData('Mentoria S6', 597.0, 'Ativo'),
-      createData('Mentoria S7', 597.0, 'Ativo'),
-      createData('Mentoria S8', 597.0, 'Ativo'),
-      createData('Mentoria S9', 597.0, 'Ativo'),
-      createData('Mentoria S10', 597.0, 'Ativo'),
-      createData('Mentoria S11', 597.0, 'Ativo'),
-      createData('Mentoria S12', 597.0, 'Ativo'),
-      createData('Mentoria S13', 597.0, 'Ativo'),
-      createData('Mentoria S14', 597.0, 'Ativo'),
-      createData('Mentoria S15', 597.0, 'Ativo'),
-    ]);
-  }, [createData]);
-
   return (
     <Datagrid
       page={page}
       onPageChange={setPage}
       columns={columns}
-      rows={rows}
+      rows={rows?.map((row) => createData(row))}
       onTitleClick={(id) => handleEdit(id)}
       actionButtons={(index) => [
         <TableCell
@@ -176,7 +163,12 @@ const ProductsTable = () => {
           >
             <PopoverBox display="flex" flexDirection="column">
               <Link
-                href={'/mentor/produtos/editar/1516-qwe45-dw48i-ghhg7'}
+                href={
+                  MentorRoutes.products_edit +
+                  '/' +
+                  rows[index].id +
+                  '?tab=Links'
+                }
                 passHref
               >
                 <Button>
@@ -188,7 +180,7 @@ const ProductsTable = () => {
                 </Button>
               </Link>
               <Link
-                href={'/mentor/produtos/editar/1516-qwe45-dw48i-ghhg7'}
+                href={MentorRoutes.products_edit + '/' + rows[index].id}
                 passHref
               >
                 <Button>

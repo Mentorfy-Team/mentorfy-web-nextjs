@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
@@ -10,7 +11,9 @@ import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
-import { MentorRoutes } from '~/consts';
+import { MentorRoutes, PublicRoutes } from '~/consts';
+import { GetProduct } from '~/services/product.service';
+import { GetProfile } from '~/services/profile.service';
 import { HeaderWrapper, MembersAreaButton } from './styles';
 
 import GeralPage from './tabs/geral';
@@ -24,14 +27,19 @@ enum tabs {
   'Membros',
 }
 
-const EditarProduto: FC = () => {
-  const [tabindex, setTabindex] = useState<tabs>(tabs.Geral);
+type props = PageTypes.Props & {
+  product: ProductClient.Product;
+  tab: tabs;
+};
+
+const EditarProduto: FC<props> = ({ profile, product, tab = tabs.Geral }) => {
+  const [tabindex, setTabindex] = useState<tabs>(tab);
   const isMobile = useMediaQuery('(max-width: 400px)');
   const route = useRouter();
 
   const Header = (
     <HeaderWrapper>
-      <Typography variant="h6">Mentoria 4S</Typography>
+      <Typography variant="h6">{product.title}</Typography>
       <MembersAreaButton
         sx={{
           float: 'right',
@@ -62,18 +70,22 @@ const EditarProduto: FC = () => {
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
       case tabs.Geral:
-        return <GeralPage />;
+        return <GeralPage product={product} />;
       case tabs.Links:
-        return <LinksPage />;
+        return <LinksPage product={product} />;
       default:
-        return <GeralPage />;
+        return <GeralPage product={product} />;
     }
-  }, [tabindex]);
+  }, [product, tabindex]);
 
   return (
     <>
       <PageWrapper>
-        <MiniDrawer header={Header} supportHeader={SupportHeader}>
+        <MiniDrawer
+          profile={profile}
+          header={Header}
+          supportHeader={SupportHeader}
+        >
           <ContentWidthLimit maxWidth={700}>
             <Box
               sx={{
@@ -91,10 +103,22 @@ const EditarProduto: FC = () => {
   );
 };
 
-export async function getProps() {
-  return {
-    props: { post: {} },
-  };
-}
+// * ServerSideRender (SSR)
+export const getProps = withPageAuth({
+  authRequired: true,
+  redirectTo: PublicRoutes.login,
+  async getServerSideProps(ctx) {
+    const { profile } = await GetProfile(ctx.req);
+    const product = await GetProduct(ctx.req, ctx.params.id);
+
+    return {
+      props: {
+        profile: profile,
+        product: product,
+        tab: ctx.query.tab ? tabs[ctx.query.tab as string] : null,
+      },
+    };
+  },
+});
 
 export default EditarProduto;

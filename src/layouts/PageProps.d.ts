@@ -3,5 +3,6 @@ declare namespace PageTypes {
     profile: UserClient.Profile;
     address: UserClient.Address;
     user: UserClient.User;
+    access_token: string;
   };
 }

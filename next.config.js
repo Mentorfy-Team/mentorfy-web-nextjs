@@ -7,6 +7,16 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'piaapkoirennmamfzhzp.supabase.co',
+        port: '',
+        pathname: '/storage/v1/object/public/images/**',
+      },
+    ],
+  },
 };
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({

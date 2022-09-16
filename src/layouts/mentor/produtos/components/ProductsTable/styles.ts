@@ -36,10 +36,14 @@ export const PopoverBox = styled(Box)`
 `;
 
 export const OptionsButton = styled(Button)`
+  align-items: center;
   background-color: ${({ theme }) => theme.palette.caption.dark};
+  display: flex;
   height: 32px;
+  justify-content: center;
   min-width: 32px;
-  padding-left: 12px;
+  padding-bottom: 0.6rem;
+  padding-left: 10px;
   padding-top: 10px;
   right: auto !important;
   width: 32px;

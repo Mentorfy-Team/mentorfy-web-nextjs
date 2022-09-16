@@ -1,31 +1,39 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import Save from '@mui/icons-material/Save';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Unstable_Grid2';
+import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import InputField from '~/components/atoms/InputField';
 import SelectField from '~/components/atoms/SelectField';
 import { MentorRoutes } from '~/consts';
 import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
-import { stringToColor } from '~/helpers/StringToColor';
 import { ActionButton, ReturnButton, SaveButton } from '../styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 
-const Geral: FC = () => {
-  const route = useRouter();
+type props = {
+  product: ProductClient.Product;
+};
 
-  function stringAvatar(name: string) {
-    return {
-      sx: {
-        bgcolor: stringToColor(name),
-      },
-      children: <Box>{`${name.split(' ')[0][0]}${name.split(' ')[1][0]}`}</Box>,
+const Geral: FC<props> = ({ product }) => {
+  const route = useRouter();
+  const [productImage, setProductImage] = useState<any>();
+  const handleSave = () => {
+    console.log(productImage);
+  };
+
+  const handleCapture = (target, imageType: 'main' | 'banner') => {
+    const fileReader = new FileReader();
+
+    fileReader.readAsDataURL(target.files[0]);
+    fileReader.onload = (e) => {
+      setProductImage({ [imageType]: e.target.result });
     };
-  }
+  };
 
   return (
     <>
@@ -49,54 +57,119 @@ const Geral: FC = () => {
           }}
           variant="outlined"
           color="primary"
-          onClick={() => {}}
+          onClick={() => handleSave()}
         >
           <Save sx={{ height: 32 }} />
           Salvar produto
         </SaveButton>
       </Box>
-      <Box display="flex" pb={2} sx={{ float: 'left' }}>
-        <Box
-          {...stringAvatar('Mentoria 4S')}
-          sx={{
-            bgcolor: (theme) => theme.palette.secondary.main,
-            minWidth: 90,
-            height: 90,
-            borderRadius: 1,
-            display: 'flex',
-            placeItems: 'center',
-            justifyContent: 'center',
-          }}
-        />
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="flex-start"
-          sx={{
-            float: 'right',
-            marginLeft: '1rem',
-            fontWeight: 300,
-          }}
-        >
-          <ActionButton
-            sx={{ padding: '0px' }}
-            color="primary"
-            onClick={() => {}}
+      <Grid container>
+        <Grid md={5} xs={12} display="flex" pb={2} sx={{ float: 'left' }}>
+          {product.main_image ? (
+            <Image
+              alt="imagem do produto"
+              src={product.main_image}
+              width={90}
+              height={90}
+              style={{
+                borderRadius: '10px',
+                objectFit: 'cover',
+              }}
+            />
+          ) : (
+            <Box
+              sx={{
+                bgcolor: (theme) => theme.palette.secondary.main,
+                minWidth: 90,
+                height: 90,
+                borderRadius: 1,
+                display: 'flex',
+                placeItems: 'center',
+                justifyContent: 'center',
+              }}
+            />
+          )}
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-start"
+            sx={{
+              float: 'right',
+              marginLeft: '1rem',
+              fontWeight: 300,
+            }}
           >
-            Trocar imagem
-          </ActionButton>
-          <Typography color="gray" sx={{ textAlign: 'initial' }}>
-            Recomendação: <br />
-            300x250 pixels
-          </Typography>
-        </Box>
-      </Box>
-
+            <ActionButton
+              sx={{ padding: '0px', height: '30px' }}
+              color="primary"
+              as="label"
+              onChange={(e) => handleCapture(e.target, 'main')}
+            >
+              Trocar imagem
+              <input hidden accept="image/*" type="file" />
+            </ActionButton>
+            <Typography color="gray" sx={{ textAlign: 'initial' }}>
+              Recomendação: <br />
+              256x256 pixels
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid md={7} xs={12} display="flex" pb={2} sx={{ float: 'left' }}>
+          {product.banner_image ? (
+            <Image
+              alt="imagem do produto"
+              src={product.banner_image}
+              width={180}
+              height={90}
+              style={{
+                borderRadius: '10px',
+                objectFit: 'cover',
+              }}
+            />
+          ) : (
+            <Box
+              sx={{
+                bgcolor: (theme) => theme.palette.secondary.main,
+                minWidth: 180,
+                height: 90,
+                borderRadius: 1,
+                display: 'flex',
+                placeItems: 'center',
+                justifyContent: 'center',
+              }}
+            />
+          )}
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-start"
+            sx={{
+              float: 'right',
+              marginLeft: '1rem',
+              fontWeight: 300,
+            }}
+          >
+            <ActionButton
+              sx={{ padding: '0px', height: '30px' }}
+              color="primary"
+              as="label"
+              onChange={(e) => handleCapture(e.target, 'main')}
+            >
+              Trocar imagem
+              <input hidden accept="image/*" type="file" />
+            </ActionButton>
+            <Typography color="gray" sx={{ textAlign: 'initial' }}>
+              Recomendação: <br />
+              600x400 pixels
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
       <InputField
         required
         color="secondary"
         id="outlined-required"
-        value="Mentoria 4S"
+        defaultValue={product.title}
         label="Nome do produto"
         onChange={(e) => {}}
         InputLabelProps={{
@@ -108,6 +181,7 @@ const Geral: FC = () => {
         color="secondary"
         id="outlined-required"
         label="Preço"
+        defaultValue={product.price}
         placeholder="R$ "
         onChange={(e) => {}}
         InputLabelProps={{
@@ -120,12 +194,12 @@ const Geral: FC = () => {
       <SelectField required sx={{ width: '100%' }}>
         <InputLabel>Entrega de Conteúdo</InputLabel>
         <Select
-          value={2}
           label="Entrega de Conteúdo"
+          defaultValue={product.deliver}
           onChange={() => {}}
           color="secondary"
         >
-          <MenuItem value={2}>
+          <MenuItem value={'mentorfy'}>
             Área de Membros
             <Typography
               component="b"
@@ -134,8 +208,8 @@ const Geral: FC = () => {
               &nbsp;Mentorfy
             </Typography>
           </MenuItem>
-          <MenuItem value={1}>Área de Membros Externa</MenuItem>
-          <MenuItem value={0}>Apenas cadastros</MenuItem>
+          <MenuItem value={'external'}>Área de Membros Externa</MenuItem>
+          <MenuItem value={'signup'}>Apenas cadastros</MenuItem>
         </Select>
       </SelectField>
     </>

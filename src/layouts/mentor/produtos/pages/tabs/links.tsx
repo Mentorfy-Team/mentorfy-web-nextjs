@@ -5,9 +5,13 @@ import { useRouter } from 'next/router';
 import InputField from '~/components/atoms/InputField';
 import { MentorRoutes } from '~/consts';
 import { ReturnButton } from '../styles';
-import chavron_left_svg from '~/../public/svgs/chavron-left';
+import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 
-const Links: FC = () => {
+type props = {
+  product: ProductClient.Product;
+};
+
+const Links: FC<props> = ({ product }) => {
   const route = useRouter();
   return (
     <>
@@ -24,18 +28,15 @@ const Links: FC = () => {
           color="primary"
           onClick={() => route.push(MentorRoutes.products)}
         >
-          <SvgIcon
-            sx={{ paddingTop: '0.4rem', paddingRight: '0.3rem' }}
-            component={chavron_left_svg}
-          />
-          Voltar
+          <ChavronLeftSvg />
+          <span>Voltar</span>
         </ReturnButton>
       </Box>
 
       <InputField
         color="secondary"
         id="outlined-required"
-        value="https://mentoryfy/membros/mentoria-4s"
+        value={`https://mentoryfy/mb/${product.refeerer}`}
         label="Link para área de membros"
         InputLabelProps={{
           shrink: true,
@@ -47,7 +48,7 @@ const Links: FC = () => {
       <InputField
         color="secondary"
         id="outlined-required"
-        value="https://mentoryfy/cadastro/mentoria-4s"
+        value={`https://mentoryfy/signup/${product.refeerer}`}
         label="Link de cadastro"
         InputLabelProps={{
           shrink: true,
