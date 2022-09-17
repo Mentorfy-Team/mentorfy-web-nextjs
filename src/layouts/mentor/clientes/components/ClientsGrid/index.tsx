@@ -3,7 +3,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Item, TextWrapper } from './styles';
-import graduation_cap_svg from '~/../public/svgs/graduation-cap';
+import GraduationCapSvg from '~/../public/svgs/graduation-cap';
 
 const ClientsGrid = () => {
   const isMobile = useMediaQuery('(max-width: 500px)');
@@ -13,13 +13,15 @@ const ClientsGrid = () => {
       <Grid p={isMobile ? 0 : 0} pr={1 * scale} xs={4} lg={4}>
         <Item>
           <TextWrapper>
-            <Typography variant="body2">Total de Membros</Typography>
+            <Typography variant="body2">Total de Mentorados</Typography>
             <Typography sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}>
               273
             </Typography>
           </TextWrapper>
 
-          {!isMobile && <SvgIcon component={graduation_cap_svg} />}
+          {!isMobile && (
+            <GraduationCapSvg height={50} width={50} fill="#1C1B20" />
+          )}
         </Item>
       </Grid>
 
@@ -32,26 +34,30 @@ const ClientsGrid = () => {
       >
         <Item>
           <TextWrapper>
-            <Typography variant="body2">Total de Membros</Typography>
+            <Typography variant="body2">Total de Alunos</Typography>
             <Typography sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}>
               273
             </Typography>
           </TextWrapper>
 
-          {!isMobile && <SvgIcon component={graduation_cap_svg} />}
+          {!isMobile && (
+            <GraduationCapSvg height={50} width={50} fill="#1C1B20" />
+          )}
         </Item>
       </Grid>
 
       <Grid p={isMobile ? 0 : null} pl={1 * scale} xs={4} lg={4}>
         <Item>
           <TextWrapper>
-            <Typography variant="body2">Total de Membros</Typography>
+            <Typography variant="body2">Total de Acessos</Typography>
             <Typography sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}>
               273
             </Typography>
           </TextWrapper>
 
-          {!isMobile && <SvgIcon component={graduation_cap_svg} />}
+          {!isMobile && (
+            <GraduationCapSvg height={200} width={200} fill="#1C1B20" />
+          )}
         </Item>
       </Grid>
     </Grid>

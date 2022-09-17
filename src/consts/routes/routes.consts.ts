@@ -1,7 +1,9 @@
 import clients_svg from '~/../public/svgs/clients';
 import graduationcap_svg from '~/../public/svgs/graduation-cap';
 import home_svg from '~/../public/svgs/home';
+import invoice_svg from '~/../public/svgs/invoice';
 import my_products_svg from '~/../public/svgs/my-products';
+import rocket_svg from '~/../public/svgs/rocket';
 import settings_svg from '~/../public/svgs/settings';
 
 export enum PublicRoutes {
@@ -26,6 +28,10 @@ export enum MentorRoutes {
 
   //* Rota de Perfil/Configurações do usuário
   settings = '/mentor/meu-perfil',
+
+  invoice = '/mentor/faturamento',
+
+  evolution = '/mentor/minha-evolucao',
 }
 
 export enum MentoredRoutes {
@@ -56,6 +62,16 @@ export const MentorMenu = {
     path: MentorRoutes.clients,
     name: 'Clientes',
     component: clients_svg,
+  },
+  evolution: {
+    path: MentorRoutes.evolution,
+    name: 'Minha Evolução',
+    component: rocket_svg,
+  },
+  invoice: {
+    path: MentorRoutes.invoice,
+    name: 'Faturamento',
+    component: invoice_svg,
   },
   settings: {
     path: MentorRoutes.settings,

@@ -125,11 +125,16 @@ const MiniDrawer: React.FC<props> = ({
             <ListItem
               key={MentorMenu[route].name}
               disablePadding
-              sx={{ display: 'block' }}
+              sx={{
+                display: 'block',
+                backgroundColor: IsActiveValidator(MentorMenu[route].path)
+                  ? 'rgba(0, 0, 0, 0.15)'
+                  : 'transparent',
+              }}
             >
               <ListItemButton
                 sx={{
-                  minHeight: 70,
+                  minHeight: 60,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2,
                   cursor: 'pointer',
@@ -155,6 +160,7 @@ const MiniDrawer: React.FC<props> = ({
                   primary={MentorMenu[route].name}
                   sx={{
                     opacity: open ? 1 : 0,
+                    paddingTop: 0.5,
                     color: IsActiveValidator(
                       MentorMenu[route].path,
                       MentorMenu[route].subpaths,
