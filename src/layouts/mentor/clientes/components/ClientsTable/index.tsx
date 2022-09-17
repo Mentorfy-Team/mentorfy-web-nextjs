@@ -5,7 +5,7 @@ import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
 import { Column } from '~/components/atoms/Datagrid';
-import { ArrowButton, P, ProductBox } from './style';
+import { ArrowButton, P, ProductBox, ProductWrapper, Qty } from './style';
 
 const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
   ssr: false,
@@ -21,11 +21,11 @@ const columns: Column[] = [
   },
   {
     id: 'product',
-    label: 'PRODUTO',
+    label: 'PRODUTOS',
   },
   {
     id: 'date',
-    label: 'DATA DA COMPRA',
+    label: 'ÚLTIMA COMPRA',
   },
 ];
 
@@ -51,10 +51,10 @@ const ClientsTable = ({ rows = [] }: { rows: UserClient.ClientRelation[] }) => {
         name,
         email,
         product: (
-          <div>
+          <ProductWrapper>
             <ProductBox>{product}</ProductBox>
-            {qty}
-          </div>
+            <Qty>+{qty}</Qty>
+          </ProductWrapper>
         ),
         date: (
           <Box
@@ -65,7 +65,14 @@ const ClientsTable = ({ rows = [] }: { rows: UserClient.ClientRelation[] }) => {
             }}
           >
             <Box>
-              <Typography>{date}</Typography>
+              <Typography>
+                {new Date(date).toLocaleString('pt-BR', {
+                  day: 'numeric',
+                  weekday: 'long',
+                  month: 'short',
+                  year: 'numeric',
+                })}
+              </Typography>
             </Box>
             <ArrowButton>
               <SvgIcon id="Arrow" component={ArrowForwardIos} />

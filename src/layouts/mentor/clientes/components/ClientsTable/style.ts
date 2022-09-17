@@ -6,8 +6,26 @@ export const ProductBox = styled(Box)`
   background: ${({ theme }) => theme.palette.secondary.main};
   border-radius: 10px;
   display: flex;
+  height: 24px;
   justify-content: center;
+  padding-top: 3px;
   width: 7rem;
+`;
+
+export const ProductWrapper = styled(Box)`
+  display: flex;
+  flex-direction: row;
+`;
+export const Qty = styled(Box)`
+  background: ${({ theme }) => theme.palette.secondary.main};
+  border-radius: 50px;
+  display: flex;
+  font-size: 12px;
+  height: 24px;
+  justify-content: center;
+  margin-left: 8px;
+  padding-top: 5px;
+  width: 24px;
 `;
 
 export const P = styled(Typography)`
