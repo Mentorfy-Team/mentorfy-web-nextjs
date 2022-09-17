@@ -37,9 +37,7 @@ const Dashboard: FC<PageTypes.Props> = ({ profile }) => {
         profile={profile}
         header={Header}
         supportHeader={SupportHeader}
-      >
-        <DragNDrop />
-      </MiniDrawer>
+      ></MiniDrawer>
     </PageWrapper>
   );
 };

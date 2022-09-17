@@ -52,7 +52,7 @@ const getListStyle = (isDraggingOver) => ({
   width: 250,
 });
 
-export default function QuoteApp() {
+export default function QuoteApp({}) {
   const [state, setState] = useState<any[]>([]);
 
   const onDragEnd = useCallback(
@@ -63,11 +63,10 @@ export default function QuoteApp() {
       if (!destination) {
         return;
       }
-      console.log(source, destination);
+
       const sInd = source.droppableId;
       const dInd = destination.droppableId;
-      console.log(sInd, dInd);
-      console.log(state);
+
       if (sInd === dInd) {
         const items = reorder(state[sInd], source.index, destination.index);
         const newState = [...state];
@@ -90,7 +89,6 @@ export default function QuoteApp() {
     setState(items);
   }, []);
 
-  const datenow = Date.now();
   resetServerContext();
   return (
     <div>

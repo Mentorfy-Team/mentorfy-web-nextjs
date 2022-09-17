@@ -72,7 +72,8 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
           contentType: `image/${req.body.banner_type}`,
         },
       );
-    if (!error) {
+    console.log(data, error);
+    if (!error && req.body.old_banner_url) {
       const { data, error } = await supabase.storage
         .from('images')
         .remove([req.body.old_banner_url.split('images/')[1]]);
@@ -94,7 +95,7 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
           contentType: `image/${req.body.main_type}`,
         },
       );
-    if (!error) {
+    if (!error && req.body.old_banner_url) {
       const { data, error } = await supabase.storage
         .from('images')
         .remove([req.body.old_main_url.split('images/')[1]]);
