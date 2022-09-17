@@ -141,8 +141,8 @@ export const Kind = styled(Typography)`
   color: ${({ theme }) => theme.palette.caption.main};
 `;
 
-export const AnimatedBox = styled(Box)<{ isLoading: boolean }>`
-  opacity: ${({ isLoading }) => (isLoading ? 0 : 1)};
+export const AnimatedBox = styled(Box)<{ loading: boolean }>`
+  opacity: ${({ loading }) => (loading ? 0 : 1)};
 
   ${({ theme }) => css`
     transition: ${theme.transitions.create('opacity', {
@@ -158,7 +158,7 @@ export const UserField = styled(Box)`
   align-items: center;
 `;
 
-export const ProFree = styled(Box)`
+export const ProFree = styled(Box)<{ type: string }>`
   height: 20px;
   width: 50px;
   text-align-last: center;
@@ -166,7 +166,10 @@ export const ProFree = styled(Box)`
   margin-left: 1.8rem;
   font-size: 10px;
   border-radius: 10px;
-  background-color: ${({ theme }) => theme.palette.accent.main} !important;
+  background-color: ${({ theme, type }) =>
+    type === 'pro'
+      ? theme.palette.accent.main
+      : theme.palette.secondary.main} !important;
   color: ${({ theme }) => theme.palette.text.primary} !important;
 `;
 

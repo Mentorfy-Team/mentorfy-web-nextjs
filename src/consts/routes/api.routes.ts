@@ -12,6 +12,10 @@ export enum ApiRoutes {
   products_list = '/api/products/list',
   products_update = '/api/products/update',
 
+  //* Rotas para api de area de membros
+  member_areas = '/api/member-areas',
+  member_areas_list = '/api/member-areas/list',
+
   //* Rotas para api de autenticação
   auth = '/api/auth',
   auth_recover = '/api/auth/recover',

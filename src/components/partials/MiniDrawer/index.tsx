@@ -13,6 +13,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import { MentorMenu, MentoredMenu } from '~/consts/routes/routes.consts';
+import { GetProfile } from '~/services/profile.service';
 import { userStore } from '~/stores';
 import LoadingPartial from '../loading/loading.partial';
 import AdjustName from './helper/AdjustName';
@@ -42,10 +43,12 @@ const MiniDrawer: React.FC<props> = ({
   profile,
 }) => {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
   const isMobile = useMediaQuery('(max-width:500px)');
+  const [open, setOpen] = React.useState(isMobile ? false : true);
   const router = useRouter();
   const { isLoading, setLoading } = userStore();
+  const [_profile, setProfile] = React.useState<UserClient.Profile>(profile);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -72,6 +75,15 @@ const MiniDrawer: React.FC<props> = ({
     return false;
   };
 
+  const loadProfile = React.useCallback(async () => {
+    const response = await GetProfile();
+    setProfile(response.profile);
+  }, []);
+
+  React.useEffect(() => {
+    if (!profile) loadProfile();
+  }, [loadProfile, profile, router]);
+
   return (
     <Box sx={{ display: 'flex', overflow: 'hidden', minHeight: 'inherit' }}>
       <AppBar id="AppBar" position="fixed" open={open}>
@@ -93,30 +105,30 @@ const MiniDrawer: React.FC<props> = ({
               src={open ? '/svgs/arrows-left.svg' : '/svgs/menu.svg'}
             />
           </IconButton>
-          <AnimatedBox isLoading={isLoading}>{header}</AnimatedBox>
+          <AnimatedBox loading={isLoading}>{header}</AnimatedBox>
         </Toolbar>
         {supportHeader && (
           <WrapperSupportHeader open={open}>
-            <AnimatedBox isLoading={isLoading}>{supportHeader}</AnimatedBox>
+            <AnimatedBox loading={isLoading}>{supportHeader}</AnimatedBox>
           </WrapperSupportHeader>
         )}
       </AppBar>
       <Drawer id="Drawer" variant="permanent" open={open}>
         <DrawerHeader id="DrawerHeader" />
         <UserField pl={1.5} display="flex">
-          <Avatar sx={{ backgroundColor: 'orange !important' }}>{`${
-            profile?.name[0]
-          }${
-            profile?.name.split(' ').length > 1 &&
-            profile?.name.split(' ')[1][0]
-          }`}</Avatar>
+          <Avatar
+            src={_profile?.avatar}
+            sx={{ backgroundColor: 'gray !important' }}
+          />
           <Box pl={2.5}>
             <UserName variant="body2" noWrap>
-              {profile?.name && AdjustName(profile?.name)}
+              {AdjustName(_profile?.name || 'Bem-vindo')}
             </UserName>
             <Box display="flex">
               <Kind variant="caption">Mentor</Kind>
-              <ProFree>{profile?.plan.toUpperCase()}</ProFree>
+              <ProFree type={_profile?.plan}>
+                {(_profile?.plan || 'Free').toUpperCase()}
+              </ProFree>
             </Box>
           </Box>
         </UserField>
@@ -184,7 +196,7 @@ const MiniDrawer: React.FC<props> = ({
         }}
       >
         <AnimatedBox
-          isLoading={isLoading}
+          loading={isLoading}
           sx={{
             height: '0vh',
           }}

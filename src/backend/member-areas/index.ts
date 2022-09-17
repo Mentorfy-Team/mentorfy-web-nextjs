@@ -10,9 +10,10 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   const supabase = CreateSupabaseWithAuth(req);
 
   const { data: products } = await supabase
-    .from('product')
+    .from('member_area')
     .select('*')
-    .eq('owner', req.query.id);
+    .eq('id', req.query.id)
+    .single();
 
   // TODO: Adicionar log de erros detalhados
 

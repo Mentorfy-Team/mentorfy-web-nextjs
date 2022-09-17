@@ -33,12 +33,6 @@ const columns: Column[] = [
     label: 'MENTORADOS',
   },
   {
-    id: 'produto',
-    label: 'PRODUTO',
-    format: (value) =>
-      value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
-  },
-  {
     id: 'status',
     label: 'STATUS',
   },
@@ -47,27 +41,19 @@ const columns: Column[] = [
 interface Data {
   name: string;
   mentorados: number;
-  produto: string;
   status: JSX.Element;
 }
 
-const ProductsTable = () => {
+const ProductsTable = ({ rows }: { rows: MemberAreaTypes.MemberArea[] }) => {
   const [page, setPage] = useState(1);
-  const [rows, setRows] = useState([]);
   const route = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const createData = useCallback(
-    (
-      name: string,
-      mentorados: number,
-      produto: string,
-      status: string,
-    ): Data => {
+    (name: string, mentorados: number, status: string): Data => {
       return {
         name,
         mentorados,
-        produto,
         status: (
           <Box
             sx={{
@@ -102,16 +88,12 @@ const ProductsTable = () => {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  useEffect(() => {
-    setRows([createData('Método em 4 Semanas', 597.0, 'Mentoria 4S', 'Ativo')]);
-  }, [createData]);
-
   return (
     <Datagrid
       page={page}
       onPageChange={setPage}
       columns={columns}
-      rows={rows}
+      rows={rows.map((row) => createData(row.title, row.clients, row.status))}
       onTitleClick={(id) => handleEdit(id)}
       actionButtons={(index) => [
         <TableCell

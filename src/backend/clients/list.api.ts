@@ -5,12 +5,12 @@ export const get = async (req, res) => {
 
   const supabase = CreateSupabaseWithAuth(req);
 
-  const { data, error: productErros } = await supabase
+  const { data } = await supabase
     .from<ProductApi.Product>('product')
     .select('id, title')
     .eq('owner', req.query.id);
 
-  const { data: relations, error: relationsError } = await supabase
+  const { data: relations } = await supabase
     .from('client_product')
     .select('*')
     .in(
@@ -18,7 +18,7 @@ export const get = async (req, res) => {
       data.map((product) => product.id),
     );
 
-  const { data: users, error: usersError } = await supabase
+  const { data: users } = await supabase
     .from('profile')
     .select('id, name, email, phone')
     .in(
@@ -41,10 +41,8 @@ export const get = async (req, res) => {
       products,
     };
   });
-  if (productErros || relationsError || usersError) {
-    res.status(400).json({
-      error: productErros?.message || relationsError?.message || usersError,
-    });
-  }
-  res.status(200).json({ clients });
+
+  // TODO: Adicionar log de erros detalhados
+
+  res.status(200).json(clients);
 };

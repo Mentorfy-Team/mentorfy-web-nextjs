@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -14,7 +13,7 @@ import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { PublicRoutes } from '~/consts';
-import { GetProduct, ListProducts } from '~/services/product.service';
+import { useProducts } from '~/hooks/useProducts';
 import { GetProfile } from '~/services/profile.service';
 import ProductsTable from './components/ProductsTable';
 import { AddProductButton, HeaderWrapper } from './styles';
@@ -24,20 +23,12 @@ const CreateProductDialog = dynamic(
   () => import('./components/CreateProductDialog'),
 );
 
-const Produtos: FC<PageTypes.Props> = ({ profile, access_token, user }) => {
+const Produtos: FC<PageTypes.Props> = ({ profile, user }) => {
   const [tabindex, setTabindex] = useState(0);
-  const [products, setProducts] = useState([]);
   const [openCreatePage, setOpenCreatePage] = useState(false);
+  const { products } = useProducts(user.id);
 
   const isMobile = useMediaQuery('(max-width: 600px)');
-
-  useEffect(() => {
-    const firstLoad = async () => {
-      const { products } = await ListProducts(access_token, user.id);
-      setProducts(products);
-    };
-    firstLoad();
-  }, [access_token, user.id]);
 
   const Header = (
     <HeaderWrapper>

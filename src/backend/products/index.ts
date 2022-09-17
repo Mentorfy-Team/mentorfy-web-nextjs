@@ -38,13 +38,21 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
   const { user } = await supabase.auth.api.getUserByCookie(req);
 
   const { error, data } = await supabase
-    .from('product')
+    .from<ProductTypes.Product>('product')
     .insert({
       ...req.body,
       owner: user.id,
       refeerer: nanoid(6),
     })
     .single();
+  if (req.body.deliver === 'mentorfy') {
+    await supabase
+      .from('member_area')
+      .insert({
+        id: data.id,
+      })
+      .single();
+  }
 
   res.status(200).json({ product: data, error: error?.message });
 };

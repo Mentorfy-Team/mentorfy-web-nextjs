@@ -10,6 +10,7 @@ import { TabItem, TabWrapper } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { PublicRoutes } from '~/consts';
+import { useClients } from '~/hooks/useClients';
 import { ListClients } from '~/services/client.service';
 import { GetProfile } from '~/services/profile.service';
 import ClientsGrid from './components/ClientsGrid';
@@ -23,11 +24,12 @@ const CreateClientDialog = dynamic(
 const Clients: FC<PageTypes.Props> = ({ profile, user, access_token }) => {
   const isMobile = useMediaQuery('(max-width: 500px)');
   const [openCreatePage, setOpenCreatePage] = useState(false);
-  const [myClients, setMyClients] = useState<UserClient.ClientRelation[]>([]);
+  const { clients } = useClients(user.id);
 
   const ProductsTableComponent = useCallback(() => {
-    return <ClientsTable rows={myClients} />;
-  }, [myClients]);
+    return <ClientsTable rows={clients} />;
+  }, [clients]);
+
   const Header = <Typography variant="h6">Meus Clientes</Typography>;
 
   const SupportHeader = (
@@ -37,14 +39,6 @@ const Clients: FC<PageTypes.Props> = ({ profile, user, access_token }) => {
       <TabItem label="Meus Times" />
     </TabWrapper>
   );
-
-  useEffect(() => {
-    (async () => {
-      const data = await ListClients(access_token, user.id);
-      setMyClients(data.clients);
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [access_token]);
 
   // Consts to controll buttons text
   const exportClientsText = isMobile ? '' : 'Exportar Clientes';
@@ -60,9 +54,9 @@ const Clients: FC<PageTypes.Props> = ({ profile, user, access_token }) => {
         >
           <ContentWidthLimit>
             <ClientsGrid
-              mentorados={myClients.length}
-              acessos={myClients.length * 4}
-              alunos={myClients.length}
+              mentorados={clients.length}
+              acessos={clients.length * 4}
+              alunos={clients.length}
             />
             <ButtonsWrapper>
               <ClientsOptionsButton variant="outlined">
@@ -120,7 +114,6 @@ export const getProps = withPageAuth({
   async getServerSideProps(ctx) {
     const { profile, user } = await GetProfile(ctx.req);
 
-    console.log(profile, user);
     return {
       props: {
         profile,
