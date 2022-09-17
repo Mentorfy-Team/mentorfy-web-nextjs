@@ -22,7 +22,7 @@ const ClientsGrid = ({ mentorados = 0, alunos = 0, acessos = 0 }) => {
           </TextWrapper>
 
           {!isMobile && (
-            <GraduationCapSvg height={70} width={70} fill="#1C1B20" />
+            <GraduationCapSvg height={40} width={40} fill="#1C1B20" />
           )}
         </Item>
       </Grid>
@@ -42,7 +42,7 @@ const ClientsGrid = ({ mentorados = 0, alunos = 0, acessos = 0 }) => {
             </Typography>
           </TextWrapper>
 
-          {!isMobile && <ClientsSvg height={70} width={70} fill="#1C1B20" />}
+          {!isMobile && <ClientsSvg height={40} width={40} fill="#1C1B20" />}
         </Item>
       </Grid>
 
@@ -55,7 +55,7 @@ const ClientsGrid = ({ mentorados = 0, alunos = 0, acessos = 0 }) => {
             </Typography>
           </TextWrapper>
 
-          {!isMobile && <RocketSvg height={60} width={60} fill="#1C1B20" />}
+          {!isMobile && <RocketSvg height={32} width={32} fill="#1C1B20" />}
         </Item>
       </Grid>
     </Grid>

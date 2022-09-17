@@ -14,6 +14,10 @@ export const Item = styled(Box)`
     height: 6.5rem;
     padding: 1rem 1rem;
   }
+
+  svg {
+    margin-top: -0.5rem;
+  }
 `;
 
 export const TextWrapper = styled(Box)`
