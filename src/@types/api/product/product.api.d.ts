@@ -26,7 +26,14 @@ declare namespace ProductApi {
   }
   namespace Post {
     interface Request extends ExternalModules.Next.NextApiRequest {
-      body: Product;
+      body: Product & {
+        banner_owner: string;
+        banner_type: string;
+        old_banner_url: string;
+        main_owner: string;
+        main_type: string;
+        old_main_url: string;
+      };
     }
 
     type Response = {

@@ -3,9 +3,11 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Item, TextWrapper } from './styles';
+import ClientsSvg from '~/../public/svgs/clients';
 import GraduationCapSvg from '~/../public/svgs/graduation-cap';
+import RocketSvg from '~/../public/svgs/rocket';
 
-const ClientsGrid = () => {
+const ClientsGrid = ({ mentorados = 0, alunos = 0, acessos = 0 }) => {
   const isMobile = useMediaQuery('(max-width: 500px)');
   const scale = isMobile ? 1 : 3;
   return (
@@ -15,12 +17,12 @@ const ClientsGrid = () => {
           <TextWrapper>
             <Typography variant="body2">Total de Mentorados</Typography>
             <Typography sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}>
-              273
+              {mentorados}
             </Typography>
           </TextWrapper>
 
           {!isMobile && (
-            <GraduationCapSvg height={50} width={50} fill="#1C1B20" />
+            <GraduationCapSvg height={70} width={70} fill="#1C1B20" />
           )}
         </Item>
       </Grid>
@@ -36,13 +38,11 @@ const ClientsGrid = () => {
           <TextWrapper>
             <Typography variant="body2">Total de Alunos</Typography>
             <Typography sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}>
-              273
+              {alunos}
             </Typography>
           </TextWrapper>
 
-          {!isMobile && (
-            <GraduationCapSvg height={50} width={50} fill="#1C1B20" />
-          )}
+          {!isMobile && <ClientsSvg height={70} width={70} fill="#1C1B20" />}
         </Item>
       </Grid>
 
@@ -51,13 +51,11 @@ const ClientsGrid = () => {
           <TextWrapper>
             <Typography variant="body2">Total de Acessos</Typography>
             <Typography sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}>
-              273
+              {acessos}
             </Typography>
           </TextWrapper>
 
-          {!isMobile && (
-            <GraduationCapSvg height={200} width={200} fill="#1C1B20" />
-          )}
+          {!isMobile && <RocketSvg height={60} width={60} fill="#1C1B20" />}
         </Item>
       </Grid>
     </Grid>

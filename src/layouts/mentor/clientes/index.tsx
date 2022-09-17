@@ -59,7 +59,11 @@ const Clients: FC<PageTypes.Props> = ({ profile, user, access_token }) => {
           supportHeader={SupportHeader}
         >
           <ContentWidthLimit>
-            <ClientsGrid />
+            <ClientsGrid
+              mentorados={myClients.length}
+              acessos={myClients.length * 4}
+              alunos={myClients.length}
+            />
             <ButtonsWrapper>
               <ClientsOptionsButton variant="outlined">
                 <Image

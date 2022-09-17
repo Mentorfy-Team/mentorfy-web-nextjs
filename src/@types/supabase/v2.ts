@@ -9,6 +9,32 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      client_product: {
+        Row: {
+          user_id: string;
+          product_id: string;
+          created_at: string | null;
+          id: string;
+          subscription: boolean | null;
+          interval: string | null;
+        };
+        Insert: {
+          user_id: string;
+          product_id: string;
+          created_at?: string | null;
+          id?: string;
+          subscription?: boolean | null;
+          interval?: string | null;
+        };
+        Update: {
+          user_id?: string;
+          product_id?: string;
+          created_at?: string | null;
+          id?: string;
+          subscription?: boolean | null;
+          interval?: string | null;
+        };
+      };
       profile: {
         Row: {
           id: string;
@@ -19,6 +45,8 @@ export interface Database {
           plan: string;
           avatar: string | null;
           access_type: string | null;
+          email: string | null;
+          phone: string | null;
         };
         Insert: {
           id: string;
@@ -29,6 +57,8 @@ export interface Database {
           plan?: string;
           avatar?: string | null;
           access_type?: string | null;
+          email?: string | null;
+          phone?: string | null;
         };
         Update: {
           id?: string;
@@ -39,6 +69,8 @@ export interface Database {
           plan?: string;
           avatar?: string | null;
           access_type?: string | null;
+          email?: string | null;
+          phone?: string | null;
         };
       };
       product: {

@@ -20,7 +20,7 @@ export const GetProduct = async (req, id): Promise<ProductApi.Get.Response> => {
         error: response.data.error,
       };
     }
-    return response.data.product;
+    return response.data.product as any;
   } catch (error: any) {
     return {
       error: error.message,
