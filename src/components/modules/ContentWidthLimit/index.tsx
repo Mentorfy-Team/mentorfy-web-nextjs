@@ -15,7 +15,6 @@ const ContentWidthLimit: React.FC<props> = ({ children, maxWidth = 1120 }) => {
       <ScrollArea
         id="ScrollArea"
         sx={{
-          width: '90vw',
           padding: '0 2rem',
           maxWidth: `${maxWidth}px`,
           display: 'flex',
