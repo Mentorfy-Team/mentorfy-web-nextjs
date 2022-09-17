@@ -3,6 +3,10 @@ export enum ApiRoutes {
   users = '/api/users',
   users_profile = '/api/users/profile',
 
+  //* Rotas para api de clientes
+  clients = '/api/clients',
+  clients_list = '/api/clients/list',
+
   //* Rotas para api de usuários
   products = '/api/products',
   products_list = '/api/products/list',

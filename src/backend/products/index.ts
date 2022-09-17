@@ -46,7 +46,6 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
     })
     .single();
 
-  console.log(data);
   res.status(200).json({ product: data, error: error?.message });
 };
 
@@ -72,7 +71,7 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
           contentType: `image/${req.body.banner_type}`,
         },
       );
-    console.log(data, error);
+
     if (!error && req.body.old_banner_url) {
       const { data, error } = await supabase.storage
         .from('images')

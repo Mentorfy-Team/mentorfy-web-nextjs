@@ -12,7 +12,6 @@ const LoadingPartial: FC = () => {
     const handleStart = (url) => {
       if (url !== router.asPath) {
         setLoading(true);
-        console.log('set true');
       }
     };
     const handleComplete = (url) => setLoading(false);

@@ -36,15 +36,26 @@ interface Data {
   date: JSX.Element;
 }
 
-const ClientsTable = () => {
+const ClientsTable = ({ rows = [] }: { rows: UserClient.ClientRelation[] }) => {
   const [page, setPage] = useState(1);
 
   const createData = useCallback(
-    (name: string, email: string, product: string, date: string): Data => {
+    (
+      name: string,
+      email: string,
+      product: string,
+      qty: number,
+      date: string,
+    ): Data => {
       return {
         name,
         email,
-        product: <ProductBox>{product}</ProductBox>,
+        product: (
+          <div>
+            <ProductBox>{product}</ProductBox>
+            {qty}
+          </div>
+        ),
         date: (
           <Box
             sx={{
@@ -54,7 +65,6 @@ const ClientsTable = () => {
             }}
           >
             <Box>
-              <P>{date}</P>
               <Typography>{date}</Typography>
             </Box>
             <ArrowButton>
@@ -67,67 +77,34 @@ const ClientsTable = () => {
     [],
   );
 
-  const rows = [
-    createData(
-      'Alexandre Mendes',
-      'alexandremendes@gmail.com',
-      'Mentoria 4S',
-      'Cerca de 8 horas',
-    ),
-    createData(
-      'Alexandre Mendes',
-      'alexandremendes@gmail.com',
-      'Mentoria 4S',
-      'Cerca de 8 horas',
-    ),
-    createData(
-      'Alexandre Mendes',
-      'alexandremendes@gmail.com',
-      'Mentoria 4S',
-      'Cerca de 8 horas',
-    ),
-    createData(
-      'Alexandre Mendes',
-      'alexandremendes@gmail.com',
-      'Mentoria 4S',
-      'Cerca de 8 horas',
-    ),
-    createData(
-      'Alexandre Mendes',
-      'alexandremendes@gmail.com',
-      'Mentoria 4S',
-      'Cerca de 8 horas',
-    ),
-    createData(
-      'Alexandre Mendes',
-      'alexandremendes@gmail.com',
-      'Mentoria 4S',
-      'Cerca de 8 horas',
-    ),
-    createData(
-      'Alexandre Mendes',
-      'alexandremendes@gmail.com',
-      'Mentoria 4S',
-      'Cerca de 8 horas',
-    ),
-    createData(
-      'Alexandre Mendes',
-      'alexandremendes@gmail.com',
-      'Mentoria 4S',
-      'Cerca de 8 horas',
-    ),
-    createData(
-      'Alexandre Mendes',
-      'alexandremendes@gmail.com',
-      'Mentoria 4S',
-      'Cerca de 8 horas',
-    ),
-  ];
+  const getMaxSubscribedAtDate = (array) => {
+    const dates = array.map((item) => new Date(item.subscribed_at));
+
+    return new Date(Math.max.apply(null, dates));
+  };
+
+  const findLastProduct = (array) => {
+    const maxDate = getMaxSubscribedAtDate(array);
+    const lastProduct = array.find((item) => {
+      return new Date(item.subscribed_at).toString() === maxDate.toString();
+    });
+    return lastProduct;
+  };
+
   return (
     <Datagrid
       page={page}
       columns={columns}
-      rows={rows}
+      rows={rows.map((row) => {
+        const lastProduct = findLastProduct(row.products);
+        return createData(
+          row.name,
+          row.email,
+          lastProduct.title,
+          row.products.length,
+          lastProduct.subscribed_at,
+        );
+      })}
       onPageChange={setPage}
     />
   );

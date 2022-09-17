@@ -20,7 +20,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   // * Se tudo estiver certo, atualiza o perfil do usuário
   if (!error) {
     await SupabaseWithouAuth.from('profile')
-      .update({ name, plan: 'pro' })
+      .update({ name, plan: 'pro', email: user.email, phone: user.phone })
       .eq('id', user.id);
   }
 

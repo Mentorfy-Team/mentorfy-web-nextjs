@@ -25,6 +25,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     .single();
 
   result['profile'] = profile;
+  result['user'] = user;
 
   if (req.query?.withAddress) {
     const { data: address, error } = await supabase

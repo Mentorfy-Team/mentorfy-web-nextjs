@@ -8,6 +8,7 @@ declare namespace ProfileApi {
     interface Response {
       profile?: ExternalModules.Supabase.Database.public.Tables.profile.Row;
       address?: ExternalModules.Supabase.Database.public.Tables.address.Row;
+      user?: UserClient.User;
       error?: string;
     }
   }

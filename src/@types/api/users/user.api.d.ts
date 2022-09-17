@@ -4,6 +4,7 @@ declare namespace UsersApi {
       body: {
         email: string;
         password: string;
+        phone?: string;
         name: string;
         role: string;
         plan: string;

@@ -3,4 +3,4 @@ import { getProps as getProps } from '~/layouts/mentor/clientes';
 
 export default ClientsLayout;
 
-export const getServerSideProps = getProps;
+export const getStaticProps = getProps;

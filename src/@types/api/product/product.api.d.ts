@@ -1,5 +1,6 @@
+const Database: ExternalModules.Supabase.Database;
 declare namespace ProductApi {
-  type Product = ExternalModules.Supabase.Database.public.Tables.product.Row;
+  type Product = typeof Database.public.Tables.product.Row;
 
   namespace Get {
     interface Request {

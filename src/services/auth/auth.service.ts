@@ -8,7 +8,6 @@ export const Authenticate = async (auth: Auth) => {
   try {
     await HttpClient.post<UsersApi.Post.Response>(ApiRoutes.auth, auth);
 
-    console.log('Cookie', CookieUtil.get());
     const response = {
       data: {
         error: null,
