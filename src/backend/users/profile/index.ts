@@ -52,7 +52,7 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
 
   const errors = [];
   const toUpdate = {};
-  console.log(req.body);
+
   if (req.body.avatar) {
     const { data, error } = await supabase.storage
       .from('images')
@@ -104,7 +104,6 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
       .update({ ...req.body.profile, ...req.body.user, ...toUpdate })
       .match({ id: user.id });
     if (error) errors.push(error);
-    console.log({ ...req.body.profile, ...req.body.user, ...toUpdate }, error);
   }
 
   return res.status(200).json({ errors: errors });

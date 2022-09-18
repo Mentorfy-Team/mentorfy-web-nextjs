@@ -149,7 +149,7 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
                   Foto de perfil
                 </CustomTypography>
                 <CustomTypography sx={{ opacity: '0.7', fontSize: '0.9rem' }}>
-                  Recomendação: 70x70 pixels
+                  Máximo: 1 mb
                 </CustomTypography>
                 <ActionButton
                   color="primary"

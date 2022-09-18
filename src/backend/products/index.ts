@@ -9,7 +9,13 @@ import { nanoid } from 'nanoid';
 import { CreateSupabaseWithAuth } from '~/backend/supabase';
 
 export function fixBase64(data) {
-  return decode(data.replace('data:image/png;base64,', ''));
+  return decode(
+    data
+      .replace('data:image/png;base64,', '')
+      .replace('data:image/jpeg;base64,', '')
+      .replace('data:image/jpg;base64,', '')
+      .replace('data:image/webp;base64,', ''),
+  );
 }
 
 export const get: Handler.Callback<GetRequest, GetResponse> = async (

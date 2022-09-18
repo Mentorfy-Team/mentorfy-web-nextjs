@@ -65,7 +65,6 @@ const Geral: FC<props> = ({ product }) => {
     const fileReader = new FileReader();
     if (!target.files || target.files.length <= 0) return;
 
-    fileReader.readAsDataURL(target.files[0]);
     const type = target.files[0].type.split('/')[1];
 
     fileReader.onload = (e) => {
