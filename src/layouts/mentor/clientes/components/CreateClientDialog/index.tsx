@@ -13,6 +13,7 @@ import InputField from '~/components/atoms/InputField';
 import SelectField from '~/components/atoms/SelectField';
 import { MentorRoutes } from '~/consts';
 import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
+import { useProducts } from '~/hooks/useProducts';
 import { CreateClient } from '~/services/client.service';
 import { CreateProduct, ListProducts } from '~/services/product.service';
 import { BootstrapDialogTitle, Form } from './styles';
@@ -25,8 +26,7 @@ export default function CreateClientDialog({
   user,
 }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [products, setProducts] = useState<ProductClient.Product[]>([]);
-
+  const { products } = useProducts(user.id);
   const { setValue, watch, handleSubmit } =
     useForm<ProductClient.CreateProduct>();
   const { name, phone, email, product } = watch();
@@ -34,14 +34,6 @@ export default function CreateClientDialog({
   const handleChange = (e, name) => {
     setValue(name, e.target.value);
   };
-
-  useEffect(() => {
-    (async () => {
-      const { products } = await ListProducts(access_token, user.id);
-      setProducts(products);
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [access_token]);
 
   const onSubmit: SubmitHandler<ProductClient.CreateProduct> = useCallback(
     async (values) => {
