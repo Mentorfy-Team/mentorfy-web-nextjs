@@ -18,30 +18,45 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
     .eq('email', email)
     .single();
   let userRef = existentUser;
+  let errorRes;
   if (!userRef) {
-    // * Convida um usuário
-    const { data: user, error } =
-      await supabaseAdmin.auth.api.inviteUserByEmail(email, {
+    // * Convida um usuário e cria no banco de autenticação
+    const { data: user } = await supabaseAdmin.auth.api.inviteUserByEmail(
+      email,
+      {
         data: {
           name,
           phone,
           product,
         },
         redirectTo: process.env.NEXT_PUBLIC_APP_URL + '?pid=' + product,
-      });
+      },
+    );
+    // * Depois de convidado, o usuário já existe,
+    // * atualizamos com dados extras a autenticação e o perfil
+    const { data, error } = await supabaseAdmin.auth.api.updateUserById(
+      user.id,
+      { phone },
+    );
+    if (error) {
+      errorRes = 'Esse telefone já está cadastrado em outro usuário';
+    }
+
     await supabaseAdmin
       .from('profile')
-      .update({ name, email: user.email, phone: user.phone })
+      .update({ name, email: email, phone: data.phone })
       .eq('id', user.id);
 
     userRef = user;
   }
-  const { data, error } = await supabaseAdmin.from('client_product').insert({
+
+  // * Criamos a relação de usuário com o produto
+  await supabaseAdmin.from('client_product').insert({
     user_id: userRef.id,
     product_id: product,
   });
 
-  // * Se houver erro, retorna o erro
+  // * Se o usuário ja existia, não precisamos convidar novamente, e damos o feedback
   if (existentError && existentError.message === 'User already registered') {
     return res.status(200).json({
       error:
@@ -50,7 +65,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   }
 
   res.status(200).json({
-    error: existentError?.message,
+    error: errorRes,
   });
 };
 

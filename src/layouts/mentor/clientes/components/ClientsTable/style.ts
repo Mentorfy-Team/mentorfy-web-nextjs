@@ -8,8 +8,7 @@ export const ProductBox = styled(Box)`
   display: flex;
   height: 24px;
   justify-content: center;
-  padding-top: 3px;
-  width: 7rem;
+  padding: 3px 10px 0 10px;
 `;
 
 export const ProductWrapper = styled(Box)`

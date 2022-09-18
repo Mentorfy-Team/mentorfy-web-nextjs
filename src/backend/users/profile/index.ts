@@ -47,6 +47,7 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
     req,
   );
   const supabase = CreateSupabaseWithAuth(req);
+
   const errors = [];
   if (req.body.address) {
     const { error } = await supabase
@@ -65,13 +66,13 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
     if (error) errors.push(error);
   }
 
-  if (req.body.profile) {
+  if (req.body.profile || req.body.user?.phone || req.body.user?.email) {
     const { error } = await supabase
       .from('profile')
-      .update(req.body.profile)
+      .update({ ...req.body.profile, ...req.body.user })
       .match({ id: user.id });
     if (error) errors.push(error);
   }
-
+  console.log(req.body);
   return res.status(200).json({ errors: errors });
 };

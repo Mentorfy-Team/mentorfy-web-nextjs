@@ -22,7 +22,6 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
         .select('*')
         .eq('product_id', product.id);
       product['clients'] = clients?.length;
-      console.log(error);
     }
 
   // TODO: Adicionar log de erros detalhados

@@ -2,17 +2,24 @@ import useSWR from 'swr';
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { fetcher } from '~/hooks/fetcher';
 
-export function useProfile(withAddress = false) {
-  const { data, error } = useSWR<UserTypes.User[]>(
+export function useProfile(
+  withAddress = false,
+  defaultProfile,
+  defaultAddress,
+) {
+  const { data, error } = useSWR<UserTypes.ProfileWithAddress>(
     `${ApiRoutes.users_profile}?withAddress=${withAddress}`,
     fetcher,
     {
-      fallbackData: [],
+      fallbackData: {
+        profile: defaultProfile || {},
+        address: defaultAddress || {},
+      },
     },
   );
-
+  console.log('update', data, error);
   return {
-    profile: data,
+    data: { ...data },
     isLoading: !error && !data,
     isError: error,
   };

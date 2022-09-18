@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-imports */
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -32,9 +32,13 @@ type UpdateForm = Partial<UserClient.User> &
 const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>();
+  const router = useRouter();
   const { register, handleSubmit } = useForm<UpdateForm>();
-  const route = useRouter();
   const States = ['AC', 'SP', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO'];
+  const [data, setData] = useState<UserTypes.ProfileWithAddress>({
+    profile,
+    address,
+  });
 
   const onSubmit: SubmitHandler<UpdateForm> = useCallback(
     async (values) => {
@@ -42,40 +46,43 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
       const propProfile = {};
       const propAddress = {};
       const propUser = {};
-
+      console.log(values);
       // * verificar se as propriedades de values são iguais as do profile, se for adicionar a um objeto
-      if (values.name && values.name !== profile?.name)
+      if (values.name && values.name !== data?.profile?.name)
         Object.assign(propProfile, { name: values.name });
-      if (values.avatar && values.avatar !== profile?.avatar)
+      if (values.avatar && values.avatar !== data?.profile?.avatar)
         Object.assign(propProfile, { avatar: values.avatar });
 
       // * verificar se as propriedades de values são iguais as do user, se for adicionar a um objeto
-      if (values.email && values.email !== user.email)
+      if (values.email && values.email !== profile.email)
         Object.assign(propUser, { email: values.email });
-      if (values.phone && values.phone !== user.phone)
+      if (values.phone && values.phone !== profile.phone)
         Object.assign(propUser, { phone: values.phone });
 
       // * verificar se as propriedades de values são iguais as do address, se for adicionar a um objeto
-      if (values.zipcode && values.zipcode !== address?.zipcode)
+      if (values.zipcode && values.zipcode !== data?.address?.zipcode)
         Object.assign(propAddress, { zipcode: values.zipcode });
 
-      if (values.street && values.street !== address?.street)
+      if (values.street && values.street !== data?.address?.street)
         Object.assign(propAddress, { street: values.street });
 
       // ? o number é um number, por isso não pode ser comparado com !==
-      if (values.number && values.number != address?.number)
+      if (values.number && values.number != data?.address?.number)
         Object.assign(propAddress, { number: values.number });
 
-      if (values.neighborhood && values.neighborhood !== address?.neighborhood)
+      if (
+        values.neighborhood &&
+        values.neighborhood !== data?.address?.neighborhood
+      )
         Object.assign(propAddress, { neighborhood: values.neighborhood });
 
-      if (values.city && values.city !== address?.city)
+      if (values.city && values.city !== data?.address?.city)
         Object.assign(propAddress, { city: values.city });
 
-      if (values.state && values.state !== address?.state)
+      if (values.state && values.state !== data?.address?.state)
         Object.assign(propAddress, { state: values.state });
 
-      if (values.complement && values.complement !== address?.complement)
+      if (values.complement && values.complement !== data?.address?.complement)
         Object.assign(propAddress, { complement: values.complement });
 
       const registerData = await UpdateProfile({
@@ -87,8 +94,9 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
         setError('Ocorreu um erro na hora de salvar os seus dados.');
       }
       setIsLoading(false);
+      router.reload();
     },
-    [address, profile, user],
+    [data, profile, router],
   );
 
   const HeaderDrawer = <Typography variant="h6">Meu Perfil</Typography>;
@@ -126,7 +134,7 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
               type="text"
               color="secondary"
               autoComplete="off"
-              defaultValue={profile.name}
+              defaultValue={data?.profile?.name}
               placeholder="Digite seu nome"
               InputLabelProps={{
                 shrink: true,
@@ -138,7 +146,7 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
               type="e-mail"
               color="secondary"
               autoComplete="off"
-              defaultValue={user.email}
+              defaultValue={data?.profile?.email}
               placeholder="Digite seu e-mail"
               InputLabelProps={{
                 shrink: true,
@@ -150,7 +158,7 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
               type="tel"
               color="secondary"
               autoComplete="off"
-              defaultValue={user.phone}
+              defaultValue={data?.profile?.phone}
               placeholder="Digite seu telefone"
               InputLabelProps={{
                 shrink: true,
@@ -186,7 +194,7 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
           </Header>
           <Form onSubmit={handleSubmit(onSubmit)}>
             <InputField
-              defaultValue={address?.zipcode}
+              defaultValue={data?.address?.zipcode}
               label="CEP"
               type="tel"
               color="secondary"
@@ -198,7 +206,7 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
               }}
             />
             <InputField
-              defaultValue={address?.street}
+              defaultValue={data?.address?.street}
               label="Endereço"
               type="text"
               color="secondary"
@@ -210,7 +218,7 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
               }}
             />
             <InputField
-              defaultValue={address?.number}
+              defaultValue={data?.address?.number}
               label="Número"
               type="tel"
               color="secondary"
@@ -222,7 +230,7 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
               }}
             />
             <InputField
-              defaultValue={address?.neighborhood}
+              defaultValue={data?.address?.neighborhood}
               type="text"
               color="secondary"
               autoComplete="off"
@@ -234,7 +242,7 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
               }}
             />
             <InputField
-              defaultValue={address?.complement}
+              defaultValue={data?.address?.complement}
               label="Complemento"
               type="text"
               color="secondary"
@@ -246,7 +254,7 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
               }}
             />
             <InputField
-              defaultValue={address?.city}
+              defaultValue={data?.address?.city}
               label="Cidade"
               type="text"
               color="secondary"
@@ -266,7 +274,13 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
                 placeholder="Ex: SP"
                 label="Estado"
                 color="secondary"
-                defaultValue={address?.state}
+                defaultValue={data?.address?.state}
+                onChange={(e, child) => {
+                  setData((old) => ({
+                    ...old,
+                    address: { ...data.address, state: e.target.value as any },
+                  }));
+                }}
                 notched={true}
                 {...register('state')}
               >
@@ -298,9 +312,9 @@ export const getProps = withPageAuth({
   authRequired: true,
   redirectTo: PublicRoutes.login,
   async getServerSideProps(ctx) {
-    const profileWithAddress = await GetProfile(ctx.req, true);
+    const { profile, address } = await GetProfile(ctx.req, true);
     return {
-      props: profileWithAddress,
+      props: { profile, address },
     };
   },
 });

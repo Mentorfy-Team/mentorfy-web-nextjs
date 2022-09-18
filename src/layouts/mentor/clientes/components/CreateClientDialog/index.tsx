@@ -112,7 +112,7 @@ export default function CreateClientDialog({
               value={phone}
             />
             <SelectField required sx={{ width: '100%' }}>
-              <InputLabel>Produto Relacionado (Opcional)</InputLabel>
+              <InputLabel>Produto Relacionado</InputLabel>
               <Select
                 label="Produto Relacionado"
                 color="secondary"
