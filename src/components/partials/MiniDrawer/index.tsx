@@ -105,7 +105,9 @@ const MiniDrawer: React.FC<props> = ({
               src={open ? '/svgs/arrows-left.svg' : '/svgs/menu.svg'}
             />
           </IconButton>
-          <AnimatedBox loading={isLoading}>{header}</AnimatedBox>
+          <AnimatedBox sx={{ width: '100%' }} loading={isLoading}>
+            {header}
+          </AnimatedBox>
         </Toolbar>
         {supportHeader && (
           <WrapperSupportHeader open={open}>

@@ -49,7 +49,7 @@ const Geral: FC<props> = ({ product }) => {
           old_banner_url: product.banner_image,
         });
       }
-      await UpdateProduct(values);
+      await UpdateProduct({ ...values, id: product.id });
       setIsLoading(false);
     },
     [product, productImage],
@@ -198,7 +198,7 @@ const Geral: FC<props> = ({ product }) => {
               as="label"
               onChange={(e) => handleCapture(e.target, 'banner_image')}
             >
-              Trocar imagem
+              Trocar banner
               <input hidden accept="image/*" type="file" />
             </ActionButton>
             <Typography color="gray" sx={{ textAlign: 'initial' }}>

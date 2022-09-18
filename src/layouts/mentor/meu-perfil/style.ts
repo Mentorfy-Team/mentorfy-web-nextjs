@@ -53,6 +53,14 @@ export const CustomSelectField = styled(SelectField)`
 
 export const CustomTypography = styled(Typography)``;
 
+export const UploadButton = styled(Button)`
+  color: ${({ theme }) => theme.palette.accent.main};
+  font-weight: bold;
+  path {
+    fill: ${({ theme }) => theme.palette.accent.main};
+  }
+`;
+
 export const AvatarWrapper = styled('div')`
   align-items: center;
   display: flex;
@@ -95,5 +103,4 @@ export const BOX = styled(Box)`
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
 `;

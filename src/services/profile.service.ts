@@ -35,6 +35,11 @@ type UpdateProfileProps = {
   profile: Partial<UserClient.Profile>;
   user: Partial<UserClient.User>;
   address: Partial<UserClient.Address>;
+  avatar?: Partial<{
+    file: string;
+    type: string;
+  }>;
+  old_avatar?: string;
 };
 
 export const UpdateProfile = async (values: UpdateProfileProps) => {
@@ -45,6 +50,10 @@ export const UpdateProfile = async (values: UpdateProfileProps) => {
     if (Object.keys(values.user).length > 0) bundle['user'] = values.user;
     if (Object.keys(values.address).length > 0)
       bundle['address'] = values.address;
+    if (Object.keys(values.avatar.file)) {
+      bundle['avatar'] = values.avatar;
+      bundle['old_avatar'] = values.old_avatar;
+    }
 
     const response = await HttpClient.post<UsersApi.Post.Response>(
       ApiRoutes.users_profile,

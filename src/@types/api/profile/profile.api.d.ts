@@ -18,6 +18,11 @@ declare namespace ProfileApi {
         profile: UserClient.Profile;
         user: UserClient.User;
         address: UserClient.Address;
+        avatar?: {
+          file: string;
+          type: string;
+        };
+        old_avatar?: string;
       };
     }
 

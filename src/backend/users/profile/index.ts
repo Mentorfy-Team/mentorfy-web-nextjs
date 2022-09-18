@@ -1,4 +1,6 @@
 import { AdminUserAttributes } from '@supabase/supabase-js';
+import { nanoid } from 'nanoid';
+import { fixBase64 } from '~/backend/products';
 import {
   CreateSupabaseWithAdmin,
   CreateSupabaseWithAuth,
@@ -49,6 +51,31 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
   const supabase = CreateSupabaseWithAuth(req);
 
   const errors = [];
+  const toUpdate = {};
+  console.log(req.body);
+  if (req.body.avatar) {
+    const { data, error } = await supabase.storage
+      .from('images')
+      .upload(
+        `${user.id}/${nanoid(6)}.${(req.body.avatar as any).type}`,
+        fixBase64((req.body.avatar as any).file),
+        {
+          cacheControl: '3600',
+          upsert: true,
+          contentType: `image/${(req.body.avatar as any).type}`,
+        },
+      );
+
+    if (!error && req.body.old_avatar) {
+      const { data, error } = await supabase.storage
+        .from('images')
+        .remove([req.body.old_avatar.split('images/')[1]]);
+    }
+    Object.assign(toUpdate, {
+      avatar: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.Key,
+    });
+  }
+
   if (req.body.address) {
     const { error } = await supabase
       .from('address')
@@ -66,13 +93,19 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
     if (error) errors.push(error);
   }
 
-  if (req.body.profile || req.body.user?.phone || req.body.user?.email) {
+  if (
+    req.body.profile ||
+    req.body.user?.phone ||
+    req.body.user?.email ||
+    req.body.avatar
+  ) {
     const { error } = await supabase
       .from('profile')
-      .update({ ...req.body.profile, ...req.body.user })
+      .update({ ...req.body.profile, ...req.body.user, ...toUpdate })
       .match({ id: user.id });
     if (error) errors.push(error);
+    console.log({ ...req.body.profile, ...req.body.user, ...toUpdate }, error);
   }
-  console.log(req.body);
+
   return res.status(200).json({ errors: errors });
 };

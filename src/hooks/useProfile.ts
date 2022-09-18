@@ -17,7 +17,7 @@ export function useProfile(
       },
     },
   );
-  console.log('update', data, error);
+
   return {
     data: { ...data },
     isLoading: !error && !data,

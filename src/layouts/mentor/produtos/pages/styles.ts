@@ -8,6 +8,7 @@ export const HeaderWrapper = styled(Box)`
   display: flex;
   flex: 1;
   justify-content: space-between;
+  width: 100%;
 `;
 
 export const SaveButton = styled(LoadingButton)`
@@ -27,10 +28,10 @@ export const ReturnButton = styled(Button)`
 
 export const ActionButton = styled(Button)`
   color: ${({ theme }) => theme.palette.accent.main};
-  font-weight: bold;
   path {
     fill: ${({ theme }) => theme.palette.accent.main};
   }
+  cursor: pointer;
 `;
 
 export const MembersAreaButton = styled(Button)``;

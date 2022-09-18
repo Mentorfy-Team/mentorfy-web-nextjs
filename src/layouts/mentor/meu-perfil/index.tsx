@@ -14,6 +14,7 @@ import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { PublicRoutes } from '~/consts';
 import { GetProfile, UpdateProfile } from '~/services/profile.service';
+import { ActionButton } from '../produtos/pages/styles';
 import {
   AvatarWrapper,
   BOX,
@@ -23,6 +24,7 @@ import {
   Form,
   Header,
   InputField,
+  UploadButton,
 } from './style';
 
 type UpdateForm = Partial<UserClient.User> &
@@ -39,6 +41,10 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
     profile,
     address,
   });
+  const [avatar, setAvatar] = useState({
+    file: data.profile.avatar as string | ArrayBuffer,
+    type: '',
+  });
 
   const onSubmit: SubmitHandler<UpdateForm> = useCallback(
     async (values) => {
@@ -46,12 +52,17 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
       const propProfile = {};
       const propAddress = {};
       const propUser = {};
-      console.log(values);
+      const propAvatar = {};
+      let propOldAvatar;
+
       // * verificar se as propriedades de values são iguais as do profile, se for adicionar a um objeto
       if (values.name && values.name !== data?.profile?.name)
         Object.assign(propProfile, { name: values.name });
-      if (values.avatar && values.avatar !== data?.profile?.avatar)
-        Object.assign(propProfile, { avatar: values.avatar });
+
+      if (avatar.file !== data?.profile?.avatar) {
+        Object.assign(propAvatar, avatar);
+        propOldAvatar = data?.profile?.avatar;
+      }
 
       // * verificar se as propriedades de values são iguais as do user, se for adicionar a um objeto
       if (values.email && values.email !== profile.email)
@@ -89,6 +100,8 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
         profile: propProfile,
         address: propAddress,
         user: propUser,
+        avatar: propAvatar,
+        old_avatar: propOldAvatar,
       });
       if (registerData.error) {
         setError('Ocorreu um erro na hora de salvar os seus dados.');
@@ -96,8 +109,20 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
       setIsLoading(false);
       router.reload();
     },
-    [data, profile, router],
+    [data, profile, router, avatar],
   );
+
+  const handleCapture = (target) => {
+    const fileReader = new FileReader();
+    if (!target.files || target.files.length <= 0) return;
+
+    fileReader.readAsDataURL(target.files[0]);
+    const type = target.files[0].type.split('/')[1];
+
+    fileReader.onload = (e) => {
+      setAvatar({ file: e.target.result, type });
+    };
+  };
 
   const HeaderDrawer = <Typography variant="h6">Meu Perfil</Typography>;
   return (
@@ -116,17 +141,24 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
             <AvatarWrapper>
               <Avatar
                 alt="foto-perfil"
-                src="/images/avatar.png"
+                src={avatar.file as string}
                 sx={{ width: 70, height: 70 }}
               />
               <BOX>
-                <CustomTypography variant="body1">
-                  Minha imagem
+                <CustomTypography fontWeight="bold" variant="body1">
+                  Foto de perfil
                 </CustomTypography>
-                <Buttons>Alterar</Buttons>
-                <CustomTypography sx={{ opacity: '0.7', fontSize: '0.7rem' }}>
+                <CustomTypography sx={{ opacity: '0.7', fontSize: '0.9rem' }}>
                   Recomendação: 70x70 pixels
                 </CustomTypography>
+                <ActionButton
+                  color="primary"
+                  as="label"
+                  sx={{ padding: '0px', height: '30px' }}
+                  onChange={(e) => handleCapture(e.target)}
+                >
+                  Trocar <input hidden accept="image/*" type="file" />
+                </ActionButton>
               </BOX>
             </AvatarWrapper>
             <InputField

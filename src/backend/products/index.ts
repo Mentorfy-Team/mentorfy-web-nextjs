@@ -1,14 +1,14 @@
-import { decode } from 'base64-arraybuffer';
-import { nanoid } from 'nanoid';
-import { CreateSupabaseWithAuth } from '~/backend/supabase';
-
 type GetRequest = ProductApi.Get.Request;
 type GetResponse = ProductApi.Get.Response | any;
 
 type PostRequest = ProductApi.Post.Request;
 type PostResponse = ProductApi.Post.Response | any;
 
-function fixBase64(data) {
+import { decode } from 'base64-arraybuffer';
+import { nanoid } from 'nanoid';
+import { CreateSupabaseWithAuth } from '~/backend/supabase';
+
+export function fixBase64(data) {
   return decode(data.replace('data:image/png;base64,', ''));
 }
 
@@ -71,7 +71,7 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
     const { data, error } = await supabase.storage
       .from('images')
       .upload(
-        `${req.body.banner_owner}/${nanoid(6)}.${req.body.banner_type}`,
+        `${req.body.id}/${nanoid(6)}.${req.body.banner_type}`,
         fixBase64(req.body.banner_image),
         {
           cacheControl: '3600',
@@ -94,7 +94,7 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
     const { data, error } = await supabase.storage
       .from('images')
       .upload(
-        `${req.body.main_owner}/${nanoid(6)}.${req.body.main_type}`,
+        `${req.body.id}/${nanoid(6)}.${req.body.main_type}`,
         fixBase64(req.body.main_image),
         {
           cacheControl: '3600',
