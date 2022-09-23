@@ -78,7 +78,7 @@ const Produtos: FC<PageTypes.Props> = ({ profile, user }) => {
                   onClick={() => setOpenCreatePage(true)}
                 >
                   <PlusSvg />
-                  <Typography fontWeight="bold" variant="body2" ml={1}>
+                  <Typography variant="body2" ml={1}>
                     Criar produto
                   </Typography>
                 </AddProductButton>

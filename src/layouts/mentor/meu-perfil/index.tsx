@@ -24,7 +24,6 @@ import {
   Form,
   Header,
   InputField,
-  UploadButton,
 } from './style';
 
 type UpdateForm = Partial<UserClient.User> &

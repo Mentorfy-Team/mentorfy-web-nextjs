@@ -2,7 +2,7 @@ import { SxProps, Theme } from '@mui/material';
 import { TabWrapper } from './styles';
 
 type props = {
-  withBorder: boolean;
+  withBorder?: boolean;
   children?: any;
   selected: number;
   onChange: (event: React.ChangeEvent<{}>, newValue: number) => void;

@@ -63,8 +63,8 @@ const Clients: FC<PageTypes.Props> = ({ profile, user, access_token }) => {
                 <Image
                   alt="exportar-clientes"
                   src="/svgs/export-clients.svg"
-                  height={18}
-                  width={18}
+                  height={16}
+                  width={16}
                 />
                 {exportClientsText}
               </ClientsOptionsButton>
@@ -72,8 +72,8 @@ const Clients: FC<PageTypes.Props> = ({ profile, user, access_token }) => {
                 <Image
                   alt="filtrar-clientes"
                   src="/svgs/filter-clients.svg"
-                  height={18}
-                  width={18}
+                  height={16}
+                  width={16}
                 />
                 {filterClientsText}
               </ClientsOptionsButton>
@@ -84,8 +84,8 @@ const Clients: FC<PageTypes.Props> = ({ profile, user, access_token }) => {
                 <Image
                   alt="criar-clientes"
                   src="/svgs/plus.svg"
-                  height={16}
-                  width={16}
+                  height={12}
+                  width={12}
                 />
                 {createdClientsText}
               </ClientsOptionsButton>

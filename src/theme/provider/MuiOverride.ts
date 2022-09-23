@@ -7,7 +7,7 @@ const ButtonStyle = {
       fontSize: '0.8rem',
       paddingBottom: '.2rem',
       textTransform: 'capitalize',
-      padding: '0.2rem 1rem',
+      padding: '1.1rem 1rem',
     },
     size: 'small',
   } as ComponentsProps['MuiButton'],

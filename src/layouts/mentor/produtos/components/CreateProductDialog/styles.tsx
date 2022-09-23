@@ -14,8 +14,8 @@ export const BootstrapDialogTitle = (props: DialogTitleProps) => {
   return (
     <DialogTitle
       sx={{
-        m: 0,
-        p: 2,
+        height: '50px',
+        padding: '8px 16px',
         backgroundColor: (theme) => theme.palette.primary.light,
       }}
       {...other}
@@ -27,8 +27,8 @@ export const BootstrapDialogTitle = (props: DialogTitleProps) => {
           onClick={onClose}
           sx={{
             position: 'absolute',
-            right: 8,
-            top: 8,
+            right: 16,
+            top: 4,
             color: (theme) => theme.palette.grey[500],
           }}
         >
