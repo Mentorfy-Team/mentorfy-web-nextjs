@@ -2,6 +2,7 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import { useRouter } from 'next/router';
+import InputField from '~/components/atoms/InputField';
 import { PasswordChange } from '~/services/auth/password-change.service';
 import { AcessoSubPage } from '..';
 import { Text } from '../cadastro/components/styles';
@@ -12,7 +13,6 @@ import {
   CreateAccountButton,
   ForgotPassButton,
   InfoText,
-  InputField,
   LinkButton,
   LoginButton,
   SubTitle,

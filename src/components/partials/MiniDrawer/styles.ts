@@ -9,7 +9,7 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-const DrawerWidth = '220px';
+const DrawerWidth = '185px';
 
 const openedMixin = (theme: Theme) => `
   width: ${DrawerWidth};
@@ -26,9 +26,9 @@ const closedMixin = (theme: Theme) => `
     duration: theme.transitions.duration.leavingScreen,
   })};
   overflow-x: hidden;
-  width: calc(${theme.spacing(7)} + 1px);
+  width: calc(${theme.spacing(5)} + 1px);
   ${theme.breakpoints.up('sm')} {
-    width: calc(${theme.spacing(8)} + 1px);
+    width: calc(${theme.spacing(6)} + 2px);
 }
 `;
 
@@ -37,50 +37,7 @@ export const DrawerHeader = styled(Box)`
   align-items: 'center';
   justify-content: 'flex-end';
   padding: ${({ theme }) => theme.spacing(0, 1)};
-
-  ${({ theme }) => theme.mixins.toolbar}
-`;
-
-export const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})<AppBarProps>`
-  z-index: ${({ theme }) => theme.zIndex.drawer + 1};
-
-  transition: ${({ theme }) =>
-    theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    })};
-
-  > div {
-    background-color: ${({ theme }) => theme.palette.primary.light};
-    transition: ${({ theme }) =>
-      theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      })};
-  }
-
-  background-color: transparent;
-  box-shadow: none;
-
-  ${({ theme, open }) =>
-    open &&
-    css`
-      transition: ${theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-      })};
-      width: calc(100% - ${DrawerWidth});
-    `}
-
-  button {
-    transition: ${({ theme }) =>
-      theme.transitions.create(['margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      })};
-  }
+  margin-top: 2.5rem;
 `;
 
 export const Drawer = styled(MuiDrawer, {
@@ -96,12 +53,12 @@ export const Drawer = styled(MuiDrawer, {
   }
   white-space: nowrap;
 
-  * {
-    transition: ${({ theme }) =>
-      theme.transitions.create(['margin, opacity, width'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      })};
+  svg {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+  span {
+    font-size: 0.8rem;
   }
 
   ${({ theme, open }) => {
@@ -117,7 +74,8 @@ export const Drawer = styled(MuiDrawer, {
     } else {
       return `
         >div{
-          width: 65px;
+          ${closedMixin(theme)}
+          width: 50px;
         }
         @media (max-width: ${theme.breakpoints.values.sm}px) {
           width: 0vw !important;
@@ -131,6 +89,14 @@ export const Drawer = styled(MuiDrawer, {
       `;
     }
   }};
+
+  * {
+    transition: ${({ theme }) =>
+      theme.transitions.create(['margin, opacity, width, left'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      })};
+  }
 `;
 
 export const UserName = styled(Typography)`
@@ -145,10 +111,12 @@ export const AnimatedBox = styled(Box)<{ loading: boolean }>`
   opacity: ${({ loading }) => (loading ? 0 : 1)};
 
   ${({ theme }) => css`
-    transition: ${theme.transitions.create('opacity', {
-      easing: theme.transitions.easing.sharp,
-      duration: 50,
-    })};
+    * {
+      transition: ${theme.transitions.create('opacity, left', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      })};
+    }
   `}
 `;
 

@@ -3,6 +3,9 @@ import Divider from '@mui/material/Divider';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
+import InputField from '~/components/atoms/InputField';
+import Tabbar from '~/components/modules/Tabbar';
+import { TabItem } from '~/components/modules/Tabbar/styles';
 import { MentorRoutes } from '~/consts/routes/routes.consts';
 import { Authenticate } from '~/services/auth/auth.service';
 import { userStore } from '~/stores';
@@ -14,7 +17,6 @@ import {
   ErrorHelper,
   ForgotPassButton,
   InfoText,
-  InputField,
   LoginButton,
   SubTitle,
   Title,
@@ -26,6 +28,8 @@ type props = {
 
 const Login: FC<props> = ({ pageChange }) => {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [index, setIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>();
   const route = useRouter();
@@ -34,20 +38,25 @@ const Login: FC<props> = ({ pageChange }) => {
 
   const onSubmit: SubmitHandler<Auth> = useCallback(
     async (values) => {
+      if (!values.email || !values.password) {
+        setError('*Preencha todos os campos');
+        return;
+      }
       setIsLoading(true);
       const registerData = await Authenticate(values);
-
+      console.log('values');
+      console.log(values);
       if (!registerData.error) {
         //userLogin(registerData.user);
         route.push(MentorRoutes.home);
       } else {
         if (registerData.error.includes('email')) {
-          setError('Email e ou senha incorretos, tente novamente!');
+          setError('*Email e ou senha incorretos, tente novamente!');
         }
       }
       setIsLoading(false);
     },
-    [route, userLogin],
+    [route],
   );
 
   return (
@@ -59,33 +68,53 @@ const Login: FC<props> = ({ pageChange }) => {
         </Accent>
         da Mentorfy.
       </Title>
-      <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
-        Preencha os campos abaixo para acessar a sua conta
-      </SubTitle>
-      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+      <Tabbar
+        withBorder
+        selected={index}
+        onChange={(_, value) => setIndex(value)}
+      >
+        <TabItem
+          sx={{
+            width: '50%',
+            marginLeft: '0px !important',
+            alignItems: 'center !important',
+          }}
+          label="Login"
+        />
+        <TabItem
+          sx={{
+            alignItems: 'center !important',
+            width: '50%',
+            marginLeft: '0px !important',
+          }}
+          label="Crie sua conta"
+          onClick={() => pageChange('cadastro')}
+        />
+      </Tabbar>
+      <FormWrapper
+        sx={{ marginTop: '1.5rem' }}
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <InputField
           required
           id="outlined-required"
           label="E-mail"
           placeholder="Digite seu e-mail"
-          onChange={(e) => setEmail(e.target.value)}
           InputLabelProps={{
             shrink: true,
           }}
-          {...register('email')}
+          register={register('email')}
           error={!!error}
         />
         <InputField
-          required
           id="outlined-required"
           label="Senha"
           type={'password'}
           placeholder="Digite sua senha"
-          onChange={(e) => setEmail(e.target.value)}
           InputLabelProps={{
             shrink: true,
           }}
-          {...register('password')}
+          register={register('password')}
           error={!!error}
         />
         {error && <ErrorHelper>{error}</ErrorHelper>}
@@ -96,14 +125,6 @@ const Login: FC<props> = ({ pageChange }) => {
       <ForgotPassButton onClick={() => pageChange('esqueci-minha-senha')}>
         Esqueci minha senha
       </ForgotPassButton>
-      <Divider />
-      <InfoText>Ainda não tem uma conta? Abra agora é simples!</InfoText>
-      <CreateAccountButton
-        onClick={() => pageChange('cadastro')}
-        variant="outlined"
-      >
-        ABRIR CONTA
-      </CreateAccountButton>
     </>
   );
 };

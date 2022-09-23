@@ -7,6 +7,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { SupabaseWithouAuth } from '~/backend/supabase';
+import HeaderPartial from '~/components/partials/HeaderPartial';
 import LoadingPartial from '~/components/partials/loading/loading.partial';
 import createEmotionCache from '~/createEmotionCache';
 import { userStore } from '~/stores';
@@ -68,7 +69,7 @@ const App = (props: MyAppProps) => {
         <Wrapper id="WrapperRoot">
           <PageWrapper>
             <UserProvider supabaseClient={supabaseClient}>
-              {/* <HeaderPartial /> */}
+              {router.asPath.includes('/m') && <HeaderPartial />}
               <Component {...pageProps} {...{ urlParams: params }} />
             </UserProvider>
           </PageWrapper>

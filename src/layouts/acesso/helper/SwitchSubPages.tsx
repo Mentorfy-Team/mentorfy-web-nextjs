@@ -27,7 +27,7 @@ export const handleAcessoSubPage = (
         <TrocarSenha
           setInfo={setInfo}
           pageChange={setAcessoSubPage}
-          access_token={urlProps.access_token}
+          access_token={urlProps?.access_token}
         />
       );
     case 'esqueci-minha-senha':

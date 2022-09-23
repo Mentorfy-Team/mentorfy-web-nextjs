@@ -1,14 +1,21 @@
+import { SxProps, Theme } from '@mui/material';
 import { TabWrapper } from './styles';
 
 type props = {
+  withBorder: boolean;
   children?: any;
   selected: number;
   onChange: (event: React.ChangeEvent<{}>, newValue: number) => void;
 };
 
-const Tabbar: React.FC<props> = ({ selected, children, onChange }) => {
+const Tabbar: React.FC<props> = ({
+  selected,
+  children,
+  onChange,
+  withBorder,
+}) => {
   return (
-    <TabWrapper value={selected} onChange={onChange}>
+    <TabWrapper withBorder={withBorder} value={selected} onChange={onChange}>
       {children}
     </TabWrapper>
   );

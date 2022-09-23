@@ -3,6 +3,9 @@ import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import InputField from '~/components/atoms/InputField';
+import Tabbar from '~/components/modules/Tabbar';
+import { TabItem } from '~/components/modules/Tabbar/styles';
 import { RegisterNewUser } from '~/services/user.service';
 import { userStore } from '~/stores';
 import { AcessoSubPage } from '..';
@@ -10,9 +13,9 @@ import {
   Accent,
   LoginButton as CadastroButton,
   InfoText,
-  InputField,
   LinkButton,
   SubTitle,
+  Title,
 } from '../styles';
 import { Text } from './components/styles';
 import TextSuccess from './components/TextSuccess';
@@ -32,7 +35,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
   const [acceptPolices, setAcceptPolices] = useState(false);
   const { register, handleSubmit } = useForm<UserClient.SignUp>();
   const { userLogin } = userStore();
-
+  const [index, setIndex] = useState(1);
   const RePasswordCheck = useMemo(() => {
     return rePassword === password && rePassword.length > 0;
   }, [password, rePassword]);
@@ -86,7 +89,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
   );
 
   return (
-    <>
+    <div>
       <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
         Para se{' '}
         <Accent>
@@ -103,7 +106,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
             shrink: true,
           }}
           required
-          {...register('name')}
+          register={register('name')}
         />
         <InputField
           required
@@ -113,7 +116,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
           InputLabelProps={{
             shrink: true,
           }}
-          {...register('email')}
+          register={register('email')}
           onChange={(e) => setError('')}
           error={!!error}
           helperText={error}
@@ -126,7 +129,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
           InputLabelProps={{
             shrink: true,
           }}
-          {...register('password')}
+          register={register('password')}
           onChange={(e) => setPassword(e.target.value)}
         />
         {PasswordChecker()}
@@ -144,7 +147,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
           InputLabelProps={{
             shrink: true,
           }}
-          {...register('confirmPassword')}
+          register={register('confirmPassword')}
           onChange={(e) => setRePassword(e.target.value)}
         />
         <PoliciesWrapper>
@@ -156,7 +159,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
           />
           <Policies variant="caption">
             Eu li e aceito os <Link href="/">Termos de Uso</Link> e os{' '}
-            <Link href="/">Termos de Responsabilidades Fiscal.</Link>
+            <Link href="/">Termos de Responsabilidades Fiscais.</Link>
           </Policies>
         </PoliciesWrapper>
         <CadastroButton
@@ -175,7 +178,8 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
           </LinkButton>
         </Accent>
       </InfoText>
-    </>
+      <Box height="64px" />
+    </div>
   );
 };
 

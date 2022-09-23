@@ -41,7 +41,7 @@ function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
   }, [AcessosubPage, info, urlProps]);
 
   return (
-    <PageWrapper darkMode={false}>
+    <PageWrapper>
       <Grid container>
         <Grid xs={0} lg={6.5}>
           <BackgroundHolder>
@@ -65,9 +65,8 @@ function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
           flexDirection="column"
           xs={12}
           lg={5.5}
-          sx={{ alignSelf: 'center', minHeight: '100vh' }}
         >
-          <AlignSelf pt={mobile ? 6 : 10}>
+          <AlignSelf pt={mobile ? 6 : 10} pb={4}>
             <Image
               width={300 / (1.75 + (mobile ? 0.5 : 0))}
               height={75 / (1.75 + (mobile ? 0.5 : 0))}
@@ -76,7 +75,7 @@ function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
               alt="logo"
             />
           </AlignSelf>
-          <Wrapper p={5}>{handleSubPages()}</Wrapper>
+          <Wrapper>{handleSubPages()}</Wrapper>
         </Grid>
       </Grid>
     </PageWrapper>

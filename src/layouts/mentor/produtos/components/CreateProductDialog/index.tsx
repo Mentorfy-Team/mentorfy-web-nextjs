@@ -76,7 +76,7 @@ export default function CreateProductDialog({ open, setOpen }) {
               InputLabelProps={{
                 shrink: true,
               }}
-              {...register('price')}
+              register={register('price')}
               onChange={(e) => handleChange(e, 'title')}
               value={title}
             />
@@ -91,7 +91,7 @@ export default function CreateProductDialog({ open, setOpen }) {
               InputProps={{
                 inputComponent: MoneyFormatComponent as any,
               }}
-              {...register('price')}
+              register={register('price')}
               onChange={(e) => handleChange(e, 'price')}
               value={price}
             />

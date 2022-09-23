@@ -4,6 +4,14 @@ export function GlobalStyles() {
   return (
     <Global
       styles={(theme: any) => ({
+        '& :-webkit-autofill': {
+          WebkitBoxShadow: '0 0 0 1000px #242424 inset',
+          WebkitTextFillColor: 'white !important',
+        },
+        '& :-webkit-autofill:focus': {
+          WebkitBoxShadow: '0 0 0 1000px #242424 inset',
+          WebkitTextFillColor: 'white !important',
+        },
         '.MuiDialog-paper': {
           backgroundColor: 'transparent',
           '@media (max-width: 490px)': {
