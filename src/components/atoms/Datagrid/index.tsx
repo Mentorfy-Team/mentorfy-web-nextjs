@@ -45,6 +45,12 @@ export default function StickyHeadTable({
     if (newPage >= 1) onPageChange(newPage);
   };
 
+  const CreateButtons = (row) => {
+    const ac = actionButtons;
+
+    return ac(row);
+  };
+
   //? TODO: Implementar rows per page se necessário
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -89,7 +95,6 @@ export default function StickyHeadTable({
                   {column.label}
                 </TableCell>
               ))}
-              {actionButtons && <TableCell key="actions"></TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -103,31 +108,32 @@ export default function StickyHeadTable({
                 .map((row, index) => {
                   return (
                     <CustomRow hover role="checkbox" tabIndex={-1} key={index}>
-                      {columns.map((column, index) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell
-                            onClick={() =>
-                              index === 0 &&
-                              onTitleClick &&
-                              onTitleClick(row.id)
-                            }
-                            sx={{
-                              cursor:
-                                index === 0 && onTitleClick
-                                  ? 'pointer'
-                                  : 'auto',
-                            }}
-                            key={column.id}
-                            align={column.align}
-                          >
-                            {column.format && typeof value === 'number'
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
-                      {actionButtons && actionButtons(index)}
+                      <>
+                        {columns.map((column, index) => {
+                          const value = row[column.id];
+                          return (
+                            <TableCell
+                              onClick={() =>
+                                index === 0 &&
+                                onTitleClick &&
+                                onTitleClick(row.id)
+                              }
+                              sx={{
+                                cursor:
+                                  index === 0 && onTitleClick
+                                    ? 'pointer'
+                                    : 'auto',
+                              }}
+                              key={column.id}
+                              align={column.align}
+                            >
+                              {column.format && typeof value === 'number'
+                                ? column.format(value)
+                                : value}
+                            </TableCell>
+                          );
+                        })}
+                      </>
                     </CustomRow>
                   );
                 })}
@@ -142,7 +148,7 @@ export default function StickyHeadTable({
         >
           <ChavronLeftSvg />
         </Button>
-        <Typography marginX={isMobile ? 0 : 4} mt={1}>{`${
+        <Typography variant="body2" marginX={isMobile ? 0 : 4} mt={1}>{`${
           isMobile ? page : `Página ${page}`
         } de ${maxPages}`}</Typography>
         <Button

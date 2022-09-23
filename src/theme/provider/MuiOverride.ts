@@ -13,6 +13,10 @@ const ButtonStyle = {
   } as ComponentsProps['MuiButton'],
   styleOverrides: {
     root: ({ ownerState, theme }) => ({
+      fontWeight: 600,
+      p: {
+        fontWeight: 600,
+      },
       ...(ownerState.variant === 'contained' && {
         backgroundColor: theme.palette.accent.main,
       }),
@@ -21,7 +25,8 @@ const ButtonStyle = {
       }),
       ...(ownerState.variant === 'outlined' && {
         color: theme.palette.accent.main,
-        borderColor: theme.palette.accent.main,
+        backgroundColor: theme.palette.primary.dark,
+        borderColor: theme.palette.primary.dark,
         svg: {
           path: {
             fill: theme.palette.accent.main,
@@ -34,7 +39,15 @@ const ButtonStyle = {
 const TextFieldStyle = {
   defaultProps: {
     size: 'small',
+    sx: {},
   } as ComponentsProps['MuiTextField'],
+  styleOverrides: {
+    root: {
+      input: {
+        height: '1.8rem',
+      },
+    },
+  } as Components['MuiTextField']['styleOverrides'],
 };
 const FormControlStyle = {
   defaultProps: {

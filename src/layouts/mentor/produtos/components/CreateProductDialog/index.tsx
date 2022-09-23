@@ -105,12 +105,7 @@ export default function CreateProductDialog({ open, setOpen }) {
               >
                 <MenuItem value="mentorfy">
                   Área de Membros
-                  <Typography
-                    component="b"
-                    color={(theme) => theme.palette.accent.main}
-                  >
-                    &nbsp;Mentorfy
-                  </Typography>
+                  <Typography component="b">&nbsp;Mentorfy</Typography>
                 </MenuItem>
                 <MenuItem value="external">Área de Membros Externa</MenuItem>
                 <MenuItem value="signup">Apenas cadastros</MenuItem>

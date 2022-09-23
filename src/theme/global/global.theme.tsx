@@ -24,9 +24,10 @@ export function GlobalStyles() {
           boxShadow: '-4px 4px 0px 0px #00000000',
         },
         'button:disabled': {
-          backgroundColor: '#9e9e9e',
-          borderRadius: '5px',
-          color: 'rgb(255 255 255 / 26%)',
+          opacity: '0.5',
+          div: {
+            color: 'white',
+          },
         },
         '@media (min-width: 600px)': {
           '::-webkit-scrollbar': {

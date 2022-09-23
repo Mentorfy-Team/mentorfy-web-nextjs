@@ -6,7 +6,7 @@ import { MUIStyledCommonProps } from '@mui/system';
 import { TextField } from './styles';
 
 const InputField: FC<
-  TextFieldProps & MUIStyledCommonProps<Theme> & { register }
+  TextFieldProps & MUIStyledCommonProps<Theme> & { register? }
 > = (props) => {
   return (
     <TextField

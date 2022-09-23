@@ -16,7 +16,7 @@ export default function SearchInput({ sx }: any) {
       }}
     >
       <InputBase
-        sx={{ ml: 1, flex: 1, fontSize: '0.8rem' }}
+        sx={{ ml: 1, flex: 1, fontSize: '0.9rem' }}
         placeholder="Procurar pelo nome"
         inputProps={{ 'aria-label': 'search google maps' }}
       />
