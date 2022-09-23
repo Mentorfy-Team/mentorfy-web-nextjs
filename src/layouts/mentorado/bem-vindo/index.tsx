@@ -49,7 +49,7 @@ const BemVindo: FC = () => {
   );
   return (
     <PageWrapper>
-      <MiniDrawer header={Header}>
+      <>
         <ContentWidthLimit maxWidth={1200}>
           <BannerBox>
             {TextBanner}
@@ -128,7 +128,7 @@ const BemVindo: FC = () => {
             <Typography variant="h5">Populares na Mentorfy</Typography>
           </Box>
         </ContentWidthLimit>
-      </MiniDrawer>
+      </>
     </PageWrapper>
   );
 };

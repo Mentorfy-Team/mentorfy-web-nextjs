@@ -17,10 +17,7 @@ import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
 import AddImage from '../../components/AddImage';
 import TaskBox from '../../components/TaskBox';
-import {
-  ButtonsWrapper,
-  CustomTypograpy,
-} from './styles';
+import { ButtonsWrapper, CustomTypograpy } from './styles';
 
 const EditarMentoria: FC = () => {
   const [tabindex, setTabindex] = useState(0);
@@ -45,7 +42,7 @@ const EditarMentoria: FC = () => {
 
   return (
     <PageWrapper>
-      <MiniDrawer header={Header} supportHeader={SupportHeader}>
+      <>
         <ContentWidthLimit maxWidth={600}>
           <ButtonsWrapper>
             <Button
@@ -80,26 +77,27 @@ const EditarMentoria: FC = () => {
             }}
           />
           <DragDropContext>
-            <Droppable droppableId='steps'>
+            <Droppable droppableId="steps">
               {(provided) => (
-                <Box ref={provided.innerRef} {...provided.droppableProps} >
+                <Box ref={provided.innerRef} {...provided.droppableProps}>
                   {addItem.map((id, index) => (
                     <Draggable key={id} draggableId={id} index={index}>
                       {(provided) => (
-                          <EditMembersAreaSteps
+                        <EditMembersAreaSteps
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
-                            title={Title}
-                            stepType={StepType}
-                            image={Image}>
-                            <Box>
-                              <InputField label='Nome da etapa' />
-                              <InputField label='Descrição' />
-                              <AddImage />
-                              <TaskBox />
-                            </Box>
-                          </EditMembersAreaSteps>
+                          title={Title}
+                          stepType={StepType}
+                          image={Image}
+                        >
+                          <Box>
+                            <InputField label="Nome da etapa" />
+                            <InputField label="Descrição" />
+                            <AddImage />
+                            <TaskBox />
+                          </Box>
+                        </EditMembersAreaSteps>
                       )}
                     </Draggable>
                   ))}
@@ -126,12 +124,13 @@ const EditarMentoria: FC = () => {
             />
             <Button
               onClick={addNewStep}
-              sx={{ color: `${theme.palette.caption.main}` }}>
+              sx={{ color: `${theme.palette.caption.main}` }}
+            >
               + ADICIONAR ETAPA
             </Button>
           </Box>
         </ContentWidthLimit>
-      </MiniDrawer>
+      </>
     </PageWrapper>
   );
 };

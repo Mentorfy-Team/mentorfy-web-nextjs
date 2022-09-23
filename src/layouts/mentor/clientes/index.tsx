@@ -47,11 +47,7 @@ const Clients: FC<PageTypes.Props> = ({ profile, user, access_token }) => {
   return (
     <>
       <PageWrapper>
-        <MiniDrawer
-          profile={profile}
-          header={Header}
-          supportHeader={SupportHeader}
-        >
+        <>
           <ContentWidthLimit>
             <ClientsGrid
               mentorados={clients.length}
@@ -92,7 +88,7 @@ const Clients: FC<PageTypes.Props> = ({ profile, user, access_token }) => {
             </ButtonsWrapper>
             <ProductsTableComponent />
           </ContentWidthLimit>
-        </MiniDrawer>
+        </>
       </PageWrapper>
       {openCreatePage && (
         <CreateClientDialog

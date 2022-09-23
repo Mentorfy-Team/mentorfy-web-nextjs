@@ -31,15 +31,7 @@ const Dashboard: FC<PageTypes.Props> = ({ profile }) => {
     //LoadClientsService();
   }, []);
 
-  return (
-    <PageWrapper>
-      <MiniDrawer
-        profile={profile}
-        header={Header}
-        supportHeader={SupportHeader}
-      ></MiniDrawer>
-    </PageWrapper>
-  );
+  return <PageWrapper></PageWrapper>;
 };
 
 // * ServerSideRender (SSR)

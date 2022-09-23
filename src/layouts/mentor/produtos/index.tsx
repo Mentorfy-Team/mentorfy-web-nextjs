@@ -37,7 +37,11 @@ const Produtos: FC<PageTypes.Props> = ({ profile, user }) => {
   );
 
   const SupportHeader = (
-    <Tabbar selected={tabindex} onChange={(_, value) => setTabindex(value)}>
+    <Tabbar
+      forPage
+      selected={tabindex}
+      onChange={(_, value) => setTabindex(value)}
+    >
       <TabItem label="Meus produtos" />
       {/* // TODO: Criar co-produções */}
       {/* <TabItem label="Minhas co-produções" /> */}
@@ -51,42 +55,37 @@ const Produtos: FC<PageTypes.Props> = ({ profile, user }) => {
   return (
     <>
       <PageWrapper>
-        <MiniDrawer
-          profile={profile}
-          header={Header}
-          supportHeader={SupportHeader}
-        >
-          <ContentWidthLimit>
-            <Grid container>
-              <Grid xs={12} lg={6}>
-                <Box sx={{ float: 'left' }}>
-                  <SearchInput
-                    sx={{
-                      width: isMobile ? '90vw' : 'unset',
-                    }}
-                  />
-                </Box>
-              </Grid>
-              <Grid xs={12} lg={6}>
-                <AddProductButton
+        {SupportHeader}
+        <ContentWidthLimit>
+          <Grid container>
+            <Grid xs={12} lg={6}>
+              <Box sx={{ float: 'left' }}>
+                <SearchInput
                   sx={{
-                    float: 'right',
-                    marginTop: isMobile ? '1rem' : '0px',
+                    width: isMobile ? '90vw' : 'unset',
                   }}
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => setOpenCreatePage(true)}
-                >
-                  <PlusSvg />
-                  <Typography variant="body2" ml={1}>
-                    Criar produto
-                  </Typography>
-                </AddProductButton>
-              </Grid>
+                />
+              </Box>
             </Grid>
-            <ProductsTableComponent />
-          </ContentWidthLimit>
-        </MiniDrawer>
+            <Grid xs={12} lg={6}>
+              <AddProductButton
+                sx={{
+                  float: 'right',
+                  marginTop: isMobile ? '1rem' : '0px',
+                }}
+                variant="outlined"
+                color="primary"
+                onClick={() => setOpenCreatePage(true)}
+              >
+                <PlusSvg />
+                <Typography variant="body2" ml={1}>
+                  Criar produto
+                </Typography>
+              </AddProductButton>
+            </Grid>
+          </Grid>
+          <ProductsTableComponent />
+        </ContentWidthLimit>
       </PageWrapper>
       <CreateProductDialog open={openCreatePage} setOpen={setOpenCreatePage} />
     </>

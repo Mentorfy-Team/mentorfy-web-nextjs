@@ -27,7 +27,7 @@ const AreaDeMembros: FC = () => {
 
   return (
     <PageWrapper>
-      <MiniDrawer header={Header} supportHeader={SupportHeader}>
+      <>
         <ContentWidthLimit maxWidth={1250}>
           <Box>
             <Box sx={{ float: 'left' }}>
@@ -80,7 +80,7 @@ const AreaDeMembros: FC = () => {
             )}
           </Box>
         </ContentWidthLimit>
-      </MiniDrawer>
+      </>
     </PageWrapper>
   );
 };

@@ -12,11 +12,7 @@ const Dashboard: FC<PageTypes.Props> = () => {
     </Typography>
   );
 
-  return (
-    <PageWrapper>
-      <MiniDrawer header={Header}></MiniDrawer>
-    </PageWrapper>
-  );
+  return <PageWrapper></PageWrapper>;
 };
 
 // * ServerSideRender (SSR)

@@ -34,7 +34,7 @@ const MembersArea: FC<PageTypes.Props> = ({ profile, user }) => {
   return (
     <>
       <PageWrapper>
-        <MiniDrawer profile={profile} header={Header}>
+        <>
           <ContentWidthLimit>
             <Box sx={{ float: 'left', width: '30%' }}>
               <SearchInput
@@ -45,7 +45,7 @@ const MembersArea: FC<PageTypes.Props> = ({ profile, user }) => {
             </Box>
             <ProductsTableComponent />
           </ContentWidthLimit>
-        </MiniDrawer>
+        </>
       </PageWrapper>
     </>
   );

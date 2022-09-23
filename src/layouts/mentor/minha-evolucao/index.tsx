@@ -14,7 +14,7 @@ const Dashboard: FC<PageTypes.Props> = () => {
 
   return (
     <PageWrapper>
-      <MiniDrawer header={Header}></MiniDrawer>
+      <></>
     </PageWrapper>
   );
 };

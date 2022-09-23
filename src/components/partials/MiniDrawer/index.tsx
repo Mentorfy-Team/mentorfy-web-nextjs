@@ -17,18 +17,14 @@ import menu from '~/../public/images/menu.png';
 
 type props = {
   children?: JSX.Element;
-  supportHeader?: JSX.Element;
-  header?: JSX.Element;
-  profile?: UserClient.Profile;
 };
 
-const MiniDrawer: React.FC<props> = ({ children, supportHeader, profile }) => {
+const MiniDrawer: React.FC<props> = ({ children }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width:500px)');
   const [open, setOpen] = React.useState(isMobile ? false : true);
   const router = useRouter();
   const { isLoading, setLoading } = userStore();
-  const [_profile, setProfile] = React.useState<UserClient.Profile>(profile);
 
   const getIcon = (component, path, subpaths = []) => {
     const props: any = {};
@@ -47,15 +43,6 @@ const MiniDrawer: React.FC<props> = ({ children, supportHeader, profile }) => {
 
     return false;
   };
-
-  const loadProfile = React.useCallback(async () => {
-    const response = await GetProfile();
-    setProfile(response.profile);
-  }, []);
-
-  React.useEffect(() => {
-    if (!profile) loadProfile();
-  }, [loadProfile, profile, router]);
 
   return (
     <Box
@@ -143,9 +130,10 @@ const MiniDrawer: React.FC<props> = ({ children, supportHeader, profile }) => {
         component="main"
         sx={{
           flexGrow: 1,
-          pt: 3,
-          marginTop: supportHeader ? '114px' : '60px',
+          pt: 1,
+          marginTop: '50px',
           overflow: 'auto',
+          backgroundColor: theme.palette.primary.main,
         }}
       >
         <AnimatedBox

@@ -3,6 +3,9 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 
 export const TabWrapper = styled(Tabs)`
+  margin-bottom: 1rem;
+  margin-top: -7px;
+  min-height: 2.8rem;
   * {
     color: white !important;
   }
@@ -13,17 +16,18 @@ export const TabWrapper = styled(Tabs)`
         border-bottom: 2px solid #e5e5e5;
       }
     `}
+
   .Mui-selected {
     border-bottom: 2px solid #7586ec;
   }
 
-  .MuiTabs-scroller {
-    position: fixed;
-    max-width: 390px;
-  }
-
   .MuiTabs-indicator {
     border-bottom: 2px solid #7586ec;
+  }
+
+  .MuiTabs-scroller {
+    max-width: 390px;
+    position: fixed;
   }
 
   button {
@@ -32,6 +36,22 @@ export const TabWrapper = styled(Tabs)`
     margin-left: 1rem;
     padding: 0;
   }
+
+  ${({ forPage, theme }) =>
+    forPage &&
+    css`
+      border-bottom: 1px dashed #363739;
+      padding-left: 1rem;
+
+      .Mui-selected {
+        border-bottom: 2px solid transparent;
+        color: ${theme.palette.accent.main} !important;
+      }
+
+      .MuiTabs-indicator {
+        border-bottom: 2px solid transparent;
+      }
+    `}
 `;
 
 export const TabItem = styled(Tab)`

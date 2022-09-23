@@ -3,6 +3,7 @@ import { TabWrapper } from './styles';
 
 type props = {
   withBorder?: boolean;
+  forPage?: boolean;
   children?: any;
   selected: number;
   onChange: (event: React.ChangeEvent<{}>, newValue: number) => void;
@@ -13,9 +14,15 @@ const Tabbar: React.FC<props> = ({
   children,
   onChange,
   withBorder,
+  forPage,
 }) => {
   return (
-    <TabWrapper withBorder={withBorder} value={selected} onChange={onChange}>
+    <TabWrapper
+      forPage={forPage}
+      withBorder={withBorder}
+      value={selected}
+      onChange={onChange}
+    >
       {children}
     </TabWrapper>
   );

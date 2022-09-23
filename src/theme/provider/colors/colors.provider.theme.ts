@@ -16,7 +16,7 @@ export const colors: PaletteOptions = {
   primary: {
     light: '#1E1E1E',
     main: primary,
-    dark: '#17171A',
+    dark: '#0B0B0B',
   },
   secondary: {
     light: '#99A7F5',

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import { SupabaseWithouAuth } from '~/backend/supabase';
 import HeaderPartial from '~/components/partials/HeaderPartial';
 import LoadingPartial from '~/components/partials/loading/loading.partial';
+import MiniDrawer from '~/components/partials/MiniDrawer';
 import createEmotionCache from '~/createEmotionCache';
 import { userStore } from '~/stores';
 import { GlobalStyles, ThemeProvider } from '~/theme';
@@ -57,6 +58,16 @@ const App = (props: MyAppProps) => {
     });
   });
 
+  const Drawer = useCallback(
+    ({ children }) => {
+      if (router.pathname.includes('/m'))
+        return <MiniDrawer>{children}</MiniDrawer>;
+
+      return <>{children}</>;
+    },
+    [router.pathname],
+  );
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -70,7 +81,9 @@ const App = (props: MyAppProps) => {
           <PageWrapper>
             <UserProvider supabaseClient={supabaseClient}>
               {router.asPath.includes('/m') && <HeaderPartial />}
-              <Component {...pageProps} {...{ urlParams: params }} />
+              <Drawer>
+                <Component {...pageProps} {...{ urlParams: params }} />
+              </Drawer>
             </UserProvider>
           </PageWrapper>
           <LoadingPartial />

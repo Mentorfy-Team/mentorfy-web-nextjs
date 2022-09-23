@@ -82,11 +82,7 @@ const EditarProduto: FC<props> = ({ profile, product, tab = tabs.Geral }) => {
   return (
     <>
       <PageWrapper>
-        <MiniDrawer
-          profile={profile}
-          header={Header}
-          supportHeader={SupportHeader}
-        >
+        <>
           <ContentWidthLimit maxWidth={700}>
             <Box
               sx={{
@@ -98,7 +94,7 @@ const EditarProduto: FC<props> = ({ profile, product, tab = tabs.Geral }) => {
               {SwitchTabs()}
             </Box>
           </ContentWidthLimit>
-        </MiniDrawer>
+        </>
       </PageWrapper>
     </>
   );

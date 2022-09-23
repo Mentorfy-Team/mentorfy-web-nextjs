@@ -126,7 +126,7 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
   const HeaderDrawer = <Typography variant="h6">Meu Perfil</Typography>;
   return (
     <PageWrapper>
-      <MiniDrawer profile={profile} header={HeaderDrawer}>
+      <>
         <ContentWidthLimit maxWidth={600}>
           <Header>
             <CustomTypography variant="h6">Dados Gerais</CustomTypography>
@@ -333,7 +333,7 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
             </Buttons>
           </Form>
         </ContentWidthLimit>
-      </MiniDrawer>
+      </>
     </PageWrapper>
   );
 };
