@@ -43,22 +43,24 @@ const ProductsTable = ({ rows }: { rows: MemberAreaTypes.MemberArea[] }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const createData = useCallback(
-    (name: string, mentorados: number, status: string): Data => {
+    (name: string, mentorados: number, status: boolean): Data => {
       return {
         name,
         mentorados,
         status: (
           <Box
             sx={{
-              backgroundColor: status === 'Ativo' ? '#86ffb9' : '#ff98ac',
-              color: status === 'Ativo' ? '#075327' : '#6b1728',
+              backgroundColor: status ? '#86ffb9' : '#ff98ac',
+              color: status ? '#075327' : '#6b1728',
               fontWeight: 'bold',
               width: 60,
               textAlign: 'center',
               borderRadius: 10,
             }}
           >
-            <Typography variant="body2">{status}</Typography>
+            <Typography variant="body2">
+              {status ? 'Ativo' : 'Inativo'}
+            </Typography>
           </Box>
         ),
       };

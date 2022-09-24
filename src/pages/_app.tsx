@@ -44,7 +44,6 @@ const App = (props: MyAppProps) => {
   const [params, setParams] = useState({});
 
   useEffect(() => {
-    console.log('route', router.asPath);
     if (router.asPath.includes('#')) {
       const recoveryData = URLSearchParams2JSON_1(
         router.asPath.split('#')[1],
@@ -65,8 +64,6 @@ const App = (props: MyAppProps) => {
 
       if (recoveryData) {
         setParams(recoveryData);
-        console.log(router.asPath);
-        console.log(recoveryData);
       }
     }
   }, [router]);

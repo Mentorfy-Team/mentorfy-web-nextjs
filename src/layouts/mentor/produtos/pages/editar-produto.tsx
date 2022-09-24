@@ -30,7 +30,6 @@ const EditarProduto: FC<props> = ({ product, tab = tabs.Geral.toString() }) => {
   const isMobile = useMediaQuery('(max-width: 400px)');
 
   const SwitchTabs = useCallback(() => {
-    console.log(tabindex, tabs.Geral.toString());
     switch (tabindex) {
       case tabs.Geral.toString():
         return <GeralPage product={product} />;

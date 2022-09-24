@@ -118,6 +118,8 @@ export default function StickyHeadTable({
                                 onTitleClick(row.id)
                               }
                               sx={{
+                                padding: '8px 16px',
+                                height: '45px',
                                 cursor:
                                   index === 0 && onTitleClick
                                     ? 'pointer'
