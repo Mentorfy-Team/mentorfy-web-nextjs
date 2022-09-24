@@ -5,7 +5,6 @@ import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import MiniDrawer from '~/components/partials/MiniDrawer';
 import PageWrapper from '~/components/partials/PageWrapper';
 import {
   BannerBox,
@@ -48,88 +47,86 @@ const BemVindo: FC = () => {
     </Box>
   );
   return (
-    <PageWrapper>
-      <>
-        <ContentWidthLimit maxWidth={1200}>
-          <BannerBox>
-            {TextBanner}
-            <RatingBox>
-              <Rating defaultValue={4.5} precision={0.5} size="small"></Rating>
-              <CustomTypography>2022</CustomTypography>
-              <CustomTypography>1750 Alunos</CustomTypography>
-            </RatingBox>
-            <Box
-              sx={{ maxWidth: '37.5rem', height: '4.2rem', textAlign: 'start' }}
-            >
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia
-              pariatur, doloremque iste corrupti perspiciatis modi, nobis quam
-              reprehenderit esse officiis, sequi at exercitationem. Tempora
-              architecto dolorem ex laborum, sequi odit?
-            </Box>
-          </BannerBox>
-          <Box sx={{ display: 'flex', margin: '1.2rem 0 0.5rem 0' }}>
-            <Typography variant="h5">Meus estudos</Typography>
-          </Box>
+    <>
+      <ContentWidthLimit maxWidth={1200}>
+        <BannerBox>
+          {TextBanner}
+          <RatingBox>
+            <Rating defaultValue={4.5} precision={0.5} size="small"></Rating>
+            <CustomTypography>2022</CustomTypography>
+            <CustomTypography>1750 Alunos</CustomTypography>
+          </RatingBox>
           <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              overflow: 'auto',
-              margin: '0 0 1.2rem 0',
-            }}
+            sx={{ maxWidth: '37.5rem', height: '4.2rem', textAlign: 'start' }}
           >
-            <CourseBox minWidth={350}>
-              <Image
-                alt=""
-                src="/images/area-de-membros.png"
-                width={350}
-                height={390}
-                objectFit="cover"
-              />
-            </CourseBox>
-            <CourseBox minWidth={350}>
-              <Image
-                alt=""
-                src="/images/imagem2.png"
-                width={350}
-                height={390}
-                objectFit="cover"
-              />
-            </CourseBox>
-            <CourseBox minWidth={350}>
-              <Image
-                alt=""
-                src="/images/imagem3.png"
-                width={350}
-                height={390}
-                objectFit="cover"
-              />
-            </CourseBox>
-            <CourseBox minWidth={350}>
-              <Image
-                alt=""
-                src="/images/imagem3.png"
-                width={350}
-                height={390}
-                objectFit="cover"
-              />
-            </CourseBox>
-            <CourseBox minWidth={350}>
-              <Image
-                alt=""
-                src="/images/imagem3.png"
-                width={350}
-                height={390}
-                objectFit="cover"
-              />
-            </CourseBox>
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia
+            pariatur, doloremque iste corrupti perspiciatis modi, nobis quam
+            reprehenderit esse officiis, sequi at exercitationem. Tempora
+            architecto dolorem ex laborum, sequi odit?
           </Box>
-          <Box sx={{ display: 'flex' }}>
-            <Typography variant="h5">Populares na Mentorfy</Typography>
-          </Box>
-        </ContentWidthLimit>
-      </>
-    </PageWrapper>
+        </BannerBox>
+        <Box sx={{ display: 'flex', margin: '1.2rem 0 0.5rem 0' }}>
+          <Typography variant="h5">Meus estudos</Typography>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            overflow: 'auto',
+            margin: '0 0 1.2rem 0',
+          }}
+        >
+          <CourseBox minWidth={350}>
+            <Image
+              alt=""
+              src="/images/area-de-membros.png"
+              width={350}
+              height={390}
+              objectFit="cover"
+            />
+          </CourseBox>
+          <CourseBox minWidth={350}>
+            <Image
+              alt=""
+              src="/images/imagem2.png"
+              width={350}
+              height={390}
+              objectFit="cover"
+            />
+          </CourseBox>
+          <CourseBox minWidth={350}>
+            <Image
+              alt=""
+              src="/images/imagem3.png"
+              width={350}
+              height={390}
+              objectFit="cover"
+            />
+          </CourseBox>
+          <CourseBox minWidth={350}>
+            <Image
+              alt=""
+              src="/images/imagem3.png"
+              width={350}
+              height={390}
+              objectFit="cover"
+            />
+          </CourseBox>
+          <CourseBox minWidth={350}>
+            <Image
+              alt=""
+              src="/images/imagem3.png"
+              width={350}
+              height={390}
+              objectFit="cover"
+            />
+          </CourseBox>
+        </Box>
+        <Box sx={{ display: 'flex' }}>
+          <Typography variant="h5">Populares na Mentorfy</Typography>
+        </Box>
+      </ContentWidthLimit>
+    </>
   );
 };
 

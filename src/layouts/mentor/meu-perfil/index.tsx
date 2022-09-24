@@ -1,16 +1,16 @@
 /* eslint-disable no-restricted-imports */
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
+import { Box } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import Typography from '@mui/material/Typography';
 
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import MiniDrawer from '~/components/partials/MiniDrawer';
+import Toolbar from '~/components/modules/Toolbar';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { PublicRoutes } from '~/consts';
 import { GetProfile, UpdateProfile } from '~/services/profile.service';
@@ -123,10 +123,10 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
     };
   };
 
-  const HeaderDrawer = <Typography variant="h6">Meu Perfil</Typography>;
   return (
-    <PageWrapper>
-      <>
+    <>
+      <Toolbar tabs={['Dados gerais']} />
+      <Box sx={{ paddingTop: '2rem' }}>
         <ContentWidthLimit maxWidth={600}>
           <Header>
             <CustomTypography variant="h6">Dados Gerais</CustomTypography>
@@ -333,8 +333,8 @@ const MyProfile: FC<PageTypes.Props> = ({ profile, address, user }) => {
             </Buttons>
           </Form>
         </ContentWidthLimit>
-      </>
-    </PageWrapper>
+      </Box>
+    </>
   );
 };
 

@@ -4,17 +4,22 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { UserProvider } from '@supabase/auth-helpers-react';
 import type { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { SupabaseWithouAuth } from '~/backend/supabase';
-import HeaderPartial from '~/components/partials/HeaderPartial';
-import LoadingPartial from '~/components/partials/loading/loading.partial';
-import MiniDrawer from '~/components/partials/MiniDrawer';
 import createEmotionCache from '~/createEmotionCache';
-import { userStore } from '~/stores';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
 const clientSideEmotionCache = createEmotionCache();
+
+const LoadingPartial = dynamic(
+  () => import('~/components/partials/loading/loading.partial'),
+);
+const MiniDrawer = dynamic(() => import('~/components/partials/MiniDrawer'));
+const HeaderPartial = dynamic(
+  () => import('~/components/partials/HeaderPartial'),
+);
 
 interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
@@ -49,14 +54,20 @@ const App = (props: MyAppProps) => {
     }
   }, [router]);
 
-  SupabaseWithouAuth.auth.onAuthStateChange((event, session) => {
-    fetch('/api/auth/cookies', {
-      method: 'POST',
-      headers: new Headers({ 'Content-Type': 'application/json' }),
-      credentials: 'same-origin',
-      body: JSON.stringify({ event, session }),
-    });
-  });
+  useEffect(() => {
+    const { data } = SupabaseWithouAuth.auth.onAuthStateChange(
+      (event, session) => {
+        fetch('/api/auth/cookies', {
+          method: 'POST',
+          headers: new Headers({ 'Content-Type': 'application/json' }),
+          credentials: 'same-origin',
+          body: JSON.stringify({ event, session }),
+        });
+      },
+    );
+
+    return data.unsubscribe();
+  }, []);
 
   const Drawer = useCallback(
     ({ children }) => {

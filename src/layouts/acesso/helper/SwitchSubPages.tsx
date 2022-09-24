@@ -1,19 +1,13 @@
 import dynamic from 'next/dynamic';
-import Login from '../login';
 
+const Login = dynamic(() => import('../login'));
 const Cadastro = dynamic(() => import('../cadastro'));
 const EsqueciMinhaSenha = dynamic(() => import('../esqueci-minha-senha'));
 const Sucesso = dynamic(() => import('../sucesso'));
 const TrocarSenha = dynamic(() => import('../trocar-senha'));
 const ConfirmarConta = dynamic(() => import('../confirmar-conta'));
 
-export const handleAcessoSubPage = (
-  AcessosubPage,
-  setAcessoSubPage,
-  info,
-  setInfo,
-  urlProps,
-) => {
+export default (AcessosubPage, setAcessoSubPage, info, setInfo, urlProps) => {
   if (urlProps?.type === 'recovery' && AcessosubPage !== 'sucesso') {
     AcessosubPage = 'trocar-senha';
   }

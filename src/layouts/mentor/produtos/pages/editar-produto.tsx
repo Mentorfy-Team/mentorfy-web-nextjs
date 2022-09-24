@@ -1,24 +1,18 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
-import SvgIcon from '@mui/material/SvgIcon';
-import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import Tabbar from '~/components/modules/Tabbar';
-import { TabItem } from '~/components/modules/Tabbar/styles';
-import MiniDrawer from '~/components/partials/MiniDrawer';
+import Toolbar from '~/components/modules/Toolbar';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { MentorRoutes, PublicRoutes } from '~/consts';
 import SsrIsLogged from '~/helpers/SsrIsLogged';
 import { GetProduct } from '~/services/product.service';
 import { GetProfile } from '~/services/profile.service';
-import { HeaderWrapper, MembersAreaButton } from './styles';
 
 import GeralPage from './tabs/geral';
-import graduation_cap_svg from '~/../public/svgs/graduation-cap';
 
 const LinksPage = dynamic(() => import('./tabs/links'));
 
@@ -36,37 +30,6 @@ type props = PageTypes.Props & {
 const EditarProduto: FC<props> = ({ profile, product, tab = tabs.Geral }) => {
   const [tabindex, setTabindex] = useState<tabs>(tab);
   const isMobile = useMediaQuery('(max-width: 400px)');
-  const route = useRouter();
-
-  const Header = (
-    <HeaderWrapper>
-      <Typography variant="h6">{product.title}</Typography>
-      <MembersAreaButton
-        sx={{
-          float: 'right',
-          marginLeft: '1rem',
-          height: '2.6rem',
-          lineHeight: '1.0rem',
-        }}
-        variant="contained"
-        color="primary"
-        onClick={() => route.push(MentorRoutes.members_area + '/mentoria-4s')}
-      >
-        <SvgIcon
-          sx={{ paddingRight: '1rem', width: '40px' }}
-          component={graduation_cap_svg}
-        />
-        Área de Membros
-      </MembersAreaButton>
-    </HeaderWrapper>
-  );
-
-  const SupportHeader = (
-    <Tabbar selected={tabindex} onChange={(_, value) => setTabindex(value)}>
-      <TabItem label="Geral" />
-      <TabItem label="Links" />
-    </Tabbar>
-  );
 
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
@@ -81,21 +44,23 @@ const EditarProduto: FC<props> = ({ profile, product, tab = tabs.Geral }) => {
 
   return (
     <>
-      <PageWrapper>
-        <>
-          <ContentWidthLimit maxWidth={700}>
-            <Box
-              sx={{
-                padding: isMobile ? 2 : 4,
-                backgroundColor: (theme) => theme.palette.primary.light,
-                borderRadius: 1,
-              }}
-            >
-              {SwitchTabs()}
-            </Box>
-          </ContentWidthLimit>
-        </>
-      </PageWrapper>
+      <>
+        <Toolbar
+          onChange={(value) => setTabindex(value)}
+          tabs={[tabs.Geral, tabs.Links]}
+        />
+        <ContentWidthLimit maxWidth={700}>
+          <Box
+            sx={{
+              padding: isMobile ? 2 : 4,
+              backgroundColor: (theme) => theme.palette.primary.light,
+              borderRadius: 1,
+            }}
+          >
+            {SwitchTabs()}
+          </Box>
+        </ContentWidthLimit>
+      </>
     </>
   );
 };

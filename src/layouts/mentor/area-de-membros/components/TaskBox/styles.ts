@@ -2,13 +2,13 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
 export const TaskWrapper = styled(Box)`
-background-color: ${({ theme }) => theme.palette.primary.main};
-border-radius: 0.3rem;
-height: 13.5rem;
-margin: 1rem 0;
-overflow: auto;
-padding: 1rem;
-width: 100%;
+  background-color: ${({ theme }) => theme.palette.primary.main};
+  border-radius: 0.3rem;
+  height: 13.5rem;
+  margin: 1rem 0;
+  overflow: auto;
+  padding: 1rem;
+  width: 100%;
 `;
 
 export const Task = styled(Box)`

@@ -7,5 +7,7 @@ export const Wrapper = styled('div')`
 `;
 
 export const PageWrapper = styled('div')`
+  background-color: ${({ theme }) => theme.palette.primary.main};
+  color: white;
   min-height: inherit;
 `;

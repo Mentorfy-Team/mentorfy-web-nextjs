@@ -2,7 +2,12 @@ import { css, styled } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 
-export const TabWrapper = styled(Tabs)`
+type Props = {
+  withBorder?: boolean;
+  forPage?: boolean;
+};
+
+export const TabWrapper = styled(Tabs)<Props>`
   margin-bottom: 1rem;
   margin-top: -7px;
   min-height: 2.8rem;

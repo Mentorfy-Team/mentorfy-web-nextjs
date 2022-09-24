@@ -3,8 +3,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { InferGetStaticPropsType } from 'next';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
-import PageWrapper from '~/components/partials/PageWrapper';
-import { handleAcessoSubPage } from './helper/SwitchSubPages';
+import handleAcessoSubPage from './helper/SwitchSubPages';
 import { AlignSelf, BackgroundHolder, Grid, Wrapper } from './styles';
 import backgroundImage from '~/../public/images/background-login.jpg';
 import tipografiaImage from '~/../public/images/tipografia.png';
@@ -41,7 +40,7 @@ function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
   }, [AcessosubPage, info, urlProps]);
 
   return (
-    <PageWrapper>
+    <>
       <Grid container>
         <Grid xs={0} lg={6.5}>
           <BackgroundHolder>
@@ -78,7 +77,7 @@ function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
           <Wrapper>{handleSubPages()}</Wrapper>
         </Grid>
       </Grid>
-    </PageWrapper>
+    </>
   );
 }
 

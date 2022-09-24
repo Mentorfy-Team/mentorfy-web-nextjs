@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Typography from '@mui/material/Typography';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import MiniDrawer from '~/components/partials/MiniDrawer';
+import Toolbar from '~/components/modules/Toolbar';
 import PageWrapper from '~/components/partials/PageWrapper';
 import { PublicRoutes } from '~/consts';
 
@@ -12,7 +12,7 @@ const Dashboard: FC<PageTypes.Props> = () => {
     </Typography>
   );
 
-  return <PageWrapper></PageWrapper>;
+  return <Toolbar tabs={['Geral']} />;
 };
 
 // * ServerSideRender (SSR)
