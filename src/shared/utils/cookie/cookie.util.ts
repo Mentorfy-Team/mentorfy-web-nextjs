@@ -1,5 +1,4 @@
 import { default as cookieHelper } from 'cookie';
-import { AppUtil } from '..';
 
 export class CookieUtil {
   public static fromReq(req: any) {
@@ -61,9 +60,5 @@ export class CookieUtil {
     }
   }
 
-  private static checkEnv() {
-    if (!AppUtil.isClientSide()) {
-      throw new Error('Cannot set on server side.');
-    }
-  }
+  private static checkEnv() {}
 }
