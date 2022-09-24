@@ -21,7 +21,7 @@ const AddImage: FC = () => {
                     color: `${theme.palette.text.primary}`,
                   }}
                 >
-                  <Typography sx={{fontWeight: '700', fontSize: '1rem'}}>Imagem Principal</Typography>
+                  <Typography sx={{fontWeight: '700', fontSize: '1rem'}}>Thumbnail</Typography>
                   <Typography sx={{ opacity: '0.4', fontSize: '0.8rem' }}>
                     Recomendação: 70x70 pixels
                   </Typography>

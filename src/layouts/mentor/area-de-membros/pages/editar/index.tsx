@@ -9,6 +9,7 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import InputField from '~/components/atoms/InputField';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
+import ModalComponent from '~/components/modules/Modal';
 import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
 import MiniDrawer from '~/components/partials/MiniDrawer';
@@ -16,7 +17,9 @@ import PageWrapper from '~/components/partials/PageWrapper';
 import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
 import AddImage from '../../components/AddImage';
+import FilesModal from '../../components/FilesModal';
 import TaskBox from '../../components/TaskBox';
+import VideoModal from '../../components/VideoModal';
 import {
   ButtonsWrapper,
   CustomTypograpy,
@@ -24,6 +27,7 @@ import {
 
 const EditarMentoria: FC = () => {
   const [tabindex, setTabindex] = useState(0);
+  const [open, setOpen] = useState(false);
   const [addItem, setaddItem] = useState(['1']);
 
   const theme = useTheme();
@@ -33,8 +37,12 @@ const EditarMentoria: FC = () => {
   const StepType = 'Vídeo de apresentação';
   const Image = '/svgs/step-image.svg';
 
-  const addNewStep = () => {
-    setaddItem([...addItem, '2']);
+  // const addNewStep = () => {
+  //   setaddItem([...addItem, '2']);
+  // };
+
+  const hadleOpenModal = () => {
+    setOpen(true);
   };
   const SupportHeader = (
     <Tabbar selected={tabindex} onChange={(_, value) => setTabindex(value)}>
@@ -125,10 +133,11 @@ const EditarMentoria: FC = () => {
               }}
             />
             <Button
-              onClick={addNewStep}
+              onClick={hadleOpenModal}
               sx={{ color: `${theme.palette.caption.main}` }}>
               + ADICIONAR ETAPA
             </Button>
+            <FilesModal/>
           </Box>
         </ContentWidthLimit>
       </MiniDrawer>
