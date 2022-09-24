@@ -20,6 +20,12 @@ export function GlobalStyles() {
             width: '100%',
           },
         },
+        '.Popover-menu': {
+          '.MuiPaper-elevation': {
+            top: '45px !important',
+            right: '35px !important',
+          },
+        },
         '.MuiPopover-paper': {
           boxShadow: '-4px 4px 0px 0px #00000000',
         },

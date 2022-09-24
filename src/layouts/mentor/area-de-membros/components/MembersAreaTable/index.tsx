@@ -12,12 +12,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Column } from '~/components/atoms/Datagrid';
 import { MentorRoutes } from '~/consts';
-import {
-  MarginPopopver,
-  OptionsButton,
-  PopoverBox,
-  Text,
-} from './styles';
+import { MarginPopopver, OptionsButton, PopoverBox, Text } from './styles';
 import dots_svg from '~/../public/svgs/dots';
 
 const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
@@ -84,7 +79,7 @@ const ProductsTable = ({ rows }: { rows: MemberAreaTypes.MemberArea[] }) => {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'popover' : undefined;
 
   return (
     <Datagrid
@@ -108,7 +103,7 @@ const ProductsTable = ({ rows }: { rows: MemberAreaTypes.MemberArea[] }) => {
             </OptionsButton>
           </MarginPopopver>
           <Popover
-            id={'simple-popover-' + index}
+            id={'popover-' + index}
             open={open}
             onClose={handleClose}
             anchorEl={anchorEl}

@@ -59,7 +59,7 @@ export const MuiOverride: Components<Theme> = {
   MuiPaper: {
     styleOverrides: {
       root: ({ theme }) => ({
-        backgroundColor: theme.palette.caption.dark,
+        backgroundColor: theme.palette.primary.light,
       }),
     },
   },

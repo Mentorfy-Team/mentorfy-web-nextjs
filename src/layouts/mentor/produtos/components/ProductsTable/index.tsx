@@ -119,7 +119,7 @@ const ProductsTable = ({ rows }: { rows: ProductClient.Product[] }) => {
               </OptionsButton>
             </MarginPopopver>
             <Popover
-              id={'simple-popover-' + selectedRow.id}
+              id={'popover-' + selectedRow.id}
               open={open}
               onClose={handleClose}
               anchorEl={anchorEl}
