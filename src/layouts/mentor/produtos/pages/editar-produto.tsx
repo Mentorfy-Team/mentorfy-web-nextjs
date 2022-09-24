@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
-import dynamic from 'next/dynamic';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
 import PageWrapper from '~/components/partials/PageWrapper';
