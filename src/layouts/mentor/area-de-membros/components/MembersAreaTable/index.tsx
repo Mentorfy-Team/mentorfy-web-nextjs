@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import LinkIcon from '@mui/icons-material/Link';
 import Box from '@mui/material/Box';
@@ -12,14 +12,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Column } from '~/components/atoms/Datagrid';
 import { MentorRoutes } from '~/consts';
-import {
-  EnterMemberArea,
-  MarginPopopver,
-  OptionsButton,
-  PopoverBox,
-  Text,
-} from './styles';
-import door_svg from '~/../public/svgs/door';
+import { MarginPopopver, OptionsButton, PopoverBox, Text } from './styles';
 import dots_svg from '~/../public/svgs/dots';
 
 const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
@@ -50,22 +43,24 @@ const ProductsTable = ({ rows }: { rows: MemberAreaTypes.MemberArea[] }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const createData = useCallback(
-    (name: string, mentorados: number, status: string): Data => {
+    (name: string, mentorados: number, status: boolean): Data => {
       return {
         name,
         mentorados,
         status: (
           <Box
             sx={{
-              backgroundColor: status === 'Ativo' ? '#86ffb9' : '#ff98ac',
-              color: status === 'Ativo' ? '#075327' : '#6b1728',
+              backgroundColor: status ? '#86ffb9' : '#ff98ac',
+              color: status ? '#075327' : '#6b1728',
               fontWeight: 'bold',
               width: 60,
               textAlign: 'center',
               borderRadius: 10,
             }}
           >
-            <Typography variant="body2">{status}</Typography>
+            <Typography variant="body2">
+              {status ? 'Ativo' : 'Inativo'}
+            </Typography>
           </Box>
         ),
       };
@@ -86,7 +81,7 @@ const ProductsTable = ({ rows }: { rows: MemberAreaTypes.MemberArea[] }) => {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+  const id = open ? 'popover' : undefined;
 
   return (
     <Datagrid
@@ -110,7 +105,7 @@ const ProductsTable = ({ rows }: { rows: MemberAreaTypes.MemberArea[] }) => {
             </OptionsButton>
           </MarginPopopver>
           <Popover
-            id={'simple-popover-' + index}
+            id={'popover-' + index}
             open={open}
             onClose={handleClose}
             anchorEl={anchorEl}

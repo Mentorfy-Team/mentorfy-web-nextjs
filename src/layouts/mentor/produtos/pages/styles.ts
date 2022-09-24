@@ -11,11 +11,15 @@ export const HeaderWrapper = styled(Box)`
   width: 100%;
 `;
 
-export const SaveButton = styled(LoadingButton)`
+export const SvgWrapper = styled('div')`
   svg {
     margin-right: 8px;
+    margin-top: 6px;
+    scale: 0.7;
   }
 `;
+
+export const SaveButton = styled(LoadingButton)``;
 
 export const ReturnButton = styled(Button)`
   span {
@@ -28,10 +32,11 @@ export const ReturnButton = styled(Button)`
 
 export const ActionButton = styled(Button)`
   color: ${({ theme }) => theme.palette.accent.main};
+  cursor: pointer;
   path {
     fill: ${({ theme }) => theme.palette.accent.main};
   }
-  cursor: pointer;
+  font-size: 0.9rem;
 `;
 
 export const MembersAreaButton = styled(Button)``;

@@ -16,12 +16,12 @@ export default function SearchInput({ sx }: any) {
       }}
     >
       <InputBase
-        sx={{ ml: 1, flex: 1 }}
+        sx={{ ml: 1, flex: 1, fontSize: '0.9rem' }}
         placeholder="Procurar pelo nome"
         inputProps={{ 'aria-label': 'search google maps' }}
       />
-      <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-        <SearchIcon color="info" />
+      <IconButton type="button" sx={{ p: '0px' }} aria-label="search">
+        <SearchIcon fontSize="small" color="info" />
       </IconButton>
     </Paper>
   );

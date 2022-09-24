@@ -14,6 +14,10 @@ export const HeaderWrapper = styled(Box)`
   }
 `;
 
-export const AddProductButton = styled(Button)``;
+export const AddProductButton = styled(Button)`
+  svg {
+    scale: 0.7;
+  }
+`;
 
 export const MembersAreaButton = styled(Button)``;

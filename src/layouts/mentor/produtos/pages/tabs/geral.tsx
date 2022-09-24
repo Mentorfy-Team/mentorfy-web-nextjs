@@ -14,7 +14,7 @@ import SelectField from '~/components/atoms/SelectField';
 import { MentorRoutes } from '~/consts';
 import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
 import { UpdateProduct } from '~/services/product.service';
-import { ActionButton, ReturnButton, SaveButton } from '../styles';
+import { ActionButton, ReturnButton, SaveButton, SvgWrapper } from '../styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 
 type props = {
@@ -66,6 +66,7 @@ const Geral: FC<props> = ({ product }) => {
     if (!target.files || target.files.length <= 0) return;
 
     const type = target.files[0].type.split('/')[1];
+    fileReader.readAsDataURL(target.files[0]);
 
     fileReader.onload = (e) => {
       setProductImage((old) => ({
@@ -101,7 +102,9 @@ const Geral: FC<props> = ({ product }) => {
           loading={isLoading}
           disabled={isLoading}
         >
-          <Save sx={{ height: 32 }} />
+          <SvgWrapper>
+            <Save />
+          </SvgWrapper>
           Salvar produto
         </SaveButton>
       </Box>
@@ -138,11 +141,10 @@ const Geral: FC<props> = ({ product }) => {
             sx={{
               float: 'right',
               marginLeft: '1rem',
-              fontWeight: 300,
             }}
           >
             <ActionButton
-              sx={{ padding: '0px', height: '30px' }}
+              sx={{ padding: '0px', height: '20px' }}
               color="primary"
               as="label"
               onChange={(e) => handleCapture(e.target, 'main_image')}
@@ -150,7 +152,11 @@ const Geral: FC<props> = ({ product }) => {
               Trocar imagem
               <input hidden accept="image/*" type="file" />
             </ActionButton>
-            <Typography color="gray" sx={{ textAlign: 'initial' }}>
+            <Typography
+              variant="caption"
+              color="gray"
+              sx={{ textAlign: 'initial' }}
+            >
               Recomendação: <br />
               256x256 pixels
             </Typography>
@@ -188,11 +194,10 @@ const Geral: FC<props> = ({ product }) => {
             sx={{
               float: 'right',
               marginLeft: '1rem',
-              fontWeight: 300,
             }}
           >
             <ActionButton
-              sx={{ padding: '0px', height: '30px' }}
+              sx={{ padding: '0px', height: '20px' }}
               color="primary"
               as="label"
               onChange={(e) => handleCapture(e.target, 'banner_image')}
@@ -200,7 +205,11 @@ const Geral: FC<props> = ({ product }) => {
               Trocar banner
               <input hidden accept="image/*" type="file" />
             </ActionButton>
-            <Typography color="gray" sx={{ textAlign: 'initial' }}>
+            <Typography
+              variant="caption"
+              color="gray"
+              sx={{ textAlign: 'initial' }}
+            >
               Recomendação: <br />
               600x400 pixels
             </Typography>
@@ -244,12 +253,7 @@ const Geral: FC<props> = ({ product }) => {
         >
           <MenuItem value={'mentorfy'}>
             Área de Membros
-            <Typography
-              component="b"
-              color={(theme) => theme.palette.accent.main}
-            >
-              &nbsp;Mentorfy
-            </Typography>
+            <Typography component="b">&nbsp;Mentorfy</Typography>
           </MenuItem>
           <MenuItem value={'external'}>Área de Membros Externa</MenuItem>
           <MenuItem value={'signup'}>Apenas Cadastros</MenuItem>

@@ -14,20 +14,16 @@ export const Header = styled('header')`
 `;
 
 export const InputField = styled(TextField)`
-  height: 2.8rem;
-
   outline: none;
   width: 100%;
   input {
-    height: 0.625rem;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
   label {
     color: ${({ theme }) => theme.palette.text.primary};
   }
   fieldset {
     border-color: ${({ theme }) => theme.palette.text.primary};
-    height: 2.8rem;
   }
 `;
 

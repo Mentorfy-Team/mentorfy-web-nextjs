@@ -59,18 +59,11 @@ export const ClientsOptionsButton = styled(Button)`
   border-radius: 5px;
   display: flex;
 
-  font-size: 0.875rem;
-  font-style: normal;
-  font-weight: 700;
   gap: 0.75rem;
-
-  height: 2.8125rem;
 
   justify-content: center;
   line-height: 1rem;
   text-transform: none;
-
-  width: 12.5rem;
 
   @media (max-width: 500px) {
     width: 3.5rem;

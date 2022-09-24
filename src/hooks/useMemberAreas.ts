@@ -10,7 +10,6 @@ export function useMemberAreas(id) {
       fallbackData: [],
     },
   );
-
   return {
     memberAreas: data,
     isLoading: !error && !data,

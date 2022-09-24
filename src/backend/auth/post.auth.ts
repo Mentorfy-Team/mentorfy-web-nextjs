@@ -6,7 +6,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const { email, password } = req.body;
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const { session, user } = await SupabaseWithouAuth.auth.signIn({
+  const { session, user, error } = await SupabaseWithouAuth.auth.signIn({
     email,
     password,
   });

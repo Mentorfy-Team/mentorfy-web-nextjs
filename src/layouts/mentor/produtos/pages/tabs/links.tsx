@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import Box from '@mui/material/Box';
-import SvgIcon from '@mui/material/SvgIcon';
 import { useRouter } from 'next/router';
 import InputField from '~/components/atoms/InputField';
 import { MentorRoutes } from '~/consts';

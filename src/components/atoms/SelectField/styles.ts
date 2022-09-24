@@ -8,7 +8,14 @@ export const SelectFormControl = styled(FormControl)`
   @media (max-width: 500px) {
     margin: 1rem 0;
   }
-
+  > div {
+    div {
+      font-size: 0.8rem;
+    }
+  }
+  b {
+    font-size: 0.8rem;
+  }
   .MuiFormLabel-root {
     color: white;
   }

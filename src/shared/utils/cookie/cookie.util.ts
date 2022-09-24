@@ -1,5 +1,4 @@
 import { default as cookieHelper } from 'cookie';
-import { AppUtil } from '..';
 
 export class CookieUtil {
   public static fromReq(req: any) {
@@ -21,7 +20,7 @@ export class CookieUtil {
   }
 
   public static fromJson(cookie: { [key: string]: string }) {
-    let parsed: string = '';
+    let parsed = '';
     Object.keys(cookie).forEach((k, index, list) => {
       parsed += `${cookieHelper.serialize(k, cookie[k])}`;
       if (index < list.length - 1) parsed += '; ';
@@ -53,7 +52,7 @@ export class CookieUtil {
   public static clear() {
     this.checkEnv();
     const cookies = document.cookie.split(';');
-    for (var i = 0; i < cookies.length; i++) {
+    for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i];
       const eqPos = cookie.indexOf('=');
       const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
@@ -61,9 +60,5 @@ export class CookieUtil {
     }
   }
 
-  private static checkEnv() {
-    if (!AppUtil.isClientSide()) {
-      throw new Error('Cannot set on server side.');
-    }
-  }
+  private static checkEnv() {}
 }

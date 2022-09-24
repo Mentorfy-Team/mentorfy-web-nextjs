@@ -1,7 +1,5 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Auth } from '~/@types/api/auth/auth';
 import { ApiRoutes } from '~/consts/routes/api.routes';
-import { CookieUtil } from '~/shared/utils';
 import { HttpClient } from '../HttpClient';
 
 export const Authenticate = async (auth: Auth) => {

@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import LinkIcon from '@mui/icons-material/Link';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Popover from '@mui/material/Popover';
 import SvgIcon from '@mui/material/SvgIcon';
-import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -42,6 +41,10 @@ const columns: Column[] = [
     id: 'status',
     label: 'STATUS',
   },
+  {
+    id: 'actions',
+    label: '',
+  },
 ];
 
 interface Data {
@@ -55,8 +58,10 @@ interface Data {
 
 const ProductsTable = ({ rows }: { rows: ProductClient.Product[] }) => {
   const [page, setPage] = useState(1);
+  const [selectedRow, setSelectedRow] = useState<any>({});
   const route = useRouter();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const open = Boolean(anchorEl);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const createData = useCallback(
@@ -103,15 +108,74 @@ const ProductsTable = ({ rows }: { rows: ProductClient.Product[] }) => {
             </Typography>
           </Box>
         ),
-        actions: '',
+        actions: (
+          <div key={`settings-${id}`} style={{ padding: '0px' }}>
+            <MarginPopopver
+              sx={{ width: 35, height: 32 }}
+              onClick={(e) => handleClick(e as any, { id })}
+            >
+              <OptionsButton>
+                <SvgIcon color="info" component={DotsSvg} />
+              </OptionsButton>
+            </MarginPopopver>
+            <Popover
+              id={'popover-' + selectedRow.id}
+              open={open}
+              onClose={handleClose}
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'center',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'center',
+                horizontal: 'right',
+              }}
+              transitionDuration={1}
+            >
+              <PopoverBox display="flex" flexDirection="column">
+                <Link
+                  href={
+                    MentorRoutes.products_edit +
+                    '/' +
+                    selectedRow.id +
+                    '?tab=Links'
+                  }
+                  passHref
+                >
+                  <Button>
+                    <SvgIcon
+                      sx={{ marginRight: '0.5rem', width: '1.2rem' }}
+                      component={LinkIcon}
+                    />
+                    <Text width="100%">Ver Links</Text>
+                  </Button>
+                </Link>
+                <Link
+                  href={MentorRoutes.products_edit + '/' + selectedRow.id}
+                  passHref
+                >
+                  <Button>
+                    <SvgIcon
+                      sx={{ marginRight: '0.5rem', width: '1.2rem' }}
+                      component={EditIcon}
+                    />
+                    <Text width="100%">Editar</Text>
+                  </Button>
+                </Link>
+              </PopoverBox>
+            </Popover>
+          </div>
+        ),
         id,
       };
     },
-    [route],
+    [anchorEl, open, route, selectedRow],
   );
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>, row) => {
     setAnchorEl(event.currentTarget);
+    setSelectedRow(row);
   };
 
   const handleClose = () => {
@@ -121,10 +185,6 @@ const ProductsTable = ({ rows }: { rows: ProductClient.Product[] }) => {
   const handleEdit = (id) => {
     route.push(MentorRoutes.products_edit + '/' + id);
   };
-
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
-
   return (
     <Datagrid
       page={page}
@@ -132,69 +192,6 @@ const ProductsTable = ({ rows }: { rows: ProductClient.Product[] }) => {
       columns={columns}
       rows={rows?.map((row) => createData(row))}
       onTitleClick={(id) => handleEdit(id)}
-      actionButtons={(index) => [
-        <TableCell
-          key={`settings-${index}`}
-          align="left"
-          style={{ minWidth: 100, padding: '0px' }}
-        >
-          <MarginPopopver
-            sx={{ width: 35, height: 32 }}
-            onClick={(e) => handleClick(e as any)}
-          >
-            <OptionsButton>
-              <SvgIcon color="info" component={DotsSvg} />
-            </OptionsButton>
-          </MarginPopopver>
-          <Popover
-            id={'simple-popover-' + index}
-            open={open}
-            onClose={handleClose}
-            anchorEl={anchorEl}
-            anchorOrigin={{
-              vertical: 'center',
-              horizontal: 'left',
-            }}
-            transformOrigin={{
-              vertical: 'center',
-              horizontal: 'right',
-            }}
-            transitionDuration={1}
-          >
-            <PopoverBox display="flex" flexDirection="column">
-              <Link
-                href={
-                  MentorRoutes.products_edit +
-                  '/' +
-                  rows[index].id +
-                  '?tab=Links'
-                }
-                passHref
-              >
-                <Button>
-                  <SvgIcon
-                    sx={{ marginRight: '0.5rem', width: '1.2rem' }}
-                    component={LinkIcon}
-                  />
-                  <Text width="100%">Ver Links</Text>
-                </Button>
-              </Link>
-              <Link
-                href={MentorRoutes.products_edit + '/' + rows[index].id}
-                passHref
-              >
-                <Button>
-                  <SvgIcon
-                    sx={{ marginRight: '0.5rem', width: '1.2rem' }}
-                    component={EditIcon}
-                  />
-                  <Text width="100%">Editar</Text>
-                </Button>
-              </Link>
-            </PopoverBox>
-          </Popover>
-        </TableCell>,
-      ]}
     />
   );
 };

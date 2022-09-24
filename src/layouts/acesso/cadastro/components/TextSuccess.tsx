@@ -9,7 +9,7 @@ const TextSuccess: FC<{ children: any; success: boolean }> = ({
 }) => (
   <Text
     fontSize={'small'}
-    pl={3}
+    width="100%"
     color={({ palette }) =>
       success ? palette.success.main : palette.caption.main
     }

@@ -4,6 +4,14 @@ export function GlobalStyles() {
   return (
     <Global
       styles={(theme: any) => ({
+        '& :-webkit-autofill': {
+          WebkitBoxShadow: '0 0 0 1000px #242424 inset',
+          WebkitTextFillColor: 'white !important',
+        },
+        '& :-webkit-autofill:focus': {
+          WebkitBoxShadow: '0 0 0 1000px #242424 inset',
+          WebkitTextFillColor: 'white !important',
+        },
         '.MuiDialog-paper': {
           backgroundColor: 'transparent',
           '@media (max-width: 490px)': {
@@ -12,13 +20,20 @@ export function GlobalStyles() {
             width: '100%',
           },
         },
+        '.Popover-menu': {
+          '.MuiPaper-elevation': {
+            top: '45px !important',
+            right: '35px !important',
+          },
+        },
         '.MuiPopover-paper': {
           boxShadow: '-4px 4px 0px 0px #00000000',
         },
         'button:disabled': {
-          backgroundColor: '#9e9e9e',
-          borderRadius: '5px',
-          color: 'rgb(255 255 255 / 26%)',
+          opacity: '0.5',
+          div: {
+            color: 'white',
+          },
         },
         '@media (min-width: 600px)': {
           '::-webkit-scrollbar': {

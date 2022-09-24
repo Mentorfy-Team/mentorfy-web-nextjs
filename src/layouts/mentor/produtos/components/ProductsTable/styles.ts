@@ -24,7 +24,6 @@ export const PopoverBox = styled(Box)`
   position: relative;
   button {
     font-size: 0.7rem;
-    font-weight: 300;
     height: 2rem;
     justify-content: left;
     min-width: 8rem;
@@ -39,12 +38,10 @@ export const OptionsButton = styled(Button)`
   align-items: center;
   background-color: ${({ theme }) => theme.palette.caption.dark};
   display: flex;
-  height: 32px;
   justify-content: center;
   min-width: 32px;
-  padding-bottom: 0.6rem;
-  padding-left: 10px;
-  padding-top: 10px;
+  padding: 0px;
+  padding: 0rem 0.6rem;
   right: auto !important;
   width: 32px;
 `;

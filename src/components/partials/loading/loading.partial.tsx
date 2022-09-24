@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { userStore } from '~/stores';
 import { Animation, Wrapper } from './loading.partial.styles';

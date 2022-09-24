@@ -1,17 +1,6 @@
 import { FC, useState } from 'react';
-import Divider from '@mui/material/Divider';
 import { AcessoSubPage } from '..';
-import {
-  Accent,
-  CreateAccountButton,
-  ForgotPassButton,
-  InfoText,
-  InputField,
-  LinkButton,
-  LoginButton,
-  SubTitle,
-  Title,
-} from '../styles';
+import { Accent, InfoText, LoginButton } from '../styles';
 
 type props = {
   pageChange: (page: AcessoSubPage) => void;

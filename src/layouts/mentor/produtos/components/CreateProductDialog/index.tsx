@@ -76,7 +76,7 @@ export default function CreateProductDialog({ open, setOpen }) {
               InputLabelProps={{
                 shrink: true,
               }}
-              {...register('price')}
+              register={register('price')}
               onChange={(e) => handleChange(e, 'title')}
               value={title}
             />
@@ -91,7 +91,7 @@ export default function CreateProductDialog({ open, setOpen }) {
               InputProps={{
                 inputComponent: MoneyFormatComponent as any,
               }}
-              {...register('price')}
+              register={register('price')}
               onChange={(e) => handleChange(e, 'price')}
               value={price}
             />
@@ -105,12 +105,7 @@ export default function CreateProductDialog({ open, setOpen }) {
               >
                 <MenuItem value="mentorfy">
                   Área de Membros
-                  <Typography
-                    component="b"
-                    color={(theme) => theme.palette.accent.main}
-                  >
-                    &nbsp;Mentorfy
-                  </Typography>
+                  <Typography component="b">&nbsp;Mentorfy</Typography>
                 </MenuItem>
                 <MenuItem value="external">Área de Membros Externa</MenuItem>
                 <MenuItem value="signup">Apenas cadastros</MenuItem>

@@ -1,35 +1,61 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import { useRouter } from 'next/router';
+import InputField from '~/components/atoms/InputField';
 import { PasswordChange } from '~/services/auth/password-change.service';
 import { AcessoSubPage } from '..';
 import { Text } from '../cadastro/components/styles';
 import TextSuccess from '../cadastro/components/TextSuccess';
 import passwordValidator from '../cadastro/helper/password-validator';
-import {
-  Accent,
-  CreateAccountButton,
-  ForgotPassButton,
-  InfoText,
-  InputField,
-  LinkButton,
-  LoginButton,
-  SubTitle,
-  Title,
-} from '../styles';
+import { Accent, LoginButton, SubTitle } from '../styles';
 
 type props = {
   pageChange: (page: AcessoSubPage) => void;
   setInfo: (info: any) => void;
   access_token: string;
+  type: 'invite' | 'recovery';
 };
 
-const TrocarSenha: FC<props> = ({ pageChange, setInfo, access_token }) => {
+const TrocarSenha: FC<props> = ({
+  pageChange,
+  setInfo,
+  access_token,
+  type,
+}) => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [rePassword, setRePassword] = useState('');
   const route = useRouter();
+
+  const title = useMemo(() => {
+    if (type === 'invite') {
+      return (
+        <>
+          Para finalizar seu{' '}
+          <Accent>
+            <b>cadastro</b>
+          </Accent>
+          , precisamos que você crie uma senha segura.
+        </>
+      );
+    }
+    return (
+      <>
+        Para concluir a{' '}
+        <Accent>
+          <b>Recuperação de Senha</b>
+        </Accent>
+        , agora precisamos que você crie uma nova senha.
+      </>
+    );
+  }, [type]);
+
+  const buttonTitle = useMemo(() => {
+    if (type === 'invite') {
+      return 'Cadastrar';
+    }
+    return 'Resetar senha';
+  }, [type]);
 
   const RePasswordCheck = useMemo(() => {
     return rePassword === password && rePassword.length > 0;
@@ -71,16 +97,20 @@ const TrocarSenha: FC<props> = ({ pageChange, setInfo, access_token }) => {
     return (
       <LoginButton
         loading={isLoading}
+        sx={{
+          marginTop: '1rem',
+        }}
         disabled={
           !passed || rePassword.length == 0 || !RePasswordCheck || isLoading
         }
         onClick={() => handlePasswordChange()}
       >
-        Resetar senha
+        {buttonTitle}
       </LoginButton>
     );
   }, [
     RePasswordCheck,
+    buttonTitle,
     handlePasswordChange,
     isLoading,
     passed,
@@ -90,11 +120,7 @@ const TrocarSenha: FC<props> = ({ pageChange, setInfo, access_token }) => {
   return (
     <>
       <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
-        Para concluir a{' '}
-        <Accent>
-          <b>Recuperação de Senha</b>
-        </Accent>
-        , agora precisamos que você crie uma nova senha.
+        {title}
       </SubTitle>
 
       <InputField
