@@ -8,7 +8,10 @@ const TrocarSenha = dynamic(() => import('../trocar-senha'));
 const ConfirmarConta = dynamic(() => import('../confirmar-conta'));
 
 export default (AcessosubPage, setAcessoSubPage, info, setInfo, urlProps) => {
-  if (urlProps?.type === 'recovery' && AcessosubPage !== 'sucesso') {
+  if (
+    (urlProps?.type === 'recovery' || urlProps?.type === 'invite') &&
+    AcessosubPage !== 'sucesso'
+  ) {
     AcessosubPage = 'trocar-senha';
   }
   switch (AcessosubPage) {
@@ -19,6 +22,7 @@ export default (AcessosubPage, setAcessoSubPage, info, setInfo, urlProps) => {
     case 'trocar-senha':
       return (
         <TrocarSenha
+          type={urlProps?.type}
           setInfo={setInfo}
           pageChange={setAcessoSubPage}
           access_token={urlProps?.access_token}

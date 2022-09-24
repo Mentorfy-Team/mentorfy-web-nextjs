@@ -5,7 +5,7 @@ export const get = async (req, res) => {
 
   const supabase = CreateSupabaseWithAuth(req);
 
-  const { data } = await supabase
+  const { data: products } = await supabase
     .from<ProductApi.Product>('product')
     .select('id, title')
     .eq('owner', req.query.id);
@@ -15,7 +15,7 @@ export const get = async (req, res) => {
     .select('*')
     .in(
       'product_id',
-      data.map((product) => product.id),
+      products.map((product) => product.id),
     );
 
   const { data: users } = await supabase
@@ -29,7 +29,7 @@ export const get = async (req, res) => {
     const relation = relations.filter(
       (relation) => relation.user_id === user.id,
     );
-    const products = data
+    const products_relation = products
       .filter((product) => relation.find((r) => r.product_id === product.id))
       .map((product) => ({
         ...product,
@@ -38,11 +38,10 @@ export const get = async (req, res) => {
       }));
     return {
       ...user,
-      products,
+      products: products_relation,
     };
   });
 
   // TODO: Adicionar log de erros detalhados
-
   res.status(200).json(clients);
 };

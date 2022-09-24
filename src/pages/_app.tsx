@@ -35,6 +35,7 @@ export type RecoveryProps = {
   token_type: string;
   expires_in: string;
   refresh_token: string;
+  type: string;
 };
 
 const App = (props: MyAppProps) => {
@@ -43,13 +44,29 @@ const App = (props: MyAppProps) => {
   const [params, setParams] = useState({});
 
   useEffect(() => {
-    if (router.asPath.includes('#') && router.asPath.includes('recovery')) {
+    console.log('route', router.asPath);
+    if (router.asPath.includes('#')) {
       const recoveryData = URLSearchParams2JSON_1(
         router.asPath.split('#')[1],
       ) as RecoveryProps;
 
+      if (recoveryData.access_token && recoveryData.type == 'magiclink') {
+        const { user } = SupabaseWithouAuth.auth.setAuth(
+          recoveryData.access_token,
+        );
+        if (user && router.pathname === '/') {
+          router.push('/mentor/dashboard');
+        }
+      }
+
+      if (recoveryData.type == 'invite') {
+        SupabaseWithouAuth.auth.setAuth(recoveryData.access_token);
+      }
+
       if (recoveryData) {
         setParams(recoveryData);
+        console.log(router.asPath);
+        console.log(recoveryData);
       }
     }
   }, [router]);
