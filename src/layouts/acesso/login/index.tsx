@@ -65,7 +65,7 @@ const Login: FC<props> = ({ pageChange }) => {
         da Mentorfy.
       </Title>
       <Tabbar
-        withBorder
+        witborder
         selected={index}
         onChange={(_, value) => setIndex(value)}
       >

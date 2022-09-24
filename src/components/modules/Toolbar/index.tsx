@@ -15,7 +15,7 @@ const Toolbar: React.FC<Props> = ({ onChange = () => {}, tabs = [] }) => {
 
   return (
     <Tabbar
-      forPage
+      forpage={true}
       onChange={(_, value) => setTabindex(value)}
       selected={tabindex}
     >

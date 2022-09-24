@@ -3,8 +3,8 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 
 type Props = {
-  withBorder?: boolean;
-  forPage?: boolean;
+  witborder?: boolean;
+  forpage?: boolean;
 };
 
 export const TabWrapper = styled(Tabs)<Props>`
@@ -14,8 +14,8 @@ export const TabWrapper = styled(Tabs)<Props>`
   * {
     color: white !important;
   }
-  ${({ withBorder }) =>
-    withBorder &&
+  ${({ witborder }) =>
+    witborder &&
     css`
       .MuiButtonBase-root {
         border-bottom: 2px solid #e5e5e5;
@@ -42,8 +42,8 @@ export const TabWrapper = styled(Tabs)<Props>`
     padding: 0;
   }
 
-  ${({ forPage, theme }) =>
-    forPage &&
+  ${({ forpage, theme }) =>
+    forpage &&
     css`
       border-bottom: 1px dashed #363739;
       padding-left: 1rem;
