@@ -15,12 +15,19 @@ const Toolbar: React.FC<Props> = ({ onChange = () => {}, tabs = [] }) => {
 
   return (
     <Tabbar
-      forpage={true}
+      forpage
       onChange={(_, value) => setTabindex(value)}
       selected={tabindex}
     >
       {tabs.map((tab, index) => (
-        <TabItem key={index} value={index} label={tab} />
+        <TabItem
+          style={{
+            alignItems: 'center',
+          }}
+          key={index}
+          value={index}
+          label={tab}
+        />
       ))}
     </Tabbar>
   );

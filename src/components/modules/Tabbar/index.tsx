@@ -17,8 +17,8 @@ const Tabbar: React.FC<props> = ({
 }) => {
   return (
     <TabWrapper
-      forpage={`${forpage}`}
-      witborder={`${witborder}`}
+      forpage={forpage}
+      witborder={witborder}
       value={selected}
       onChange={onChange}
     >

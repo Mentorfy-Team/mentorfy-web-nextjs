@@ -25,15 +25,12 @@ type props = PageTypes.Props & {
   tab: string;
 };
 
-const EditarProduto: FC<props> = ({
-  profile,
-  product,
-  tab = tabs.Geral.toString(),
-}) => {
+const EditarProduto: FC<props> = ({ product, tab = tabs.Geral.toString() }) => {
   const [tabindex, setTabindex] = useState<string>(tab);
   const isMobile = useMediaQuery('(max-width: 400px)');
 
   const SwitchTabs = useCallback(() => {
+    console.log(tabindex, tabs.Geral.toString());
     switch (tabindex) {
       case tabs.Geral.toString():
         return <GeralPage product={product} />;
@@ -48,7 +45,7 @@ const EditarProduto: FC<props> = ({
     <>
       <>
         <Toolbar
-          onChange={(value) => setTabindex(tabs[value])}
+          onChange={(value) => setTabindex(value.toString())}
           tabs={['Geral', 'Links']}
         />
         <ContentWidthLimit maxWidth={700}>
