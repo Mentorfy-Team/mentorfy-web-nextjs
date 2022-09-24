@@ -40,8 +40,6 @@ const Login: FC<props> = ({ pageChange }) => {
       }
       setIsLoading(true);
       const registerData = await Authenticate(values);
-      console.log('values');
-      console.log(values);
       if (!registerData.error) {
         //userLogin(registerData.user);
         route.push(MentorRoutes.home);

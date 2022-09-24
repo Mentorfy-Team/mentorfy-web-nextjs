@@ -11,8 +11,6 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
     password,
   });
 
-  console.log(email, password);
-
   Object.assign(req, { body: { session, event: 'SIGNED_IN' } });
   CreateSupabaseWithAuth(req, session.access_token).auth.api.setAuthCookie(
     req,

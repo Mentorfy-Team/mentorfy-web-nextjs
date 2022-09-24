@@ -3,8 +3,8 @@ import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 
 type Props = {
-  witborder?: boolean;
-  forpage?: boolean;
+  witborder?: string;
+  forpage?: string;
 };
 
 export const TabWrapper = styled(Tabs)<Props>`

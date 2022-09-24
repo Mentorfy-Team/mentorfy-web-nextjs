@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import LinkIcon from '@mui/icons-material/Link';
 import Box from '@mui/material/Box';
@@ -185,10 +185,6 @@ const ProductsTable = ({ rows }: { rows: ProductClient.Product[] }) => {
   const handleEdit = (id) => {
     route.push(MentorRoutes.products_edit + '/' + id);
   };
-
-  useEffect(() => {
-    console.log('rows', rows);
-  }, [rows]);
   return (
     <Datagrid
       page={page}

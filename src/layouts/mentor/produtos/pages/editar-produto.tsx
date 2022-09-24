@@ -22,18 +22,22 @@ enum tabs {
 
 type props = PageTypes.Props & {
   product: ProductClient.Product;
-  tab: tabs;
+  tab: string;
 };
 
-const EditarProduto: FC<props> = ({ profile, product, tab = tabs.Geral }) => {
-  const [tabindex, setTabindex] = useState<tabs>(tab);
+const EditarProduto: FC<props> = ({
+  profile,
+  product,
+  tab = tabs.Geral.toString(),
+}) => {
+  const [tabindex, setTabindex] = useState<string>(tab);
   const isMobile = useMediaQuery('(max-width: 400px)');
 
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
-      case tabs.Geral:
+      case tabs.Geral.toString():
         return <GeralPage product={product} />;
-      case tabs.Links:
+      case tabs.Links.toString():
         return <LinksPage product={product} />;
       default:
         return <GeralPage product={product} />;
@@ -44,8 +48,8 @@ const EditarProduto: FC<props> = ({ profile, product, tab = tabs.Geral }) => {
     <>
       <>
         <Toolbar
-          onChange={(value) => setTabindex(value)}
-          tabs={[tabs.Geral, tabs.Links]}
+          onChange={(value) => setTabindex(tabs[value])}
+          tabs={['Geral', 'Links']}
         />
         <ContentWidthLimit maxWidth={700}>
           <Box
