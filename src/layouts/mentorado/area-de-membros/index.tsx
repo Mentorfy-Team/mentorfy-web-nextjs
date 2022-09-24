@@ -7,7 +7,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import Image from 'next/future/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
-import PageWrapper from '~/components/partials/PageWrapper';
 import { CreatAreaButton, EmptyBox, ImageButton } from './style';
 import SvgComponent from '~/../public/svgs/graduation-cap';
 

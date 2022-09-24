@@ -13,7 +13,7 @@ declare namespace UsersApi {
       };
     }
 
-    type Result = {};
+    type Result = any;
 
     type User = ExternalModules.Supabase.Database.User &
       ExternalModules.Supabase.Database.public.Tables.profile.Row;

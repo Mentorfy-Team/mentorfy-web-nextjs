@@ -7,8 +7,7 @@ export default (password: string) => {
   if (password.length >= 8) minChars = true;
   if (password.match(/[0-9]/)) hasNumber = true;
   if (password.match(/[A-Z]/)) hasUpper = true;
-  if (password.match(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/))
-    hasSpecial = true;
+  if (password.match(/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/)) hasSpecial = true;
 
   return {
     minChars,

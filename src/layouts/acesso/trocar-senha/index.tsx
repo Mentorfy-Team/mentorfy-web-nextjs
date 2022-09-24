@@ -1,6 +1,5 @@
 import { FC, useCallback, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import { useRouter } from 'next/router';
 import InputField from '~/components/atoms/InputField';
 import { PasswordChange } from '~/services/auth/password-change.service';
@@ -10,13 +9,8 @@ import TextSuccess from '../cadastro/components/TextSuccess';
 import passwordValidator from '../cadastro/helper/password-validator';
 import {
   Accent,
-  CreateAccountButton,
-  ForgotPassButton,
-  InfoText,
-  LinkButton,
   LoginButton,
   SubTitle,
-  Title,
 } from '../styles';
 
 type props = {

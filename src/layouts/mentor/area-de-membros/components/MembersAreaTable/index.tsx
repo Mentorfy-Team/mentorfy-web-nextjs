@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import EditIcon from '@mui/icons-material/Edit';
 import LinkIcon from '@mui/icons-material/Link';
 import Box from '@mui/material/Box';
@@ -13,13 +13,11 @@ import { useRouter } from 'next/router';
 import { Column } from '~/components/atoms/Datagrid';
 import { MentorRoutes } from '~/consts';
 import {
-  EnterMemberArea,
   MarginPopopver,
   OptionsButton,
   PopoverBox,
   Text,
 } from './styles';
-import door_svg from '~/../public/svgs/door';
 import dots_svg from '~/../public/svgs/dots';
 
 const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {

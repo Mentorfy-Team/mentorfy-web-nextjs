@@ -7,7 +7,6 @@ import Image from 'next/future/image';
 
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
-import PageWrapper from '~/components/partials/PageWrapper';
 import { PublicRoutes } from '~/consts';
 import { useClients } from '~/hooks/useClients';
 import { GetProfile } from '~/services/profile.service';
@@ -19,7 +18,7 @@ const CreateClientDialog = dynamic(
   () => import('./components/CreateClientDialog'),
 );
 
-const Clients: FC<PageTypes.Props> = ({ profile, user, access_token }) => {
+const Clients: FC<PageTypes.Props> = ({ user, access_token }) => {
   const isMobile = useMediaQuery('(max-width: 500px)');
   const [openCreatePage, setOpenCreatePage] = useState(false);
   const { clients } = useClients(user.id);
@@ -83,7 +82,6 @@ const Clients: FC<PageTypes.Props> = ({ profile, user, access_token }) => {
           setOpen={setOpenCreatePage}
           onUpdate={() => {}}
           user={user}
-          access_token={access_token}
         />
       )}
     </>

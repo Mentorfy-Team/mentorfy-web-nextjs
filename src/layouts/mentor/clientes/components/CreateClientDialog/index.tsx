@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -6,25 +6,15 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
-import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import BootstrapDialog from '~/components/atoms/BootstrapDialog';
 import InputField from '~/components/atoms/InputField';
 import SelectField from '~/components/atoms/SelectField';
-import { MentorRoutes } from '~/consts';
-import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
 import { useProducts } from '~/hooks/useProducts';
 import { CreateClient } from '~/services/client.service';
-import { CreateProduct, ListProducts } from '~/services/product.service';
 import { BootstrapDialogTitle, Form } from './styles';
 
-export default function CreateClientDialog({
-  open,
-  setOpen,
-  onUpdate,
-  access_token,
-  user,
-}) {
+export default function CreateClientDialog({ open, setOpen, onUpdate, user }) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { products } = useProducts(user.id);
   const { setValue, watch, handleSubmit } =

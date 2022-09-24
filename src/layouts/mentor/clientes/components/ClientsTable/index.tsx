@@ -5,7 +5,7 @@ import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
 import { Column } from '~/components/atoms/Datagrid';
-import { ArrowButton, P, ProductBox, ProductWrapper, Qty } from './style';
+import { ArrowButton, ProductBox, ProductWrapper, Qty } from './style';
 
 const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
   ssr: false,

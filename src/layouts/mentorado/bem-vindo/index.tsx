@@ -1,11 +1,9 @@
 import { FC } from 'react';
-import StarIcon from '@mui/icons-material/Star';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import PageWrapper from '~/components/partials/PageWrapper';
 import {
   BannerBox,
   CollorFullTypography,

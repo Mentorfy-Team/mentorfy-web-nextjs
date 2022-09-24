@@ -1,4 +1,3 @@
-import { SxProps, Theme } from '@mui/material';
 import { TabWrapper } from './styles';
 
 type props = {
@@ -6,7 +5,7 @@ type props = {
   forPage?: boolean;
   children?: any;
   selected: number;
-  onChange: (event: React.ChangeEvent<{}>, newValue: number) => void;
+  onChange: (event: React.ChangeEvent<any>, newValue: number) => void;
 };
 
 const Tabbar: React.FC<props> = ({

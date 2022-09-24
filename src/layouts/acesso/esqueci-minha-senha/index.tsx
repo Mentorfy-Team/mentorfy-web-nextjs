@@ -1,17 +1,13 @@
 import { FC, useState } from 'react';
-import Divider from '@mui/material/Divider';
 import InputField from '~/components/atoms/InputField';
 import { PasswordRecover } from '~/services/auth/recover.service';
 import { AcessoSubPage } from '..';
 import {
   Accent,
-  CreateAccountButton,
-  ForgotPassButton,
   InfoText,
   LinkButton,
   LoginButton,
   SubTitle,
-  Title,
 } from '../styles';
 
 type props = {

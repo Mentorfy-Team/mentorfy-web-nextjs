@@ -2,7 +2,6 @@ import { FC } from 'react';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { AddImgButton } from './styles';
 

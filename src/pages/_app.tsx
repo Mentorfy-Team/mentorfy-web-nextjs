@@ -26,7 +26,7 @@ interface MyAppProps extends AppProps {
 }
 
 const URLSearchParams2JSON_1 = (str: string) => {
-  var searchParams = new URLSearchParams(str);
+  const searchParams = new URLSearchParams(str);
   return Object.fromEntries([...searchParams]);
 };
 

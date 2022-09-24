@@ -1,5 +1,4 @@
 import { FC, useCallback, useState } from 'react';
-import Divider from '@mui/material/Divider';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
@@ -13,12 +12,9 @@ import { AcessoSubPage } from '..';
 import { FormWrapper } from '../cadastro/styles';
 import {
   Accent,
-  CreateAccountButton,
   ErrorHelper,
   ForgotPassButton,
-  InfoText,
   LoginButton,
-  SubTitle,
   Title,
 } from '../styles';
 

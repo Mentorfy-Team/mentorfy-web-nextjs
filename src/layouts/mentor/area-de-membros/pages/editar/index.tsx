@@ -9,7 +9,6 @@ import InputField from '~/components/atoms/InputField';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import Toolbar from '~/components/modules/Toolbar';
-import PageWrapper from '~/components/partials/PageWrapper';
 import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
 import AddImage from '../../components/AddImage';

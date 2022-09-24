@@ -4,8 +4,6 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputField from '~/components/atoms/InputField';
-import Tabbar from '~/components/modules/Tabbar';
-import { TabItem } from '~/components/modules/Tabbar/styles';
 import { RegisterNewUser } from '~/services/user.service';
 import { userStore } from '~/stores';
 import { AcessoSubPage } from '..';
@@ -15,7 +13,6 @@ import {
   InfoText,
   LinkButton,
   SubTitle,
-  Title,
 } from '../styles';
 import { Text } from './components/styles';
 import TextSuccess from './components/TextSuccess';
