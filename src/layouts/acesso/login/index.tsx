@@ -34,12 +34,13 @@ const Login: FC<props> = ({ pageChange }) => {
 
   const onSubmit: SubmitHandler<Auth> = useCallback(
     async (values) => {
-      if (!values.email || !values.password) {
+      console.log(values);
+      if (!email || !password) {
         setError('*Preencha todos os campos');
         return;
       }
       setIsLoading(true);
-      const registerData = await Authenticate(values);
+      const registerData = await Authenticate({ email, password });
       if (!registerData.error) {
         //userLogin(registerData.user);
         route.push(MentorRoutes.home);
@@ -50,7 +51,7 @@ const Login: FC<props> = ({ pageChange }) => {
       }
       setIsLoading(false);
     },
-    [route],
+    [email, password, route],
   );
 
   return (
@@ -97,8 +98,8 @@ const Login: FC<props> = ({ pageChange }) => {
           InputLabelProps={{
             shrink: true,
           }}
-          register={register('email')}
           error={!!error}
+          onChange={(e) => setEmail(e.target.value)}
         />
         <InputField
           id="outlined-required"
@@ -108,8 +109,8 @@ const Login: FC<props> = ({ pageChange }) => {
           InputLabelProps={{
             shrink: true,
           }}
-          register={register('password')}
           error={!!error}
+          onChange={(e) => setPassword(e.target.value)}
         />
         {error && <ErrorHelper>{error}</ErrorHelper>}
         <LoginButton loading={isLoading} disabled={isLoading} type="submit">

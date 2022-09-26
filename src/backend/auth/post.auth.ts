@@ -10,7 +10,10 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
     email,
     password,
   });
-
+  if (error) {
+    res.status(401).json({ error: error.message });
+    return;
+  }
   Object.assign(req, { body: { session, event: 'SIGNED_IN' } });
   CreateSupabaseWithAuth(req, session.access_token).auth.api.setAuthCookie(
     req,

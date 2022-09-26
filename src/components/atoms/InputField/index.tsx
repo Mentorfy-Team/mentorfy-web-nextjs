@@ -15,8 +15,6 @@ const InputField: FC<
         shrink: true,
       }}
       {...props}
-      {...props.register}
-      onChange={props.onChange}
     />
   );
 };
