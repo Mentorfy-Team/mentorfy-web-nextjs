@@ -15,9 +15,11 @@ import AddImage from '../../components/AddImage';
 import FilesModal from '../../components/FilesModal';
 import TaskBox from '../../components/TaskBox';
 //import VideoModal from '../../components/VideoModal';
-import { ButtonsWrapper, CustomTypograpy, ScrollWrapper } from './styles';
+import { ButtonsWrapper, CustomTypograpy, SaveButton, ScrollWrapper } from './styles';
 import dynamic from 'next/dynamic';
 import { DnDObject } from '~/components/modules/DragNDrop';
+import Save from '@mui/icons-material/Save';
+import Typography from '@mui/material/Typography';
 const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
   ssr: false,
 });
@@ -73,12 +75,16 @@ const EditarMentoria: FC = () => {
           >
             Voltar
           </Button>
-          <Button
-            variant="contained"
-            sx={{ width: '12.5rem', height: '2.5rem', textTransform: 'none' }}
-          >
-            Salvar
-          </Button>
+          <SaveButton
+              variant="outlined"
+              color="primary"
+              onClick={() => {}}
+            >
+              <Save />
+              <Typography variant="body2" ml={1}>
+                Salvar
+              </Typography>
+            </SaveButton>
         </ButtonsWrapper>
 
         <CustomTypograpy>
