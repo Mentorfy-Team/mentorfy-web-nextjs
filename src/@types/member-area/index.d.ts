@@ -6,7 +6,7 @@ declare namespace MemberAreaTypes {
   type MemberArea = {
     id: string;
     title: string;
-    status: string;
+    status: boolean;
     member_area: {
       id: string;
     }[];
