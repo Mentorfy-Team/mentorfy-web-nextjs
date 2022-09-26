@@ -37,16 +37,16 @@ const EditarMentoria: FC = () => {
   const Image = '/svgs/step-image.svg';
 
   const addNewStep = () => {
-    const newStep = 
-        {
-          id: Math.random(),
-          title: 'ETAPA '+ (steps[0].rows.length +1),
-          description: 'Vídeo de apresentação',
-          type: 'Vídeo de apresentação',
-          data: '',
-        };
+    const newStep =
+    {
+      id: Math.random(),
+      title: 'ETAPA ' + (steps[0].rows.length + 1),
+      description: 'Vídeo de apresentação',
+      type: 'Vídeo de apresentação',
+      data: '',
+    };
 
-    setSteps(oldSteps=> {
+    setSteps(oldSteps => {
       oldSteps[0].rows.push(newStep);
       return [...oldSteps];
     });
@@ -93,22 +93,23 @@ const EditarMentoria: FC = () => {
           }}
         />
         <ScrollWrapper withtoolbar='true'>
-        <DragNDrop model={(element_id)=>{
-          const stp = steps[0].rows.find((stp)=> stp.id == element_id);
-          return (
-          <EditMembersAreaSteps
-          title={stp.title}
-          stepType={stp.type}
-          image={Image}
-        >
-          <Box>
-            <InputField label="Nome da etapa" />
-            <InputField label="Descrição" />
-            <AddImage />
-            <TaskBox />
-          </Box>
-        </EditMembersAreaSteps>
-        )}} elements={steps} />
+          <DragNDrop model={(element_id) => {
+            const stp = steps[0].rows.find((stp) => stp.id == element_id);
+            return (
+              <EditMembersAreaSteps
+                title={stp.title}
+                stepType={stp.type}
+                image={Image}
+              >
+                <Box>
+                  <InputField label="Nome da etapa" />
+                  <InputField label="Descrição" />
+                  <AddImage />
+                  <TaskBox />
+                </Box>
+              </EditMembersAreaSteps>
+            )
+          }} elements={steps} />
         </ScrollWrapper>
         <Box
           sx={{

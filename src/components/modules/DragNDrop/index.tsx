@@ -27,7 +27,7 @@ const reorder = (list:DnDObject, startIndex, endIndex) => {
   const [removed] = result.rows.splice(startIndex, 1);
   result.rows.splice(endIndex, 0, removed);
 
-  return result;
+  return result; 
 };
 
 /**
