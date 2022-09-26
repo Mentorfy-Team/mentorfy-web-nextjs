@@ -34,7 +34,6 @@ const Login: FC<props> = ({ pageChange }) => {
 
   const onSubmit: SubmitHandler<Auth> = useCallback(
     async (values) => {
-      console.log(values);
       if (!email || !password) {
         setError('*Preencha todos os campos');
         return;

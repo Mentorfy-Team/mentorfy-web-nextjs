@@ -1,12 +1,19 @@
 import Box from '@mui/material/Box';
 
-import { styled } from '@mui/material/styles';
+import { styled, css } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 export const ButtonsWrapper = styled(Box)`
   display: flex;
   justify-content: space-between;
   width: 100%;
+`;
+
+export const ScrollWrapper = styled(Box)<{withtoolbar?:string}>`
+${({ withtoolbar }) => css`
+  max-height: calc(100vh - (11rem + ${withtoolbar === 'true' ? '4rem' : '0rem'}));
+  overflow-y: auto;
+  `}
 `;
 
 export const CustomTypograpy = styled(Typography)`

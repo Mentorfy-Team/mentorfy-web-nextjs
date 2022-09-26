@@ -4,7 +4,6 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import InputField from '~/components/atoms/InputField';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
@@ -16,21 +15,41 @@ import AddImage from '../../components/AddImage';
 import FilesModal from '../../components/FilesModal';
 import TaskBox from '../../components/TaskBox';
 //import VideoModal from '../../components/VideoModal';
-import { ButtonsWrapper, CustomTypograpy } from './styles';
+import { ButtonsWrapper, CustomTypograpy, ScrollWrapper } from './styles';
+import dynamic from 'next/dynamic';
+import { DnDObject } from '~/components/modules/DragNDrop';
+const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
+  ssr: false,
+});
 
 const EditarMentoria: FC = () => {
   const [tabindex, setTabindex] = useState(0);
   const [open, setOpen] = useState(false);
-  const [addItem, setaddItem] = useState(['1']);
+  const [steps, setSteps] = useState<DnDObject[]>([
+    {
+      id: 0,
+      rows: []
+    }
+  ]);
 
   const theme = useTheme();
 
-  const Title = 'ETAPA 01';
-  const StepType = 'Vídeo de apresentação';
   const Image = '/svgs/step-image.svg';
 
   const addNewStep = () => {
-    setaddItem([...addItem, '2']);
+    const newStep = 
+        {
+          id: Math.random(),
+          title: 'ETAPA '+ (steps[0].rows.length +1),
+          description: 'Vídeo de apresentação',
+          type: 'Vídeo de apresentação',
+          data: '',
+        };
+
+    setSteps(oldSteps=> {
+      oldSteps[0].rows.push(newStep);
+      return [...oldSteps];
+    });
   };
 
   const hadleOpenModal = () => {
@@ -73,36 +92,24 @@ const EditarMentoria: FC = () => {
             marginBottom: '1.8rem',
           }}
         />
-        <DragDropContext>
-          <Droppable droppableId="steps">
-            {(provided) => (
-              <Box ref={provided.innerRef} {...provided.droppableProps}>
-                {addItem.map((id, index) => (
-                  <Draggable key={id} draggableId={id} index={index}>
-                    {(provided) => (
-                      <EditMembersAreaSteps
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        title={Title}
-                        stepType={StepType}
-                        image={Image}
-                      >
-                        <Box>
-                          <InputField label="Nome da etapa" />
-                          <InputField label="Descrição" />
-                          <AddImage />
-                          <TaskBox />
-                        </Box>
-                      </EditMembersAreaSteps>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </Box>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <ScrollWrapper withtoolbar='true'>
+        <DragNDrop model={(element_id)=>{
+          const stp = steps[0].rows.find((stp)=> stp.id == element_id);
+          return (
+          <EditMembersAreaSteps
+          title={stp.title}
+          stepType={stp.type}
+          image={Image}
+        >
+          <Box>
+            <InputField label="Nome da etapa" />
+            <InputField label="Descrição" />
+            <AddImage />
+            <TaskBox />
+          </Box>
+        </EditMembersAreaSteps>
+        )}} elements={steps} />
+        </ScrollWrapper>
         <Box
           sx={{
             display: 'flex',
@@ -125,22 +132,7 @@ const EditarMentoria: FC = () => {
           >
             + ADICIONAR ETAPA
           </Button>
-          <Divider
-            orientation="vertical"
-            sx={{
-              borderColor: `${theme.palette.caption.main}`,
-              height: '1rem',
-              width: '0',
-              marginTop: '1.5rem',
-            }}
-          />
-          <Button
-            onClick={hadleOpenModal}
-            sx={{ color: `${theme.palette.caption.main}` }}
-          >
-            + ADICIONAR ETAPA
-          </Button>
-          <FilesModal />
+          {/* <FilesModal /> */}
         </Box>
       </ContentWidthLimit>
     </>

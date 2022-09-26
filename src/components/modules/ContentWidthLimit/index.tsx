@@ -5,9 +5,10 @@ import { ScrollArea } from './styles';
 type props = {
   children: any;
   maxWidth?: number;
+  withToolBar?: boolean;
 };
 
-const ContentWidthLimit: React.FC<props> = ({ children, maxWidth = 1120 }) => {
+const ContentWidthLimit: React.FC<props> = ({ children, maxWidth = 1120, withToolBar = true }) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
 
   return (
@@ -20,6 +21,7 @@ const ContentWidthLimit: React.FC<props> = ({ children, maxWidth = 1120 }) => {
           display: 'flex',
           flexDirection: 'column',
         }}
+        withtoolbar={withToolBar ? 'true' : 'false'}
       >
         {children}
         <Box height="1rem" />

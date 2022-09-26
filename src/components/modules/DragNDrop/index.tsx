@@ -2,6 +2,19 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { resetServerContext } from 'react-beautiful-dnd';
 
+export type DnDObject = {
+  id: number;
+  rows: DnDRow[],
+};
+
+export type DnDRow = {
+  id: number;
+  title: string;
+  description: string;
+  type: string;
+  data: any;
+};
+
 // fake data generator
 const getItems = (count, offset = 0) =>
   Array.from({ length: count }, (v, k) => k).map((k) => ({
@@ -9,10 +22,10 @@ const getItems = (count, offset = 0) =>
     content: `item ${k + offset}`,
   }));
 
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
+const reorder = (list:DnDObject, startIndex, endIndex) => {
+  const result = {...list};
+  const [removed] = result.rows.splice(startIndex, 1);
+  result.rows.splice(endIndex, 0, removed);
 
   return result;
 };
@@ -37,22 +50,21 @@ const grid = 8;
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
-
-  // change background colour if dragging
-  background: isDragging ? 'lightgreen' : 'grey',
 
   // styles we need to apply on draggables
   ...draggableStyle,
 });
 const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? 'lightblue' : 'lightgrey',
-  padding: grid,
-  width: 250,
+  background: isDraggingOver ? '#212121' : 'transparent',
+  width: '100%',
 });
 
-export default function QuoteApp() {
+type Props = {
+  model: (element_id, group_id?) => JSX.Element;
+  elements: any[];
+}
+
+export default function DragNDrop({model, elements}: Props) {
   const [state, setState] = useState<any[]>([]);
 
   const onDragEnd = useCallback(
@@ -67,6 +79,7 @@ export default function QuoteApp() {
       const sInd = source.droppableId;
       const dInd = destination.droppableId;
 
+      console.log(sInd, dInd)
       if (sInd === dInd) {
         const items = reorder(state[sInd], source.index, destination.index);
         const newState = [...state];
@@ -84,30 +97,16 @@ export default function QuoteApp() {
     [state],
   );
 
-  useEffect(() => {
-    const items = [getItems(10), getItems(5, 10)];
-    setState(items);
-  }, []);
+  useEffect(()=>{
+    if(elements){
+      const newState = [...elements];
+      setState(newState);
+    }
+  },[elements])
 
   resetServerContext();
   return (
     <div>
-      <button
-        type="button"
-        onClick={() => {
-          setState([...state, []]);
-        }}
-      >
-        Add new group
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          setState([...state, getItems(1)]);
-        }}
-      >
-        Add new item
-      </button>
       <div style={{ display: 'flex' }}>
         <DragDropContext onDragEnd={onDragEnd}>
           {state.map((el, ind) => (
@@ -118,7 +117,9 @@ export default function QuoteApp() {
                   style={getListStyle(snapshot.isDraggingOver)}
                   {...provided.droppableProps}
                 >
-                  {el.map((item, index) => (
+                  {el.rows?.map((item, index) => {
+                    console.log(item, index);
+                    return (
                     <Draggable
                       key={item.id}
                       draggableId={`${item.id}`}
@@ -140,24 +141,12 @@ export default function QuoteApp() {
                               justifyContent: 'space-around',
                             }}
                           >
-                            {item.content}
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const newState = [...state];
-                                newState[ind].splice(index, 1);
-                                setState(
-                                  newState.filter((group) => group.length),
-                                );
-                              }}
-                            >
-                              delete
-                            </button>
+                            {model(item.id)}
                           </div>
                         </div>
                       )}
                     </Draggable>
-                  ))}
+                  )})}
                   {provided.placeholder}
                 </div>
               )}
