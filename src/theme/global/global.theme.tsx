@@ -4,10 +4,17 @@ import { css } from '@mui/material/styles';
 const globalStyles = css`
   & :-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px #242424 inset;
-    -webkit-textfillcolor: white !important;
+    box-shadow: 0 0 0 1000px #242424 inset;
+    -webkit-text-fill-color: white !important;
+  }
+  & autofill {
+    -webkit-box-shadow: 0 0 0 1000px #242424 inset;
+    box-shadow: 0 0 0 1000px #242424 inset;
+    -webkit-text-fill-color: white !important;
   }
   & :-webkit--autofill:focus {
-    -webkit-boxshadow: 0 0 0 1000px #242424 inset;
+    -webkit-box-shadow: 0 0 0 1000px #242424 inset;
+    box-shadow: 0 0 0 1000px #242424 inset;
     -webkit-text-fill-color: white !important;
   }
   .MuiDialog-paper {
@@ -58,7 +65,7 @@ const globalStyles = css`
     }
   }
   body {
-    font-family: 'Roboto', sans-serif;
+    font-family: Roboto, system-ui, sans-serif;
     overflow: auto;
   }
   h1,
@@ -67,7 +74,7 @@ const globalStyles = css`
   h4,
   h5,
   h6 {
-    font-family: 'Roboto', sans-serif;
+    font-family: Roboto, system-ui, sans-serif;
   }
   h1 {
     line-height: 2.4rem;
@@ -78,8 +85,9 @@ const globalStyles = css`
   }
   label,
   p,
+  b,
   input {
-    font-family: 'Open Sans', 'sans-serif';
+    font-family: Roboto, system-ui, sans-serif;
   }
   button,
   input &:active,
