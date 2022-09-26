@@ -12,17 +12,18 @@ export const TextField = styled(txtField)`
   .css-1xk3vng-MuiInputBase-root-MuiOutlinedInput-root { 
     height: 100px;
     align-items: flex-start;
-    white-space: wrap;
   }
+
   .MuiFormLabel-root {
     color: white;
   }
+
   .MuiInputBase-root {
     fieldset {
       border: 1px solid white;
       border-color: grey;
-      height: 100px;
     }
+    
     fieldset:focus {
       border: 1px solid white;
     }

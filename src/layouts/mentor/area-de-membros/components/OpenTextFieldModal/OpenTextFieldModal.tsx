@@ -1,10 +1,9 @@
-import  Box  from "@mui/material/Box"
-import Image from "next/image"
-import DescriptionInputField from "~/components/atoms/DescriptionInputField"
-import InputField from "~/components/atoms/InputField"
-import ModalComponent from "~/components/modules/Modal"
-import { Label, P, UploadInput, UploadTypography } from "./styles"
-
+import  Box  from '@mui/material/Box';
+import Image from 'next/image';
+import DescriptionInputField from '~/components/atoms/DescriptionInputField';
+import InputField from '~/components/atoms/InputField';
+import ModalComponent from '~/components/modules/Modal';
+import { Label, P, UploadInput, UploadTypography } from './styles';
 
 const OpenTextFieldModal = () => {
     return (
@@ -22,7 +21,7 @@ const OpenTextFieldModal = () => {
                 </Box>
             </>
         </ModalComponent>
-    )
-}
+    );
+};
 
-export default OpenTextFieldModal
+export default OpenTextFieldModal;

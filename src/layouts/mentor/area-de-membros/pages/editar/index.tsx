@@ -13,9 +13,8 @@ import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
 import AddImage from '../../components/AddImage';
-import FilesModal from '../../components/FilesModal';
+import EmbedModal from '../../components/EmbedModal';
 import TaskBox from '../../components/TaskBox';
-//import VideoModal from '../../components/VideoModal';
 import { ButtonsWrapper, CustomTypograpy } from './styles';
 
 const EditarMentoria: FC = () => {
@@ -120,27 +119,12 @@ const EditarMentoria: FC = () => {
             }}
           />
           <Button
-            onClick={addNewStep}
-            sx={{ color: `${theme.palette.caption.main}` }}
-          >
-            + ADICIONAR ETAPA
-          </Button>
-          <Divider
-            orientation="vertical"
-            sx={{
-              borderColor: `${theme.palette.caption.main}`,
-              height: '1rem',
-              width: '0',
-              marginTop: '1.5rem',
-            }}
-          />
-          <Button
             onClick={hadleOpenModal}
             sx={{ color: `${theme.palette.caption.main}` }}
           >
             + ADICIONAR ETAPA
           </Button>
-          <FilesModal />
+          <EmbedModal />
         </Box>
       </ContentWidthLimit>
     </>

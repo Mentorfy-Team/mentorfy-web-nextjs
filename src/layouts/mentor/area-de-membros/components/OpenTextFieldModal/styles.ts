@@ -14,6 +14,7 @@ export const Label = styled('label')`
     flex-direction: column;
     height: 175px;
     justify-content: center;
+    margin: 2rem auto;
     width: 100%;
     
     &:hover { 

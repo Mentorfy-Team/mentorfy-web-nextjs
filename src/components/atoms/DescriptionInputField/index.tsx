@@ -10,6 +10,8 @@ const DescriptionInputField: FC<TextFieldProps & MUIStyledCommonProps<Theme>> = 
 ) => {
   return (
     <TextField
+      multiline
+      maxRows={4}
       color="secondary"
       InputLabelProps={{
         shrink: true,

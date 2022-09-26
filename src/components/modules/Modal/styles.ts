@@ -9,7 +9,7 @@ export const Modal = styled(Dialog)`
 `;
 export const ModalDialogContent = styled(DialogContent)`
     background-color: #121212;
-    height: 590px;
+    height: 550px;
     overflow: auto;
     width: 480px;
 `;
