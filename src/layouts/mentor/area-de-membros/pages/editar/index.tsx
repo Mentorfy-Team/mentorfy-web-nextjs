@@ -8,22 +8,15 @@ import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import InputField from '~/components/atoms/InputField';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
-import ModalComponent from '~/components/modules/Modal';
-import Tabbar from '~/components/modules/Tabbar';
-import { TabItem } from '~/components/modules/Tabbar/styles';
-import MiniDrawer from '~/components/partials/MiniDrawer';
-import PageWrapper from '~/components/partials/PageWrapper';
+//import ModalComponent from '~/components/modules/Modal';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
 import AddImage from '../../components/AddImage';
 import FilesModal from '../../components/FilesModal';
 import TaskBox from '../../components/TaskBox';
-import VideoModal from '../../components/VideoModal';
-import {
-  ButtonsWrapper,
-  CustomTypograpy,
-} from './styles';
+//import VideoModal from '../../components/VideoModal';
+import { ButtonsWrapper, CustomTypograpy } from './styles';
 
 const EditarMentoria: FC = () => {
   const [tabindex, setTabindex] = useState(0);
@@ -129,6 +122,7 @@ const EditarMentoria: FC = () => {
           <Button
             onClick={addNewStep}
             sx={{ color: `${theme.palette.caption.main}` }}
+<<<<<<< HEAD
           />
           <Divider
             orientation="vertical"
@@ -144,6 +138,26 @@ const EditarMentoria: FC = () => {
             sx={{ color: `${theme.palette.caption.main}` }}>
             + ADICIONAR ETAPA
           </Button>
+=======
+          >
+            + ADICIONAR ETAPA
+          </Button>
+          <Divider
+            orientation="vertical"
+            sx={{
+              borderColor: `${theme.palette.caption.main}`,
+              height: '1rem',
+              width: '0',
+              marginTop: '1.5rem',
+            }}
+          />
+          <Button
+            onClick={hadleOpenModal}
+            sx={{ color: `${theme.palette.caption.main}` }}
+          >
+            + ADICIONAR ETAPA
+          </Button>
+>>>>>>> 1c5524ca6ac1118730595ff725724f9b0c3912d4
           <FilesModal />
         </Box>
       </ContentWidthLimit >
