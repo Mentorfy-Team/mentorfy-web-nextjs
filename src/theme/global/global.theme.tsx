@@ -12,7 +12,7 @@ const globalStyles = css`
     box-shadow: 0 0 0 1000px #242424 inset;
     -webkit-text-fill-color: white !important;
   }
-  & :-webkit--autofill:focus {
+  & :-webkit-autofill:focus {
     -webkit-box-shadow: 0 0 0 1000px #242424 inset;
     box-shadow: 0 0 0 1000px #242424 inset;
     -webkit-text-fill-color: white !important;
