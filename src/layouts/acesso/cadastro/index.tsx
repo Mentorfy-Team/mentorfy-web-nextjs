@@ -149,7 +149,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
         />
         <PoliciesWrapper>
           <Checkbox
-            sx={{ alignSelf: 'flex-start', marginLeft: '-0.8rem' }}
+            sx={{ alignSelf: 'flex-start', marginLeft: '0rem' }}
             {...register('policies')}
             checked={acceptPolices}
             onChange={(e) => setAcceptPolices(e.target.checked)}

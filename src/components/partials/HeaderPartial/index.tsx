@@ -59,15 +59,17 @@ const HeaderPartial: React.FC = () => {
               clipPath: 'circle(50% at 50% 50%)',
             }}
           >
-            <Image
-              src={profile?.avatar}
-              alt="avatar"
-              style={{
-                objectFit: 'cover',
-              }}
-              width={28}
-              height={28}
-            />
+            {profile?.avatar && (
+              <Image
+                src={profile?.avatar}
+                alt="avatar"
+                style={{
+                  objectFit: 'cover',
+                }}
+                width={28}
+                height={28}
+              />
+            )}
           </div>
         </AvatarWrapper>
       </AppBar>

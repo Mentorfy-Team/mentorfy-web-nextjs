@@ -16,6 +16,7 @@ const InputField: FC<
       }}
       {...props}
       {...props.register}
+      onChange={props.onChange}
     />
   );
 };

@@ -12,7 +12,7 @@ export const PoliciesWrapper = styled(Box)`
   }
 
   .Mui-checked {
-    color: ${({ theme }) => theme.palette.success.main};
+    color: ${({ theme }) => theme.palette.success.main} !important;
   }
 `;
 
