@@ -122,23 +122,6 @@ const EditarMentoria: FC = () => {
           <Button
             onClick={addNewStep}
             sx={{ color: `${theme.palette.caption.main}` }}
-<<<<<<< HEAD
-          />
-          <Divider
-            orientation="vertical"
-            sx={{
-              borderColor: `${theme.palette.caption.main}`,
-              height: '1rem',
-              width: '0',
-              marginTop: '1.5rem',
-            }}
-          />
-          <Button
-            onClick={hadleOpenModal}
-            sx={{ color: `${theme.palette.caption.main}` }}>
-            + ADICIONAR ETAPA
-          </Button>
-=======
           >
             + ADICIONAR ETAPA
           </Button>
@@ -157,10 +140,9 @@ const EditarMentoria: FC = () => {
           >
             + ADICIONAR ETAPA
           </Button>
->>>>>>> 1c5524ca6ac1118730595ff725724f9b0c3912d4
           <FilesModal />
         </Box>
-      </ContentWidthLimit >
+      </ContentWidthLimit>
     </>
   );
 };
