@@ -97,9 +97,6 @@ const TrocarSenha: FC<props> = ({
     return (
       <LoginButton
         loading={isLoading}
-        sx={{
-          marginTop: '1rem',
-        }}
         disabled={
           !passed || rePassword.length == 0 || !RePasswordCheck || isLoading
         }

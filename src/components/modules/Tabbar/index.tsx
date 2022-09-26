@@ -1,7 +1,7 @@
 import { TabWrapper } from './styles';
 
 type props = {
-  witborder?: boolean;
+  withborder?: boolean;
   forpage?: boolean;
   children?: any;
   selected: number;
@@ -12,13 +12,13 @@ const Tabbar: React.FC<props> = ({
   selected,
   children,
   onChange,
-  witborder,
+  withborder,
   forpage,
 }) => {
   return (
     <TabWrapper
       forpage={forpage}
-      witborder={witborder}
+      withborder={withborder}
       value={selected}
       onChange={onChange}
     >

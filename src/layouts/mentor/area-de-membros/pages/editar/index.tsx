@@ -28,9 +28,6 @@ import {
 const EditarMentoria: FC = () => {
   const [tabindex, setTabindex] = useState(0);
   const [open, setOpen] = useState(false);
-import { ButtonsWrapper, CustomTypograpy } from './styles';
-
-const EditarMentoria: FC = () => {
   const [addItem, setaddItem] = useState(['1']);
 
   const theme = useTheme();
@@ -39,9 +36,9 @@ const EditarMentoria: FC = () => {
   const StepType = 'Vídeo de apresentação';
   const Image = '/svgs/step-image.svg';
 
-  // const addNewStep = () => {
-  //   setaddItem([...addItem, '2']);
-  // };
+  const addNewStep = () => {
+    setaddItem([...addItem, '2']);
+  };
 
   const hadleOpenModal = () => {
     setOpen(true);
@@ -132,31 +129,24 @@ const EditarMentoria: FC = () => {
           <Button
             onClick={addNewStep}
             sx={{ color: `${theme.palette.caption.main}` }}
-          >
-<<<<<<< HEAD
-            <Divider
-              orientation="vertical"
-              sx={{
-                borderColor: `${theme.palette.caption.main}`,
-                height: '1rem',
-                width: '0',
-                marginTop: '1.5rem',
-              }}
-            />
-            <Button
-              onClick={hadleOpenModal}
-              sx={{ color: `${theme.palette.caption.main}` }}>
-              + ADICIONAR ETAPA
-            </Button>
-            <FilesModal/>
-          </Box>
-        </ContentWidthLimit>
-      </MiniDrawer>
-    </PageWrapper>
+          />
+          <Divider
+            orientation="vertical"
+            sx={{
+              borderColor: `${theme.palette.caption.main}`,
+              height: '1rem',
+              width: '0',
+              marginTop: '1.5rem',
+            }}
+          />
+          <Button
+            onClick={hadleOpenModal}
+            sx={{ color: `${theme.palette.caption.main}` }}>
             + ADICIONAR ETAPA
           </Button>
+          <FilesModal />
         </Box>
-      </ContentWidthLimit>
+      </ContentWidthLimit >
     </>
   );
 };

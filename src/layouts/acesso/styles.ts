@@ -75,6 +75,7 @@ export const LoginButton = styled(LoadingButton)`
   background-color: ${({ theme }) => theme.palette.accent.main};
   color: white;
   font-weight: bold;
+  margin-top: 1rem;
   &:hover {
     background-color: ${({ theme }) => theme.palette.accent.light};
   }

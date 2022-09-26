@@ -41,7 +41,7 @@ const BemVindo: FC = () => {
   );
   const ImageBanner = (
     <Box>
-      <Image alt="banner" width={50} height={50} src="" />
+      <Image alt="banner" width={50} height={50} src="/image/banner.png" />
     </Box>
   );
   return (
