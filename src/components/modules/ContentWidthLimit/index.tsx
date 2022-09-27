@@ -8,7 +8,7 @@ type props = {
   withToolBar?: boolean;
 };
 
-const ContentWidthLimit: React.FC<props> = ({ children, maxWidth = 1120, withToolBar = true }) => {
+const ContentWidthLimit: React.FC<props> = ({ children, maxWidth = 1280, withToolBar = true }) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
 
   return (

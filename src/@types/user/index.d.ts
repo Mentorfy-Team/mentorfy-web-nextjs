@@ -6,7 +6,7 @@ declare namespace UserTypes {
   type Address = typeof Database.public.Tables.address.Row;
   type ProfileWithAddress = {
     profile: Profile;
-    address: Address;
+    address?: Address;
   };
 
   namespace Post {

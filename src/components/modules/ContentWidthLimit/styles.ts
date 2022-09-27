@@ -6,6 +6,6 @@ export const ScrollArea = styled(Box)<{withtoolbar:string}>`
   text-align: -webkit-center;
   overflow-x: hidden;
   ${({ withtoolbar }) => css`
-    height: calc(100vh - (4rem + ${withtoolbar === 'true' ? '4rem' : '0rem'}));
+    height: calc(100vh - (4rem + ${withtoolbar === 'true' ? '5rem' : '0rem'}));
   `}
 `;
