@@ -4,13 +4,14 @@ import { styled } from '@mui/material/styles';
 export const Step = styled(Box)`
 border-radius: 1.2rem 1.2rem 0 0;
 margin: 0 0 1.8rem 0;
+width: 100%;
 `;
 
 export const BoxHeader = styled(Box)`
   align-items: center;
   background-color: ${({ theme }) => theme.palette.caption.dark};
-  border-top-left-radius: 1.2rem;
-  border-top-right-radius: 1.2rem;
+  border-top-left-radius: 0.4rem;
+  border-top-right-radius: 0.4rem;
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 1.4rem 0;

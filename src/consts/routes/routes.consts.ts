@@ -75,7 +75,7 @@ export const MentorMenu = {
   },
   settings: {
     path: MentorRoutes.settings,
-    name: 'Meu Perfil',
+    name: 'Minha Conta',
     component: settings_svg,
   },
 };
@@ -88,7 +88,7 @@ export const MentoredMenu = {
   },
   settings: {
     path: MentoredRoutes.settings,
-    name: 'Meu Perfil',
+    name: 'Minha Conta',
     component: settings_svg,
   },
 };

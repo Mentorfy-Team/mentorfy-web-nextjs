@@ -6,6 +6,23 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import SelectField from '~/components/atoms/SelectField';
 
+export const Card = styled(Box)`
+  background-color: ${({ theme }) => theme.palette.primary.light};
+  border-radius: 5px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`;
+
+export const Spacing = styled(Box)`
+  padding: 0 1.5rem;
+`;
+
+export const Title = styled(Typography)`
+  text-align: start;
+`;
+
 export const Header = styled('header')`
   background-color: ${({ theme }) => theme.palette.caption.dark};
   border-top-left-radius: 10px;
@@ -61,8 +78,29 @@ export const AvatarWrapper = styled('div')`
   align-items: center;
   display: flex;
   gap: 1rem;
-
+  align-self: flex-start;
   justify-content: center;
+  
+  svg {
+  }
+`;
+
+export const Session = styled('div')`
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const CardDivider = styled('div')`
+  margin: 1.5rem 0;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 50px;
+  background-color: ${({ theme }) => theme.palette.primary.dark};
+  border-left: 4px solid ${({ theme }) => theme.palette.secondary.main};
 `;
 
 export const Buttons = styled(LoadingButton)`

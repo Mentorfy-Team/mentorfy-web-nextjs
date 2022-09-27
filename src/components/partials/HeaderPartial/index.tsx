@@ -99,7 +99,7 @@ const HeaderPartial: React.FC = () => {
             }}
           />
           <MenuItem variant="caption" onClick={() => handleLogout()}>
-            Logout
+            Sair
           </MenuItem>
         </PopoverBox>
       </Popover>

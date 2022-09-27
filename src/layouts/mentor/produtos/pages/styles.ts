@@ -31,6 +31,7 @@ export const ReturnButton = styled(Button)`
 `;
 
 export const ActionButton = styled(Button)`
+  text-decoration: underline;
   color: ${({ theme }) => theme.palette.accent.main};
   cursor: pointer;
   path {
