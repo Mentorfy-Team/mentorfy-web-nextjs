@@ -4,7 +4,7 @@ import { css } from '@mui/material/styles';
 const globalStyles = css`
   & :-webkit-autofill {
     -webkit-box-shadow: 0 0 0 1000px #242424 inset;
-    box-shadow: 0 0 0 1000px #242424 inset;
+    box-shadow: 0 0 0 1000px #242424 inset !important;
     -webkit-text-fill-color: white !important;
   }
   & autofill {
