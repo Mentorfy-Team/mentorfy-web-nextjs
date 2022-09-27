@@ -2,7 +2,7 @@ import Box from '@mui/material/Box';
 import  Image from 'next/image';
 import DescriptionInputField from '~/components/atoms/DescriptionInputField';
 import ModalComponent from '~/components/modules/Modal';
-import { AttachName, CustomTypography, Label, P, UploadInput, UploadTypography } from './styles';
+import { AttachName, CustomTypography, DriveButton, GoogleDrive, Label, P, UploadInput, UploadTypography } from './styles';
 
 const FilesUploadModal = () => {
     return (
@@ -14,6 +14,7 @@ const FilesUploadModal = () => {
                 <Image alt='upload' width={58} height={39} src='/svgs/upload.svg'/>
                 <UploadTypography>Solte os arquivos para fazer upload</UploadTypography>
                 <P>Tamanho máximo de 500mb por arquivo</P>
+                <DriveButton><GoogleDrive>Google Drive</GoogleDrive></DriveButton>
             </Label>
             <UploadInput type='file' name='arquivo' id='arquivo'></UploadInput>
             </Box>
