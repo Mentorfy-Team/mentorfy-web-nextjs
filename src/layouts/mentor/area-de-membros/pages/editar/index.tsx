@@ -16,7 +16,7 @@ import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
 import AddImage from '../../components/AddImage';
-import FilesUploadModal from '../../components/FilesUploadModal';
+import QuestionFormModal from '../../components/QuestionsFormModal';
 import TaskBox from '../../components/TaskBox';
 //import VideoModal from '../../components/VideoModal';
 import { ButtonsWrapper, CustomTypograpy, SaveButton, ScrollWrapper } from './styles';
@@ -139,7 +139,7 @@ const EditarMentoria: FC = () => {
           >
             + ADICIONAR ETAPA
           </Button>
-          <FilesUploadModal />
+          <QuestionFormModal />
           {/* <FilesModal /> */}
         </Box>
       </ContentWidthLimit>
