@@ -10,7 +10,7 @@ export const TextField = styled(txtField)`
   }
 
   input {
-    font-size: 0.8rem;
+    font-size: 1rem;
   }
 
   .MuiFormLabel-root {

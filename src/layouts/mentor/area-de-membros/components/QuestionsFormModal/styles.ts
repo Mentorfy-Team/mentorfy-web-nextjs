@@ -5,6 +5,7 @@ export const QuestionsBox = styled(Box)`
     background-color: ${({theme}) => theme.palette.primary.dark};
     border-radius: 5px;
     height: 227px;
+    overflow: auto;
     padding: 0.7rem;
     
 `;
@@ -16,14 +17,19 @@ export const QuestionInput = styled('input')`
     color: ${({theme}) => theme.palette.text.primary};
     font-size: 1rem;
     margin-left: 1rem;
+    padding: 0.2rem 0.5rem;
     width: 100%;
+
+    &:focus { 
+        border: 1px solid white;
+    }
 `;
 
 export const Question = styled(Box)`
     align-items: center;
     border-bottom: 1px solid ${({theme}) => theme.palette.primary.light};
     display: flex;
-    height: 2rem;
+    height: 2.5rem;
     margin-bottom: 1rem;
-    padding: 0 0.5rem;
+    padding:  0.5rem;
 `;

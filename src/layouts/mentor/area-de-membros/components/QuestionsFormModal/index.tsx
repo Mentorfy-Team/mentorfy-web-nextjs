@@ -12,11 +12,11 @@ const QuestionFormModal = () => {
                 <DescriptionInputField label='Campo de Texto Aberto' placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum facilisis in lobortis orci aliquet. In nisl elit sodales morbi euismod ullamcorper egestas aenean amet. Gravida penatibus massa, duis felis. Vitae, pellentesque eget nunc facilisi in dictumst. Malesuada sed condimentum viverra vel pellentesque magna." />
                 <QuestionsBox>
                     <Question>
-                        <MenuIcon sx={{color: 'gray'}}/>
+                        <MenuIcon sx={{ color: 'gray' }} />
                         <QuestionInput />
                     </Question>
                     <Question>
-                        <MenuIcon sx={{color: 'gray'}}/>
+                        <MenuIcon sx={{ color: 'gray' }} />
                         <QuestionInput />
                     </Question>
                 </QuestionsBox>
