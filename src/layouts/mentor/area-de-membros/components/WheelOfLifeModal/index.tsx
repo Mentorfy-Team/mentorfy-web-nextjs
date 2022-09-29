@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+// import { useState } from 'react';
+// import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Box from '@mui/material/Box';
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
@@ -12,12 +12,13 @@ import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
 import { AreasBox, ContentBox } from './styles';
 
-const WheelOfLife = () => {
-    const [open, setOpen] = useState(false);
+const WheelOfLifeModal = () => {
     const theme = useTheme();
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    // const [open, setOpen] = useState(true);
+
+    // const handleOpen = () => setOpen(true);
+    // const handleClose = () => setOpen(false);
 
     const WheelAreas = [
         {
@@ -96,13 +97,9 @@ const WheelOfLife = () => {
                 <ContentBox>
                     <>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.1rem' }}>
-                            {open ? <IconButton sx={{ color: 'gray', width: '40px', height: '40px' }} onClick={handleClose}>
+                             <IconButton sx={{ color: 'gray', width: '40px', height: '40px' }}>
                                 <ExpandMoreIcon />
                             </IconButton>
-                                :
-                                <IconButton sx={{ color: 'gray', width: '40px', height: '40px' }} onClick={handleOpen}>
-                                    <ArrowForwardIosIcon sx={{ fontSize: 'medium' }} />
-                                </IconButton>}
                             <Typography sx={{ fontSize: '1rem', fontWeight: '600' }}>Áreas da Roda da Vida</Typography>
                         </Box>
                         <Divider sx={{ borderColor: '#6e6e6e55', marginBottom: '0.5rem', width: '90%', float: 'right' }} />
@@ -119,4 +116,4 @@ const WheelOfLife = () => {
     );
 };
 
-export default WheelOfLife;
+export default WheelOfLifeModal;
