@@ -10,10 +10,10 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <meta name="theme-color" content="#1C1B20" />
-          <link rel="shortcut icon" href="/favicon.ico" />
+          <link rel="shortcut icon" href="/favicon.png" />
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Inter:300,400,500,700&display=swap"
+            href="https://fonts.googleapis.com/css?family=Inter:300,500,700&display=swap"
           />
         </Head>
         <body>
