@@ -14,7 +14,7 @@ const EmbedModal = () => {
     };
 
     const PlaceHolderonBlur = () => {
-        const value = document.getElementById('placeholder').value;
+        const value = document.getElementById('placeholder').nodeValue;
         if(value) {
             setDisplay('none');
         } else {
