@@ -10,7 +10,8 @@ import Typography from '@mui/material/Typography';
 import DescriptionInputField from '~/components/atoms/DescriptionInputField';
 import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
-import { AreasBox, ContentBox } from './styles';
+import ContentBox from '../ContentBox';
+import { AreasBox} from './styles';
 
 const WheelOfLifeModal = () => {
     const theme = useTheme();

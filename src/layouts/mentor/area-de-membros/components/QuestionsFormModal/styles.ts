@@ -1,5 +1,7 @@
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
+import InputField from '~/components/atoms/InputField';
 
 export const QuestionsBox = styled(Box)`
     background-color: ${({theme}) => theme.palette.primary.dark};
@@ -27,9 +29,20 @@ export const QuestionInput = styled('input')`
 
 export const Question = styled(Box)`
     align-items: center;
-    border-bottom: 1px solid ${({theme}) => theme.palette.primary.light};
     display: flex;
-    height: 2.5rem;
-    margin-bottom: 1rem;
-    padding:  0.5rem;
+`;
+
+export const QuestionField = styled(InputField)`
+    margin-left: 0.7rem;
+    .css-1xk3vng-MuiInputBase-root-MuiOutlinedInput-root { 
+        height: 2rem;
+    }
+`;
+
+export const AddQButton = styled(Button)`
+    color: ${({theme}) => theme.palette.caption.main};
+    font-size: 0.8rem;
+    font-weight: 400;
+    line-height: 0.9rem;
+    text-transform: none;
 `;

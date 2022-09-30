@@ -8,8 +8,7 @@ import Typography from '@mui/material/Typography';
 import DescriptionInputField from '~/components/atoms/DescriptionInputField';
 import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
-
-import { ContentBox } from './styles';
+import ContentBox from '../ContentBox';
 
 const ChecklistModal = () => {
     const [open, setOpen] = useState(false);

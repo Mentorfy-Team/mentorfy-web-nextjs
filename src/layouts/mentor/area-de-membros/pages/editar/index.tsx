@@ -16,9 +16,9 @@ import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
 import AddImage from '../../components/AddImage';
+import QuestionFormModal from '../../components/QuestionsFormModal';
 import TaskBox from '../../components/TaskBox';
 //import VideoModal from '../../components/VideoModal';
-import WheelOfLifeModal from '../../components/WheelOfLifeModal';
 import { ButtonsWrapper, CustomTypograpy, SaveButton, ScrollWrapper } from './styles';
 const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
   ssr: false,
@@ -139,7 +139,7 @@ const EditarMentoria: FC = () => {
           >
             + ADICIONAR ETAPA
           </Button>
-          <WheelOfLifeModal />
+          <QuestionFormModal />
           {/* <FilesModal /> */}
         </Box>
       </ContentWidthLimit>
