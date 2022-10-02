@@ -11,7 +11,7 @@ import DescriptionInputField from '~/components/atoms/DescriptionInputField';
 import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
 import ContentBox from '../ContentBox';
-import { AddSTButton, SaveButton, TaskField, TaskWrapper } from './styles';
+import { AddSTButton, DeleteButton, SaveButton, SubTask, SubTaskField, SubTasksWrapper, TaskField, TaskWrapper } from './styles';
 
 const ChecklistModal = () => {
     const theme = useTheme();
@@ -34,8 +34,8 @@ const ChecklistModal = () => {
                         <TaskField label='Título' />
                         <SaveButton style={{ height: '24px' }}>Salvar</SaveButton>
                     </TaskWrapper>
-                    <Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', paddingBottom: '0.6rem', borderBottom: '1px solid #424242', width: '92%', float: 'right' }}>
+                    <Box sx={{ width: '92%', float: 'right' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', paddingBottom: '0.6rem', borderBottom: '1px solid #424242'}}>
                             {open ? <IconButton sx={{ color: 'gray', width: '5px', height: '9px' }} onClick={handleClose}>
                                 <ExpandMoreIcon />
                             </IconButton>
@@ -45,11 +45,19 @@ const ChecklistModal = () => {
                                 </IconButton>}
                             <Typography sx={{ fontSize: '0.75rem', fontWeight: '400', marginLeft: '0.7rem' }}>Subtarefas</Typography>
                         </Box>
+                        {open ? <SubTasksWrapper>
+                            <SubTask>
+                                <SubTaskField label='Descrição'/>
+                                <SaveButton style={{ height: '24px' }}>Salvar</SaveButton>
+                                <DeleteButton style={{ height: '24px' }}>Excluir</DeleteButton>
+                            </SubTask>
+                        </SubTasksWrapper> : ''}
                         <Box
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
+                                marginRight: '1.6rem'
                             }}
                         >
                             <Divider
@@ -57,31 +65,15 @@ const ChecklistModal = () => {
                                 sx={{
                                     borderColor: `${theme.palette.caption.main}`,
                                     height: '0.6rem',
-                                    marginTop: '1.5rem'
+                                    marginTop: '1.7rem'
                                 }}
                             />
                             <AddSTButton
                             >
-                                + Adicionar Pergunta
+                                + Adicionar Subtarefa
                             </AddSTButton>
                         </Box>
                     </Box>
-
-                    {/* <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-
-                    </Box>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                        {open2 ? <IconButton sx={{ color: 'gray', width: '40px', height: '40px' }} onClick={handleClose2}>
-                                 <ExpandMoreIcon />
-                                </IconButton>
-                              :
-                                <IconButton sx={{ color: 'gray', width: '40px', height: '40px' }}  onClick={handleOpen2}>
-                                    <ArrowForwardIosIcon sx={{fontSize: 'medium'}}/>
-                                </IconButton>}
-                        <Typography sx={{ fontSize: '1rem', fontWeight: '600' }}>Formatos de Entrega</Typography>
-                    </Box>
-                    <Divider sx={{borderColor: '#6e6e6e55', marginBottom: '0.5rem'}}/> */}
                 </ContentBox>
             </>
         </ModalComponent>

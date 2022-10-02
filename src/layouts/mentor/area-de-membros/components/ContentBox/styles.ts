@@ -6,5 +6,5 @@ background-color: ${({theme}) => theme.palette.primary.dark};
 border-radius: 5px;
 height: 227px;
 overflow: auto;
-padding: 0.7rem 0.5rem;
+padding: 0.8rem;
 `;
