@@ -14,7 +14,6 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { Draggable } from '~/components/atoms/Draggable';
 
 export type DnDObject = {
   id: number;
@@ -74,14 +73,10 @@ export default function DragNDrop({ model, elements, setElements }: Props) {
       modifiers={[restrictToParentElement]}
     >
       <SortableContext
-        items={elements[0].rows}
+        items={elements[0].rows.map((i) => i.id)}
         strategy={verticalListSortingStrategy}
       >
-        {elements[0].rows.map((item) => (
-          <Draggable key={item.id} id={item.id}>
-            {model(item.id)}
-          </Draggable>
-        ))}
+        {elements[0].rows.map((item) => model(item.id))}
       </SortableContext>
       {/* <DragOverlay modifiers={[restrictToParentElement]}>
         {activeId ? (

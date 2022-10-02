@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -9,6 +9,10 @@ export function Draggable(props) {
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
+  useEffect(() => {
+    console.log('props', props);
+  }, [props]);
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>

@@ -7,15 +7,12 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
-import InputField from '~/components/atoms/InputField';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { DnDObject } from '~/components/modules/DragNDrop';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
-import AddImage from '../../components/AddImage';
-import TaskBox from '../../components/TaskBox';
 import { ToolListNames, ToolsModalProps } from '../../helpers/SwitchModal';
 import {
   ButtonsWrapper,
@@ -33,6 +30,10 @@ const SwitchModal = dynamic<ToolsModalProps>(
 
 const EditarMentoria: FC = () => {
   const [tabindex, setTabindex] = useState(0);
+  const [currentModal, setCurrentModal] = useState<{
+    onChange: any;
+    type: string;
+  }>();
   const [open, setOpen] = useState(false);
   const [steps, setSteps] = useState<DnDObject[]>([
     {
@@ -59,27 +60,30 @@ const EditarMentoria: FC = () => {
     });
   }, []);
 
-  const hadleOpenModal = useCallback(() => {
+  const hadleOpenToolsModal = useCallback(() => {
+    setCurrentModal({
+      onChange: (tool: MentorTools.Tool) => {
+        addNewStep(
+          `Etapa ${steps[0].rows.length + 1}`,
+          tool.description,
+          tool.id,
+        );
+      },
+      type: ToolListNames.ToolList.name,
+    });
     setOpen(true);
-  }, []);
+  }, [addNewStep, steps]);
 
   const HandleModal = useCallback(() => {
     return (
       <SwitchModal
         open={open}
         setOpen={setOpen}
-        onChange={(tool: MentorTools.Tool) => {
-          addNewStep(
-            `Etapa ${steps[0].rows.length + 1}`,
-            tool.description,
-            tool.id,
-          );
-          hadleOpenModal();
-        }}
-        type={ToolListNames.ToolList.name}
+        onChange={currentModal.onChange}
+        type={currentModal.type}
       />
     );
-  }, [addNewStep, hadleOpenModal, open, steps]);
+  }, [currentModal, open]);
 
   return (
     <>
@@ -128,14 +132,12 @@ const EditarMentoria: FC = () => {
                   title={stp.title}
                   stepType={stp.type}
                   image={Image}
-                >
-                  <Box>
-                    <InputField label="Nome da etapa" />
-                    <InputField label="Descrição" />
-                    <AddImage />
-                    <TaskBox />
-                  </Box>
-                </EditMembersAreaSteps>
+                  onEdit={() => {
+                    console.log('edit');
+                    setOpen(true);
+                  }}
+                  id={stp.id}
+                />
               );
             }}
             elements={steps}
@@ -158,7 +160,7 @@ const EditarMentoria: FC = () => {
             }}
           />
           <Button
-            onClick={hadleOpenModal}
+            onClick={hadleOpenToolsModal}
             sx={{ color: `${theme.palette.caption.main}` }}
           >
             + ADICIONAR ETAPA

@@ -1,4 +1,6 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -6,28 +8,29 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import { ToolListNames } from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
-import { BoxHeader, Step, WrapperContent } from './styles';
-
+import { BoxHeader, Step } from './styles';
 type props = {
   children?: JSX.Element;
   image?: string;
   title?: JSX.Element | string;
   stepType?: JSX.Element | string;
+  onEdit?: () => void;
+  id?: number;
 };
 const EditMembersAreaSteps: FC<props> = ({
-  children,
   image,
   title,
   stepType,
+  onEdit,
+  id,
 }) => {
-  const [open, setOpen] = useState(false);
   const theme = useTheme();
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
   };
 
   const typeToScreen = (typeTool: number) => {
@@ -52,50 +55,48 @@ const EditMembersAreaSteps: FC<props> = ({
   };
 
   return (
-    <Step>
-      <BoxHeader>
-        <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-          <MenuIcon
-            sx={{
-              color: `${theme.palette.tertiary.main}`,
-              cursor: 'pointer',
-              marginBottom: '0.5rem',
-            }}
-          />
-          <Image alt="" src={image} width={50} height={50}></Image>
-          <Box sx={{ textAlign: 'left' }}>
-            <Typography
+    <div id={id + ''} key={id} ref={setNodeRef} style={style} {...attributes}>
+      <Step>
+        <BoxHeader>
+          <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+            <MenuIcon
               sx={{
-                color: `${theme.palette.text.primary}`,
-                fontSize: '1rem',
-                fontWeight: '700',
+                color: `${theme.palette.tertiary.main}`,
+                cursor: 'pointer',
+                marginBottom: '0.5rem',
               }}
-            >
-              {title}
-            </Typography>
-            <Typography
-              sx={{
-                color: `${theme.palette.success.main}`,
-                fontSize: '1rem',
-              }}
-            >
-              {typeToScreen(parseInt(stepType as string))}
-            </Typography>
+              {...listeners}
+            />
+            <Image alt="" src={image} width={50} height={50}></Image>
+            <Box sx={{ textAlign: 'left' }}>
+              <Typography
+                sx={{
+                  color: `${theme.palette.text.primary}`,
+                  fontSize: '1rem',
+                  fontWeight: '700',
+                }}
+              >
+                {title}
+              </Typography>
+              <Typography
+                sx={{
+                  color: `${theme.palette.success.main}`,
+                  fontSize: '1rem',
+                }}
+              >
+                {typeToScreen(parseInt(stepType as string))}
+              </Typography>
+            </Box>
           </Box>
-        </Box>
-        <Button
-          onClick={(e) => {
-            open ? handleClose() : handleOpen();
-          }}
-          sx={{ textTransform: 'none', marginBottom: '0.2rem' }}
-        >
-          Editar
-        </Button>
-      </BoxHeader>
-      <WrapperContent sx={{ display: `${open ? 'flex' : 'none'}` }}>
-        {children}
-      </WrapperContent>
-    </Step>
+          <Button
+            onClick={() => onEdit()}
+            sx={{ textTransform: 'none', marginBottom: '0.2rem' }}
+          >
+            Editar
+          </Button>
+        </BoxHeader>
+      </Step>
+    </div>
   );
 };
 

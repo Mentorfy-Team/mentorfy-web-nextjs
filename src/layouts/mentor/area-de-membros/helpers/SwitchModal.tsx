@@ -20,7 +20,8 @@ export const ToolListNames = {
   Embed: { name: 'Embed', id: 5 },
   OpenText: { name: 'Campo de Texto Aberto', id: 6 },
   WheelOfLifeModal: { name: 'Roda da Vida', id: 7 },
-  ToolList: { name: 'Lista de Ferramentas', id: 8 },
+  Calendar: { name: 'Calendário', id: 8 },
+  ToolList: { name: 'Lista de Ferramentas', id: 9 },
 };
 
 export type ToolsModalProps = {
