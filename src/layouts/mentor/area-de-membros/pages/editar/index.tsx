@@ -75,6 +75,7 @@ const EditarMentoria: FC = () => {
   }, [addNewStep, steps]);
 
   const HandleModal = useCallback(() => {
+    console.log(currentModal);
     return (
       <SwitchModal
         open={open}
@@ -133,7 +134,12 @@ const EditarMentoria: FC = () => {
                   stepType={stp.type}
                   image={Image}
                   onEdit={() => {
-                    console.log('edit');
+                    setCurrentModal({
+                      onChange: () => {},
+                      type: Object.values(ToolListNames).find((i) => {
+                        return i.id == parseInt(stp.type);
+                      }).name,
+                    });
                     setOpen(true);
                   }}
                   id={stp.id}

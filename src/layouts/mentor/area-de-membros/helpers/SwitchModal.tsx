@@ -37,7 +37,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
   open,
   setOpen,
 }) => {
-  // switch
+  console.log('type', type, ToolListNames.QuestionsForm.name, open);
   switch (type) {
     case ToolListNames.WheelOfLifeModal.name:
       return (
