@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import Save from '@mui/icons-material/Save';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -11,18 +11,25 @@ import InputField from '~/components/atoms/InputField';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { DnDObject } from '~/components/modules/DragNDrop';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
-//import ModalComponent from '~/components/modules/Modal';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
 import AddImage from '../../components/AddImage';
-import ChecklistModal from '../../components/ChecklistModal';
 import TaskBox from '../../components/TaskBox';
-//import VideoModal from '../../components/VideoModal';
-import { ButtonsWrapper, CustomTypograpy, SaveButton, ScrollWrapper } from './styles';
+import { ToolListNames, ToolsModalProps } from '../../helpers/SwitchModal';
+import {
+  ButtonsWrapper,
+  CustomTypograpy,
+  SaveButton,
+  ScrollWrapper,
+} from './styles';
 const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
   ssr: false,
 });
+
+const SwitchModal = dynamic<ToolsModalProps>(
+  () => import('../../helpers/SwitchModal'),
+);
 
 const EditarMentoria: FC = () => {
   const [tabindex, setTabindex] = useState(0);
@@ -30,33 +37,49 @@ const EditarMentoria: FC = () => {
   const [steps, setSteps] = useState<DnDObject[]>([
     {
       id: 0,
-      rows: []
-    }
+      rows: [],
+    },
   ]);
 
   const theme = useTheme();
 
   const Image = '/svgs/step-image.svg';
 
-  const addNewStep = () => {
-    const newStep =
-    {
+  const addNewStep = useCallback((title, description, type) => {
+    const newStep = {
       id: Math.random(),
-      title: 'ETAPA ' + (steps[0].rows.length + 1),
-      description: 'Vídeo de apresentação',
-      type: 'Vídeo de apresentação',
-      data: '',
+      title: title,
+      description,
+      type,
     };
 
-    setSteps(oldSteps => {
+    setSteps((oldSteps) => {
       oldSteps[0].rows.push(newStep);
       return [...oldSteps];
     });
-  };
+  }, []);
 
-  const hadleOpenModal = () => {
+  const hadleOpenModal = useCallback(() => {
     setOpen(true);
-  };
+  }, []);
+
+  const HandleModal = useCallback(() => {
+    return (
+      <SwitchModal
+        open={open}
+        setOpen={setOpen}
+        onChange={(tool: MentorTools.Tool) => {
+          addNewStep(
+            `Etapa ${steps[0].rows.length + 1}`,
+            tool.description,
+            tool.id,
+          );
+          hadleOpenModal();
+        }}
+        type={ToolListNames.ToolList.name}
+      />
+    );
+  }, [addNewStep, hadleOpenModal, open, steps]);
 
   return (
     <>
@@ -75,16 +98,12 @@ const EditarMentoria: FC = () => {
           >
             Voltar
           </Button>
-          <SaveButton
-              variant="outlined"
-              color="primary"
-              onClick={() => {}}
-            >
-              <Save />
-              <Typography variant="body2" ml={1}>
-                Salvar
-              </Typography>
-            </SaveButton>
+          <SaveButton variant="outlined" color="primary" onClick={() => {}}>
+            <Save />
+            <Typography variant="body2" ml={1}>
+              Salvar
+            </Typography>
+          </SaveButton>
         </ButtonsWrapper>
 
         <CustomTypograpy>
@@ -98,24 +117,29 @@ const EditarMentoria: FC = () => {
             marginBottom: '1.8rem',
           }}
         />
-        <ScrollWrapper withtoolbar='true'>
-          <DragNDrop model={(element_id) => {
-            const stp = steps[0].rows.find((stp) => stp.id == element_id);
-            return (
-              <EditMembersAreaSteps
-                title={stp.title}
-                stepType={stp.type}
-                image={Image}
-              >
-                <Box>
-                  <InputField label="Nome da etapa" />
-                  <InputField label="Descrição" />
-                  <AddImage />
-                  <TaskBox />
-                </Box>
-              </EditMembersAreaSteps>
-            );
-          }} elements={steps} />
+        <ScrollWrapper withtoolbar="true">
+          <DragNDrop
+            setElements={setSteps}
+            model={(element_id) => {
+              const stp = steps[0].rows.find((stp) => stp.id == element_id);
+              if (!stp) return null;
+              return (
+                <EditMembersAreaSteps
+                  title={stp.title}
+                  stepType={stp.type}
+                  image={Image}
+                >
+                  <Box>
+                    <InputField label="Nome da etapa" />
+                    <InputField label="Descrição" />
+                    <AddImage />
+                    <TaskBox />
+                  </Box>
+                </EditMembersAreaSteps>
+              );
+            }}
+            elements={steps}
+          />
         </ScrollWrapper>
         <Box
           sx={{
@@ -139,8 +163,7 @@ const EditarMentoria: FC = () => {
           >
             + ADICIONAR ETAPA
           </Button>
-          <ChecklistModal />
-          {/* <FilesModal /> */}
+          {open && HandleModal()}
         </Box>
       </ContentWidthLimit>
     </>

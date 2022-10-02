@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
+import { ToolListNames } from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
 import { BoxHeader, Step, WrapperContent } from './styles';
 
 type props = {
@@ -29,14 +30,39 @@ const EditMembersAreaSteps: FC<props> = ({
     setOpen(false);
   };
 
+  const typeToScreen = (typeTool: number) => {
+    switch (typeTool) {
+      case ToolListNames.QuestionsForm.id:
+        return ToolListNames.QuestionsForm.name;
+      case ToolListNames.Video.id:
+        return ToolListNames.Video.name;
+      case ToolListNames.Checklist.id:
+        return ToolListNames.Checklist.name;
+      case ToolListNames.Embed.id:
+        return ToolListNames.Embed.name;
+      case ToolListNames.OpenText.id:
+        return ToolListNames.OpenText.name;
+      case ToolListNames.UploadFile.id:
+        return ToolListNames.UploadFile.name;
+      case ToolListNames.WheelOfLifeModal.id:
+        return ToolListNames.WheelOfLifeModal.name;
+      default:
+        return 'Tipo não encontrado';
+    }
+  };
+
   return (
     <Step>
       <BoxHeader>
         <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
           <MenuIcon
-            sx={{ color: `${theme.palette.tertiary.main}`, cursor: 'pointer' }}
+            sx={{
+              color: `${theme.palette.tertiary.main}`,
+              cursor: 'pointer',
+              marginBottom: '0.5rem',
+            }}
           />
-          <Image alt="" src={image} width={60} height={60}></Image>
+          <Image alt="" src={image} width={50} height={50}></Image>
           <Box sx={{ textAlign: 'left' }}>
             <Typography
               sx={{
@@ -53,13 +79,15 @@ const EditMembersAreaSteps: FC<props> = ({
                 fontSize: '1rem',
               }}
             >
-              {stepType}
+              {typeToScreen(parseInt(stepType as string))}
             </Typography>
           </Box>
         </Box>
         <Button
-          onClick={open ? handleClose : handleOpen}
-          sx={{ textTransform: 'none' }}
+          onClick={(e) => {
+            open ? handleClose() : handleOpen();
+          }}
+          sx={{ textTransform: 'none', marginBottom: '0.2rem' }}
         >
           Editar
         </Button>

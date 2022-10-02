@@ -1,10 +1,24 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { resetServerContext } from 'react-beautiful-dnd';
+import React, { useState } from 'react';
+import {
+  DndContext,
+  KeyboardSensor,
+  PointerSensor,
+  closestCenter,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import { restrictToParentElement } from '@dnd-kit/modifiers';
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { Draggable } from '~/components/atoms/Draggable';
 
 export type DnDObject = {
   id: number;
-  rows: DnDRow[],
+  rows: DnDRow[];
 };
 
 export type DnDRow = {
@@ -12,148 +26,76 @@ export type DnDRow = {
   title: string;
   description: string;
   type: string;
-  data: any;
+  data?: any;
 };
-
-// fake data generator
-const getItems = (count, offset = 0) =>
-  Array.from({ length: count }, (v, k) => k).map((k) => ({
-    id: `item-${k + offset}-${new Date().getTime()}`,
-    content: `item ${k + offset}`,
-  }));
-
-const reorder = (list:DnDObject, startIndex, endIndex) => {
-  const result = {...list};
-  const [removed] = result.rows.splice(startIndex, 1);
-  result.rows.splice(endIndex, 0, removed);
-
-  return result;
-};
-
-/**
- * Moves an item from one list to another list.
- */
-const move = (source, destination, droppableSource, droppableDestination) => {
-  const sourceClone = Array.from(source);
-  const destClone = Array.from(destination);
-  const [removed] = sourceClone.splice(droppableSource.index, 1);
-  destClone.splice(droppableDestination.index, 0, removed);
-
-  const result = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destClone;
-
-  return result;
-};
-const grid = 8;
-
-const getItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: 'none',
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
-});
-const getListStyle = (isDraggingOver) => ({
-  background: isDraggingOver ? '#212121' : 'transparent',
-  width: '100%',
-});
 
 type Props = {
   model: (element_id, group_id?) => JSX.Element;
-  elements: any[];
-}
+  elements: {
+    id: number;
+    rows: DnDRow[];
+  }[];
+  setElements: (elements: any) => void;
+};
 
-export default function DragNDrop({model, elements}: Props) {
-  const [state, setState] = useState<any[]>([]);
-
-  const onDragEnd = useCallback(
-    (_result) => {
-      const { source, destination } = _result;
-
-      // dropped outside the list
-      if (!destination) {
-        return;
-      }
-
-      const sInd = source.droppableId;
-      const dInd = destination.droppableId;
-
-      console.log(sInd, dInd);
-      if (sInd === dInd) {
-        const items = reorder(state[sInd], source.index, destination.index);
-        const newState = [...state];
-        newState[sInd] = items;
-        setState(newState);
-      } else {
-        const result = move(state[sInd], state[dInd], source, destination);
-        const newState = [...state];
-        newState[sInd] = result[sInd];
-        newState[dInd] = result[dInd];
-
-        setState(newState.filter((group) => group.length));
-      }
-    },
-    [state],
+export default function DragNDrop({ model, elements, setElements }: Props) {
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
   );
+  const [activeId, setActiveId] = useState(null);
 
-  useEffect(()=>{
-    if(elements){
-      const newState = [...elements];
-      setState(newState);
+  function handleDragStart(event) {
+    setActiveId(event.active.id);
+  }
+
+  function handleDragEnd(event) {
+    setActiveId(null);
+    const { active, over } = event;
+    if (active.id !== over?.id) {
+      setElements((items: { rows: any[] }[]) => {
+        const oldIndex = items[0].rows.findIndex((i) => i.id === active.id);
+        const newIndex = items[0].rows.findIndex((i) => i.id === over.id);
+        const newItens = [...items];
+        newItens[0].rows = arrayMove(items[0].rows, oldIndex, newIndex);
+        return newItens;
+      });
     }
-  },[elements]);
+  }
 
-  resetServerContext();
   return (
-    <div>
-      <div style={{ display: 'flex' }}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          {state.map((el, ind) => (
-            <Droppable key={`${ind}`} droppableId={`${ind}`}>
-              {(provided, snapshot) => (
-                <div
-                  ref={provided.innerRef}
-                  style={getListStyle(snapshot.isDraggingOver)}
-                  {...provided.droppableProps}
-                >
-                  {el.rows?.map((item, index) => {
-                    console.log(item, index);
-                    return (
-                    <Draggable
-                      key={item.id}
-                      draggableId={`${item.id}`}
-                      index={index}
-                    >
-                      {(provided, snapshot) => (
-                        <div
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style,
-                          )}
-                        >
-                          <div
-                            style={{
-                              display: 'flex',
-                              justifyContent: 'space-around',
-                            }}
-                          >
-                            {model(item.id)}
-                          </div>
-                        </div>
-                      )}
-                    </Draggable>
-                  );})}
-                  {provided.placeholder}
-                </div>
-              )}
-            </Droppable>
-          ))}
-        </DragDropContext>
-      </div>
-    </div>
+    <DndContext
+      onDragStart={handleDragStart}
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={handleDragEnd}
+      modifiers={[restrictToParentElement]}
+    >
+      <SortableContext
+        items={elements[0].rows}
+        strategy={verticalListSortingStrategy}
+      >
+        {elements[0].rows.map((item) => (
+          <Draggable key={item.id} id={item.id}>
+            {model(item.id)}
+          </Draggable>
+        ))}
+      </SortableContext>
+      {/* <DragOverlay modifiers={[restrictToParentElement]}>
+        {activeId ? (
+          <Box
+            sx={{
+              backgroundColor: 'red',
+              padding: '10px',
+              opacity: 0.1,
+            }}
+          >
+            helloworld
+          </Box>
+        ) : null}
+      </DragOverlay> */}
+    </DndContext>
   );
 }

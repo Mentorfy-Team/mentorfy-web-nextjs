@@ -22,4 +22,7 @@ export enum ApiRoutes {
   auth_recover = '/api/auth/recover',
   auth_cookies = '/api/auth/cookies',
   auth_password_change = '/api/auth/password',
+
+  //* Rotas para api de ferramentas do construtor
+  mentor_tools_type = '/api/mentor-tool/list',
 }

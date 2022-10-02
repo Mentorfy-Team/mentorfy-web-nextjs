@@ -9,6 +9,23 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      member_area_type: {
+        Row: {
+          id: number;
+          created_at: string | null;
+          name: string;
+        };
+        Insert: {
+          id?: number;
+          created_at?: string | null;
+          name: string;
+        };
+        Update: {
+          id?: number;
+          created_at?: string | null;
+          name?: string;
+        };
+      };
       client_product: {
         Row: {
           user_id: string;
@@ -33,6 +50,125 @@ export interface Database {
           id?: string;
           subscription?: boolean | null;
           interval?: string | null;
+        };
+      };
+      member_area_tool: {
+        Row: {
+          id: string;
+          created_at: string | null;
+          member_area_id: string;
+          mentor_tool_id: number;
+          title: string | null;
+          description: string | null;
+          status: boolean | null;
+          data: Json | null;
+        };
+        Insert: {
+          id: string;
+          created_at?: string | null;
+          member_area_id: string;
+          mentor_tool_id: number;
+          title?: string | null;
+          description?: string | null;
+          status?: boolean | null;
+          data?: Json | null;
+        };
+        Update: {
+          id?: string;
+          created_at?: string | null;
+          member_area_id?: string;
+          mentor_tool_id?: number;
+          title?: string | null;
+          description?: string | null;
+          status?: boolean | null;
+          data?: Json | null;
+        };
+      };
+      member_area: {
+        Row: {
+          id: string;
+          created_at: string | null;
+          type_id: number | null;
+        };
+        Insert: {
+          id?: string;
+          created_at?: string | null;
+          type_id?: number | null;
+        };
+        Update: {
+          id?: string;
+          created_at?: string | null;
+          type_id?: number | null;
+        };
+      };
+      profile_input_tool: {
+        Row: {
+          id: number;
+          created_at: string | null;
+          profile_id: string;
+          member_area_tool_id: string;
+          data: Json;
+        };
+        Insert: {
+          id?: number;
+          created_at?: string | null;
+          profile_id: string;
+          member_area_tool_id: string;
+          data: Json;
+        };
+        Update: {
+          id?: number;
+          created_at?: string | null;
+          profile_id?: string;
+          member_area_tool_id?: string;
+          data?: Json;
+        };
+      };
+      product: {
+        Row: {
+          owner: string;
+          created_at: string | null;
+          title: string;
+          description: string | null;
+          main_image: string | null;
+          banner_image: string | null;
+          price: number;
+          deliver: string | null;
+          status: boolean | null;
+          access_link: string | null;
+          id: string;
+          refeerer: string | null;
+          member_area: string | null;
+        };
+        Insert: {
+          owner: string;
+          created_at?: string | null;
+          title: string;
+          description?: string | null;
+          main_image?: string | null;
+          banner_image?: string | null;
+          price?: number;
+          deliver?: string | null;
+          status?: boolean | null;
+          access_link?: string | null;
+          id?: string;
+          refeerer?: string | null;
+          member_area?: string | null;
+        };
+        Update: {
+          owner?: string;
+          created_at?: string | null;
+          title?: string;
+          description?: string | null;
+          main_image?: string | null;
+          banner_image?: string | null;
+          price?: number;
+          deliver?: string | null;
+          status?: boolean | null;
+          access_link?: string | null;
+          id?: string;
+          refeerer?: string | null;
+          member_area?: string | null;
         };
       };
       profile: {
@@ -73,48 +209,24 @@ export interface Database {
           phone?: string | null;
         };
       };
-      product: {
+      mentor_tool: {
         Row: {
-          owner: string;
+          id: number;
           created_at: string | null;
-          title: string;
+          name: string;
           description: string | null;
-          main_image: string | null;
-          banner_image: string | null;
-          price: number;
-          deliver: string | null;
-          status: boolean | null;
-          access_link: string | null;
-          id: string;
-          refeerer: string | null;
         };
         Insert: {
-          owner: string;
+          id?: number;
           created_at?: string | null;
-          title: string;
+          name: string;
           description?: string | null;
-          main_image?: string | null;
-          banner_image?: string | null;
-          price?: number;
-          deliver?: string | null;
-          status?: boolean | null;
-          access_link?: string | null;
-          id?: string;
-          refeerer?: string | null;
         };
         Update: {
-          owner?: string;
+          id?: number;
           created_at?: string | null;
-          title?: string;
+          name?: string;
           description?: string | null;
-          main_image?: string | null;
-          banner_image?: string | null;
-          price?: number;
-          deliver?: string | null;
-          status?: boolean | null;
-          access_link?: string | null;
-          id?: string;
-          refeerer?: string | null;
         };
       };
       address: {
