@@ -1,18 +1,13 @@
 /* eslint-disable no-restricted-imports */
-import { FC, useCallback, useState } from 'react';
-import { Box } from '@mui/material';
+import { useCallback, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import Toolbar from '~/components/modules/Toolbar';
-import { PublicRoutes } from '~/consts';
-import { GetProfile, UpdateProfile } from '~/services/profile.service';
+import { UpdateProfile } from '~/services/profile.service';
 import { ActionButton } from '../../produtos/pages/styles';
 import {
   AvatarWrapper,
