@@ -3,7 +3,7 @@ import { ApiRoutes } from '~/consts/routes/api.routes';
 import { fetcher } from '~/hooks/fetcher';
 
 export function useMentorTools() {
-  const { data, error } = useSWR<MentorTools.Tool[]>(
+  const { data, error } = useSWR<MentorTools.ToolType[]>(
     `${ApiRoutes.mentor_tools_type}`,
     fetcher,
     {

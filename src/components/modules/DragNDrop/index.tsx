@@ -20,13 +20,7 @@ export type DnDObject = {
   rows: DnDRow[];
 };
 
-export type DnDRow = {
-  id: number;
-  title: string;
-  description: string;
-  type: string;
-  data?: any;
-};
+export type DnDRow = MentorTools.ToolData & { type: string };
 
 type Props = {
   model: (element_id, group_id?) => JSX.Element;

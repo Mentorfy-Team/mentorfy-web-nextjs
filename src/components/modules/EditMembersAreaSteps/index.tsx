@@ -15,7 +15,7 @@ type props = {
   title?: JSX.Element | string;
   stepType?: JSX.Element | string;
   onEdit?: () => void;
-  id?: number;
+  id?: string;
 };
 const EditMembersAreaSteps: FC<props> = ({
   image,

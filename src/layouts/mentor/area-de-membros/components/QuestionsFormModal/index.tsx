@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -10,46 +10,93 @@ import ContentBox from '../ContentBox';
 import { AddQButton, Question, QuestionField } from './styles';
 
 type QuestionsObject = {
-  id: number;
+  id: string;
   title: string;
+  data?: string;
 };
 
-const QuestionFormModal = ({ open, setOpen }) => {
+const QuestionFormModal = ({
+  open,
+  setOpen,
+  onChange,
+  data: {
+    title: titleData,
+    description: descriptionData,
+    questions: questionsData,
+  },
+}) => {
   const theme = useTheme();
-  const [questions, setQuestions] = useState<QuestionsObject[]>([
-    {
-      id: 0,
-      title: '1ª Pergunta',
-    },
-  ]);
+  const [questions, setQuestions] = useState<QuestionsObject[]>(
+    questionsData || [
+      {
+        id: '0',
+        title: '1ª Pergunta',
+      },
+    ],
+  );
+  const [title, setTitle] = useState(titleData);
+  const [description, setDescription] = useState(descriptionData);
+
+  useEffect(() => {
+    console.log(titleData);
+    console.log(descriptionData);
+    console.log(questionsData);
+  }, [titleData, descriptionData, questionsData]);
 
   const addNewQuestion = () => {
     const newQuestion = {
-      id: Math.random(),
+      id: Math.random() + '',
       title: questions.length + 1 + 'ª Pergunta',
     };
     setQuestions([...questions, newQuestion]);
   };
+
+  const handleSave = () => {
+    onChange({
+      title,
+      description,
+      questions,
+    });
+    setOpen(false);
+  };
+
   return (
     <ModalComponent
       open={open}
       setOpen={setOpen}
       title="Formulário de Perguntas"
+      onSave={() => handleSave()}
     >
       <>
         <InputField
           label="Título"
-          placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+          placeholder="Digite o título da etapa"
+          onChange={(e) => setTitle(e.target.value)}
+          value={title}
         />
         <DescriptionInputField
-          label="Campo de Texto Aberto"
-          placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum facilisis in lobortis orci aliquet. In nisl elit sodales morbi euismod ullamcorper egestas aenean amet. Gravida penatibus massa, duis felis. Vitae, pellentesque eget nunc facilisi in dictumst. Malesuada sed condimentum viverra vel pellentesque magna."
+          label="Descrição"
+          placeholder="Dê uma descrição/instrução para essa etapa"
+          onChange={(e) => setDescription(e.target.value)}
+          value={description}
         />
         <ContentBox>
-          {questions.map((index) => (
-            <Question key={index.id}>
+          {questions.map((question) => (
+            <Question key={question.id}>
               <MenuIcon />
-              <QuestionField label={index.title} />
+              <QuestionField
+                label={question.title}
+                placeholder="Escreva sua pergunta aqui..."
+                value={question.data}
+                onChange={(e) =>
+                  setQuestions((oldQuestions) => {
+                    const newQuestions = [...oldQuestions];
+                    newQuestions.find((q) => q.id === question.id).data =
+                      e.target.value;
+                    return newQuestions;
+                  })
+                }
+              />
             </Question>
           ))}
           <Box

@@ -33,6 +33,8 @@ const EditarMentoria: FC = () => {
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
     type: string;
+    refId?: string;
+    data?: any;
   }>();
   const [open, setOpen] = useState(false);
   const [steps, setSteps] = useState<DnDObject[]>([
@@ -48,9 +50,7 @@ const EditarMentoria: FC = () => {
 
   const addNewStep = useCallback((title, description, type) => {
     const newStep = {
-      id: Math.random(),
-      title: title,
-      description,
+      id: Math.random() + '',
       type,
     };
 
@@ -62,7 +62,7 @@ const EditarMentoria: FC = () => {
 
   const hadleOpenToolsModal = useCallback(() => {
     setCurrentModal({
-      onChange: (tool: MentorTools.Tool) => {
+      onChange: (tool: MentorTools.ToolType) => {
         addNewStep(
           `Etapa ${steps[0].rows.length + 1}`,
           tool.description,
@@ -75,16 +75,35 @@ const EditarMentoria: FC = () => {
   }, [addNewStep, steps]);
 
   const HandleModal = useCallback(() => {
-    console.log(currentModal);
     return (
       <SwitchModal
         open={open}
         setOpen={setOpen}
         onChange={currentModal.onChange}
         type={currentModal.type}
+        refId={currentModal.refId}
+        data={currentModal.data}
       />
     );
   }, [currentModal, open]);
+
+  const GetOnChange = useCallback(({ refId, data }) => {
+    setSteps((oldSteps) => {
+      oldSteps[0].rows.find((r) => r.id === refId).data = data;
+      console.log(refId, data, oldSteps);
+      return [...oldSteps];
+    });
+  }, []);
+
+  const GetTypeName = useCallback((type) => {
+    return Object.values(ToolListNames).find((i) => {
+      return i.id == parseInt(type);
+    }).name;
+  }, []);
+
+  const handleSave = useCallback(() => {
+    console.log('Save Steps', steps);
+  }, [steps]);
 
   return (
     <>
@@ -103,7 +122,11 @@ const EditarMentoria: FC = () => {
           >
             Voltar
           </Button>
-          <SaveButton variant="outlined" color="primary" onClick={() => {}}>
+          <SaveButton
+            variant="outlined"
+            color="primary"
+            onClick={() => handleSave()}
+          >
             <Save />
             <Typography variant="body2" ml={1}>
               Salvar
@@ -128,17 +151,19 @@ const EditarMentoria: FC = () => {
             model={(element_id) => {
               const stp = steps[0].rows.find((stp) => stp.id == element_id);
               if (!stp) return null;
+              const data = stp.data as MentorTools.QuestionsFormProps;
               return (
                 <EditMembersAreaSteps
-                  title={stp.title}
+                  title={data?.title || 'Nova etapa'}
                   stepType={stp.type}
                   image={Image}
                   onEdit={() => {
+                    const type = GetTypeName(stp.type);
                     setCurrentModal({
-                      onChange: () => {},
-                      type: Object.values(ToolListNames).find((i) => {
-                        return i.id == parseInt(stp.type);
-                      }).name,
+                      onChange: GetOnChange,
+                      type,
+                      refId: stp.id,
+                      data: stp.data || {},
                     });
                     setOpen(true);
                   }}

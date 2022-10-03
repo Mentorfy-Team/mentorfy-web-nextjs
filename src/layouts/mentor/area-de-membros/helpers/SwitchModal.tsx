@@ -27,36 +27,83 @@ export const ToolListNames = {
 export type ToolsModalProps = {
   open: boolean;
   type?: string;
+  refId?: string;
+  data: any;
   onChange?: (value: any) => any;
   setOpen?: (value: any) => any;
 };
 
 const SwitchModal: React.FC<ToolsModalProps> = ({
   onChange,
+  data,
   type = ToolListNames.ToolList.name,
   open,
   setOpen,
+  refId,
 }) => {
-  console.log('type', type, ToolListNames.QuestionsForm.name, open);
   switch (type) {
     case ToolListNames.WheelOfLifeModal.name:
       return (
-        <WheelOfLifeModal open={open} setOpen={setOpen} onChange={onChange} />
+        <WheelOfLifeModal
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) => onChange({ data: props, refId })}
+        />
       );
     case ToolListNames.Checklist.name:
-      return <Checklist open={open} setOpen={setOpen} onChange={onChange} />;
+      return (
+        <Checklist
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) => onChange({ data: props, refId })}
+        />
+      );
     case ToolListNames.Embed.name:
-      return <Embed open={open} setOpen={setOpen} onChange={onChange} />;
+      return (
+        <Embed
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) => onChange({ data: props, refId })}
+        />
+      );
     case ToolListNames.UploadFile.name:
-      return <UploadFile open={open} setOpen={setOpen} onChange={onChange} />;
+      return (
+        <UploadFile
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) => onChange({ data: props, refId })}
+        />
+      );
     case ToolListNames.OpenText.name:
-      return <OpenText open={open} setOpen={setOpen} onChange={onChange} />;
+      return (
+        <OpenText
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) => onChange({ data: props, refId })}
+        />
+      );
     case ToolListNames.QuestionsForm.name:
       return (
-        <QuestionsForm open={open} setOpen={setOpen} onChange={onChange} />
+        <QuestionsForm
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) => onChange({ data: props, refId })}
+        />
       );
     case ToolListNames.Video.name:
-      return <Video open={open} setOpen={setOpen} onChange={onChange} />;
+      return (
+        <Video
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) => onChange({ data: props, refId })}
+        />
+      );
     case ToolListNames.ToolList.name:
       return <ToolList open={open} setOpen={setOpen} onChange={onChange} />;
     default:

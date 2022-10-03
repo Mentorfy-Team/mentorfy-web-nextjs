@@ -5,7 +5,7 @@ import { useMentorTools } from '~/hooks/useMentorTools';
 import { Description, Title, WrapperTool } from './styles';
 
 type Props = {
-  onChange: (tool: MentorTools.Tool) => void;
+  onChange: (tool: MentorTools.ToolType) => void;
   setOpen: (value: boolean) => void;
   open: boolean;
 };
