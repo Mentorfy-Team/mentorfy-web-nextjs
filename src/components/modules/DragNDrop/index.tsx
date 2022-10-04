@@ -67,10 +67,10 @@ export default function DragNDrop({ model, elements, setElements }: Props) {
       modifiers={[restrictToParentElement]}
     >
       <SortableContext
-        items={elements[0].rows.map((i) => i.id)}
+        items={(elements[0].rows || []).map((i) => i.id)}
         strategy={verticalListSortingStrategy}
       >
-        {elements[0].rows.map((item) => model(item.id))}
+        {(elements[0].rows || []).map((item) => model(item.id))}
       </SortableContext>
       {/* <DragOverlay modifiers={[restrictToParentElement]}>
         {activeId ? (
