@@ -6,6 +6,7 @@ declare namespace MentorTools {
     typeof Database.public.Tables.member_area_tool.Row
   > & {
     type: any;
+    delete?: boolean;
   };
 
   type QuestionsFormProps = {

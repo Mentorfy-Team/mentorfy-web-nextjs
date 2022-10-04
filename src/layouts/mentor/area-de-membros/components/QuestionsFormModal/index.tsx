@@ -41,11 +41,12 @@ const QuestionFormModal = ({
     setQuestions([...questions, newQuestion]);
   };
 
-  const handleSave = () => {
+  const handleSave = (del?: boolean) => {
     onChange({
       title,
       description,
       data: questions,
+      delele: del,
     });
     setOpen(false);
   };
@@ -56,6 +57,7 @@ const QuestionFormModal = ({
       setOpen={setOpen}
       title="Formulário de Perguntas"
       onSave={() => handleSave()}
+      onDelete={() => handleSave(true)}
     >
       <>
         <InputField

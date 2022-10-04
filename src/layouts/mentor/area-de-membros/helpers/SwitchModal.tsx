@@ -48,7 +48,12 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
           data={data}
           open={open}
           setOpen={setOpen}
-          onChange={(props) => onChange({ data: props, refId })}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.WheelOfLifeModal.id },
+              refId,
+            })
+          }
         />
       );
     case ToolListNames.Checklist.name:
@@ -57,7 +62,12 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
           data={data}
           open={open}
           setOpen={setOpen}
-          onChange={(props) => onChange({ data: props, refId })}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.Checklist.id },
+              refId,
+            })
+          }
         />
       );
     case ToolListNames.Embed.name:
@@ -66,7 +76,12 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
           data={data}
           open={open}
           setOpen={setOpen}
-          onChange={(props) => onChange({ data: props, refId })}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.Embed.id },
+              refId,
+            })
+          }
         />
       );
     case ToolListNames.UploadFile.name:
@@ -75,7 +90,12 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
           data={data}
           open={open}
           setOpen={setOpen}
-          onChange={(props) => onChange({ data: props, refId })}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.UploadFile.id },
+              refId,
+            })
+          }
         />
       );
     case ToolListNames.OpenText.name:
@@ -84,7 +104,12 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
           data={data}
           open={open}
           setOpen={setOpen}
-          onChange={(props) => onChange({ data: props, refId })}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.OpenText.id },
+              refId,
+            })
+          }
         />
       );
     case ToolListNames.QuestionsForm.name:
@@ -93,7 +118,12 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
           data={data}
           open={open}
           setOpen={setOpen}
-          onChange={(props) => onChange({ data: props, refId })}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.QuestionsForm.id },
+              refId,
+            })
+          }
         />
       );
     case ToolListNames.Video.name:
@@ -101,7 +131,12 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
         <Video
           open={open}
           setOpen={setOpen}
-          onChange={(props) => onChange({ data: props, refId })}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.Video.id },
+              refId,
+            })
+          }
         />
       );
     case ToolListNames.ToolList.name:

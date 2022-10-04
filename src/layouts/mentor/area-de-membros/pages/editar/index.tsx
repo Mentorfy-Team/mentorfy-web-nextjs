@@ -105,21 +105,16 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
   }, [currentModal, open]);
 
   // refId é enviado automaticamente antes de chegar aqui.
-  const GetOnChange = useCallback(
-    ({ refId, data }) => {
-      console.log(refId, data);
-      console.log(steps);
-      setSteps((oldSteps) => {
-        Object.assign(
-          oldSteps[0].rows.find((r) => r.id === refId),
-          data,
-        );
-        console.log('oldSteps', oldSteps);
-        return [...oldSteps];
-      });
-    },
-    [steps],
-  );
+  const GetOnChange = useCallback(({ refId, data }) => {
+    console.log(data);
+    setSteps((oldSteps) => {
+      Object.assign(
+        oldSteps[0].rows.find((r) => r.id === refId),
+        data,
+      );
+      return [...oldSteps];
+    });
+  }, []);
 
   const GetTypeName = useCallback((type) => {
     return Object.values(ToolListNames).find((i) => {
@@ -128,6 +123,7 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
   }, []);
 
   const handleSave = useCallback(async () => {
+    console.log(steps[0].rows);
     await UpdateMemberAreaTools(id, steps[0].rows);
   }, [id, steps]);
 

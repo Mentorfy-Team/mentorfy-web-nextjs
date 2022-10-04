@@ -12,6 +12,7 @@ type props = {
   open?: boolean;
   setOpen: (value: boolean) => void;
   onSave?: () => void;
+  onDelete?: () => void;
 };
 
 const ModalComponent: FC<props> = ({
@@ -21,6 +22,7 @@ const ModalComponent: FC<props> = ({
   open,
   setOpen,
   onSave,
+  onDelete,
 }) => {
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
@@ -32,18 +34,38 @@ const ModalComponent: FC<props> = ({
       </Header>
       <ModalDialogContent>
         {children}
-        {!withoutSave && (
+        {onSave && (
           <Button
-            variant="contained"
+            variant="outlined"
             sx={{
               textTransform: 'none',
               float: 'right',
               width: '40%',
               marginTop: '1rem',
+              height: '2.5rem',
+              backgroundColor: 'green',
+              color: 'white',
             }}
             onClick={() => onSave()}
           >
             Salvar
+          </Button>
+        )}
+        {onDelete && (
+          <Button
+            variant="outlined"
+            sx={{
+              textTransform: 'none',
+              float: 'left',
+              width: '40%',
+              marginTop: '1rem',
+              color: 'gray',
+              fontWeight: '300',
+              height: '2.5rem',
+            }}
+            onClick={() => onDelete()}
+          >
+            Excluir
           </Button>
         )}
       </ModalDialogContent>
