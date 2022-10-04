@@ -21,7 +21,10 @@ const ToolList: React.FC<Props> = ({ onChange, setOpen, open }) => {
       title="Lista de Ferramentas"
     >
       {tools.map((item) => (
-        <WrapperTool onClick={() => onChange(item)} key={item.id}>
+        <WrapperTool onClick={() => {
+          onChange(item);
+          setOpen(false);
+          }} key={item.id}>
           <Box
             sx={{
               flex: 1,

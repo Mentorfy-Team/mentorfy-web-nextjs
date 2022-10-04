@@ -37,12 +37,6 @@ const QuestionFormModal = ({
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
 
-  useEffect(() => {
-    console.log(titleData);
-    console.log(descriptionData);
-    console.log(questionsData);
-  }, [titleData, descriptionData, questionsData]);
-
   const addNewQuestion = () => {
     const newQuestion = {
       id: Math.random() + '',

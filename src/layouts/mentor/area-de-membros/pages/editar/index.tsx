@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import Save from '@mui/icons-material/Save';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import { DnDObject } from '~/components/modules/DragNDrop';
+import { DnDObject, DnDRow } from '~/components/modules/DragNDrop';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
@@ -20,6 +20,8 @@ import {
   SaveButton,
   ScrollWrapper,
 } from './styles';
+import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
+import { UpdateMemberAreaTools } from '~/services/member-area.service';
 const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
   ssr: false,
 });
@@ -28,7 +30,12 @@ const SwitchModal = dynamic<ToolsModalProps>(
   () => import('../../helpers/SwitchModal'),
 );
 
-const EditarMentoria: FC = () => {
+type Props = PageTypes.Props & {
+  data: DnDRow[];
+  id: string;
+}
+
+const EditarMentoria: FC<Props> = ({data, id}) => {
   const [tabindex, setTabindex] = useState(0);
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
@@ -45,8 +52,17 @@ const EditarMentoria: FC = () => {
   ]);
 
   const theme = useTheme();
-
   const Image = '/svgs/step-image.svg';
+
+  const { tools } = useMemberAreaTools(id);
+
+
+  useEffect(() => {
+    setSteps(oldSteps=>{
+      oldSteps[0].rows = tools;
+      return [...oldSteps];
+    });
+  }, [tools]);
 
   const addNewStep = useCallback((title, description, type) => {
     const newStep = {
@@ -90,7 +106,6 @@ const EditarMentoria: FC = () => {
   const GetOnChange = useCallback(({ refId, data }) => {
     setSteps((oldSteps) => {
       oldSteps[0].rows.find((r) => r.id === refId).data = data;
-      console.log(refId, data, oldSteps);
       return [...oldSteps];
     });
   }, []);
@@ -101,8 +116,8 @@ const EditarMentoria: FC = () => {
     }).name;
   }, []);
 
-  const handleSave = useCallback(() => {
-    console.log('Save Steps', steps);
+  const handleSave = useCallback(async () => {
+    await UpdateMemberAreaTools(id, steps[0].rows);
   }, [steps]);
 
   return (
@@ -212,6 +227,7 @@ export const getProps = withPageAuth({
     return {
       props: {
         profile: profile,
+        id: ctx.query.id,
       },
     };
   },
