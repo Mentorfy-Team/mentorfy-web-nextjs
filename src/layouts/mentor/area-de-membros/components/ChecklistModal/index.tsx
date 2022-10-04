@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useTheme } from '@mui/material/styles';
 import DescriptionInputField from '~/components/atoms/DescriptionInputField';
 import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
@@ -54,6 +53,13 @@ const ChecklistModal = ({ open, setOpen, data:{
     });
   };
 
+  const deleteSubtask = (task_id: string, subtask_id: string) => {
+    setTasks(oldTasks => {
+    oldTasks.find(_task => _task.id === task_id).rows.filter(_subtask => _subtask.id !== subtask_id);
+      return [...oldTasks];
+    });
+  };
+
   return (
     <ModalComponent open={open} setOpen={setOpen} onSave={()=>onChange({
       title,
@@ -76,10 +82,12 @@ const ChecklistModal = ({ open, setOpen, data:{
         <ContentBox>
           {tasks.map((task) => (
             <Task
+              key={task.id}
               data={task}
               onSaveTask={(_title, id) => onTitleChange(_title, id)}
               onSaveSubtask={(_title, task_id, id) => onSubtaskTitleChange(_title, task_id, id)}
               onAddNewSubtask={(task) => addNewSubTask(task)}
+              onDeleteSubtask={(subtask_id, task_id) => deleteSubtask(subtask_id, task_id)}
               onAddNewTask={() => addNewTask()}
             />
           ))}

@@ -71,7 +71,7 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
     };
 
     setSteps((oldSteps) => {
-      oldSteps[0].rows.push(newStep);
+      (oldSteps[0].rows || []).push(newStep);
       return [...oldSteps];
     });
   }, []);

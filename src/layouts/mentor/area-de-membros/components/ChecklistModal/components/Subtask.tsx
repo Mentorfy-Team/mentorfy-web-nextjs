@@ -6,16 +6,17 @@ type Props = {
   data: TaskRow;
   task_id: string;
   onSaveSubtask: (_title: string, task_id: string, id: string) => void;
+  onDeleteSubtask: (task_id: string, id: string) => void;
 }
 
-const Subtask: React.FC<Props> = ({ task_id, data: subtask, onSaveSubtask }) => {
+const Subtask: React.FC<Props> = ({ task_id, data: subtask, onSaveSubtask, onDeleteSubtask }) => {
   const [canEdit, setCanEdit] = React.useState(false);
   const [title, setTitle] = React.useState(subtask.title);
 
   return (
     <SubTask key={subtask.id}>
       {canEdit && (<>
-        <SubTaskField value={title} onChange={(e)=> setTitle(e.target.value)} label="Descrição" id='subtask-field' />
+        <SubTaskField value={title} onChange={(e)=> setTitle(e.target.value)} label="Descrição"/>
 
         <SaveButton style={{ height: '24px' }} onClick={() => {
           setCanEdit(false);
@@ -26,6 +27,7 @@ const Subtask: React.FC<Props> = ({ task_id, data: subtask, onSaveSubtask }) => 
 
         <DeleteButton style={{ height: '24px' }} onClick={() => {
           setCanEdit(false);
+          onDeleteSubtask(subtask.id, task_id);
           // TODO: Delete subtask
         }}>
           Excluir
@@ -43,6 +45,6 @@ const Subtask: React.FC<Props> = ({ task_id, data: subtask, onSaveSubtask }) => 
       </>)}
     </SubTask>
   );
-}
+};
 
 export default Subtask;

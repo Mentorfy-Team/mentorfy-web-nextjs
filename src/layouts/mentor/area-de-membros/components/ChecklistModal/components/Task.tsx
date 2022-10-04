@@ -1,8 +1,8 @@
-import Box from '@mui/material/Box';
 import React from 'react';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuIcon from '@mui/icons-material/Menu';
+import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -20,6 +20,7 @@ type Props = {
   onSaveTask: (_title: string, id: string) => void;
   onSaveSubtask: (_title: string, task_id: string, id: string) => void;
   onAddNewSubtask: (data: TaskObject) => void;
+  onDeleteSubtask: (task_id: string, subtask_id: string) => void;
   onAddNewTask: () => void;
 };
 export type TaskObject = {
@@ -33,7 +34,7 @@ export type TaskRow = {
   title: string;
 }
 
-const Task: React.FC<Props> = ({ data: task, onSaveTask, onSaveSubtask, onAddNewSubtask }) => {
+const Task: React.FC<Props> = ({ data: task, onSaveTask, onSaveSubtask, onAddNewSubtask, onDeleteSubtask }) => {
   const [openSubTask, setOpenSubTask] = React.useState(false);
   const [canEdit, setCanEdit] = React.useState(false);
   const [title, setTitle] = React.useState(task.title);
@@ -45,7 +46,7 @@ const Task: React.FC<Props> = ({ data: task, onSaveTask, onSaveSubtask, onAddNew
         <MenuIcon />
         {canEdit ? (
           <>
-            <TaskField value={title} onChange={(e)=>setTitle(e.target.value)} label="Título" placeholder='Lorem ipsum in dolor win' id='task-field' />
+            <TaskField value={title} onChange={(e)=>setTitle(e.target.value)} label="Título" placeholder='Lorem ipsum in dolor win' />
             <SaveButton style={{ height: '24px' }} onClick={()=>{
               setCanEdit(false);
               onSaveTask(title, task.id);
@@ -99,7 +100,7 @@ const Task: React.FC<Props> = ({ data: task, onSaveTask, onSaveSubtask, onAddNew
         {openSubTask ? (
           <Box>
             {task.rows.map((subtask) => (
-              <Subtask task_id={task.id} onSaveSubtask={onSaveSubtask} data={subtask}/>
+              <Subtask key={subtask.id} task_id={task.id} onSaveSubtask={onSaveSubtask} onDeleteSubtask={onDeleteSubtask} data={subtask}/>
             ))}
           </Box>) : ''}
       </Box>
@@ -123,6 +124,6 @@ const Task: React.FC<Props> = ({ data: task, onSaveTask, onSaveSubtask, onAddNew
       </Box>
     </Box>
   );
-}
+};
 
 export default Task;
