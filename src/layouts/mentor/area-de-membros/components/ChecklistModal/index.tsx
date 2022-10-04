@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import Box from '@mui/material/Box';
+import Divider  from '@mui/material/Divider';
 import DescriptionInputField from '~/components/atoms/DescriptionInputField';
 import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
 import ContentBox from '../ContentBox';
 import Task, { TaskObject } from './components/Task';
+import { AddTaskButton } from './styles';
 
-const ChecklistModal = ({ open, setOpen, data:{
+const ChecklistModal = ({ open, setOpen, data: {
   data,
   title: titleData,
   description: descriptionData,
@@ -17,16 +20,24 @@ const ChecklistModal = ({ open, setOpen, data:{
     {
       id: '0',
       title: 'Minha tarefa 1',
-      canEdit: true,
       rows: [{
         id: 0,
         title: 'Minha subtarefa 1',
-        canEdit: true,
       }]
     }
   ]);
 
-  const addNewTask = () => { };
+  const addNewTask = () => {
+    const newTask = {
+      id: Math.random() + '',
+      title: '',
+      rows: [{
+        id: 0,
+        title: '',
+      }],
+    };
+    setTasks([...tasks, newTask]);
+  };
 
   const addNewSubTask = ({ id }) => {
     const newSubTask = {
@@ -53,15 +64,15 @@ const ChecklistModal = ({ open, setOpen, data:{
     });
   };
 
-  const deleteSubtask = (task_id: string, subtask_id: string) => {
+  const deleteSubtask = (task_id: string, id: string) => {
     setTasks(oldTasks => {
-    oldTasks.find(_task => _task.id === task_id).rows.filter(_subtask => _subtask.id !== subtask_id);
+      oldTasks.find(_task => _task.id === task_id).rows.filter(subtask => subtask.id !== id);
       return [...oldTasks];
     });
   };
 
   return (
-    <ModalComponent open={open} setOpen={setOpen} onSave={()=>onChange({
+    <ModalComponent open={open} setOpen={setOpen} onSave={() => onChange({
       title,
       description,
       tasks,
@@ -87,10 +98,28 @@ const ChecklistModal = ({ open, setOpen, data:{
               onSaveTask={(_title, id) => onTitleChange(_title, id)}
               onSaveSubtask={(_title, task_id, id) => onSubtaskTitleChange(_title, task_id, id)}
               onAddNewSubtask={(task) => addNewSubTask(task)}
-              onDeleteSubtask={(subtask_id, task_id) => deleteSubtask(subtask_id, task_id)}
+              onDeleteSubtask={(task_id, id) => deleteSubtask(task_id, id)}
               onAddNewTask={() => addNewTask()}
             />
           ))}
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              marginRight: '1.6rem',
+            }}
+          >
+            <Divider
+              orientation="vertical"
+              sx={(theme) => ({
+                borderColor: `${theme.palette.caption.main}`,
+                height: '0.6rem',
+                marginTop: '1.7rem',
+              })}
+            />
+            <AddTaskButton onClick={() => addNewTask()}>+ Adicionar Tarefa</AddTaskButton>
+          </Box>
         </ContentBox>
       </>
     </ModalComponent>

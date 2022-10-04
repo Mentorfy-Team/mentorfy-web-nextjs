@@ -20,7 +20,7 @@ type Props = {
   onSaveTask: (_title: string, id: string) => void;
   onSaveSubtask: (_title: string, task_id: string, id: string) => void;
   onAddNewSubtask: (data: TaskObject) => void;
-  onDeleteSubtask: (task_id: string, subtask_id: string) => void;
+  onDeleteSubtask: (task_id: string, id: string) => void;
   onAddNewTask: () => void;
 };
 export type TaskObject = {
@@ -34,13 +34,13 @@ export type TaskRow = {
   title: string;
 }
 
-const Task: React.FC<Props> = ({ data: task, onSaveTask, onSaveSubtask, onAddNewSubtask, onDeleteSubtask }) => {
+const Task: React.FC<Props> = ({ data: task, onSaveTask, onSaveSubtask, onAddNewSubtask, onDeleteSubtask, onAddNewTask }) => {
   const [openSubTask, setOpenSubTask] = React.useState(false);
   const [canEdit, setCanEdit] = React.useState(false);
   const [title, setTitle] = React.useState(task.title);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column' }} key={task.id}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', borderBottom: '1px solid #424242', margin: '0 0 1rem 0' }} key={task.id}>
 
       <TaskWrapper>
         <MenuIcon />

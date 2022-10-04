@@ -77,3 +77,11 @@ export const SubTaskTypography = styled(Typography)`
     margin-left: 0.7rem;
     width: 85%;
 `;
+
+export const AddTaskButton = styled(Button)`
+    color: ${({theme}) => theme.palette.caption.main};
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 0.9rem;
+    text-transform: none;
+`;
