@@ -32,6 +32,7 @@ const columns: Column[] = [
 ];
 
 interface Data {
+  id: string;
   name: string;
   mentorados: number;
   status: JSX.Element;
@@ -43,8 +44,9 @@ const ProductsTable = ({ rows }: { rows: MemberAreaTypes.MemberArea[] }) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const createData = useCallback(
-    (name: string, mentorados: number, status: boolean): Data => {
+    (id: string, name: string, mentorados: number, status: boolean): Data => {
       return {
+        id,
         name,
         mentorados,
         status: (
@@ -76,7 +78,7 @@ const ProductsTable = ({ rows }: { rows: MemberAreaTypes.MemberArea[] }) => {
     setAnchorEl(null);
   };
 
-  const handleEdit = (id = 'hud2-ioqdf-002e-eee7') => {
+  const handleEdit = (id = 'x') => {
     route.push(MentorRoutes.members_area_editar + '/' + id);
   };
 
@@ -88,7 +90,9 @@ const ProductsTable = ({ rows }: { rows: MemberAreaTypes.MemberArea[] }) => {
       page={page}
       onPageChange={setPage}
       columns={columns}
-      rows={rows.map((row) => createData(row.title, row.clients, row.status))}
+      rows={rows.map((row) =>
+        createData(row.id, row.title, row.clients, row.status),
+      )}
       onTitleClick={(id) => handleEdit(id)}
       actionButtons={(index) => [
         <TableCell
@@ -129,7 +133,7 @@ const ProductsTable = ({ rows }: { rows: MemberAreaTypes.MemberArea[] }) => {
                   <Text width="100%">Ver Links</Text>
                 </Button>
               </Link>
-              <Button onClick={() => handleEdit()}>
+              <Button onClick={() => handleEdit(rows[index].id)}>
                 <SvgIcon sx={{ marginRight: '0.5rem' }} component={EditIcon} />{' '}
                 Editar
               </Button>

@@ -10,11 +10,15 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   const supabase = CreateSupabaseWithAuth(req);
 
   const { data: tools, error } = await supabase
-    .from('member_area_tool')
-    .select('*, member_area!member_area_id_fkey(id), mentor_tool!mentor_tool_id_fkey(id)')
-    .eq('member_area_id', req.query.id)
-
+    .from<MentorTools.ToolData>('member_area_tool')
+    .select('*')
+    .eq('member_area', req.query.id);
+  // member_area!member_area_fkey (id), mentor_tool_id!mentor_tool_id_fkey (id)
   // TODO: Adicionar log de erros detalhados
-  console.log(error)
-  return res.status(200).json(tools);
+  const toolsList = tools?.map((tool) => {
+    tool['type'] = (tool as any).mentor_tool;
+    return tool;
+  });
+
+  return res.status(200).json(toolsList);
 };

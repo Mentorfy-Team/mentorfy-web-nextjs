@@ -12,6 +12,8 @@ import { DnDObject, DnDRow } from '~/components/modules/DragNDrop';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
+import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
+import { UpdateMemberAreaTools } from '~/services/member-area.service';
 import { GetProfile } from '~/services/profile.service';
 import { ToolListNames, ToolsModalProps } from '../../helpers/SwitchModal';
 import {
@@ -20,8 +22,6 @@ import {
   SaveButton,
   ScrollWrapper,
 } from './styles';
-import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
-import { UpdateMemberAreaTools } from '~/services/member-area.service';
 const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
   ssr: false,
 });
@@ -33,9 +33,9 @@ const SwitchModal = dynamic<ToolsModalProps>(
 type Props = PageTypes.Props & {
   data: DnDRow[];
   id: string;
-}
+};
 
-const EditarMentoria: FC<Props> = ({data, id}) => {
+const EditarMentoria: FC<Props> = ({ data, id }) => {
   const [tabindex, setTabindex] = useState(0);
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
@@ -56,9 +56,9 @@ const EditarMentoria: FC<Props> = ({data, id}) => {
 
   const { tools } = useMemberAreaTools(id);
 
-
   useEffect(() => {
-    setSteps(oldSteps=>{
+    console.log(tools);
+    setSteps((oldSteps) => {
       oldSteps[0].rows = tools;
       return [...oldSteps];
     });
@@ -118,7 +118,7 @@ const EditarMentoria: FC<Props> = ({data, id}) => {
 
   const handleSave = useCallback(async () => {
     await UpdateMemberAreaTools(id, steps[0].rows);
-  }, [steps]);
+  }, [id, steps]);
 
   return (
     <>
@@ -166,10 +166,10 @@ const EditarMentoria: FC<Props> = ({data, id}) => {
             model={(element_id) => {
               const stp = steps[0].rows.find((stp) => stp.id == element_id);
               if (!stp) return null;
-              const data = stp.data as MentorTools.QuestionsFormProps;
+
               return (
                 <EditMembersAreaSteps
-                  title={data?.title || 'Nova etapa'}
+                  title={stp?.title || 'Nova etapa'}
                   stepType={stp.type}
                   image={Image}
                   onEdit={() => {
@@ -178,7 +178,7 @@ const EditarMentoria: FC<Props> = ({data, id}) => {
                       onChange: GetOnChange,
                       type,
                       refId: stp.id,
-                      data: stp.data || {},
+                      data: stp || {},
                     });
                     setOpen(true);
                   }}

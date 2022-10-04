@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -19,11 +19,7 @@ const QuestionFormModal = ({
   open,
   setOpen,
   onChange,
-  data: {
-    title: titleData,
-    description: descriptionData,
-    questions: questionsData,
-  },
+  data: { title: titleData, description: descriptionData, data: questionsData },
 }) => {
   const theme = useTheme();
   const [questions, setQuestions] = useState<QuestionsObject[]>(
