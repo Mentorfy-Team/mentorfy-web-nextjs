@@ -45,7 +45,7 @@ const QuestionFormModal = ({
     onChange({
       title,
       description,
-      questions,
+      data: questions,
     });
     setOpen(false);
   };

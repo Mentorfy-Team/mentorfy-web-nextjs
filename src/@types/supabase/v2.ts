@@ -56,18 +56,18 @@ export interface Database {
         Row: {
           id: string;
           created_at: string | null;
-          member_area_id: string;
-          mentor_tool_id: number;
+          member_area: string;
+          mentor_tool: number;
           title: string | null;
           description: string | null;
           status: boolean | null;
           data: Json | null;
         };
         Insert: {
-          id: string;
+          id?: string;
           created_at?: string | null;
-          member_area_id: string;
-          mentor_tool_id: number;
+          member_area: string;
+          mentor_tool: number;
           title?: string | null;
           description?: string | null;
           status?: boolean | null;
@@ -76,8 +76,8 @@ export interface Database {
         Update: {
           id?: string;
           created_at?: string | null;
-          member_area_id?: string;
-          mentor_tool_id?: number;
+          member_area?: string;
+          mentor_tool?: number;
           title?: string | null;
           description?: string | null;
           status?: boolean | null;

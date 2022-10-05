@@ -2,7 +2,11 @@ const Database: ExternalModules.Supabase.Database;
 
 declare namespace MentorTools {
   type ToolType = typeof Database.public.Tables.mentor_tool.Row;
-  type ToolData = Partial<typeof Database.public.Tables.member_area_tool.Row>;
+  type ToolData = Partial<
+    typeof Database.public.Tables.member_area_tool.Row
+  > & {
+    type: any;
+  };
 
   type QuestionsFormProps = {
     questions: string[];
@@ -13,7 +17,10 @@ declare namespace MentorTools {
 
   namespace Post {
     interface Request extends ExternalModules.Next.NextApiRequest {
-      body: any;
+      body: {
+        data: ToolData[];
+        id: string;
+      };
     }
 
     type Response = {

@@ -57,7 +57,6 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
   const { tools } = useMemberAreaTools(id);
 
   useEffect(() => {
-    console.log(tools);
     setSteps((oldSteps) => {
       oldSteps[0].rows = tools;
       return [...oldSteps];
@@ -71,9 +70,8 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
     };
 
     setSteps((oldSteps) => {
-      if(!oldSteps[0].rows)
-        oldSteps[0].rows = [];
-        
+      if (!oldSteps[0].rows) oldSteps[0].rows = [];
+
       oldSteps[0].rows.push(newStep);
       return [...oldSteps];
     });
@@ -106,12 +104,22 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
     );
   }, [currentModal, open]);
 
-  const GetOnChange = useCallback(({ refId, data }) => {
-    setSteps((oldSteps) => {
-      oldSteps[0].rows.find((r) => r.id === refId).data = data;
-      return [...oldSteps];
-    });
-  }, []);
+  // refId é enviado automaticamente antes de chegar aqui.
+  const GetOnChange = useCallback(
+    ({ refId, data }) => {
+      console.log(refId, data);
+      console.log(steps);
+      setSteps((oldSteps) => {
+        Object.assign(
+          oldSteps[0].rows.find((r) => r.id === refId),
+          data,
+        );
+        console.log('oldSteps', oldSteps);
+        return [...oldSteps];
+      });
+    },
+    [steps],
+  );
 
   const GetTypeName = useCallback((type) => {
     return Object.values(ToolListNames).find((i) => {

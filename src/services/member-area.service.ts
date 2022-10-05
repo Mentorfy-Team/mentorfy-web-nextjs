@@ -1,12 +1,12 @@
-import { DnDRow } from "~/components/modules/DragNDrop";
-import { ApiRoutes } from "~/consts/routes/api.routes";
-import { HttpClient } from "./HttpClient";
+import { DnDRow } from '~/components/modules/DragNDrop';
+import { ApiRoutes } from '~/consts/routes/api.routes';
+import { HttpClient } from './HttpClient';
 
 export const UpdateMemberAreaTools = async (id: string, tools: DnDRow[]) => {
   try {
     const response = await HttpClient.post<ProductApi.Post.Response>(
       ApiRoutes.member_areas_tool,
-      {data:tools, id},
+      { data: tools, id },
     );
     if (response.data.error) {
       return {
