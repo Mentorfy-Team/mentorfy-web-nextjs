@@ -85,7 +85,10 @@ const App = (props: MyAppProps) => {
 
   const Drawer = useCallback(
     ({ children }) => {
-      if (router.pathname.includes('/m'))
+      if (
+        router.pathname.includes('/m') &&
+        !router.pathname.includes('mentorado')
+      )
         return <MiniDrawer>{children}</MiniDrawer>;
 
       return <>{children}</>;
