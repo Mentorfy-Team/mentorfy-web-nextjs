@@ -4,50 +4,26 @@ import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
+import PageWrapper from '~/components/partials/PageWrapper';
 import {
   BannerBox,
   CollorFullTypography,
   CourseBox,
   CustomTypography,
-  LinearProgressBar,
   RatingBox,
 } from './style';
 
 const BemVindo: FC = () => {
-  const Header = (
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '100%',
-      }}
-    >
-      <Typography>Bem-vinda Débora!</Typography>
-      <Box sx={{ width: '12rem' }}>
-        <Typography variant="body2">Meu progresso de estudo</Typography>
-        <Box>
-          <LinearProgressBar variant="determinate" value={40} />
-          <Typography variant="caption">Nível 3</Typography>
-        </Box>
-      </Box>
-    </Box>
-  );
 
   const TextBanner = (
-    <Box sx={{ maxWidth: '14rem', height: '10rem', textAlign: 'start' }}>
+    <Box sx={{ maxWidth: '16.5rem', height: '8rem', textAlign: 'start'}}>
       <CollorFullTypography>The World´s Storytelling</CollorFullTypography>
     </Box>
   );
-  const ImageBanner = (
-    <Box>
-      <Image alt="banner" width={50} height={50} src="/image/banner.png" />
-    </Box>
-  );
+
   return (
-    <>
-      <ContentWidthLimit maxWidth={1200}>
-        <BannerBox>
+    <PageWrapper>
+      <BannerBox sx={{marginTop: '3.1rem', display: 'flex', justifyContent: 'center'}}>
           {TextBanner}
           <RatingBox>
             <Rating defaultValue={4.5} precision={0.5} size="small"></Rating>
@@ -63,6 +39,8 @@ const BemVindo: FC = () => {
             architecto dolorem ex laborum, sequi odit?
           </Box>
         </BannerBox>
+      <ContentWidthLimit maxWidth='100%'>
+      {/* // TODO: fix 'Meus estudos' margin-top when it´s mobile */}
         <Box sx={{ display: 'flex', margin: '1.2rem 0 0.5rem 0' }}>
           <Typography variant="h5">Meus estudos</Typography>
         </Box>
@@ -70,8 +48,8 @@ const BemVindo: FC = () => {
           sx={{
             display: 'flex',
             flexDirection: 'row',
-            overflow: 'auto',
             margin: '0 0 1.2rem 0',
+            overflow: 'auto'
           }}
         >
           <CourseBox minWidth={350}>
@@ -124,7 +102,7 @@ const BemVindo: FC = () => {
           <Typography variant="h5">Populares na Mentorfy</Typography>
         </Box>
       </ContentWidthLimit>
-    </>
+      </PageWrapper>
   );
 };
 

@@ -1,22 +1,9 @@
 import Box from '@mui/material/Box';
-import LinearProgress from '@mui/material/LinearProgress';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-export const LinearProgressBar = styled(LinearProgress)`
-  background-color: ${({ theme }) => theme.palette.primary.main};
-  border-radius: 5px;
-  height: 0.75rem;
-  transform: none;
-
-  .css-1ek9033-MuiLinearProgress-bar1 {
-    background-color: ${({ theme }) => theme.palette.accent.main};
-    background-image: url('./svgs/star.svg');
-    border-radius: 5px;
-  }
-`;
-
 export const CourseBox = styled(Box)`
+  border: 2px solid transparent;
   border-radius: 5px;
   cursor: pointer;
   height: 24.3rem;
@@ -35,9 +22,9 @@ export const BannerBox = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  height: 23rem;
+  height: 60vh;
   max-width: 100%;
-  padding: 1.6rem 0 4.7rem 2.5rem;
+  padding: 1.6rem 0 1.6rem 2.5rem;
 
   @media (max-width: 500px) {
     display: none;

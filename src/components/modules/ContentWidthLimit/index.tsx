@@ -4,7 +4,7 @@ import { ScrollArea } from './styles';
 
 type props = {
   children: any;
-  maxWidth?: number;
+  maxWidth?: number | string;
   withToolBar?: boolean;
 };
 
