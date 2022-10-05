@@ -106,7 +106,6 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
 
   // refId é enviado automaticamente antes de chegar aqui.
   const GetOnChange = useCallback(({ refId, data }) => {
-    console.log(data);
     setSteps((oldSteps) => {
       Object.assign(
         oldSteps[0].rows.find((r) => r.id === refId),

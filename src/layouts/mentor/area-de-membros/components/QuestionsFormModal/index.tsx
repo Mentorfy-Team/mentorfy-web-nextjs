@@ -46,7 +46,7 @@ const QuestionFormModal = ({
       title,
       description,
       data: questions,
-      delele: del,
+      delete: del,
     });
     setOpen(false);
   };
