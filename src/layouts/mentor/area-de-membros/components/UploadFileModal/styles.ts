@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -37,12 +38,14 @@ export const P = styled('p')`
     font-size: 0.75rem;
     font-weight: 400;
     line-height: 0.75rem;
+    margin-top: 0.3rem;
 `;
 
 export const CustomTypography = styled(Typography)`
     font-size: 0.7rem;
     font-weight: 400;
     line-height: 0.75rem;
+    margin-top: 1rem;
     margin-bottom: 0.5rem;
 `;
 
@@ -51,6 +54,28 @@ export const AttachName = styled('p')`
     font-size: 8px;
     font-weight: 400;
     line-height: 10px;
+    margin-top: 0.3rem;
+`;
+
+export const UploadField = styled('button')`
+`;
+
+export const RemoveBox = styled(Box)`
+    height: 1.2rem;
+    width: 1.2rem;
+    border-radius: 50%;
+    background: ${({ theme }) => theme.palette.error.main};
+    opacity: 0.7;
+    position: absolute;
+    right: -4px;
+    top: -4px;
+    cursor: pointer;
+`;
+
+export const FilesWrapper = styled(Box)`
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
 `;
 
 export const DriveButton = styled(Button)`

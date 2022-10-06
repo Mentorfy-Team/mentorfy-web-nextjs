@@ -27,4 +27,7 @@ export enum ApiRoutes {
 
   //* Rotas para api de ferramentas do construtor
   mentor_tools_type = '/api/mentor-tool/list',
+
+  //* Rotas para api de upload de arquivos
+  upload = '/api/upload',
 }
