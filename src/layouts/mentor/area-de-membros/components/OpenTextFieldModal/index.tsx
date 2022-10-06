@@ -5,7 +5,7 @@ import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
 import { Label, P, UploadInput, UploadTypography } from './styles';
 
-const OpenTextFieldModal = ({ open, setOpen }) => {
+const OpenTextFieldModal = ({ open, setOpen, data, onChange }) => {
   return (
     <ModalComponent open={open} setOpen={setOpen} title="Campo de Texto Aberto">
       <>

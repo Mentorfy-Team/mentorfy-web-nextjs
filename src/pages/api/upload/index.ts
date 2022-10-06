@@ -1,7 +1,7 @@
 import { handler } from '~/backend/handler';
-import { post } from '~/backend/upload';
+import { del, post } from '~/backend/upload';
 
-export default handler({ post });
+export default handler({ post, del });
 
 export const config = {
   api: {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import Box from '@mui/material/Box';
 import ModalComponent from '~/components/modules/Modal';
 import { useMentorTools } from '~/hooks/useMentorTools';
 import { Description, Title, WrapperTool } from './styles';
@@ -21,10 +21,13 @@ const ToolList: React.FC<Props> = ({ onChange, setOpen, open }) => {
       title="Lista de Ferramentas"
     >
       {tools.map((item) => (
-        <WrapperTool onClick={() => {
-          onChange(item);
-          setOpen(false);
-          }} key={item.id}>
+        <WrapperTool
+          onClick={() => {
+            onChange(item);
+            setOpen(false);
+          }}
+          key={item.id}
+        >
           <Box
             sx={{
               flex: 1,

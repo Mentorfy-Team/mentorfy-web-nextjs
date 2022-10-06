@@ -13,7 +13,7 @@ import ModalComponent from '~/components/modules/Modal';
 import ContentBox from '../ContentBox';
 import { AreasBox } from './styles';
 
-const WheelOfLifeModal = ({ open, setOpen }) => {
+const WheelOfLifeModal = ({ open, setOpen, data, onChange }) => {
   const theme = useTheme();
 
   // const [open, setOpen] = useState(true);

@@ -1,23 +1,21 @@
-export default (target) => {
-  if (!target.files || target.files.length <= 0) return;
-  const files = [];
-  for (let i = 0; i < target.files.length; i++) {
+export default (files, onChange) => {
+  if (!files || files.length <= 0) return;
+  for (let i = 0; i < files.length; i++) {
     const fileReader = new FileReader();
-    const file = target.files[i];
+    const file = files[i];
     let type = 'none';
-    if (file.type.includes('/'))
-      type = target.files[i].type.split('/')[1];
-    
+    if (file.type.includes('/')) type = file.type.split('/')[1];
+
     fileReader.readAsDataURL(file);
     fileReader.onload = () => {
-      files.push({
+      const fl = {
         name: file.name,
         type,
         size: file.size,
         data: fileReader.result,
-      });
+        file: file,
+      };
+      onChange(fl);
     };
   }
-
-  return files;
 };

@@ -42,13 +42,16 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
     if (!isUUID) {
       delete tool.id;
       const { data: memberAreaTool, error } = await supabase
-      .from('member_area_tool')
-      .insert({ ...tool, member_area: id });
-      
+        .from('member_area_tool')
+        .insert({ ...tool, member_area: id });
+
       createdTools.push(memberAreaTool);
     } else {
       // Se o id for uuid, então é um registro existente
       delete tool.id;
+      if ((tool.data as any)?.length === 0) {
+        tool.data = null;
+      }
       const { data: memberAreaTool, error } = await supabase
         .from('member_area_tool')
         .update(tool)

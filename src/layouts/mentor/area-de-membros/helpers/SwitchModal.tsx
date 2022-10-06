@@ -28,6 +28,7 @@ export type ToolsModalProps = {
   open: boolean;
   type?: string;
   refId?: string;
+  area_id?: string;
   data: any;
   onChange?: (value: any) => any;
   setOpen?: (value: any) => any;
@@ -40,6 +41,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
   open,
   setOpen,
   refId,
+  area_id,
 }) => {
   switch (type) {
     case ToolListNames.WheelOfLifeModal.name:
@@ -87,6 +89,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
     case ToolListNames.UploadFile.name:
       return (
         <UploadFile
+          area_id={area_id}
           data={data}
           open={open}
           setOpen={setOpen}
@@ -129,6 +132,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
     case ToolListNames.Video.name:
       return (
         <Video
+          data={data}
           open={open}
           setOpen={setOpen}
           onChange={(props) =>

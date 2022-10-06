@@ -3,7 +3,7 @@ import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
 import AddImage from '../AddImage';
 
-const VideoModal = ({ open, setOpen }) => {
+const VideoModal = ({ open, setOpen, data, onChange }) => {
   return (
     <ModalComponent open={open} setOpen={setOpen} title="Upload de Vídeo">
       <>

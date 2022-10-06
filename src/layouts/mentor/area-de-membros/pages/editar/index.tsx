@@ -13,6 +13,7 @@ import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
+import { FilesToDelete } from '~/services/file-upload.service';
 import { UpdateMemberAreaTools } from '~/services/member-area.service';
 import { GetProfile } from '~/services/profile.service';
 import { ToolListNames, ToolsModalProps } from '../../helpers/SwitchModal';
@@ -41,6 +42,7 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
     onChange: any;
     type: string;
     refId?: string;
+    area_id?: string;
     data?: any;
   }>();
   const [open, setOpen] = useState(false);
@@ -99,13 +101,18 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
         onChange={currentModal.onChange}
         type={currentModal.type}
         refId={currentModal.refId}
+        area_id={id}
         data={currentModal.data}
       />
     );
-  }, [currentModal, open]);
+  }, [currentModal, open, id]);
 
   // refId é enviado automaticamente antes de chegar aqui.
-  const GetOnChange = useCallback(({ refId, data }) => {
+  const GetOnChange = useCallback(async ({ refId, data }) => {
+    if (data.removeImages) {
+      await FilesToDelete(data.removeImages);
+      delete data.removeImages;
+    }
     setSteps((oldSteps) => {
       Object.assign(
         oldSteps[0].rows.find((r) => r.id === refId),
@@ -122,7 +129,6 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
   }, []);
 
   const handleSave = useCallback(async () => {
-    console.log(steps[0].rows);
     await UpdateMemberAreaTools(id, steps[0].rows);
   }, [id, steps]);
 

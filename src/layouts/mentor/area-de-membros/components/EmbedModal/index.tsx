@@ -6,7 +6,7 @@ import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
 import { P, PasteCodeField, PlaceHolderBox, UploadTypography } from './styles';
 
-const EmbedModal = ({ open, setOpen }) => {
+const EmbedModal = ({ open, setOpen, data, onChange }) => {
   const [display, setDisplay] = useState('flex');
 
   const PlaceHolder = () => {

@@ -41,6 +41,7 @@
     "react": "18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.2",
     "react-hook-form": "^7.35.0",
     "react-number-format": "^4.9.4",
     "supabase": "^1.4.3",

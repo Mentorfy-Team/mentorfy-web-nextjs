@@ -1,53 +1,63 @@
-import { SupabaseWithouAuth, CreateSupabaseWithAuth } from '~/backend/supabase';
-type Request = UsersApi.Post.Request;
-type Response = UsersApi.Post.Response;
-import { nanoid } from 'nanoid';
-import { fixBase64 } from '~/backend/products';
-import { IncomingForm } from 'formidable';
+import fs from 'fs';
+import formidable from 'formidable';
+import { CreateSupabaseWithAdmin } from '~/backend/supabase';
+type Request = UploadApi.Post.Request;
+type Response = UploadApi.Post.Response;
 
-const GetFromForm = async (req) => {
-  const data:any = await new Promise((resolve, reject) => {
-    const form = new IncomingForm();
-
-    form.parse(req, (err, fields, files) => {
-      if (err) return reject(err);
-      resolve({ fields, files });
-    });
-  })
-  return data?.files?.inputFile.path;
-}
-
+type file = {
+  filepath: string;
+  hash: string;
+  hashAlgorithm: boolean;
+  lastModifiedDate: Date;
+  mimetype: string;
+  newFilename: string;
+  originalFilename: string;
+  size: number;
+};
 
 export const post: Handler.Callback<Request, Response> = async (req, res) => {
-  const file = GetFromForm(req);
-  if(!file) return res.status(400).json({error: 'No file found'});
-  const supabase = CreateSupabaseWithAuth(req);
+  const form = new formidable.IncomingForm();
+  const supabase = CreateSupabaseWithAdmin(req);
+  const uploadFile = async () => {
+    // eslint-disable-next-line
+    return new Promise<{ success: boolean } | string>((resolve, reject) => {
+      form.parse(req, async function (err, fields, files) {
+        let filepath = `${req.query.id}/${(files.file as any).newFilename}${
+          (files.file as any).originalFilename
+        }`;
+        filepath = filepath.replace(/\s/g, '-');
+        const rawData = fs.readFileSync((files.file as any).filepath);
+        const { data, error } = await supabase.storage
+          .from('files')
+          .upload(filepath, rawData, {
+            contentType: (files.file as any).mimetype,
+          });
 
-  const { user, token } = await SupabaseWithouAuth.auth.api.getUserByCookie(req);
+        if (error || err) {
+          return reject({ success: false });
+        }
+
+        resolve(`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.Key);
+      });
+    });
+  };
+
+  try {
+    const result = await uploadFile();
+    res.status(200).send(result);
+  } catch (err) {
+    res.status(400).send({ success: false });
+  }
+};
+
+export const del: Handler.Callback<Request, Response> = async (req, res) => {
+  const supabase = CreateSupabaseWithAdmin(req);
 
   const { data, error } = await supabase.storage
-      .from('images')
-      .upload(
-        `${user.id}/${nanoid(6)}.${(req.body.avatar as any).type}`,
-        fixBase64((req.body.avatar as any).file),
-        {
-          cacheControl: '3600',
-          upsert: true,
-          contentType: `image/${(req.body.avatar as any).type}`,
-        },
-      );
-
-    if (!error && req.body.old_avatar) {
-      const { data, error } = await supabase.storage
-        .from('images')
-        .remove([req.body.old_avatar.split('images/')[1]]);
-    }
-    Object.assign(toUpdate, {
-      avatar: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.Key,
-    });
+    .from('images')
+    .remove(req.body);
 
   res.status(200).json({
-    user,
     error: error?.message,
   });
 };

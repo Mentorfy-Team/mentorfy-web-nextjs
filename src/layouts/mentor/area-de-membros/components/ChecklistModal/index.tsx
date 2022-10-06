@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-import Divider  from '@mui/material/Divider';
+import Divider from '@mui/material/Divider';
 import DescriptionInputField from '~/components/atoms/DescriptionInputField';
 import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
@@ -8,33 +8,40 @@ import ContentBox from '../ContentBox';
 import Task, { TaskObject } from './components/Task';
 import { AddTaskButton } from './styles';
 
-const ChecklistModal = ({ open, setOpen, data: {
-  data,
-  title: titleData,
-  description: descriptionData,
-}, onChange }) => {
+const ChecklistModal = ({
+  open,
+  setOpen,
+  data: { data, title: titleData, description: descriptionData },
+  onChange,
+}) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
 
-  const [tasks, setTasks] = useState<TaskObject[]>(data || [
-    {
-      id: '0',
-      title: 'Minha tarefa 1',
-      rows: [{
-        id: 0,
-        title: 'Minha subtarefa 1',
-      }]
-    }
-  ]);
+  const [tasks, setTasks] = useState<TaskObject[]>(
+    data || [
+      {
+        id: '0',
+        title: 'Minha tarefa 1',
+        rows: [
+          {
+            id: '0',
+            title: 'Minha subtarefa 1',
+          },
+        ],
+      },
+    ],
+  );
 
   const addNewTask = () => {
     const newTask = {
       id: Math.random() + '',
       title: '',
-      rows: [{
-        id: 0,
-        title: '',
-      }],
+      rows: [
+        {
+          id: '0',
+          title: '',
+        },
+      ],
     };
     setTasks([...tasks, newTask]);
   };
@@ -45,38 +52,53 @@ const ChecklistModal = ({ open, setOpen, data: {
       title: '',
     };
     setTasks((oldTasks) => {
-      oldTasks.find(_task => _task.id === id).rows.push(newSubTask);
+      oldTasks.find((_task) => _task.id === id).rows.push(newSubTask);
       return [...oldTasks];
     });
   };
 
   const onTitleChange = (_title: string, id: string) => {
-    setTasks(oldTasks => {
-      oldTasks.find(_task => _task.id === id).title = _title;
+    setTasks((oldTasks) => {
+      oldTasks.find((_task) => _task.id === id).title = _title;
       return [...oldTasks];
     });
   };
 
-  const onSubtaskTitleChange = (_title: string, task_id: string, id: string) => {
-    setTasks(oldTasks => {
-      oldTasks.find(_task => _task.id === task_id).rows.find(_subtask => _subtask.id === id).title = _title;
+  const onSubtaskTitleChange = (
+    _title: string,
+    task_id: string,
+    id: string,
+  ) => {
+    setTasks((oldTasks) => {
+      oldTasks
+        .find((_task) => _task.id === task_id)
+        .rows.find((_subtask) => _subtask.id === id).title = _title;
       return [...oldTasks];
     });
   };
 
   const deleteSubtask = (task_id: string, id: string) => {
-    setTasks(oldTasks => {
-      oldTasks.find(_task => _task.id === task_id).rows.filter(subtask => subtask.id !== id);
+    setTasks((oldTasks) => {
+      oldTasks
+        .find((_task) => _task.id === task_id)
+        .rows.filter((subtask) => subtask.id !== id);
       return [...oldTasks];
     });
   };
 
   return (
-    <ModalComponent open={open} setOpen={setOpen} onSave={() => onChange({
-      title,
-      description,
-      tasks,
-    })} title="Checklist">
+    <ModalComponent
+      open={open}
+      setOpen={setOpen}
+      onSave={() =>
+        onChange({
+          title,
+          description,
+          tasks,
+        })
+      }
+      title="Checklist"
+    >
       <>
         <InputField
           value={title}
@@ -96,7 +118,9 @@ const ChecklistModal = ({ open, setOpen, data: {
               key={task.id}
               data={task}
               onSaveTask={(_title, id) => onTitleChange(_title, id)}
-              onSaveSubtask={(_title, task_id, id) => onSubtaskTitleChange(_title, task_id, id)}
+              onSaveSubtask={(_title, task_id, id) =>
+                onSubtaskTitleChange(_title, task_id, id)
+              }
               onAddNewSubtask={(task) => addNewSubTask(task)}
               onDeleteSubtask={(task_id, id) => deleteSubtask(task_id, id)}
               onAddNewTask={() => addNewTask()}
@@ -118,7 +142,9 @@ const ChecklistModal = ({ open, setOpen, data: {
                 marginTop: '1.7rem',
               })}
             />
-            <AddTaskButton onClick={() => addNewTask()}>+ Adicionar Tarefa</AddTaskButton>
+            <AddTaskButton onClick={() => addNewTask()}>
+              + Adicionar Tarefa
+            </AddTaskButton>
           </Box>
         </ContentBox>
       </>
