@@ -31,6 +31,16 @@ const globalStyles = css`
       right: 35px !important;
     }
   }
+  .Mui-disabled {
+    color: rgb(255 255 255 / 44%) !important;
+    font-weight: 300 !important;
+
+    svg {
+      path {
+        fill: rgb(255 255 255 / 44%) !important;
+      }
+    }
+  }
   .MuiPopover-paper {
     box-shadow: -4px 4px 0px 0px #00000000;
   }

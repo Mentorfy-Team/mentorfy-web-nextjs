@@ -137,6 +137,11 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
     }).name;
   }, []);
 
+  const hasChanges = useCallback(() => {
+    // verifica se todos os elementos do array são iguais
+    return JSON.stringify(tools) === JSON.stringify(steps[0].rows);
+  }, [steps, tools]);
+
   return (
     <>
       <Toolbar tabs={['Etapas', 'Configuração']} />
@@ -158,6 +163,7 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
             variant="outlined"
             color="primary"
             onClick={() => handleSave()}
+            disabled={hasChanges()}
           >
             <Save />
             <Typography variant="body2" ml={1}>
