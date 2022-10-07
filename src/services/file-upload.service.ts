@@ -32,7 +32,8 @@ export const FilesToDelete = async (
   files,
 ): Promise<string | { error: any }> => {
   try {
-    const response = await HttpClient.delete(ApiRoutes.upload_delete, files);
+    if (files.length <= 0) return;
+    const response = await HttpClient.post(ApiRoutes.upload_delete, files);
 
     if (response.data.error) {
       return {

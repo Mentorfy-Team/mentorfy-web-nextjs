@@ -52,10 +52,15 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
 
 export const del: Handler.Callback<Request, Response> = async (req, res) => {
   const supabase = CreateSupabaseWithAdmin(req);
-
-  const { data, error } = await supabase.storage
-    .from('images')
-    .remove(req.body);
+  if (req.body.length <= 0) return res.status(200).send({ success: true });
+  const fixUrls = req.body.map((item) => {
+    const url = item.replace(
+      process.env.NEXT_PUBLIC_SUPABASE_STORAGE + '/files/',
+      '',
+    );
+    return url;
+  });
+  const { data, error } = await supabase.storage.from('files').remove(fixUrls);
 
   res.status(200).json({
     error: error?.message,

@@ -17,6 +17,7 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
     const tool = data[i];
     tool['mentor_tool'] = tool.type;
     delete tool.type;
+    delete (tool as any).toRemove;
 
     const isUUID = tool.id.length > 6 && tool.id.includes('-');
     const tool_id = isUUID ? tool.id : null;
@@ -55,7 +56,7 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
       const { data: memberAreaTool, error } = await supabase
         .from('member_area_tool')
         .update(tool)
-        .match({ member_area: tool.member_area, id: tool_id });
+        .match({ id: tool_id });
 
       updatedTools.push(memberAreaTool);
     }

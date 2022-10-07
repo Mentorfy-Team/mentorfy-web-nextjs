@@ -107,30 +107,35 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
     );
   }, [currentModal, open, id]);
 
+  const handleSave = useCallback(async () => {
+    await UpdateMemberAreaTools(id, steps[0].rows);
+  }, [id, steps]);
+
   // refId é enviado automaticamente antes de chegar aqui.
-  const GetOnChange = useCallback(async ({ refId, data }) => {
-    if (data.removeImages) {
-      await FilesToDelete(data.removeImages);
-      delete data.removeImages;
-    }
-    setSteps((oldSteps) => {
-      Object.assign(
-        oldSteps[0].rows.find((r) => r.id === refId),
-        data,
-      );
-      return [...oldSteps];
-    });
-  }, []);
+  const GetOnChange = useCallback(
+    async ({ refId, data }) => {
+      if (data.toRemove) {
+        await FilesToDelete(data.toRemove);
+        delete data.toRemove;
+      }
+      setSteps((oldSteps) => {
+        Object.assign(
+          oldSteps[0].rows.find((r) => r.id === refId),
+          data,
+        );
+        return [...oldSteps];
+      });
+
+      handleSave();
+    },
+    [handleSave],
+  );
 
   const GetTypeName = useCallback((type) => {
     return Object.values(ToolListNames).find((i) => {
       return i.id == parseInt(type);
     }).name;
   }, []);
-
-  const handleSave = useCallback(async () => {
-    await UpdateMemberAreaTools(id, steps[0].rows);
-  }, [id, steps]);
 
   return (
     <>
