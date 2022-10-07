@@ -16,6 +16,7 @@ export const Step = styled(Box)`
     display: flex;
     flex-direction: column;
     height: 38rem;
+    max-width: 24rem;
     min-width: 24rem;
     padding: 1rem 1.5rem;
 `;
