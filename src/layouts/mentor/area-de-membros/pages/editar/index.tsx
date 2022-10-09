@@ -60,24 +60,28 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
 
   useEffect(() => {
     setSteps((oldSteps) => {
-      oldSteps[0].rows = tools;
+      oldSteps[0].rows = [...tools];
       return [...oldSteps];
     });
   }, [tools]);
 
-  const addNewStep = useCallback((title, description, type) => {
-    const newStep = {
-      id: Math.random() + '',
-      type,
-    };
+  const addNewStep = useCallback(
+    (title, description, type) => {
+      const newStep = {
+        id: Math.random() + '',
+        title: 'Minha tarefa ' + (steps.length + 1),
+        type,
+      };
 
-    setSteps((oldSteps) => {
-      if (!oldSteps[0].rows) oldSteps[0].rows = [];
+      setSteps((oldSteps) => {
+        if (!oldSteps[0].rows) oldSteps[0].rows = [];
 
-      oldSteps[0].rows.push(newStep);
-      return [...oldSteps];
-    });
-  }, []);
+        oldSteps[0].rows.push(newStep);
+        return [...oldSteps];
+      });
+    },
+    [steps.length],
+  );
 
   const hadleOpenToolsModal = useCallback(() => {
     setCurrentModal({
@@ -139,7 +143,7 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
 
   const hasChanges = useCallback(() => {
     // verifica se todos os elementos do array são iguais
-    return JSON.stringify(tools) === JSON.stringify(steps[0].rows);
+    return JSON.stringify(tools) !== JSON.stringify(steps[0].rows);
   }, [steps, tools]);
 
   return (
@@ -163,7 +167,7 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
             variant="outlined"
             color="primary"
             onClick={() => handleSave()}
-            disabled={hasChanges()}
+            disabled={!hasChanges()}
           >
             <Save />
             <Typography variant="body2" ml={1}>
