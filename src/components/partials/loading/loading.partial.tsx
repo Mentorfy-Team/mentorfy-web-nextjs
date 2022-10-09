@@ -1,7 +1,15 @@
 import React, { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { userStore } from '~/stores';
-import { Animation, Wrapper } from './loading.partial.styles';
+import { Animation, LoadingWrapper } from './loading.partial.styles';
+
+export const LoadingComponent = ({ isLoading = true }) => {
+  return (
+    <LoadingWrapper onClick={(e) => e.stopPropagation()} show={isLoading}>
+      <Animation />
+    </LoadingWrapper>
+  );
+};
 
 const LoadingPartial: FC = () => {
   const { isLoading, setLoading } = userStore();
@@ -26,11 +34,7 @@ const LoadingPartial: FC = () => {
       router.events.off('routeChangeError', handleComplete);
     };
   });
-  return (
-    <Wrapper onClick={(e) => e.stopPropagation()} show={isLoading}>
-      <Animation />
-    </Wrapper>
-  );
+  return <LoadingComponent isLoading={isLoading} />;
 };
 
 export default LoadingPartial;

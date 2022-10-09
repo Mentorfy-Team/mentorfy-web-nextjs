@@ -118,7 +118,7 @@ const FilesUploadModal = ({
             </Label>
           </UploadField>
         </DropzoneComponent>
-        <CustomTypography>Anexados (1)</CustomTypography>
+        <CustomTypography>Anexados ({files?.length || 0})</CustomTypography>
         <FilesWrapper>
           {files?.map((file) => (
             <Box

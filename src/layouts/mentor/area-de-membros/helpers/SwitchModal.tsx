@@ -1,16 +1,35 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
+import { LoadingComponent } from '~/components/partials/loading/loading.partial';
 
-const Checklist = dynamic(() => import('../components/ChecklistModal'));
-const Embed = dynamic(() => import('../components/EmbedModal'));
-const OpenText = dynamic(() => import('../components/OpenTextFieldModal'));
-const QuestionsForm = dynamic(() => import('../components/QuestionsFormModal'));
-const UploadFile = dynamic(() => import('../components/UploadFileModal'));
+const Checklist = dynamic(() => import('../components/ChecklistModal'), {
+  loading: () => <LoadingComponent />,
+});
+const Embed = dynamic(() => import('../components/EmbedModal'), {
+  loading: () => <LoadingComponent />,
+});
+const OpenText = dynamic(() => import('../components/OpenTextFieldModal'), {
+  loading: () => <LoadingComponent />,
+});
+const QuestionsForm = dynamic(
+  () => import('../components/QuestionsFormModal'),
+  { loading: () => <LoadingComponent /> },
+);
+const UploadFile = dynamic(() => import('../components/UploadFileModal'), {
+  loading: () => <LoadingComponent />,
+});
 const WheelOfLifeModal = dynamic(
   () => import('../components/WheelOfLifeModal'),
+  {
+    loading: () => <LoadingComponent />,
+  },
 );
-const Video = dynamic(() => import('../components/VideoModal'));
-const ToolList = dynamic(() => import('../components/ToolListModal'));
+const Video = dynamic(() => import('../components/VideoModal'), {
+  loading: () => <LoadingComponent />,
+});
+const ToolList = dynamic(() => import('../components/ToolListModal'), {
+  loading: () => <LoadingComponent />,
+});
 
 export const ToolListNames = {
   QuestionsForm: { name: 'Formulário de Perguntas', id: 1 },

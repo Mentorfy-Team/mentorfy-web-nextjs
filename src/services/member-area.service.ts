@@ -3,6 +3,11 @@ import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from './HttpClient';
 
 export const UpdateMemberAreaTools = async (id: string, tools: DnDRow[]) => {
+  // para cada tool salva a ordem na propriedade order
+  tools.forEach((tool, index) => {
+    tool.order = index;
+  });
+
   try {
     const response = await HttpClient.post<ProductApi.Post.Response>(
       ApiRoutes.member_areas_tool,

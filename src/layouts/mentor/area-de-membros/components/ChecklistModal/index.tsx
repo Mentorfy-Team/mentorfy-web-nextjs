@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import DescriptionInputField from '~/components/atoms/DescriptionInputField';
 import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
@@ -11,14 +10,14 @@ import { AddTaskButton } from './styles';
 const ChecklistModal = ({
   open,
   setOpen,
-  data: { data, title: titleData, description: descriptionData },
+  data: { tasks: taskData, title: titleData, description: descriptionData },
   onChange,
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
 
   const [tasks, setTasks] = useState<TaskObject[]>(
-    data || [
+    taskData || [
       {
         id: '0',
         title: 'Minha tarefa 1',
@@ -35,13 +34,8 @@ const ChecklistModal = ({
   const addNewTask = () => {
     const newTask = {
       id: Math.random() + '',
-      title: '',
-      rows: [
-        {
-          id: '0',
-          title: '',
-        },
-      ],
+      title: 'Minha tarefa ' + (tasks.length + 1),
+      rows: [],
     };
     setTasks([...tasks, newTask]);
   };
@@ -77,11 +71,11 @@ const ChecklistModal = ({
     });
   };
 
-  const deleteSubtask = (task_id: string, id: string) => {
+  const deleteSubtask = (id: string, task_id: string) => {
     setTasks((oldTasks) => {
-      oldTasks
-        .find((_task) => _task.id === task_id)
-        .rows.filter((subtask) => subtask.id !== id);
+      const tsi = oldTasks.findIndex((_task) => _task.id === task_id);
+      const rows = oldTasks[tsi].rows.filter((_subtask) => _subtask.id !== id);
+      oldTasks[tsi].rows = rows;
       return [...oldTasks];
     });
   };
@@ -90,13 +84,23 @@ const ChecklistModal = ({
     <ModalComponent
       open={open}
       setOpen={setOpen}
-      onSave={() =>
+      onSave={() => {
+        const filterEmpty = tasks
+          .filter((task) => task.title)
+          .map((task) => {
+            const rows = task.rows.filter((row) => row.title);
+            return {
+              ...task,
+              rows,
+            };
+          });
         onChange({
           title,
           description,
-          tasks,
-        })
-      }
+          tasks: filterEmpty,
+        });
+        setOpen(false);
+      }}
       title="Checklist"
     >
       <>
@@ -134,16 +138,8 @@ const ChecklistModal = ({
               marginRight: '1.6rem',
             }}
           >
-            <Divider
-              orientation="vertical"
-              sx={(theme) => ({
-                borderColor: `${theme.palette.caption.main}`,
-                height: '0.6rem',
-                marginTop: '1.7rem',
-              })}
-            />
             <AddTaskButton onClick={() => addNewTask()}>
-              + Adicionar Tarefa
+              + Nova Tarefa
             </AddTaskButton>
           </Box>
         </ContentBox>

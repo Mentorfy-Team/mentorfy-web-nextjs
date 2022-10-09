@@ -3,7 +3,6 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import {
@@ -27,39 +26,75 @@ export type TaskObject = {
   id: string;
   title: string;
   rows: TaskRow[];
-}
+};
 
 export type TaskRow = {
   id: string;
   title: string;
-}
+};
 
-const Task: React.FC<Props> = ({ data: task, onSaveTask, onSaveSubtask, onAddNewSubtask, onDeleteSubtask, onAddNewTask }) => {
+const Task: React.FC<Props> = ({
+  data: task,
+  onSaveTask,
+  onSaveSubtask,
+  onAddNewSubtask,
+  onDeleteSubtask,
+  onAddNewTask,
+}) => {
   const [openSubTask, setOpenSubTask] = React.useState(false);
   const [canEdit, setCanEdit] = React.useState(false);
   const [title, setTitle] = React.useState(task.title);
+  const [error, setError] = React.useState(false);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', borderBottom: '1px solid #424242', margin: '0 0 1rem 0' }} key={task.id}>
-
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        borderBottom: '1px solid #424242',
+        margin: '0 0 1rem 0',
+        paddingBottom: '1rem',
+      }}
+      key={task.id}
+    >
       <TaskWrapper>
         <MenuIcon />
         {canEdit ? (
           <>
-            <TaskField value={title} onChange={(e)=>setTitle(e.target.value)} label="Título" placeholder='Lorem ipsum in dolor win' />
-            <SaveButton style={{ height: '24px' }} onClick={()=>{
-              setCanEdit(false);
-              onSaveTask(title, task.id);
-            }}>Salvar</SaveButton>
-          </>)
-          : (
-            <>
-              <TaskTypography>{task.title}</TaskTypography>
-              <SaveButton style={{ height: '24px' }} onClick={()=> {
+            <TaskField
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              label="Título"
+              placeholder="Lorem ipsum in dolor win"
+              error={error && !title}
+            />
+            <SaveButton
+              style={{ height: '24px' }}
+              onClick={() => {
+                if (!title) {
+                  setError(true);
+                } else {
+                  setCanEdit(false);
+                  onSaveTask(title, task.id);
+                }
+              }}
+            >
+              Salvar
+            </SaveButton>
+          </>
+        ) : (
+          <>
+            <TaskTypography>{task.title}</TaskTypography>
+            <SaveButton
+              style={{ height: '24px' }}
+              onClick={() => {
                 setCanEdit(true);
-              }}>Editar</SaveButton>
-            </>
-          )}
+              }}
+            >
+              Editar
+            </SaveButton>
+          </>
+        )}
       </TaskWrapper>
       <Box sx={{ width: '92%', alignSelf: 'flex-end' }}>
         <Box
@@ -67,7 +102,6 @@ const Task: React.FC<Props> = ({ data: task, onSaveTask, onSaveSubtask, onAddNew
             display: 'flex',
             alignItems: 'center',
             paddingBottom: '0.6rem',
-            borderBottom: '1px solid #424242',
           }}
         >
           {openSubTask ? (
@@ -94,33 +128,36 @@ const Task: React.FC<Props> = ({ data: task, onSaveTask, onSaveSubtask, onAddNew
             }}
             onClick={() => setOpenSubTask(!openSubTask)}
           >
-            Subtarefas
+            Subtarefas ( {task.rows.length} )
           </Typography>
         </Box>
         {openSubTask ? (
           <Box>
             {task.rows.map((subtask) => (
-              <Subtask key={subtask.id} task_id={task.id} onSaveSubtask={onSaveSubtask} onDeleteSubtask={onDeleteSubtask} data={subtask}/>
+              <Subtask
+                key={subtask.id}
+                task_id={task.id}
+                onSaveSubtask={onSaveSubtask}
+                onDeleteSubtask={onDeleteSubtask}
+                data={subtask}
+              />
             ))}
-          </Box>) : ''}
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          marginRight: '1.6rem',
-        }}
-      >
-        <Divider
-          orientation="vertical"
-          sx={(theme)=>({
-            borderColor: `${theme.palette.caption.main}`,
-            height: '0.6rem',
-            marginTop: '1.7rem',
-          })}
-        />
-        <AddSTButton onClick={()=>onAddNewSubtask(task)}>+ Adicionar Subtarefa</AddSTButton>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'end',
+                textAlign: 'end',
+              }}
+            >
+              <AddSTButton onClick={() => onAddNewSubtask(task)}>
+                + Nova Subtarefa
+              </AddSTButton>
+            </Box>
+          </Box>
+        ) : (
+          ''
+        )}
       </Box>
     </Box>
   );
