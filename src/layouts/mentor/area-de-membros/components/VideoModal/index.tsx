@@ -2,8 +2,11 @@ import { useState } from 'react';
 import { Box } from '@mui/material';
 import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
+import HandleFileUpload from '~/helpers/HandleFileUpload';
 import AddImage from '../AddImage';
 import ContentBox from '../ContentBox';
+import { FileType } from '../UploadFileModal';
+import UploadToUrlFiles from '../UploadFileModal/helpers/UploadToUrlFiles';
 import Video from './components/Video';
 import { AddTaskButton } from './styles';
 
@@ -17,11 +20,18 @@ export type TaskObject = {
 const VideoModal = ({
   open,
   setOpen,
-  data: { data: videosData, title: titleData, description: descriptionData },
+  data: {
+    data: videosData,
+    title: titleData,
+    description: descriptionData,
+    extra: thumbnailData,
+  },
   onChange,
+  area_id,
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
+  const [thumbnail, setThumbnail] = useState<FileType[]>(thumbnailData || []);
   const [videos, setVideos] = useState<TaskObject[]>(
     videosData || [
       {
@@ -53,12 +63,14 @@ const VideoModal = ({
     });
   };
 
-  const handleSave = (del?: boolean) => {
+  const handleSave = async (del?: boolean) => {
+    const convertedFiles = await UploadToUrlFiles(thumbnail, area_id);
     const filterEmpty = videos.filter((task) => task.title);
-    console.log(filterEmpty);
+
     onChange({
       title,
       description,
+      extra: convertedFiles,
       data: filterEmpty,
       delete: del,
     });
@@ -71,6 +83,13 @@ const VideoModal = ({
         return _video.id !== video_id;
       });
       return [...vds];
+    });
+  };
+
+  const handleCapture = (_files: any) => {
+    console.log('filess', [_files[0]]);
+    HandleFileUpload([_files[0]], (file) => {
+      setThumbnail((oldFiles) => [...oldFiles, file]);
     });
   };
 
@@ -95,7 +114,14 @@ const VideoModal = ({
           label="Descrição"
           placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum facilisis in lobortis orci aliquet. In nisl elit sodales morbi euismod ullamcorper egestas aenean amet. Gravida penatibus massa, duis felis. Vitae, pellentesque eget nunc facilisi in dictumst. Malesuada sed condimentum viverra vel pellentesque magna."
         ></InputField>
-        <AddImage />
+        <AddImage
+          thumbnail={
+            thumbnail && thumbnail.length > 0
+              ? thumbnail[0].sourceUrl || thumbnail[0].data
+              : null
+          }
+          onUploadImage={(target) => handleCapture(target.files)}
+        />
         <ContentBox>
           {videos.map((task) => (
             <Video
