@@ -64,7 +64,6 @@ const Task: React.FC<Props> = ({ data: task, onSaveTask, onDeleteTask }) => {
             <DeleteButton
               style={{ height: '24px' }}
               onClick={() => {
-                console.log('delete', task.id);
                 onDeleteTask(task.id);
                 setCanEdit(false);
               }}

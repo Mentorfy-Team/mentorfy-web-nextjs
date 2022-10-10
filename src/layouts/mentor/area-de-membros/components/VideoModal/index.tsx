@@ -87,7 +87,6 @@ const VideoModal = ({
   };
 
   const handleCapture = (_files: any) => {
-    console.log('filess', [_files[0]]);
     HandleFileUpload([_files[0]], (file) => {
       setThumbnail((oldFiles) => [...oldFiles, file]);
     });

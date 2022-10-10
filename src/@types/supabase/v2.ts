@@ -62,6 +62,8 @@ export interface Database {
           description: string | null;
           status: boolean | null;
           data: Json | null;
+          order: number | null;
+          extra: Json | null;
         };
         Insert: {
           id?: string;
@@ -72,6 +74,8 @@ export interface Database {
           description?: string | null;
           status?: boolean | null;
           data?: Json | null;
+          order?: number | null;
+          extra?: Json | null;
         };
         Update: {
           id?: string;
@@ -82,6 +86,8 @@ export interface Database {
           description?: string | null;
           status?: boolean | null;
           data?: Json | null;
+          order?: number | null;
+          extra?: Json | null;
         };
       };
       member_area: {
