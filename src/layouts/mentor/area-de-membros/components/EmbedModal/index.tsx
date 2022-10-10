@@ -4,49 +4,72 @@ import Image from 'next/image';
 import DescriptionInputField from '~/components/atoms/DescriptionInputField';
 import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
-import { P, PasteCodeField, PlaceHolderBox, UploadTypography } from './styles';
+import { PasteCodeField, PlaceHolderBox, UploadTypography } from './styles';
 
-const EmbedModal = ({ open, setOpen, data, onChange }) => {
-  const [display, setDisplay] = useState('flex');
+const EmbedModal = ({
+  open,
+  setOpen,
+  onChange,
+  data: { title: titleData, description: descriptionData, data: EmbedData },
+}) => {
+  const [display, setDisplay] = useState(true);
+  const [title, setTitle] = useState<string>(titleData);
+  const [description, setDescription] = useState<string>(descriptionData);
+  const [embed, setEmbed] = useState<string>(EmbedData);
 
-  const PlaceHolder = () => {
-    setDisplay('none');
-  };
-
-  const PlaceHolderonBlur = () => {
-    const value = document.getElementById('placeholder').nodeValue;
-    if (value) {
-      setDisplay('none');
-    } else {
-      setDisplay('flex');
-    }
+  const handleSave = (del?: boolean) => {
+    onChange({
+      title,
+      description,
+      data: embed,
+      delete: del,
+    });
+    setOpen(false);
   };
 
   return (
-    <ModalComponent open={open} setOpen={setOpen} title="Embed">
+    <ModalComponent
+      onSave={() => handleSave()}
+      onDelete={() => handleSave(true)}
+      open={open}
+      setOpen={setOpen}
+      title="Embed"
+    >
       <>
         <InputField
+          onChange={(e) => setTitle(e.target.value)}
+          value={title}
           label="Título"
-          placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+          placeholder=""
         ></InputField>
         <DescriptionInputField
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
           label="Campo de Texto Aberto"
-          placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum facilisis in lobortis orci aliquet. In nisl elit sodales morbi euismod ullamcorper egestas aenean amet. Gravida penatibus massa, duis felis. Vitae, pellentesque eget nunc facilisi in dictumst. Malesuada sed condimentum viverra vel pellentesque magna."
+          placeholder=""
         />
         <Box>
-          <PlaceHolderBox sx={{ display: `${display}` }}>
-            <Image alt="" width={30} height={30} src="/svgs/embed.svg"></Image>
-            <UploadTypography>Cole seu código aqui</UploadTypography>
-            <P>Tamanho máximo de 500mb por arquivo</P>
-          </PlaceHolderBox>
+          {display && (!embed || embed?.length === 0) && (
+            <PlaceHolderBox>
+              <Image
+                alt=""
+                width={30}
+                height={30}
+                src="/svgs/embed.svg"
+              ></Image>
+              <UploadTypography>Cole seu código aqui</UploadTypography>
+            </PlaceHolderBox>
+          )}
           <PasteCodeField
             id="placeholder"
-            onFocus={PlaceHolder}
-            onBlur={PlaceHolderonBlur}
+            value={embed}
+            onFocus={() => setDisplay(false)}
+            onBlur={() => embed && embed?.length > 0 && setDisplay(true)}
+            onChange={(e) => setEmbed(e.target.value)}
             className="text-field"
             label="Campo de Texto Aberto"
             multiline
-            maxRows={10}
+            maxRows={20}
             color="secondary"
             InputLabelProps={{
               shrink: true,
