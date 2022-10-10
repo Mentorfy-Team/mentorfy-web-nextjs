@@ -10,7 +10,7 @@ import { AddTaskButton } from './styles';
 const ChecklistModal = ({
   open,
   setOpen,
-  data: { tasks: taskData, title: titleData, description: descriptionData },
+  data: { data: taskData, title: titleData, description: descriptionData },
   onChange,
 }) => {
   const [title, setTitle] = useState(titleData);
@@ -80,6 +80,13 @@ const ChecklistModal = ({
     });
   };
 
+  const onDeleteTask = (task_id: string) => {
+    setTasks((oldTasks) => {
+      const ts = oldTasks.filter((_task) => _task.id !== task_id);
+      return [...ts];
+    });
+  };
+
   return (
     <ModalComponent
       open={open}
@@ -97,7 +104,7 @@ const ChecklistModal = ({
         onChange({
           title,
           description,
-          tasks: filterEmpty,
+          data: filterEmpty,
         });
         setOpen(false);
       }}
@@ -127,7 +134,7 @@ const ChecklistModal = ({
               }
               onAddNewSubtask={(task) => addNewSubTask(task)}
               onDeleteSubtask={(task_id, id) => deleteSubtask(task_id, id)}
-              onAddNewTask={() => addNewTask()}
+              onDeleteTask={(id) => onDeleteTask(id)}
             />
           ))}
           <Box

@@ -9,7 +9,7 @@ const AddImage: FC = () => {
   const theme = useTheme();
   return (
     <Box sx={{ display: 'flex' }}>
-      <Image alt="" src="/svgs/step-image.svg" width={70} height={70}></Image>
+      <Image alt="" src="/svgs/step-image.svg" width={100} height={100}></Image>
       <Box
         sx={{
           textAlign: 'left',

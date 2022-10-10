@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import {
   AddSTButton,
+  DeleteButton,
   SaveButton,
   TaskField,
   TaskTypography,
@@ -20,7 +21,7 @@ type Props = {
   onSaveSubtask: (_title: string, task_id: string, id: string) => void;
   onAddNewSubtask: (data: TaskObject) => void;
   onDeleteSubtask: (task_id: string, id: string) => void;
-  onAddNewTask: () => void;
+  onDeleteTask: (id: string) => void;
 };
 export type TaskObject = {
   id: string;
@@ -39,7 +40,7 @@ const Task: React.FC<Props> = ({
   onSaveSubtask,
   onAddNewSubtask,
   onDeleteSubtask,
-  onAddNewTask,
+  onDeleteTask,
 }) => {
   const [openSubTask, setOpenSubTask] = React.useState(false);
   const [canEdit, setCanEdit] = React.useState(false);
@@ -81,6 +82,16 @@ const Task: React.FC<Props> = ({
             >
               Salvar
             </SaveButton>
+            <DeleteButton
+              style={{ height: '24px' }}
+              onClick={() => {
+                setCanEdit(false);
+                onDeleteTask(task.id);
+                // TODO: Delete subtask
+              }}
+            >
+              Excluir
+            </DeleteButton>
           </>
         ) : (
           <>
