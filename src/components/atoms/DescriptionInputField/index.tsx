@@ -5,13 +5,14 @@ import { TextFieldProps } from '@mui/material/TextField/TextField';
 import { MUIStyledCommonProps } from '@mui/system';
 import { TextField } from './styles';
 
-const DescriptionInputField: FC<TextFieldProps & MUIStyledCommonProps<Theme>> = (
-  props,
-) => {
+const DescriptionInputField: FC<
+  TextFieldProps & MUIStyledCommonProps<Theme>
+> = (props) => {
   return (
     <TextField
+      minRows={5}
       multiline
-      maxRows={4}
+      maxRows={100}
       color="secondary"
       InputLabelProps={{
         shrink: true,

@@ -1,32 +1,47 @@
-import Box from '@mui/material/Box';
-import Image from 'next/image';
+import { useState } from 'react';
 import DescriptionInputField from '~/components/atoms/DescriptionInputField';
 import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
-import { Label, P, UploadInput, UploadTypography } from './styles';
 
-const OpenTextFieldModal = ({ open, setOpen, data, onChange }) => {
+const OpenTextFieldModal = ({
+  open,
+  setOpen,
+  onChange,
+  data: { title: titleData, description: descriptionData },
+}) => {
+  const [title, setTitle] = useState(titleData);
+  const [description, setDescription] = useState(descriptionData);
+
+  const handleSave = (del?: boolean) => {
+    onChange({
+      title,
+      description,
+      delete: del,
+    });
+    setOpen(false);
+  };
+
   return (
-    <ModalComponent open={open} setOpen={setOpen} title="Campo de Texto Aberto">
+    <ModalComponent
+      onDelete={() => handleSave(true)}
+      onSave={() => handleSave()}
+      open={open}
+      setOpen={setOpen}
+      title="Campo de Texto Aberto"
+    >
       <>
         <InputField
           label="Título"
-          placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+          placeholder=""
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <DescriptionInputField
           label="Campo de Texto Aberto"
-          placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum facilisis in lobortis orci aliquet. In nisl elit sodales morbi euismod ullamcorper egestas aenean amet. Gravida penatibus massa, duis felis. Vitae, pellentesque eget nunc facilisi in dictumst. Malesuada sed condimentum viverra vel pellentesque magna."
+          placeholder="Digite seu texto aqui."
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
         />
-        <Box>
-          <Label htmlFor="arquivo">
-            <Image alt="upload" width={58} height={39} src="/svgs/upload.svg" />
-            <UploadTypography>
-              Solte os arquivos para fazer upload
-            </UploadTypography>
-            <P>Tamanho máximo de 500mb por arquivo</P>
-          </Label>
-          <UploadInput type="file" name="arquivo" id="arquivo"></UploadInput>
-        </Box>
       </>
     </ModalComponent>
   );

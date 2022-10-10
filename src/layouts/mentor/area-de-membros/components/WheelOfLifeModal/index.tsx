@@ -1,10 +1,6 @@
-// import { useState } from 'react';
-// import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import DescriptionInputField from '~/components/atoms/DescriptionInputField';
@@ -13,64 +9,95 @@ import ModalComponent from '~/components/modules/Modal';
 import ContentBox from '../ContentBox';
 import { AreasBox } from './styles';
 
-const WheelOfLifeModal = ({ open, setOpen, data, onChange }) => {
+const WheelAreas = [
+  {
+    id: 0,
+    name: 'CONTRIBUIÇÃO SOCIAL',
+    checked: true,
+  },
+  {
+    id: 1,
+    name: 'DESENVOLVMENTO INTELECTUAL',
+    checked: true,
+  },
+  {
+    id: 2,
+    name: 'EQUILÍBRIO EMOCIONAL',
+    checked: true,
+  },
+  {
+    id: 3,
+    name: 'ESPIRITUALIDADE',
+    checked: true,
+  },
+  {
+    id: 4,
+    name: 'FAMÍLIA',
+    checked: true,
+  },
+  {
+    id: 5,
+    name: 'LAZER E HOBBIES',
+    checked: true,
+  },
+  {
+    id: 6,
+    name: 'PLENITUDE FINANCEIRA',
+    checked: true,
+  },
+  {
+    id: 7,
+    name: 'REALIZAÇÃO DE PROPÓSITO',
+    checked: true,
+  },
+  {
+    id: 8,
+    name: 'RELACIONAMENTO AMOROSO',
+    checked: true,
+  },
+  {
+    id: 9,
+    name: 'SAÚDE E CONDIÇÃO FÍSICA',
+    checked: true,
+  },
+  {
+    id: 10,
+    name: 'SAÚDE FINANCEIRA',
+    checked: true,
+  },
+  {
+    id: 11,
+    name: 'VIDA SOCIAL E AMIZADE',
+    checked: true,
+  },
+];
+
+const WheelOfLifeModal = ({
+  open,
+  setOpen,
+  onChange,
+  data: {
+    title: titleData,
+    description: descriptionData,
+    data: checkWheelData,
+  },
+}) => {
   const theme = useTheme();
+  const [title, setTitle] = useState(titleData);
+  const [description, setDescription] = useState(descriptionData);
+  const [checkWheel, setCheckWheel] = useState<typeof WheelAreas>(
+    checkWheelData || WheelAreas,
+  );
 
-  // const [open, setOpen] = useState(true);
-
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
-
-  const WheelAreas = [
-    {
-      id: 0,
-      name: 'CONTRIBUIÇÃO SOCIAL',
-    },
-    {
-      id: 0,
-      name: 'DESENVOLVMENTO INTELECTUAL',
-    },
-    {
-      id: 0,
-      name: 'EQUILÍBRIO EMOCIONAL',
-    },
-    {
-      id: 0,
-      name: 'ESPIRITUALIDADE',
-    },
-    {
-      id: 0,
-      name: 'FAMÍLIA',
-    },
-    {
-      id: 0,
-      name: 'LAZER E HOBBIES',
-    },
-    {
-      id: 0,
-      name: 'PLENITUDE FINANCEIRA',
-    },
-    {
-      id: 0,
-      name: 'REALIZAÇÃO DE PROPÓSITO',
-    },
-    {
-      id: 0,
-      name: 'RELACIONAMENTO AMOROSO',
-    },
-    {
-      id: 0,
-      name: 'SAÚDE E CONDIÇÃO FÍSICA',
-    },
-    {
-      id: 0,
-      name: 'SAÚDE FINANCEIRA',
-    },
-    {
-      id: 0,
-      name: 'VIDA SOCIAL E AMIZADE',
-    },
-  ];
+  const handleSave = (del?: boolean) => {
+    onChange({
+      title,
+      description,
+      data: checkWheel,
+      delete: del,
+    });
+    setOpen(false);
+  };
 
   function BpCheckbox(props: CheckboxProps) {
     return (
@@ -91,37 +118,51 @@ const WheelOfLifeModal = ({ open, setOpen, data, onChange }) => {
   }
 
   return (
-    <ModalComponent open={open} setOpen={setOpen} title="Roda da Vida">
+    <ModalComponent
+      onSave={() => handleSave()}
+      onDelete={() => handleSave(true)}
+      open={open}
+      setOpen={setOpen}
+      title="Roda da Vida"
+    >
       <>
         <InputField
           label="Título"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
           placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
         />
         <DescriptionInputField
           label="Descrição"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
           placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum facilisis in lobortis orci aliquet. In nisl elit sodales morbi euismod ullamcorper egestas aenean amet. Gravida penatibus massa, duis felis. Vitae, pellentesque eget nunc facilisi in dictumst. Malesuada sed condimentum viverra vel pellentesque magna."
         />
         <ContentBox>
           <>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.1rem' }}>
-              <IconButton sx={{ color: 'gray', width: '40px', height: '40px' }}>
-                <ExpandMoreIcon />
-              </IconButton>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.1rem',
+                marginBottom: '1rem',
+              }}
+            >
               <Typography sx={{ fontSize: '1rem', fontWeight: '600' }}>
                 Áreas da Roda da Vida
               </Typography>
             </Box>
-            <Divider
-              sx={{
-                borderColor: '#6e6e6e55',
-                marginBottom: '0.5rem',
-                width: '90%',
-                float: 'right',
-              }}
-            />
-            {WheelAreas.map((index) => (
+            {console.log(checkWheel)}
+            {checkWheel.map((index) => (
               <AreasBox key={index.id}>
-                <BpCheckbox defaultChecked />
+                <BpCheckbox
+                  checked={index.checked}
+                  onChange={(e) => {
+                    const newCheckWheel = [...checkWheel];
+                    newCheckWheel[index.id].checked = e.target.checked;
+                    setCheckWheel(newCheckWheel);
+                  }}
+                />
                 <Typography
                   sx={{ fontSize: '0.7rem', fontWeight: '300', opacity: '0.8' }}
                 >
