@@ -12,7 +12,7 @@ export function useMemberAreaTools(id) {
     },
   );
   return {
-    tools: data.sort((a, b) => a.order - b.order),
+    tools: data ? data.sort((a, b) => a.order - b.order) : null,
     isLoading: !error && !data,
     isError: error,
   };

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Tabbar from '../Tabbar';
 import { TabItem } from '../Tabbar/styles';
@@ -10,16 +10,23 @@ type Props = {
 
 const Toolbar: React.FC<Props> = ({ onChange = () => {}, tabs = [] }) => {
   const [tabindex, setTabindex] = React.useState(0);
-  const hasmargintop = useRouter().pathname === '/mentorado/kanban';
+  const [hasmargintop, setHasMarginTop] = useState(false);
+  const route = useRouter();
 
   useEffect(() => {
     onChange(tabindex);
   }, [onChange, tabindex]);
 
+  useEffect(() => {
+    if (route.pathname.includes('mentorado')) {
+      setHasMarginTop(true);
+    }
+  }, [route]);
+
   return (
     <Tabbar
       forpage
-      hasmargintop={true}
+      hasmargintop={hasmargintop}
       onChange={(_, value) => setTabindex(value)}
       selected={tabindex}
     >
