@@ -151,6 +151,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
     case ToolListNames.Video.name:
       return (
         <Video
+          multivideos={false}
           area_id={area_id}
           data={data}
           open={open}

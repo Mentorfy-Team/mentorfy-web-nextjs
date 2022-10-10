@@ -10,8 +10,8 @@ import Video from './components/Video';
 import { AddTaskButton } from './styles';
 
 export type TaskObject = {
-  id: string;
-  title: string;
+  id?: string;
+  title?: string;
   description?: string;
   link?: string;
 };
@@ -27,6 +27,7 @@ const VideoModal = ({
   },
   onChange,
   area_id,
+  multivideos,
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
@@ -97,7 +98,7 @@ const VideoModal = ({
       onDelete={() => handleSave(true)}
       open={open}
       setOpen={setOpen}
-      title="Upload de Vídeos"
+      title="Upload de Vídeo"
     >
       <>
         <InputField
@@ -116,7 +117,18 @@ const VideoModal = ({
           thumbnail={thumbnail ? thumbnail.data || thumbnail.sourceUrl : null}
           onUploadImage={(target) => handleCapture(target.files)}
         />
-        <ContentBox>
+        { !multivideos && (
+          <InputField
+            required
+            label="Link"
+            placeholder="https://youtube.com.br/xyz"
+            value={videos[0].link}
+            onChange={(e) =>
+              setVideos([{link: e.target.value}])
+            }
+          ></InputField>
+        ) }
+        { multivideos && <ContentBox>
           {videos.map((task) => (
             <Video
               key={task.id}
@@ -139,7 +151,7 @@ const VideoModal = ({
               + Adicionar Vídeo
             </AddTaskButton>
           </Box>
-        </ContentBox>
+        </ContentBox>}
       </>
     </ModalComponent>
   );
