@@ -5,7 +5,6 @@ import ModalComponent from '~/components/modules/Modal';
 import HandleFileUpload from '~/helpers/HandleFileUpload';
 import AddImage from '../AddImage';
 import ContentBox from '../ContentBox';
-import { FileType } from '../UploadFileModal';
 import UploadToUrlFiles from '../UploadFileModal/helpers/UploadToUrlFiles';
 import Video from './components/Video';
 import { AddTaskButton } from './styles';
@@ -31,7 +30,7 @@ const VideoModal = ({
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
-  const [thumbnail, setThumbnail] = useState<FileType[]>(thumbnailData || []);
+  const [thumbnail, setThumbnail] = useState<any>(thumbnailData);
   const [videos, setVideos] = useState<TaskObject[]>(
     videosData || [
       {
@@ -64,13 +63,13 @@ const VideoModal = ({
   };
 
   const handleSave = async (del?: boolean) => {
-    const convertedFiles = await UploadToUrlFiles(thumbnail, area_id);
+    const convertedFiles = await UploadToUrlFiles([thumbnail], area_id);
     const filterEmpty = videos.filter((task) => task.title);
 
     onChange({
       title,
       description,
-      extra: convertedFiles,
+      extra: convertedFiles[0],
       data: filterEmpty,
       delete: del,
     });
@@ -87,8 +86,8 @@ const VideoModal = ({
   };
 
   const handleCapture = (_files: any) => {
-    HandleFileUpload([_files[0]], (file) => {
-      setThumbnail((oldFiles) => [...oldFiles, file]);
+    HandleFileUpload([_files['0']], (file) => {
+      setThumbnail(file);
     });
   };
 
@@ -114,11 +113,7 @@ const VideoModal = ({
           placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum facilisis in lobortis orci aliquet. In nisl elit sodales morbi euismod ullamcorper egestas aenean amet. Gravida penatibus massa, duis felis. Vitae, pellentesque eget nunc facilisi in dictumst. Malesuada sed condimentum viverra vel pellentesque magna."
         ></InputField>
         <AddImage
-          thumbnail={
-            thumbnail && thumbnail.length > 0
-              ? thumbnail[0].sourceUrl || thumbnail[0].data
-              : null
-          }
+          thumbnail={thumbnail ? thumbnail.data || thumbnail.sourceUrl : null}
           onUploadImage={(target) => handleCapture(target.files)}
         />
         <ContentBox>

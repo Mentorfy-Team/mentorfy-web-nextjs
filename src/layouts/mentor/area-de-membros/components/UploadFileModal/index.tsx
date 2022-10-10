@@ -78,11 +78,16 @@ const FilesUploadModal = ({
   };
 
   const getImage = (file) => {
+    const isDataImage = file.data?.search('(http(s?):)*.(?:jpg|gif|png)');
+    const isSourceImage = file.sourceUrl?.search(
+      '(http(s?):)*.(?:jpg|gif|png)',
+    );
+
     if (
-      (file.data?.search('(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png)') ||
-        file.sourceUrl
-          ?.toString()
-          ?.search('(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png)')) !== -1
+      isDataImage !== -1 &&
+      isSourceImage !== -1 &&
+      isDataImage !== 'undefined' &&
+      isSourceImage !== 'undefined'
     ) {
       return file.data || file.sourceUrl;
     }

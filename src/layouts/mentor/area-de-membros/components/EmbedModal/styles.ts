@@ -63,5 +63,5 @@ export const PlaceHolderBox = styled(Box)`
   flex-direction: column;
   left: calc(50% - 70px);
   position: absolute;
-  top: calc(55% + 10px);
+  top: calc(25% + 10px);
 `;

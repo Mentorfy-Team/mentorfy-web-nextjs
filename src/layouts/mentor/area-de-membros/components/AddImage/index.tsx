@@ -29,7 +29,7 @@ const AddImage: FC<Props> = ({ onUploadImage, thumbnail }) => {
         }}
       >
         <Typography sx={{ fontWeight: '700', fontSize: '1rem' }}>
-          Thumbnail
+          Banner
         </Typography>
         <Typography sx={{ opacity: '0.4', fontSize: '0.8rem' }}>
           Recomendação: 70x70 pixels

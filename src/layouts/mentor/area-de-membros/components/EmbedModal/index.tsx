@@ -48,7 +48,7 @@ const EmbedModal = ({
           label="Campo de Texto Aberto"
           placeholder=""
         />
-        <Box>
+        <Box sx={{ position: 'relative' }}>
           {display && (!embed || embed?.length === 0) && (
             <PlaceHolderBox>
               <Image
@@ -64,10 +64,12 @@ const EmbedModal = ({
             id="placeholder"
             value={embed}
             onFocus={() => setDisplay(false)}
-            onBlur={() => embed && embed?.length > 0 && setDisplay(true)}
+            onBlur={() =>
+              !embed || embed?.length === 0 ? setDisplay(true) : null
+            }
             onChange={(e) => setEmbed(e.target.value)}
             className="text-field"
-            label="Campo de Texto Aberto"
+            label="Embed Code"
             multiline
             maxRows={20}
             color="secondary"

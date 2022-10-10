@@ -112,9 +112,8 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
   }, [currentModal, open, id]);
 
   const handleSave = useCallback(async () => {
+    // timout para dar tempo para as imagens se organizarem
     setTimeout(async function () {
-      const data = steps[0].rows[2].data;
-      console.log(data);
       await UpdateMemberAreaTools(id, steps[0].rows);
     }, 1000);
   }, [id, steps]);
