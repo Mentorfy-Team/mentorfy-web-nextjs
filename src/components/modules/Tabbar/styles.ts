@@ -5,12 +5,18 @@ import Tabs from '@mui/material/Tabs';
 type Props = {
   withborder?: boolean;
   forpage?: boolean;
+  hasmargintop?: boolean;
 };
 
 export const TabWrapper = styled(Tabs)<Props>`
   margin-bottom: 1rem;
   margin-top: -7px;
   min-height: 2.8rem;
+  ${({ hasmargintop }) =>
+    hasmargintop &&
+    css`
+      margin-top: 50px;
+    `}
   * {
     color: white !important;
   }

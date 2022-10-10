@@ -3,6 +3,7 @@ import { TabWrapper } from './styles';
 type props = {
   withborder?: boolean;
   forpage?: boolean;
+  hasmargintop?: boolean;
   children?: any;
   selected: number;
   onChange: (event: React.ChangeEvent<any>, newValue: number) => void;
@@ -14,6 +15,7 @@ const Tabbar: React.FC<props> = ({
   onChange,
   withborder,
   forpage,
+  hasmargintop,
 }) => {
   return (
     <TabWrapper
@@ -21,6 +23,7 @@ const Tabbar: React.FC<props> = ({
       withborder={withborder}
       value={selected}
       onChange={onChange}
+      hasmargintop={hasmargintop}
     >
       {children}
     </TabWrapper>
