@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import { useState } from 'react';
 import { Close } from '@mui/icons-material';
 import Box from '@mui/material/Box';
@@ -60,7 +61,6 @@ const FilesUploadModal = ({
 
   const handleSave = async (del?: boolean) => {
     const convertedFiles = await UploadToUrlFiles(files, area_id);
-
     onChange({
       title,
       description,
@@ -75,6 +75,18 @@ const FilesUploadModal = ({
     HandleFileUpload(_files, (file) => {
       setFiles((oldFiles) => [...oldFiles, file]);
     });
+  };
+
+  const getImage = (file) => {
+    if (
+      (file.data?.search('(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png)') ||
+        file.sourceUrl
+          ?.toString()
+          ?.search('(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png)')) !== -1
+    ) {
+      return file.data || file.sourceUrl;
+    }
+    return '/images/file.png';
   };
 
   return (
@@ -129,26 +141,13 @@ const FilesUploadModal = ({
               }}
               width={54}
             >
-              {file.data?.search('(http(s?):)([/|.|w|s|-])*.(?:jpg|gif|png)') ||
-              file.sourceUrl?.search(
-                '(http(s?):)([/|.|w|s|-])*.(?:jpg|gif|png)',
-              ) ? (
-                <Image
-                  alt={file.name}
-                  width={54}
-                  height={46}
-                  src={file.sourceUrl || file.data}
-                  objectFit="cover"
-                />
-              ) : (
-                <Box
-                  width={54}
-                  height={46}
-                  sx={(theme) => ({
-                    backgroundColor: theme.palette.caption.main,
-                  })}
-                />
-              )}
+              <Image
+                alt={file.name}
+                width={54}
+                height={46}
+                src={getImage(file)}
+                objectFit="contain"
+              />
               <AttachName>{file.name}</AttachName>
               <RemoveBox onClick={() => handleRemoveFile(file)}>
                 <Close

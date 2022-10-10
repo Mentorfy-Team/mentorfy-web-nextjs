@@ -112,7 +112,11 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
   }, [currentModal, open, id]);
 
   const handleSave = useCallback(async () => {
-    await UpdateMemberAreaTools(id, steps[0].rows);
+    setTimeout(async function () {
+      const data = steps[0].rows[2].data;
+      console.log(data);
+      await UpdateMemberAreaTools(id, steps[0].rows);
+    }, 1000);
   }, [id, steps]);
 
   // refId é enviado automaticamente antes de chegar aqui.
