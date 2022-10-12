@@ -25,7 +25,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   const supabase = CreateSupabaseWithAuth(req);
   const { data: product, error } = await supabase
     .from('product')
-    .select('*')
+    .select('*, member_area!member_area_id_fkey(*)')
     .eq('id', req.query.id)
     .single();
 

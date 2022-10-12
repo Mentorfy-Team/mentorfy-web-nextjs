@@ -51,20 +51,22 @@ const globalStyles = css`
     }
   }
   @media (min-width: 600px) {
-    ::-webkit--scrollbar {
+    ::-webkit-scrollbar {
       width: 12px;
       height: 12px;
     }
-    ::-webkit--scrollbar-track {
-      border: 1px solid #6e6e6e;
+    ::-webkit-scrollbar-track {
+      border: 1px solid #4d4d4d;
       border-radius: 10px;
     }
-    ::-webkit--scrollbar-thumb {
-      background: #6e6e6e;
-      border-radius: 10px;
+    ::-webkit-scrollbar-thumb {
+      border: 2px solid transparent;
+      border-radius: 100px;
+      background-color: #4d4d4d;
+      background-clip: content-box;
     }
-    ::-webkit--scrollbar-thumb:hover {
-      background: #6e6e6e;
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4d4d4d;
     }
     *,
     *:before,

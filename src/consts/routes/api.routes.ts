@@ -17,6 +17,7 @@ export enum ApiRoutes {
   member_areas_list = '/api/member-areas/list',
   member_areas_tool = '/api/member-areas/tool',
   member_areas_tool_list = '/api/member-areas/tool/list',
+  member_areas_type_list = '/api/member-areas/type/list',
 
   //* Rotas para api de autenticação
   auth = '/api/auth',

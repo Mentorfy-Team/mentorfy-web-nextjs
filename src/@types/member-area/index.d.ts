@@ -13,6 +13,11 @@ declare namespace MemberAreaTypes {
     clients: number;
   };
 
+  type Type = {
+    id: string;
+    name: string;
+  };
+
   type Tool = typeof Database.public.Tables.mentor_tool.Row;
   namespace Post {
     interface Request extends ExternalModules.Next.NextApiRequest {
