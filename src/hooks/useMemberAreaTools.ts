@@ -4,16 +4,18 @@ import { ApiRoutes } from '~/consts/routes/api.routes';
 import { fetcher } from '~/hooks/fetcher';
 
 export function useMemberAreaTools(id) {
-  const { data, error } = useSWR<DnDRow[]>(
+  const { data, error, mutate } = useSWR<DnDRow[]>(
     `${ApiRoutes.member_areas_tool_list}?id=${id}`,
     fetcher,
     {
       fallbackData: [],
     },
   );
+
   return {
     tools: data ? data.sort((a, b) => a.order - b.order) : null,
     isLoading: !error && !data,
     isError: error,
+    mutate,
   };
 }

@@ -152,7 +152,6 @@ const WheelOfLifeModal = ({
                 Áreas da Roda da Vida
               </Typography>
             </Box>
-            {console.log(checkWheel)}
             {checkWheel.map((index) => (
               <AreasBox key={index.id}>
                 <BpCheckbox

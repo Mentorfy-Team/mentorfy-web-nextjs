@@ -40,6 +40,9 @@ const VideoModal = ({
       },
     ],
   );
+  const [singleVideo, setSingleVideo] = useState<{ link: string }>(
+    multivideos ? '' : videosData,
+  );
 
   const addNewTask = () => {
     const newVideos = {
@@ -65,13 +68,15 @@ const VideoModal = ({
 
   const handleSave = async (del?: boolean) => {
     const convertedFiles = await UploadToUrlFiles([thumbnail], area_id);
-    const filterEmpty = videos.filter((task) => task.title);
+    const filterEmpty = multivideos
+      ? videos.filter((task) => task.title)
+      : null;
 
     onChange({
       title,
       description,
       extra: convertedFiles[0],
-      data: filterEmpty,
+      data: multivideos ? filterEmpty : singleVideo,
       delete: del,
     });
     setOpen(false);
@@ -117,41 +122,41 @@ const VideoModal = ({
           thumbnail={thumbnail ? thumbnail.data || thumbnail.sourceUrl : null}
           onUploadImage={(target) => handleCapture(target.files)}
         />
-        { !multivideos && (
+        {!multivideos && (
           <InputField
             required
             label="Link"
             placeholder="https://youtube.com.br/xyz"
-            value={videos[0].link}
-            onChange={(e) =>
-              setVideos([{link: e.target.value}])
-            }
+            value={singleVideo.link}
+            onChange={(e) => setSingleVideo({ link: e.target.value })}
           ></InputField>
-        ) }
-        { multivideos && <ContentBox>
-          {videos.map((task) => (
-            <Video
-              key={task.id}
-              data={task}
-              onSaveTask={(id, _title, _description, _link) =>
-                onVideoChange(id, _title, _description, _link)
-              }
-              onDeleteTask={(id) => onDeleteTask(id)}
-            />
-          ))}
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              marginRight: '1.6rem',
-            }}
-          >
-            <AddTaskButton onClick={() => addNewTask()}>
-              + Adicionar Vídeo
-            </AddTaskButton>
-          </Box>
-        </ContentBox>}
+        )}
+        {multivideos && (
+          <ContentBox>
+            {videos.map((task) => (
+              <Video
+                key={task.id}
+                data={task}
+                onSaveTask={(id, _title, _description, _link) =>
+                  onVideoChange(id, _title, _description, _link)
+                }
+                onDeleteTask={(id) => onDeleteTask(id)}
+              />
+            ))}
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                marginRight: '1.6rem',
+              }}
+            >
+              <AddTaskButton onClick={() => addNewTask()}>
+                + Adicionar Vídeo
+              </AddTaskButton>
+            </Box>
+          </ContentBox>
+        )}
       </>
     </ModalComponent>
   );

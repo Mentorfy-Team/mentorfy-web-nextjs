@@ -4,7 +4,6 @@ import { HttpClient } from './HttpClient';
 
 export const UpdateMemberAreaTools = async (id: string, tools: DnDRow[]) => {
   // para cada tool salva a ordem na propriedade order
-  console.log('tools', tools[2].title, tools[2].data);
   tools.forEach((tool, index) => {
     tool.order = index;
   });

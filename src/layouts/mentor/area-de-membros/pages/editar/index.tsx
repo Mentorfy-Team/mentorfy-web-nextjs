@@ -56,7 +56,7 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
   const theme = useTheme();
   const Image = '/svgs/step-image.svg';
 
-  const { tools } = useMemberAreaTools(id);
+  const { tools, mutate } = useMemberAreaTools(id);
 
   useEffect(() => {
     setSteps((oldSteps) => {
@@ -69,7 +69,7 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
     (title, description, type) => {
       const newStep = {
         id: Math.random() + '',
-        title: 'Minha tarefa ' + (steps.length + 1),
+        title: 'Nova etapa ' + (steps[0].rows.length + 1),
         type,
       };
 
@@ -80,7 +80,7 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
         return [...oldSteps];
       });
     },
-    [steps.length],
+    [steps],
   );
 
   const hadleOpenToolsModal = useCallback(() => {
@@ -115,6 +115,7 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
     // timout para dar tempo para as imagens se organizarem
     setTimeout(async function () {
       await UpdateMemberAreaTools(id, steps[0].rows);
+      mutate();
     }, 1000);
   }, [id, steps]);
 
@@ -146,7 +147,9 @@ const EditarMentoria: FC<Props> = ({ data, id }) => {
 
   const hasChanges = useCallback(() => {
     // verifica se todos os elementos do array são iguais
-    return JSON.stringify(tools) !== JSON.stringify(steps[0].rows);
+    const haschanges = JSON.stringify(tools) !== JSON.stringify(steps[0].rows);
+
+    return haschanges;
   }, [steps, tools]);
 
   return (

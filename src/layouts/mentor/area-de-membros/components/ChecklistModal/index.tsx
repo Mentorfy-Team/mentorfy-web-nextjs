@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
 import DescriptionInputField from '~/components/atoms/DescriptionInputField';
 import InputField from '~/components/atoms/InputField';
@@ -31,14 +31,14 @@ const ChecklistModal = ({
     ],
   );
 
-  const addNewTask = () => {
+  const addNewTask = useCallback(() => {
     const newTask = {
       id: Math.random() + '',
-      title: 'Minha tarefa ' + (tasks.length + 1),
+      title: 'Nova tarefa ' + (tasks.length + 1),
       rows: [],
     };
     setTasks([...tasks, newTask]);
-  };
+  }, [tasks]);
 
   const addNewSubTask = ({ id }) => {
     const newSubTask = {
@@ -87,27 +87,31 @@ const ChecklistModal = ({
     });
   };
 
+  const handleSave = (del?: boolean) => {
+    const filterEmpty = tasks
+      .filter((task) => task.title)
+      .map((task) => {
+        const rows = task.rows.filter((row) => row.title);
+        return {
+          ...task,
+          rows,
+        };
+      });
+    onChange({
+      title,
+      description,
+      data: filterEmpty,
+      delete: del,
+    });
+    setOpen(false);
+  };
+
   return (
     <ModalComponent
       open={open}
       setOpen={setOpen}
-      onSave={() => {
-        const filterEmpty = tasks
-          .filter((task) => task.title)
-          .map((task) => {
-            const rows = task.rows.filter((row) => row.title);
-            return {
-              ...task,
-              rows,
-            };
-          });
-        onChange({
-          title,
-          description,
-          data: filterEmpty,
-        });
-        setOpen(false);
-      }}
+      onSave={() => handleSave()}
+      onDelete={() => handleSave(true)}
       title="Checklist"
     >
       <>
