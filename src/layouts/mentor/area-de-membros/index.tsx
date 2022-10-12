@@ -7,41 +7,60 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/future/image';
+import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
-import { PublicRoutes } from '~/consts';
-import { useMemberAreas } from '~/hooks/useMemberAreas';
+import { MentorRoutes, PublicRoutes } from '~/consts';
+import { useProducts } from '~/hooks/useProducts';
 import { GetProfile } from '~/services/profile.service';
-import { CreatAreaButton, EmptyBox, ImageButton } from './styles';
-import SvgComponent from '~/../public/svgs/clients';
+import { EmptyBox, ImageButton } from './styles';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
-  const { memberAreas } = useMemberAreas(user.id);
+  const { products } = useProducts(user.id);
   const isMobile = useMediaQuery('(max-width: 600px)');
   const creatNewMembersArea = isMobile ? '' : 'Criar nova área de membros';
   const theme = useTheme();
+  const router = useRouter();
 
   return (
     <>
-      <Toolbar tabs={['Ativos']} />
+      <Toolbar tabs={['Áreas Ativas']} />
       <ContentWidthLimit maxWidth={1250}>
         <Box>
           <Box sx={{ float: 'left' }}>
             <Typography>Minhas Mentorias</Typography>
           </Box>
-          <Box sx={{ float: 'right' }}>
+          {/* <Box sx={{ float: 'right' }}>
             <CreatAreaButton variant="outlined">
               <SvgComponent fill={theme.palette.accent.main} />
               {creatNewMembersArea}
             </CreatAreaButton>
-          </Box>
+          </Box> */}
         </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'row', overflow: 'auto' }}>
-          {memberAreas.map((area, index) => (
-            <Box minWidth={300} mr={4} key={index} sx={{ cursor: 'pointer' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            overflow: 'auto',
+            gap: '2rem',
+            marginTop: '1.5rem',
+          }}
+        >
+          {products.map((area, index) => (
+            <Box
+              onClick={() =>
+                router.push(MentorRoutes.members_area_editar + '/' + area.id)
+              }
+              key={index}
+              sx={{ cursor: 'pointer' }}
+            >
               <Image
                 alt=""
-                src="/images/area-de-membros.png"
+                src={area.main_image}
+                style={{
+                  objectFit: 'cover',
+                  borderRadius: '0.5rem',
+                }}
                 width={246}
                 height={244}
               />
