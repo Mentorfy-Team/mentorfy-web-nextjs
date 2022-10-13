@@ -17,9 +17,6 @@ import { EmptyBox, ImageButton } from './styles';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   const { products } = useProducts(user.id);
-  const isMobile = useMediaQuery('(max-width: 600px)');
-  const creatNewMembersArea = isMobile ? '' : 'Criar nova área de membros';
-  const theme = useTheme();
   const router = useRouter();
 
   return (
@@ -46,7 +43,7 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
             marginTop: '1.5rem',
           }}
         >
-          {products.map((area, index) => (
+          {products?.map((area, index) => (
             <Box
               onClick={() =>
                 router.push(MentorRoutes.members_area_editar + '/' + area.id)

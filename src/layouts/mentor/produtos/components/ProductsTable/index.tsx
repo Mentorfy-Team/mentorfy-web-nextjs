@@ -73,18 +73,15 @@ const ProductsTable = ({ rows }: { rows: ProductClient.Product[] }) => {
       status,
       id,
     }: ProductClient.Product): Data => {
-      const link = access_link ? access_link : MentorRoutes.products_edit + '/' + id;
+      const link = access_link
+        ? access_link
+        : MentorRoutes.members_area_editar + '/' + id;
       return {
         title,
         price,
         memberArea:
           deliver !== 'signup' ? (
-            <EnterMemberArea
-              onClick={() =>
-                route.push(link)
-              }
-              display="flex"
-            >
+            <EnterMemberArea onClick={() => route.push(link)} display="flex">
               <Box>
                 <DoorSvg />
               </Box>
