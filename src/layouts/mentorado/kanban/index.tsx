@@ -37,7 +37,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
             </Description>
 
             <Box
-              sx={{ width: '100%', marginBottom: '1.2rem', cursor: 'pointer' }}
+              sx={{ width: '100%', marginBottom: '1.2rem'}}
             >
               <Task>
                 <TasktTitle>Vídeo de Apresentação</TasktTitle>

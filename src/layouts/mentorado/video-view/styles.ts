@@ -11,7 +11,7 @@ export const VideoWrapper = styled(Box)`
 `;
 
 export const ProgressBarWrapper = styled(Box)`
-    background-color: green;
+    padding: 1rem 0 0 2rem;
 `;
 
 export const VideoInteractionsBox = styled(Box)`
@@ -84,4 +84,3 @@ export const SendButton = styled(Button)`
     gap: 0.5rem;
     width: 12%;
 `;
-

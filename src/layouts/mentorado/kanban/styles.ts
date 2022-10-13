@@ -33,6 +33,7 @@ export const Description = styled(Typography)`
 export const Task = styled(Box)`
     background-color: ${({theme}) => theme.palette.primary.main};
     border-radius: 10px;
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     margin-bottom: 0.6rem;

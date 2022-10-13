@@ -7,7 +7,7 @@ import { styled } from '@mui/material/styles';
 export const Modal = styled(Dialog)``;
 export const ModalDialogContent = styled(DialogContent)`
   background-color: #121212;
-  overflow: auto;
+  overflow-y: auto;
   width: 480px;
 `;
 export const Header = styled(Box)`
