@@ -67,11 +67,13 @@ export const MentorMenu = {
     path: MentorRoutes.evolution,
     name: 'Minha Evolução',
     component: rocket_svg,
+    inDevelopment: true,
   },
   invoice: {
     path: MentorRoutes.invoice,
     name: 'Faturamento',
     component: invoice_svg,
+    inDevelopment: true,
   },
   settings: {
     path: MentorRoutes.settings,

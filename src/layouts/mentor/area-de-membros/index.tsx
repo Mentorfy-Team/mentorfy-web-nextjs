@@ -1,9 +1,7 @@
 import { FC } from 'react';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/future/image';
@@ -51,16 +49,29 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
               key={index}
               sx={{ cursor: 'pointer' }}
             >
-              <Image
-                alt=""
-                src={area.main_image}
-                style={{
-                  objectFit: 'cover',
-                  borderRadius: '0.5rem',
-                }}
-                width={246}
-                height={244}
-              />
+              {area.main_image && (
+                <Image
+                  alt=""
+                  src={area.main_image}
+                  style={{
+                    objectFit: 'cover',
+                    borderRadius: '0.5rem',
+                  }}
+                  width={246}
+                  height={244}
+                />
+              )}
+              {!area.main_image && (
+                <Box
+                  sx={{
+                    // gradiente azul e laranja
+                    background:
+                      'linear-gradient(180deg, #464646 0%, #161616 100%)',
+                  }}
+                  width={246}
+                  height={244}
+                />
+              )}
             </Box>
           ))}
         </Box>
