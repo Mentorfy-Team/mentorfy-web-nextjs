@@ -127,7 +127,7 @@ const VideoModal = ({
             required
             label="Link"
             placeholder="https://youtube.com.br/xyz"
-            value={singleVideo.link}
+            value={singleVideo?.link}
             onChange={(e) => setSingleVideo({ link: e.target.value })}
           ></InputField>
         )}

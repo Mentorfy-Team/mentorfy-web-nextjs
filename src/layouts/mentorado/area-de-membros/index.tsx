@@ -15,7 +15,6 @@ const AreaDeMembros: FC = () => {
   const theme = useTheme();
 
   const creatNewMembersArea = isMobile ? '' : 'Criar nova área de membros';
-
   return (
     <>
       <Toolbar tabs={['Ativos']} />
