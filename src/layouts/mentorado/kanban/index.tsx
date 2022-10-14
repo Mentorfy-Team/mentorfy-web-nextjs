@@ -1,53 +1,44 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
-import { Description, Step, Task, TasktTitle, Wrapper } from './styles';
+import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
 
 export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
   user,
   member_area_id,
 }) => {
   const { tools } = useMemberAreaTools(member_area_id);
+  const [listTools, setListTools] = useState(tools);
+
+  useEffect(() => {
+    setListTools(tools);
+  }, [tools]);
 
   return (
     <>
       <Toolbar tabs={['Método 4S']} />
       <ContentWidthLimit maxWidth={1250}>
         <Wrapper>
-          <Step>
+          {listTools && listTools.map((group) => (
+            <Step key={group.id}>
             <Image
               alt="imagem"
               width={43}
               height={50}
               src="/svgs/step-image.svg"
             />
-            <Typography variant="body2">Madrugada</Typography>
+            <Title>{group.title}</Title>
 
-            <Description>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-              arcu urna vel in proin gravida pretium, at. Duis ornare dignissim
-              massa ornare rutrum mauris. Odio mi vulputate lacus placerat
-              aenean semper id a.
-            </Description>
+            <Description>{group.description}</Description>
 
             <Box
               sx={{ width: '100%', marginBottom: '1.2rem'}}
             >
-              <Task>
-                <TasktTitle>Vídeo de Apresentação</TasktTitle>
-                <Image
-                  alt="imagem"
-                  width={14}
-                  height={15}
-                  src="/svgs/done.svg"
-                />
-              </Task>
               <Task>
                 <TasktTitle>Vídeo de Apresentação</TasktTitle>
                 <Image
@@ -66,6 +57,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
               src="/images/winners.png"
             />
           </Step>
+          ))}
         </Wrapper>
       </ContentWidthLimit>
     </>

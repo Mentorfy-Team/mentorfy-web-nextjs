@@ -2,9 +2,13 @@ import { FC } from 'react';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import PageWrapper from '~/components/partials/PageWrapper';
+import { PublicRoutes } from '~/consts';
+import { useProducts } from '~/hooks/useProducts';
+import { GetProfile } from '~/services/profile.service';
 import {
   BannerBox,
   CollorFullTypography,
@@ -13,7 +17,9 @@ import {
   RatingBox,
 } from './style';
 
-const BemVindo: FC = () => {
+const BemVindo: FC<PageTypes.Props> = ({user}) => {
+
+  const { products } = useProducts(user.id);
 
   const TextBanner = (
     <Box sx={{ maxWidth: '16.5rem', height: '8rem', textAlign: 'start'}}>
@@ -52,51 +58,17 @@ const BemVindo: FC = () => {
             overflow: 'auto'
           }}
         >
-          <CourseBox minWidth={350}>
+          {products && products.map((product) => (
+          <CourseBox minWidth={350} key={product.id}>
             <Image
               alt=""
-              src="/images/area-de-membros.png"
+              src={product.main_image}
               width={350}
               height={390}
               objectFit="cover"
             />
           </CourseBox>
-          <CourseBox minWidth={350}>
-            <Image
-              alt=""
-              src="/images/imagem2.png"
-              width={350}
-              height={390}
-              objectFit="cover"
-            />
-          </CourseBox>
-          <CourseBox minWidth={350}>
-            <Image
-              alt=""
-              src="/images/imagem3.png"
-              width={350}
-              height={390}
-              objectFit="cover"
-            />
-          </CourseBox>
-          <CourseBox minWidth={350}>
-            <Image
-              alt=""
-              src="/images/imagem3.png"
-              width={350}
-              height={390}
-              objectFit="cover"
-            />
-          </CourseBox>
-          <CourseBox minWidth={350}>
-            <Image
-              alt=""
-              src="/images/imagem3.png"
-              width={350}
-              height={390}
-              objectFit="cover"
-            />
-          </CourseBox>
+          ))}
         </Box>
         <Box sx={{ display: 'flex' }}>
           <Typography variant="h5">Populares na Mentorfy</Typography>
@@ -106,10 +78,18 @@ const BemVindo: FC = () => {
   );
 };
 
-export async function getProps() {
-  return {
-    props: {},
-  };
-}
+export const getProps = withPageAuth({
+  authRequired: true,
+  redirectTo: PublicRoutes.login,
+  async getServerSideProps(ctx) {
+    const { profile } = await GetProfile(ctx.req);
+
+    return {
+      props: {
+        profile: profile,
+      }
+    };
+  }
+});
 
 export default BemVindo;

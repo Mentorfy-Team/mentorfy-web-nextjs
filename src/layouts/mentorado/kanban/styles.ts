@@ -45,3 +45,9 @@ export const TasktTitle = styled(Typography)`
     font-weight: 700;
     line-height: 1rem;
 `;
+
+export const Title = styled(Typography)`
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+`;
