@@ -17,6 +17,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     .from('product')
     .select('*, member_area!member_area_id_fkey(*)')
     .eq('owner', req.query.id);
+
   listProducts = listProducts.concat(productsOwned);
 
   if (clientProducts) {
@@ -25,7 +26,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
       .select('*, member_area!member_area_id_fkey(*)')
       .in(
         'id',
-        clientProducts?.map((product) => product.id),
+        clientProducts?.map((relation) => relation.product_id),
       );
     listProducts = listProducts.concat(products);
   }

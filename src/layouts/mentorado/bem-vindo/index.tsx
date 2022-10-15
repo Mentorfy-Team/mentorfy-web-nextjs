@@ -204,7 +204,11 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               )}
             </CourseBox>
           ))}
-          {[...Array(5)].map((_, i) => (
+          {[
+            ...Array(
+              5 - (clientProducts.length > 5 ? 5 : clientProducts.length),
+            ),
+          ].map((_, i) => (
             <CourseBox
               onMouseOver={() => console.log('isFocusing')}
               className="item"
