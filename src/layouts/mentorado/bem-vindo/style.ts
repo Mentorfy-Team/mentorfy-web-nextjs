@@ -2,29 +2,99 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
-export const CourseBox = styled(Box)`
-  border: 2px solid transparent;
-  border-radius: 5px;
-  cursor: pointer;
-  height: 24.3rem;
-  margin-right: 1.3rem;
-  overflow: hidden;
-  width: 19rem;
+export const Background = styled(Box)`
+  background: #080808;
+  > div > img,
+  video,
+  iframe {
+    -webkit-mask-image: -webkit-gradient(
+      linear,
+      from(rgba(0, 0, 0, 1)),
+      to(rgba(0, 0, 0, 0))
+    );
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  }
+  * {
+    opacity: 1;
+    transition: opacity 3s ease-in-out;
+  }
+  // fade out if class hide is present
+  .hide {
+    opacity: 0;
+  }
 
-  &:hover {
-    border: 2px solid white;
+  .video {
+    position: absolute;
+  }
+
+  .container {
+    display: flex;
+  }
+
+  .item {
+    position: relative;
+    display: block;
+    transition: transform 500ms;
+  }
+
+  .container:focus-within .item,
+  .container:hover .item {
+    transform: translateX(-5%);
+  }
+
+  .item:focus ~ .item,
+  .item:hover ~ .item {
+    transform: translateX(5%);
+  }
+
+  .container .item:focus,
+  .container .item:hover {
+    transform: scale(1.1);
+    z-index: 1;
+  }
+
+  .item img {
+    display: block;
+    max-width: 100%;
   }
 `;
 
+export const VideoHolder = styled(Box)`
+  height: 100%;
+  margin: 0px !important;
+  position: absolute;
+  width: 100%;
+`;
+
+export const Videoshow = styled(Box)`
+  display: flex;
+  flex-direction: row;
+  margin: 0 0 1.2rem 0;
+  overflow: visible;
+`;
+
+export const CourseBox = styled(Box)`
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  height: 12rem;
+  margin-right: 1.3rem;
+  overflow: hidden;
+  width: 19rem;
+`;
+
 export const BannerBox = styled(Box)`
-  background-image: url('/images/banner.png');
-  background-size: cover;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   height: 60vh;
   max-width: 100%;
-  padding: 1.6rem 0 1.6rem 2.5rem;
+  position: relative;
+
+  > div {
+    margin-left: 2.2rem;
+    z-index: 1;
+  }
 
   @media (max-width: 500px) {
     display: none;

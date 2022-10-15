@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { userStore } from '~/stores';
 import { Animation, LoadingWrapper } from './loading.partial.styles';
 
-export const LoadingComponent = ({ isLoading = true }) => {
+export const LoadingComponent = ({ isLoading = false }) => {
   return (
     <LoadingWrapper onClick={(e) => e.stopPropagation()} show={isLoading}>
       <Animation />

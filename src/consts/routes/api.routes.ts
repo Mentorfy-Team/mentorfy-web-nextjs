@@ -5,6 +5,7 @@ export enum ApiRoutes {
 
   //* Rotas para api de clientes
   clients = '/api/clients',
+  client_products = '/api/client/products',
   clients_list = '/api/clients/list',
 
   //* Rotas para api de usuários

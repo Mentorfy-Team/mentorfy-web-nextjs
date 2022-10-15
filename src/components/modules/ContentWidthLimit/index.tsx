@@ -6,13 +6,19 @@ type props = {
   children: any;
   maxWidth?: number | string;
   withToolBar?: boolean;
+  sx?: any;
 };
 
-const ContentWidthLimit: React.FC<props> = ({ children, maxWidth = 1280, withToolBar = true }) => {
+const ContentWidthLimit: React.FC<props> = ({
+  children,
+  sx,
+  maxWidth = 1280,
+  withToolBar = true,
+}) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
 
   return (
-    <Box id="ContentWidthLimit" sx={{ textAlign: '-webkit-center' }}>
+    <Box id="ContentWidthLimit" sx={{ textAlign: '-webkit-center' }} {...sx}>
       <ScrollArea
         id="ScrollArea"
         sx={{

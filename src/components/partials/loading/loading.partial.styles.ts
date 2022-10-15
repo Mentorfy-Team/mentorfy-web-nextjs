@@ -12,7 +12,7 @@ export const LoadingWrapper = styled('div')<{ show: boolean }>`
   position: absolute;
   top: 0;
   transition: ease 0.4s;
-  width: 100vw;
+  width: 100%;
   z-index: -1;
 
   ${({ show }) =>
