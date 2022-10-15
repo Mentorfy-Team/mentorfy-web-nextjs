@@ -1,7 +1,9 @@
 import React from 'react';
+import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
 import Image from 'next/future/image';
+import { useRouter } from 'next/router';
 import { useProfile } from '~/hooks/useProfile';
 import { AppBar, AvatarWrapper, MenuItem, PopoverBox } from './styles';
 import Tipografia from '~/../public/images/tipografia.png';
@@ -9,6 +11,7 @@ import MenuAvatar from '~/../public/svgs/menu-avatar';
 import Notification from '~/../public/svgs/notification';
 import Search from '~/../public/svgs/search';
 const HeaderPartial: React.FC = () => {
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
@@ -35,7 +38,13 @@ const HeaderPartial: React.FC = () => {
   return (
     <>
       <AppBar id="Header" position="fixed">
-        <div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4.0rem',
+          }}
+        >
           <Image
             style={{
               marginLeft: '2rem',
@@ -46,6 +55,28 @@ const HeaderPartial: React.FC = () => {
             quality={100}
             placeholder="blur"
           />
+          {router.pathname.includes('mentorado') && (
+            <Button
+              sx={{
+                color: '#fff',
+              }}
+              variant="text"
+              href="http://localhost:3000/mentor/dashboard"
+            >
+              Visualizar como mentor
+            </Button>
+          )}
+          {!router.pathname.includes('mentorado') && (
+            <Button
+              sx={{
+                color: '#fff',
+              }}
+              variant="text"
+              href="http://localhost:3000/mentorado/bem-vindo"
+            >
+              Visualizar como mentorado
+            </Button>
+          )}
         </div>
         <Search />
         <Notification />
