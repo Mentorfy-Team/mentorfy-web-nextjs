@@ -1,11 +1,34 @@
 import { CreateSupabaseWithAuth } from '~/backend/supabase';
+type GetRequest = ProductApi.Get.Request;
+type GetResponse = ProductApi.Get.Response | any;
 
-export const get: Handler.Callback<Request, Response> = async (req, res) => {
+export const get: Handler.Callback<GetRequest, GetResponse> = async (
+  req,
+  res,
+) => {
   const supabase = CreateSupabaseWithAuth(req);
-  const { data: products, error } = await supabase
-    .from('product')
+  let listProducts = [];
+  const { data: clientProducts } = await supabase
+    .from('client_product')
     .select('*, member_area!member_area_id_fkey(*)')
     .eq('owner', req.query.id);
 
-  return res.status(200).json(products);
+  const { data: productsOwned } = await supabase
+    .from('product')
+    .select('*, member_area!member_area_id_fkey(*)')
+    .eq('owner', req.query.id);
+  listProducts = listProducts.concat(productsOwned);
+
+  if (clientProducts) {
+    const { data: products } = await supabase
+      .from('product')
+      .select('*, member_area!member_area_id_fkey(*)')
+      .in(
+        'id',
+        clientProducts?.map((product) => product.id),
+      );
+    listProducts = listProducts.concat(products);
+  }
+
+  return res.status(200).json(listProducts);
 };
