@@ -1,8 +1,8 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { useMediaQuery } from '@mui/material';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
 import Image from 'next/future/image';
@@ -19,10 +19,13 @@ import {
   CollorFullTypography,
   CourseBox,
   CustomTypography,
+  MoreInfo,
+  PlayButton,
   RatingBox,
   VideoHolder,
   Videoshow,
 } from './style';
+import { InfoRounded, PlayArrow } from '@mui/icons-material';
 
 const BemVindo: FC<PageTypes.Props> = ({ user }) => {
   const { products } = useProducts(user.id);
@@ -43,10 +46,10 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
     }, 4000);
     setTimeout(() => {
       setVolume(0.5);
-    }, 5000);
+    }, 6000);
     setTimeout(() => {
       setMainVideo(null);
-    }, 40000);
+    }, 43000);
   }, []);
 
   return (
@@ -106,6 +109,21 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
           reprehenderit esse officiis, sequi at exercitationem. Tempora
           architecto dolorem ex laborum, sequi odit?
         </Box>
+        <Box display="flex" gap="1rem">
+          <PlayButton variant="outlined">
+            <PlayArrow />
+            Entrar
+          </PlayButton>
+          <MoreInfo variant="outlined">
+            <InfoRounded
+              sx={{
+                marginRight: '0.5rem',
+              }}
+            />
+            Mais Informações
+          </MoreInfo>
+        </Box>
+        <Box height="2rem" />
       </BannerBox>
       <ContentWidthLimit
         sx={{
@@ -117,7 +135,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
       >
         {/* // TODO: fix 'Meus estudos' margin-top when it´s mobile */}
         <Box sx={{ display: 'flex', margin: '1.2rem 0 0.5rem 0' }}>
-          <Typography variant="h5">Trending Now</Typography>
+          <Typography variant="h5">Minhas Mentorias</Typography>
         </Box>
         <Videoshow className="container">
           {products &&
@@ -141,7 +159,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               </CourseBox>
             ))}
         </Videoshow>
-        <Box sx={{ display: 'flex', margin: '1.2rem 0 0.5rem 0' }}>
+        <Box sx={{ display: 'flex', margin: '0rem 0 0.5rem 0' }}>
           <Typography variant="h5">Populares na Mentorfy</Typography>
         </Box>
         <Videoshow className="container">

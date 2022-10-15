@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
@@ -56,6 +57,41 @@ export const Background = styled(Box)`
   .item img {
     display: block;
     max-width: 100%;
+  }
+`;
+
+export const PlayButton = styled(Button)`
+  background-color: white;
+  color: black;
+  padding: 1.1rem 1rem 1.1rem 0.5rem;
+  svg {
+    path {
+      fill: black;
+    }
+  }
+
+  :hover {
+    background-color: gray;
+    color: black;
+    padding: 1.1rem 1rem 1.1rem 0.5rem;
+  }
+`;
+
+export const MoreInfo = styled(Button)`
+  background-color: rgba(100, 100, 100, 0.5);
+  color: white;
+  padding: 1.1rem 1rem 1.1rem 0.5rem;
+
+  svg {
+    path {
+      fill: white;
+    }
+  }
+
+  :hover {
+    background-color: rgba(100, 100, 100, 0.2);
+    color: white;
+    padding: 1.1rem 1rem 1.1rem 0.5rem;
   }
 `;
 
