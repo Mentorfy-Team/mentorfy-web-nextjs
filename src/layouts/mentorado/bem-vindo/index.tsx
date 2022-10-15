@@ -31,10 +31,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
   const [volume, setVolume] = useState<number>(0);
   const [mainThumb, setMainThumb] = useState<string>('');
   const TextBanner = (
-    <Box
-      className={mainVideo ? 'hide' : ''}
-      sx={{ maxWidth: '16.5rem', height: '8rem', textAlign: 'start' }}
-    >
+    <Box sx={{ maxWidth: '16.5rem', height: '8rem', textAlign: 'start' }}>
       <CollorFullTypography>The World´s Storytelling</CollorFullTypography>
     </Box>
   );
@@ -98,15 +95,12 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         </VideoHolder>
 
         {TextBanner}
-        <RatingBox className={mainVideo ? 'hide' : ''}>
+        <RatingBox>
           <Rating defaultValue={4.5} precision={0.5} size="small"></Rating>
           <CustomTypography>2022</CustomTypography>
           <CustomTypography>1750 Alunos</CustomTypography>
         </RatingBox>
-        <Box
-          className={mainVideo ? 'hide' : ''}
-          sx={{ maxWidth: '37.5rem', height: '4.2rem', textAlign: 'start' }}
-        >
+        <Box sx={{ maxWidth: '37.5rem', height: '4.2rem', textAlign: 'start' }}>
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia
           pariatur, doloremque iste corrupti perspiciatis modi, nobis quam
           reprehenderit esse officiis, sequi at exercitationem. Tempora
