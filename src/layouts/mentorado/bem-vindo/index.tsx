@@ -1,4 +1,9 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+import { FC, useEffect, useState } from 'react';
+import InfoRounded from '@mui/icons-material/InfoRounded';
+import PlayArrow from '@mui/icons-material/PlayArrow';
 import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
@@ -8,37 +13,52 @@ import dynamic from 'next/dynamic';
 import Image from 'next/future/image';
 
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
+const Slider = dynamic(() => import('react-slick'), { ssr: false });
 
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { PublicRoutes } from '~/consts';
+import { useGetClientProducts } from '~/hooks/useGetClientProducts';
 import { useProducts } from '~/hooks/useProducts';
 import { GetProfile } from '~/services/profile.service';
 import {
+  AbsoluteBottomBox,
+  AbsoluteTopBox,
   Background,
   BannerBox,
+  CollorFullMentorfy,
   CollorFullTypography,
   CourseBox,
   CustomTypography,
   MoreInfo,
   PlayButton,
+  ProductTitle,
   RatingBox,
   VideoHolder,
-  Videoshow,
 } from './style';
-import { InfoRounded, PlayArrow } from '@mui/icons-material';
 
 const BemVindo: FC<PageTypes.Props> = ({ user }) => {
-  const { products } = useProducts(user.id);
   const isDesktop = useMediaQuery('(min-width: 600px)');
+
   const [mainVideo, setMainVideo] = useState<string>('');
   const [volume, setVolume] = useState<number>(0);
   const [mainThumb, setMainThumb] = useState<string>('');
+
+  const { products } = useProducts();
+  const { product: clientProducts } = useGetClientProducts(user.id);
+
   const TextBanner = (
     <Box sx={{ maxWidth: '16.5rem', height: '8rem', textAlign: 'start' }}>
       <CollorFullTypography>The World´s Storytelling</CollorFullTypography>
     </Box>
   );
-  const videoRef = useRef(null);
+
+  const settings = {
+    dots: true,
+    speed: 1000,
+    slidesToScroll: 1,
+    nextArrow: <div className="arrow__btn left-arrow">‹</div>,
+    prevArrow: <div className="arrow__btn right-arrow">›</div>,
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -132,53 +152,89 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
           position: 'relative',
         }}
         maxWidth="100%"
+        withoutScroll
       >
         {/* // TODO: fix 'Meus estudos' margin-top when it´s mobile */}
         <Box sx={{ display: 'flex', margin: '1.2rem 0 0.5rem 0' }}>
           <Typography variant="h5">Minhas Mentorias</Typography>
         </Box>
-        <Videoshow className="container">
-          {products &&
-            products.map((product) => (
-              <CourseBox
-                onMouseOver={() => console.log('isFocusing')}
-                className="item"
-                minWidth={350}
-                key={product.id}
-              >
-                <Image
-                  alt=""
-                  src={product.banner_image}
-                  width={350}
-                  height={190}
-                  style={{
-                    objectFit: 'cover',
-                  }}
-                  quality={100}
-                />
-              </CourseBox>
-            ))}
-        </Videoshow>
+        <Slider {...settings} slidesToShow={5} className="container">
+          {clientProducts.map((product, index) => (
+            <CourseBox
+              onMouseOver={() => console.log('isFocusing')}
+              className="item"
+              height={isDesktop ? '400px' : 'unset'}
+              width={isDesktop ? '300px' : 'unset'}
+              key={index}
+            >
+              <Image
+                alt=""
+                src={product.main_image || '/images/moonlit.png'}
+                width={350}
+                height={400}
+                style={{
+                  objectFit: 'cover',
+                }}
+                quality={100}
+              />
+              <AbsoluteTopBox>
+                <CollorFullMentorfy>
+                  Mentor<span>fy</span>
+                </CollorFullMentorfy>
+              </AbsoluteTopBox>
+              {!product.banner_image && (
+                <AbsoluteBottomBox>
+                  <ProductTitle>{product.title}</ProductTitle>
+                </AbsoluteBottomBox>
+              )}
+            </CourseBox>
+          ))}
+          {[...Array(5)].map((_, i) => (
+            <CourseBox
+              onMouseOver={() => console.log('isFocusing')}
+              className="item"
+              height={isDesktop ? '400px' : 'unset'}
+              width={isDesktop ? '300px' : 'unset'}
+              key={i}
+            />
+          ))}
+        </Slider>
         <Box sx={{ display: 'flex', margin: '0rem 0 0.5rem 0' }}>
           <Typography variant="h5">Populares na Mentorfy</Typography>
         </Box>
-        <Videoshow className="container">
-          {products &&
-            products.map((product) => (
-              <CourseBox className="item" minWidth={350} key={product.id}>
-                <Image
-                  alt=""
-                  src={product.banner_image}
-                  width={350}
-                  height={190}
-                  style={{
-                    objectFit: 'cover',
-                  }}
-                  quality={100}
-                />
-              </CourseBox>
-            ))}
-        </Videoshow>
+        <Slider {...settings} slidesToShow={5} className="container">
+          {products.map((product, index) => (
+            <CourseBox
+              onMouseOver={() => console.log('isFocusing')}
+              className="item"
+              minWidth={350}
+              key={index}
+            >
+              <Image
+                alt=""
+                src={product.banner_image || '/images/moonlit.png'}
+                width={350}
+                height={190}
+                style={{
+                  objectFit: 'cover',
+                }}
+                quality={100}
+              />
+              <AbsoluteTopBox>
+                <CollorFullMentorfy>
+                  Mentor<span>fy</span>
+                </CollorFullMentorfy>
+              </AbsoluteTopBox>
+              {!product.banner_image && (
+                <AbsoluteBottomBox>
+                  <ProductTitle>{product.title}</ProductTitle>
+                </AbsoluteBottomBox>
+              )}
+            </CourseBox>
+          ))}
+          {products.length < 5 &&
+            [...Array(5 - products.length)].map((_, i) => <div key={i} />)}
+        </Slider>
       </ContentWidthLimit>
     </Background>
   );

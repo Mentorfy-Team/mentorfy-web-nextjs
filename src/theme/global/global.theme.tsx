@@ -56,17 +56,17 @@ const globalStyles = css`
       height: 12px;
     }
     ::-webkit-scrollbar-track {
-      border: 1px solid #4d4d4d;
+      border: 1px solid #4d4d4d36;
       border-radius: 10px;
     }
     ::-webkit-scrollbar-thumb {
       border: 2px solid transparent;
       border-radius: 100px;
-      background-color: #4d4d4d;
+      background-color: #4d4d4d36;
       background-clip: content-box;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background: #4d4d4d;
+      background: #4d4d4d36;
     }
     *,
     *:before,

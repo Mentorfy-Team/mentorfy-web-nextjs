@@ -1,3 +1,4 @@
+/* eslint-disable better-styled-components/sort-declarations-alphabetically */
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
@@ -17,6 +18,7 @@ export const Background = styled(Box)`
   }
   * {
     opacity: 1;
+    scroll-behavior: smooth;
     transition: opacity 3s ease-in-out;
   }
   // fade out if class hide is present
@@ -28,36 +30,111 @@ export const Background = styled(Box)`
     position: absolute;
   }
 
-  .container {
-    display: flex;
+  .slick-list {
+    overflow: visible;
   }
 
-  .item {
-    position: relative;
+  .slick-slide {
     display: block;
+    position: relative;
     transition: transform 500ms;
   }
 
-  .container:focus-within .item,
-  .container:hover .item {
+  .slick-track:focus-within .slick-slide,
+  .slick-track:hover .slick-slide {
     transform: translateX(-5%);
   }
 
-  .item:focus ~ .item,
-  .item:hover ~ .item {
+  .slick-slide:focus ~ .slick-slide,
+  .slick-slide:hover ~ .slick-slide {
     transform: translateX(5%);
   }
 
-  .container .item:focus,
-  .container .item:hover {
+  .slick-track .slick-slide:focus,
+  .slick-track .slick-slide:hover {
     transform: scale(1.1);
     z-index: 1;
   }
 
-  .item img {
+  .slick-slide img {
     display: block;
     max-width: 100%;
   }
+
+  .arrow__btn {
+    background: rgb(0, 0, 0);
+    color: red;
+    font-size: 6em;
+    padding: 20px;
+    position: absolute;
+    text-align: center;
+    text-decoration: none;
+    width: 80px;
+    z-index: 1;
+    cursor: pointer;
+  }
+
+  .slick-arrow {
+    z-index: 2;
+    scale: 4;
+    margin: 10px;
+  }
+
+  .slick-prev {
+    ::before {
+      content: '‹';
+      scale: 2;
+    }
+  }
+
+  .slick-next {
+    ::before {
+      content: '›';
+    }
+  }
+
+  .left-arrow {
+    background: linear-gradient(
+      -90deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 100%
+    );
+    bottom: 0;
+    left: 0;
+    top: 0;
+
+    ::before {
+      content: '‹';
+    }
+  }
+
+  .right-arrow {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 100%
+    );
+    bottom: 0;
+    right: 0;
+    top: 0;
+
+    ::before {
+      content: '›';
+    }
+  }
+`;
+
+export const AbsoluteTopBox = styled(Box)`
+  left: 0;
+  margin-left: 6%;
+  position: absolute;
+  top: 0;
+`;
+export const AbsoluteBottomBox = styled(Box)`
+  bottom: -15px;
+  left: 0;
+  margin: 6%;
+  position: absolute;
 `;
 
 export const PlayButton = styled(Button)`
@@ -103,20 +180,24 @@ export const VideoHolder = styled(Box)`
 `;
 
 export const Videoshow = styled(Box)`
-  display: flex;
-  flex-direction: row;
+  --_spacer: var(--size-3);
+
+  display: grid;
+  gap: var(--_spacer);
+  grid-auto-columns: 21%;
+  grid-auto-flow: column;
   margin: 0 0 1.2rem 0;
-  overflow: visible;
+
+  overflow-y: visible;
+  overscroll-behavior-inline: contain;
+  padding: 0 var(--_spacer) var(--_spacer);
 `;
 
 export const CourseBox = styled(Box)`
   border: 2px solid transparent;
   border-radius: 6px;
   cursor: pointer;
-  height: 12rem;
-  margin-right: 1.3rem;
   overflow: hidden;
-  width: 19rem;
 `;
 
 export const BannerBox = styled(Box)`
@@ -152,6 +233,24 @@ export const CustomTypography = styled(Typography)`
   font-weight: 500;
 `;
 
+export const ProductTitle = styled(Typography)`
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 2rem;
+  margin-bottom: 0.5rem;
+
+  max-width: 23ch;
+  overflow: hidden;
+  text-align: start;
+  text-overflow: ellipsis;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+`;
+
 export const CollorFullTypography = styled(Typography)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -170,4 +269,15 @@ export const CollorFullTypography = styled(Typography)`
 
   text-align: start;
   text-shadow: 0px 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
+`;
+
+export const CollorFullMentorfy = styled(Typography)`
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 3rem;
+  text-align: start;
+  text-shadow: 0px 0.15rem 0.25rem rgba(0, 0, 0, 1);
+  span {
+    color: #fe7d22;
+  }
 `;

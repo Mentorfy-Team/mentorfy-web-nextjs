@@ -1,9 +1,11 @@
 import { CreateSupabaseWithAuth } from '~/backend/supabase';
 
 export const get: Handler.Callback<Request, Response> = async (req, res) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    const supabase = CreateSupabaseWithAuth(req);
+  const supabase = CreateSupabaseWithAuth(req);
+  const { data: products, error } = await supabase
+    .from('product')
+    .select('*, member_area!member_area_id_fkey(*)')
+    .eq('owner', req.query.id);
 
-    
-    res.status(200);
+  return res.status(200).json(products);
 };

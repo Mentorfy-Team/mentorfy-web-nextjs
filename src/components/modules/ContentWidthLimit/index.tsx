@@ -6,6 +6,7 @@ type props = {
   children: any;
   maxWidth?: number | string;
   withToolBar?: boolean;
+  withoutScroll?: boolean;
   sx?: any;
 };
 
@@ -14,6 +15,7 @@ const ContentWidthLimit: React.FC<props> = ({
   sx,
   maxWidth = 1280,
   withToolBar = true,
+  withoutScroll = false,
 }) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
 
@@ -26,6 +28,7 @@ const ContentWidthLimit: React.FC<props> = ({
           maxWidth: `${maxWidth}px`,
           display: 'flex',
           flexDirection: 'column',
+          overflowY: withoutScroll ? 'hidden' : 'auto',
         }}
         withtoolbar={withToolBar ? 'true' : 'false'}
       >
