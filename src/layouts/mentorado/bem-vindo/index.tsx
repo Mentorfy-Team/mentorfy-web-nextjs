@@ -14,10 +14,11 @@ import Image from 'next/future/image';
 
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 const Slider = dynamic(() => import('react-slick'), { ssr: false });
-
+import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { PublicRoutes } from '~/consts';
 import { useGetClientProducts } from '~/hooks/useGetClientProducts';
+import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { useProducts } from '~/hooks/useProducts';
 import { GetProfile } from '~/services/profile.service';
 import {
@@ -42,7 +43,9 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
   const [mainVideo, setMainVideo] = useState<string>('');
   const [volume, setVolume] = useState<number>(0);
   const [mainThumb, setMainThumb] = useState<string>('');
+  const router = useRouter();
 
+  const { types } = useMemberAreaTypes();
   const { products } = useProducts();
   const { product: clientProducts } = useGetClientProducts(user.id);
 
@@ -166,6 +169,18 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               height={isDesktop ? '400px' : 'unset'}
               width={isDesktop ? '300px' : 'unset'}
               key={index}
+              onClick={() =>
+                router.push(
+                  types
+                    .find(
+                      (type) =>
+                        type.id === (product.member_area[0] as any).type_id,
+                    )
+                    .name.toLowerCase() +
+                    '/' +
+                    product.id,
+                )
+              }
             >
               <Image
                 alt=""

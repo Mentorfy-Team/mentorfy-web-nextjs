@@ -262,7 +262,7 @@ const Geral: FC<props> = ({ id }) => {
           types.find((type) =>
             type.id === product.member_area
               ? product.member_area[0].type_id
-              : 5,
+              : 1,
           )?.name
         }
         label="Tipo de Área de Membros"
