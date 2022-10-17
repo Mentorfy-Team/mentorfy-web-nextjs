@@ -34,11 +34,10 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
             />
             <Title>{group.title}</Title>
 
-            <Description>{group.description}</Description>
-
             <Box
-              sx={{ width: '100%', marginBottom: '1.2rem'}}
-            >
+              sx={{ width: '100%', overflowY: 'auto', height: '450px', marginTop: '1rem'}}
+              >
+              <Description>{group.description}</Description>
               <Task>
                 <TasktTitle>Vídeo de Apresentação</TasktTitle>
                 <Image
@@ -48,14 +47,69 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                   src="/svgs/done.svg"
                 />
               </Task>
-            </Box>
-
+              <Task>
+                <TasktTitle>Vídeo de Apresentação</TasktTitle>
+                <Image
+                  alt="imagem"
+                  width={14}
+                  height={15}
+                  src="/svgs/done.svg"
+                />
+              </Task>
+              <Task>
+                <TasktTitle>Vídeo de Apresentação</TasktTitle>
+                <Image
+                  alt="imagem"
+                  width={14}
+                  height={15}
+                  src="/svgs/done.svg"
+                />
+              </Task>
+              <Task>
+                <TasktTitle>Vídeo de Apresentação</TasktTitle>
+                <Image
+                  alt="imagem"
+                  width={14}
+                  height={15}
+                  src="/svgs/done.svg"
+                />
+              </Task>
+              <Task>
+                <TasktTitle>Vídeo de Apresentação</TasktTitle>
+                <Image
+                  alt="imagem"
+                  width={14}
+                  height={15}
+                  src="/svgs/done.svg"
+                />
+              </Task>
+              <Task>
+                <TasktTitle>Vídeo de Apresentação</TasktTitle>
+                <Image
+                  alt="imagem"
+                  width={14}
+                  height={15}
+                  src="/svgs/done.svg"
+                />
+              </Task>
+              <Task>
+                <TasktTitle>Vídeo de Apresentação</TasktTitle>
+                <Image
+                  alt="imagem"
+                  width={14}
+                  height={15}
+                  src="/svgs/done.svg"
+                />
+              </Task>
             <Image
               alt="imagem"
               width={122}
               height={139}
               src="/images/winners.png"
+              style={{marginTop: '1.2rem'}}
             />
+            </Box>
+
           </Step>
           ))}
         </Wrapper>
