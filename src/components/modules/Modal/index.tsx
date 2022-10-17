@@ -10,6 +10,7 @@ type props = {
   title: JSX.Element | string;
   withoutSave?: boolean;
   open?: boolean;
+  isMentorado?: boolean;
   setOpen: (value: boolean) => void;
   onSave?: () => void;
   onDelete?: () => void;
@@ -20,19 +21,20 @@ const ModalComponent: FC<props> = ({
   title,
   withoutSave = false,
   open,
+  isMentorado,
   setOpen,
   onSave,
   onDelete,
 }) => {
   return (
-    <Modal open={open} onClose={() => setOpen(false)}>
+    <Modal open={open} onClose={() => setOpen(false)} isMentorado={isMentorado}>
       <Header>
         <ModalDialogTitle>{title}</ModalDialogTitle>
         <IconButton onClick={() => setOpen(false)}>
           <CloseIcon sx={{ color: 'white' }} />
         </IconButton>
       </Header>
-      <ModalDialogContent>
+      <ModalDialogContent isMentorado={isMentorado}>
         {children}
         {onSave && (
           <Button

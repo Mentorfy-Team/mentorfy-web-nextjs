@@ -6,6 +6,7 @@ import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
+import VideoViewModal from '../components/video-modal';
 import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
 
 export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
@@ -47,60 +48,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                   src="/svgs/done.svg"
                 />
               </Task>
-              <Task>
-                <TasktTitle>Vídeo de Apresentação</TasktTitle>
-                <Image
-                  alt="imagem"
-                  width={14}
-                  height={15}
-                  src="/svgs/done.svg"
-                />
-              </Task>
-              <Task>
-                <TasktTitle>Vídeo de Apresentação</TasktTitle>
-                <Image
-                  alt="imagem"
-                  width={14}
-                  height={15}
-                  src="/svgs/done.svg"
-                />
-              </Task>
-              <Task>
-                <TasktTitle>Vídeo de Apresentação</TasktTitle>
-                <Image
-                  alt="imagem"
-                  width={14}
-                  height={15}
-                  src="/svgs/done.svg"
-                />
-              </Task>
-              <Task>
-                <TasktTitle>Vídeo de Apresentação</TasktTitle>
-                <Image
-                  alt="imagem"
-                  width={14}
-                  height={15}
-                  src="/svgs/done.svg"
-                />
-              </Task>
-              <Task>
-                <TasktTitle>Vídeo de Apresentação</TasktTitle>
-                <Image
-                  alt="imagem"
-                  width={14}
-                  height={15}
-                  src="/svgs/done.svg"
-                />
-              </Task>
-              <Task>
-                <TasktTitle>Vídeo de Apresentação</TasktTitle>
-                <Image
-                  alt="imagem"
-                  width={14}
-                  height={15}
-                  src="/svgs/done.svg"
-                />
-              </Task>
+              <VideoViewModal open setOpen/>
             <Image
               alt="imagem"
               width={122}

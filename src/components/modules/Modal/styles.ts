@@ -2,13 +2,34 @@ import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { styled } from '@mui/material/styles';
+import { css, styled } from '@mui/material/styles';
 
-export const Modal = styled(Dialog)``;
-export const ModalDialogContent = styled(DialogContent)`
+type Props = {
+  isMentorado?: boolean;
+ }
+
+export const Modal = styled(Dialog)<Props>` 
+    ${({isMentorado}) => isMentorado && css`
+    .css-1hg2taq-MuiPaper-root-MuiDialog-paper  { 
+      max-height: 690px;
+      max-width: 900px;
+      overflow: unset;
+    }
+  `}
+`;
+
+export const ModalDialogContent = styled(DialogContent)<Props>`
   background-color: #121212;
-  overflow-y: auto;
-  width: 480px;
+  
+  ${({isMentorado}) => isMentorado ? css`
+      max-height: 700px;
+      max-width: 900px;
+      overflow-y: inherit;
+      padding: 1rem;   
+    ` : css`
+    width: 480px;
+    `}
+
 `;
 export const Header = styled(Box)`
   align-items: center;
