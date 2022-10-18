@@ -6,7 +6,7 @@ import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
-import VideoViewModal from '../components/video-modal';
+import QuestionsForm from '../components/questions-forms';
 import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
 
 export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
@@ -48,7 +48,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                   src="/svgs/done.svg"
                 />
               </Task>
-              <VideoViewModal open setOpen/>
+              <QuestionsForm open setOpen/>
             <Image
               alt="imagem"
               width={122}

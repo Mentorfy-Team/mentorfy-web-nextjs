@@ -5,7 +5,7 @@ import { CompleteButton, Description } from './styles';
 
 const VideoViewModal = ({ setOpen, open }) => {
     return (
-        <ModalComponent title='Vídeo de Apresentação' setOpen={setOpen} open={open} isMentorado>
+        <ModalComponent title='Título do Vídeo' setOpen={setOpen} open={open} isMentorado>
             <ModalDialogContent isMentorado>
                 <Description>
                     Descrição do Lorem Ipsum is simply dummy text of the printing and typesetting industry.
