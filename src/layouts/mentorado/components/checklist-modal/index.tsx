@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 import { useTheme } from '@mui/material/styles';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import { BpCheckedIcon, BpIcon, CloseButton, Description, OptionsBox, OptionsText, OptionsWrapper } from './styles';
 
-const ChecklistModal = ({ open, setOpen }) => {
+const ChecklistModal:FC = () => {
     const theme = useTheme();
     const [color, setColor] = useState(false);
+    const [open, setOpen] = useState(true);
 
     function BpCheckbox(props: CheckboxProps) {
         return (
@@ -48,7 +49,7 @@ const ChecklistModal = ({ open, setOpen }) => {
                     </OptionsBox>
                 </OptionsWrapper>
 
-                <CloseButton>Fechar</CloseButton>
+                <CloseButton onClick={() => setOpen(false)}>Fechar</CloseButton>
             </ModalDialogContent>
         </ModalComponent>
     );

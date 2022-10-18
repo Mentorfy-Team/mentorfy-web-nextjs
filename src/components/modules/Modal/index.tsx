@@ -11,7 +11,7 @@ type props = {
   withoutSave?: boolean;
   open?: boolean;
   isMentorado?: boolean;
-  setOpen: (value: boolean) => void;
+  setOpen?: (value: boolean) => void;
   onSave?: () => void;
   onDelete?: () => void;
 };
