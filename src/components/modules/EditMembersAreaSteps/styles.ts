@@ -2,15 +2,12 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
 export const Step = styled(Box)`
-  border-radius: 1.2rem 1.2rem 0 0;
-  margin: 0 0 0.8rem 0;
   width: 100%;
 `;
 
 export const BoxHeader = styled(Box)`
   align-items: center;
   background-color: ${({ theme }) => theme.palette.primary.light};
-  border-radius: 0.3rem;
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 1.4rem 0;

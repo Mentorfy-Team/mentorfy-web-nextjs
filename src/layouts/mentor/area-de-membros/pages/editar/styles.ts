@@ -11,6 +11,19 @@ export const SaveButton = styled(LoadingButton)`
   }
 `;
 
+export const GroupHeader = styled(Box)`
+padding: 0.4rem;
+display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+`;
+
+export const GroupWrapper = styled(Box)`
+  
+  border: 3px solid ${({ theme }) => theme.palette.primary.light};
+  border-radius: 0.2rem;
+`;
+
 export const ReturnButton = styled(Button)`
   height: 2.5rem;
   margin-left: 1px;
