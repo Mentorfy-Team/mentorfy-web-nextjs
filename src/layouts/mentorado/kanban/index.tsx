@@ -6,7 +6,7 @@ import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
-import ChecklistModal from '../components/checklist-modal';
+import FilesDownloadModal from '../components/file-dowaload';
 import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
 
 export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
@@ -48,7 +48,6 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                   src="/svgs/done.svg"
                 />
               </Task>
-              <ChecklistModal />
             <Image
               alt="imagem"
               width={122}
@@ -60,6 +59,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
 
           </Step>
           ))}
+          <FilesDownloadModal />
         </Wrapper>
       </ContentWidthLimit>
     </>

@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import { DownloadText, DownloaddButton, FileWrapper } from './styles';
 
-const FilesDownloadModal = ({open, setOpen}) => {
+const FilesDownloadModal = () => {
+    const [open, setOpen] = useState(true);
     return (
         <ModalComponent open={open} setOpen={setOpen} title='Modelo de Proposta' isMentorado>
             <ModalDialogContent isMentorado sx={{textAlign: 'center'}}>

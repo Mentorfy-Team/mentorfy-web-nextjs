@@ -41,7 +41,7 @@ const ChecklistModal:FC = () => {
                 </Description>
 
                 <OptionsWrapper>
-                    <OptionsBox>
+                    <OptionsBox onClick={() => setColor(!color)} sx={{cursor: 'pointer'}}>
                         <BpCheckbox />
                         <OptionsText sx={{color: `${color ? '#7DDC51' : '#E9E7E7'}`}}>
                         Lorem Ipsum is simply dummy text of the printing and typesetting industry

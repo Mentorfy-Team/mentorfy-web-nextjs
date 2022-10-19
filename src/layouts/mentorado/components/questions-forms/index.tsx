@@ -1,10 +1,12 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import { BackButton, ButtonsWrapper, Description, ForwardButton, Question } from './styles';
 
-const QuestionsForm = ({ setOpen, open }) => {
+const QuestionsForm = () => {
+    const [open, setOpen] = useState(true);
     return (
         <ModalComponent open={open}  setOpen={setOpen}  title='Título do Formulário de Perguntas' isMentorado>
             <ModalDialogContent isMentorado sx={{ width: '680px' }}>

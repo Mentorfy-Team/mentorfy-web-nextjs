@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import Box  from '@mui/material/Box';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import { CompleteButton, Description } from './styles';
 
-const VideoViewModal = ({ setOpen, open }) => {
+const VideoViewModal = () => {
+    const [open, setOpen] = useState(true);
     return (
         <ModalComponent title='Título do Vídeo' setOpen={setOpen} open={open} isMentorado>
             <ModalDialogContent isMentorado>
