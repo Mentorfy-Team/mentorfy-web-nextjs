@@ -1,6 +1,8 @@
 import { FC, useState } from 'react';
+import Box from '@mui/material/Box';
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 import { useTheme } from '@mui/material/styles';
+import Image from 'next/image';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import { BpCheckedIcon, BpIcon, CloseButton, Description, OptionsBox, OptionsText, OptionsWrapper } from './styles';
@@ -9,6 +11,13 @@ const ChecklistModal:FC = () => {
     const theme = useTheme();
     const [color, setColor] = useState(false);
     const [open, setOpen] = useState(true);
+
+    const HeadText = (
+        <Box sx={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
+            <Image alt='perguntas' src='/svgs/checklist-icon.svg' height={20} width={18}/>
+            <>Título do Formulário</>
+        </Box>
+    );
 
     function BpCheckbox(props: CheckboxProps) {
         return (
@@ -32,7 +41,7 @@ const ChecklistModal:FC = () => {
         );
     }
     return (
-        <ModalComponent title='Título de Checklist' isMentorado open={open} setOpen={setOpen}>
+        <ModalComponent title={HeadText} isMentorado open={open} setOpen={setOpen}>
             <ModalDialogContent isMentorado sx={{ width: '700px', maxHeight: '500px'}}>
                 <Description>
                 Descrição do Lorem Ipsum is simply dummy text of the printing and typesetting industry.

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
+import Image from 'next/image';
 import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
@@ -7,8 +8,15 @@ import { BackButton, ButtonsWrapper, Description, ForwardButton, Question } from
 
 const QuestionsForm = () => {
     const [open, setOpen] = useState(true);
+
+    const HeadText = (
+        <Box sx={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
+            <Image alt='perguntas' src='/svgs/questions-forms-icon.svg' height={20} width={18}/>
+            <>Título do Formulário</>
+        </Box>
+    );
     return (
-        <ModalComponent open={open}  setOpen={setOpen}  title='Título do Formulário de Perguntas' isMentorado>
+        <ModalComponent open={open}  setOpen={setOpen}  title={HeadText} isMentorado>
             <ModalDialogContent isMentorado sx={{ width: '680px' }}>
                 <Description>
                     Descrição do Lorem Ipsum is simply dummy text of the printing and typesetting industry.

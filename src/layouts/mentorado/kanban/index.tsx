@@ -6,7 +6,7 @@ import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
-import FilesDownloadModal from '../components/file-dowaload';
+import ChecklistModal from '../components/checklist-modal';
 import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
 
 export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
@@ -59,7 +59,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
 
           </Step>
           ))}
-          <FilesDownloadModal />
+          <ChecklistModal/>
         </Wrapper>
       </ContentWidthLimit>
     </>
