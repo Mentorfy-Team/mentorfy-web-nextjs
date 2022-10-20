@@ -4,7 +4,7 @@ import { styled } from '@mui/material/styles';
 export const SelectFormControl = styled(FormControl)`
   margin: 1rem 0;
   text-align: left;
-  width: 100%;
+  width: 50%;
   .MuiFormLabel-root {
     color: white;
   }

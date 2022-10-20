@@ -35,10 +35,13 @@ const Geral: FC<props> = ({ id }) => {
   });
   const { handleSubmit, watch, setValue } = useForm<ProductClient.Product>();
   const { product: pData } = useGetProduct(id);
-  const [product, setProduct] = useState<typeof pData>({});
+  const [product, setProduct] = useState<typeof pData>(pData);
   const { types } = useMemberAreaTypes();
   const theme = useTheme();
 
+  useEffect(() => {
+    console.log('product', product);
+  }, [product]);
   useEffect(() => {
     setProduct(pData);
     setProductImage({
@@ -246,7 +249,7 @@ const Geral: FC<props> = ({ id }) => {
       </Grid>
       <InputField
         color="secondary"
-        value={product.title}
+        value={product?.title}
         label="Produto Relacionado"
         InputLabelProps={{
           shrink: true,
@@ -260,9 +263,9 @@ const Geral: FC<props> = ({ id }) => {
         color="secondary"
         value={
           types.find((type) =>
-            type.id === product.member_area
-              ? product.member_area[0].type_id
-              : 1,
+            type.id === product?.member_area
+              ? (product?.member_area as any).type_id
+              : 5,
           )?.name
         }
         label="Tipo de Área de Membros"

@@ -13,13 +13,14 @@ import InputField from '~/components/atoms/InputField';
 import SelectField from '~/components/atoms/SelectField';
 import { MentorRoutes } from '~/consts';
 import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
+import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { CreateProduct } from '~/services/product.service';
 import { BootstrapDialogTitle, Form } from './styles';
 
 export default function CreateProductDialog({ open, setOpen }) {
   const route = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const { types } = useMemberAreaTypes();
   const { register, setValue, watch, handleSubmit } =
     useForm<ProductClient.CreateProduct>();
   const { title, price } = watch();
@@ -38,11 +39,16 @@ export default function CreateProductDialog({ open, setOpen }) {
       }
       setValue('title', '');
       setValue('price', '');
-      route.push(MentorRoutes.products_edit + '/' + product.id);
+      route.push(
+        MentorRoutes.members_area +
+          '/' +
+          types.find((t) => t.id === product.deliver) +
+          product.id,
+      );
       setOpen(false);
       setIsLoading(false);
     },
-    [route, setOpen, setValue],
+    [route, setOpen, setValue, types],
   );
 
   const handleClose = () => {
@@ -64,7 +70,12 @@ export default function CreateProductDialog({ open, setOpen }) {
           Novo Produto
         </BootstrapDialogTitle>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <DialogContent dividers>
+          <DialogContent
+            sx={{
+              maxWidth: '500px',
+            }}
+            dividers
+          >
             <Typography gutterBottom>
               Para criar seu novo produto, preencha os campos a seguir.
             </Typography>
@@ -96,19 +107,18 @@ export default function CreateProductDialog({ open, setOpen }) {
               value={price}
             />
             <SelectField required sx={{ width: '100%' }}>
-              <InputLabel>Entrega de Conteúdo</InputLabel>
+              <InputLabel>Tipo de Área de Membros</InputLabel>
               <Select
-                label="Entrega de Conteúdo"
+                label="Tipo de Área de Membros"
                 color="secondary"
-                defaultValue="mentorfy"
+                defaultValue={1}
                 {...register('deliver')}
               >
-                <MenuItem value="mentorfy">
-                  Área de Membros
-                  <Typography component="b">&nbsp;Mentorfy</Typography>
-                </MenuItem>
-                <MenuItem value="external">Área de Membros Externa</MenuItem>
-                <MenuItem value="signup">Apenas cadastros</MenuItem>
+                {types.map((tp) => (
+                  <MenuItem key={tp.id} value={tp.id}>
+                    {tp.name}
+                  </MenuItem>
+                ))}
               </Select>
             </SelectField>
           </DialogContent>

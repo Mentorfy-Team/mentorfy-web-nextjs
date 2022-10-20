@@ -2,7 +2,7 @@ import { DnDObject, DnDRow } from '~/components/modules/DragNDrop';
 
 export const OrganizeTools = (data: DnDRow[]) => {
   const sortedData = data.sort((a, b) => a.order - b.order);
-  console.log(sortedData);
+
   const steps: DnDObject[] = [];
   let countSteps = 0;
 

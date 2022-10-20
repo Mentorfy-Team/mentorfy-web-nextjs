@@ -169,18 +169,18 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               height={isDesktop ? '400px' : 'unset'}
               width={isDesktop ? '300px' : 'unset'}
               key={index}
-              onClick={() =>
+              onClick={() => {
                 router.push(
                   types
-                    .find(
-                      (type) =>
-                        type.id === (product.member_area as any).type_id,
-                    )
-                    .name.toLowerCase() +
+                    .find((type) => type.id.toString() === product.deliver)
+                    .name.replace(/\s/g, '-')
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .toLowerCase() +
                     '/' +
                     product.id,
-                )
-              }
+                );
+              }}
             >
               <Image
                 alt=""

@@ -25,7 +25,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   const supabase = CreateSupabaseWithAuth(req);
   const { data: product, error } = await supabase
     .from('product')
-    .select('*, member_area!member_area_id_fkey(*)')
+    .select('*, member_area(*)')
     .eq('id', req.query.id)
     .single();
 
@@ -51,14 +51,14 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
       refeerer: nanoid(6),
     })
     .single();
-  if (req.body.deliver === 'mentorfy') {
-    await supabase
-      .from('member_area')
-      .insert({
-        id: data.id,
-      })
-      .single();
-  }
+
+  const { error: errorm } = await supabase
+    .from('member_area')
+    .insert({
+      id: data.id,
+      type_id: data.deliver,
+    })
+    .single();
 
   res.status(200).json({ product: data, error: error?.message });
 };
