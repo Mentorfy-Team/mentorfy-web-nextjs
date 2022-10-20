@@ -21,7 +21,7 @@ type Props = {
 const AreaDeMembros: FC<Props> = ({ product_id }) => {
   const isMobile = useMediaQuery('(max-width: 500px)');
   const theme = useTheme();
-  const { tools } = useMemberAreaTools(product_id);
+  const { steps } = useMemberAreaTools(product_id);
 
   const creatNewMembersArea = isMobile ? '' : 'Criar nova área de membros';
   return (

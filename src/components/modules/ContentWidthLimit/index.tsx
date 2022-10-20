@@ -31,6 +31,7 @@ const ContentWidthLimit: React.FC<props> = ({
           overflowY: withoutScroll ? 'hidden' : 'auto',
         }}
         withtoolbar={withToolBar ? 'true' : 'false'}
+        withscroll={!withoutScroll ? 'true' : 'false'}
       >
         {children}
         <Box height="1rem" />

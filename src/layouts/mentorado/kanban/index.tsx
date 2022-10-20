@@ -1,65 +1,88 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
+import { DnDObject } from '~/components/modules/DragNDrop';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
+import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
-import ChecklistModal from '../components/checklist-modal';
 import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
 
 export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
   user,
   member_area_id,
 }) => {
-  const { tools } = useMemberAreaTools(member_area_id);
-  const [listTools, setListTools] = useState(tools);
+  const { steps: stepsData } = useMemberAreaTools(member_area_id);
+  const [steps, setSteps] = useState<DnDObject[]>([]);
+
+  const [height, setHeight] = useState(0);
+  const ref = useRef(null);
 
   useEffect(() => {
-    setListTools(tools);
-  }, [tools]);
+    if (ref.current) {
+      setHeight(ref.current.clientHeight);
+    }
+  });
+
+  useEffect(() => {
+    setSteps((oldSteps) => {
+      oldSteps = [...OrganizeTools(stepsData)];
+      return [...oldSteps];
+    });
+  }, [stepsData]);
 
   return (
     <>
       <Toolbar tabs={['Método 4S']} />
-      <ContentWidthLimit maxWidth={1250}>
+      <ContentWidthLimit>
         <Wrapper>
-          {listTools && listTools.map((group) => (
-            <Step key={group.id}>
-            <Image
-              alt="imagem"
-              width={43}
-              height={50}
-              src="/svgs/step-image.svg"
-            />
-            <Title>{group.title}</Title>
-
-            <Box
-              sx={{ width: '100%', overflowY: 'auto', height: '450px', marginTop: '1rem'}}
-              >
-              <Description>{group.description}</Description>
-              <Task>
-                <TasktTitle>Vídeo de Apresentação</TasktTitle>
+          {steps &&
+            steps.map((step) => (
+              <Step key={step.id}>
                 <Image
                   alt="imagem"
-                  width={14}
-                  height={15}
-                  src="/svgs/done.svg"
+                  width={43}
+                  height={50}
+                  src="/svgs/step-image.svg"
                 />
-              </Task>
-            <Image
-              alt="imagem"
-              width={122}
-              height={139}
-              src="/images/winners.png"
-              style={{marginTop: '1.2rem'}}
-            />
-            </Box>
-
-          </Step>
-          ))}
-          <ChecklistModal/>
+                <Title>{step.title}</Title>
+                <Box
+                  id="boxXXXX"
+                  ref={ref}
+                  sx={{
+                    width: '100%',
+                    overflowY: 'auto',
+                    marginTop: '1rem',
+                    marginRight: step.rows.length > 5 ? '-1.2rem' : 0,
+                    paddingRight: step.rows.length > 5 ? '0.5rem' : 0,
+                  }}
+                >
+                  <Description>{step.description}</Description>
+                  {step.rows.map((task) => (
+                    <Task key={task.id}>
+                      <TasktTitle sx={{ textAlign: 'start' }}>
+                        {task.title}
+                      </TasktTitle>
+                      <Image
+                        alt="imagem"
+                        width={14}
+                        height={15}
+                        src="/svgs/done.svg"
+                      />
+                    </Task>
+                  ))}
+                  <Image
+                    alt="imagem"
+                    width={122}
+                    height={139}
+                    src="/images/winners.png"
+                    style={{ marginTop: '1.2rem' }}
+                  />
+                </Box>
+              </Step>
+            ))}
         </Wrapper>
       </ContentWidthLimit>
     </>

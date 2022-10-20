@@ -174,7 +174,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                   types
                     .find(
                       (type) =>
-                        type.id === (product.member_area[0] as any).type_id,
+                        type.id === (product.member_area as any).type_id,
                     )
                     .name.toLowerCase() +
                     '/' +
