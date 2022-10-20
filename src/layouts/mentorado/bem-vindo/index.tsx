@@ -164,7 +164,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         <Slider {...settings} slidesToShow={5} className="container">
           {clientProducts.map((product, index) => (
             <CourseBox
-              onMouseOver={() => console.log('isFocusing')}
+              onMouseOver={() => {}}
               className="item"
               height={isDesktop ? '400px' : 'unset'}
               width={isDesktop ? '300px' : 'unset'}
@@ -210,7 +210,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             ),
           ].map((_, i) => (
             <CourseBox
-              onMouseOver={() => console.log('isFocusing')}
+              onMouseOver={() => {}}
               className="item"
               height={isDesktop ? '400px' : 'unset'}
               width={isDesktop ? '300px' : 'unset'}
@@ -224,7 +224,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         <Slider {...settings} slidesToShow={5} className="container">
           {products.map((product, index) => (
             <CourseBox
-              onMouseOver={() => console.log('isFocusing')}
+              onMouseOver={() => {}}
               className="item"
               minWidth={350}
               key={index}

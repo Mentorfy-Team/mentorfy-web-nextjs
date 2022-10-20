@@ -1,12 +1,12 @@
 import { FC, useCallback, useEffect, useState } from 'react';
+import { Task, Workspaces } from '@mui/icons-material';
 import Save from '@mui/icons-material/Save';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
-import { DnDObject } from '~/components/modules/DragNDrop';
+import { DnDObject, DnDRow } from '~/components/modules/DragNDrop';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import {
@@ -16,13 +16,15 @@ import {
 import { FilesToDelete } from '~/services/file-upload.service';
 import { UpdateMemberAreaTools } from '~/services/member-area.service';
 import {
+  AddGroup,
+  AddTool,
   ButtonsWrapper,
   CustomTypograpy,
+  GroupHeader,
+  GroupWrapper,
   ReturnButton,
   SaveButton,
   ScrollWrapper,
-  GroupWrapper,
-  GroupHeader,
 } from '../styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 
@@ -47,59 +49,116 @@ const EditarMentoria: FC<Props> = ({ id }) => {
     data?: any;
   }>();
   const [open, setOpen] = useState(false);
-  const [steps, setSteps] = useState<DnDObject[]>([
-    {
-      id: 0,
-      title: 'Etapa 1',
-      description: 'descrição da etapa 1',
-      rows: [],
-    },
-  ]);
+  const [steps, setSteps] = useState<DnDObject[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const theme = useTheme();
   const Image = '/svgs/step-image.svg';
 
-  const { tools, mutate } = useMemberAreaTools(id);
+  const { steps: stepsData, mutate } = useMemberAreaTools(id);
+
+  const OrganizeTools = (data: DnDRow[]) => {
+    const sortedData = data.sort((a, b) => a.order - b.order);
+
+    const steps: DnDObject[] = [];
+    let countSteps = 0;
+
+    for (let i = 0; i < sortedData.length; i++) {
+      const isStep = sortedData[i].type === 0;
+
+      if (isStep) {
+        steps.push({
+          id: sortedData[i].id,
+          title: sortedData[i].title,
+          description: sortedData[i].description,
+          rows: [],
+        });
+        countSteps++;
+      } else {
+        if (i === 0) {
+          steps.push({
+            id: '0',
+            title: 'Agrupador Padrão',
+            rows: [
+              {
+                id: sortedData[i].id,
+                title: sortedData[i].title,
+                type: sortedData[i].type,
+              },
+            ],
+          });
+        } else {
+          steps[countSteps - 1].rows.push({
+            id: sortedData[i].id,
+            title: sortedData[i].title,
+            type: sortedData[i].type,
+          });
+        }
+      }
+    }
+
+    return steps;
+  };
 
   useEffect(() => {
     setSteps((oldSteps) => {
-      oldSteps[0].rows = [...tools];
+      oldSteps = [...OrganizeTools(stepsData)];
       return [...oldSteps];
     });
-  }, [tools]);
+  }, [stepsData]);
 
-  const addNewStep = useCallback(
-    (title, description, type) => {
-      const newStep = {
-        id: Math.random() + '',
-        title: 'Nova etapa ' + (steps[0].rows.length + 1),
-        type,
-      };
+  const addNewTool = useCallback((title, description, type, group_id) => {
+    const newTool = {
+      id: Math.random() + '',
+      title: title,
+      description: description,
+      type,
+    };
 
-      setSteps((oldSteps) => {
-        if (!oldSteps[0].rows) oldSteps[0].rows = [];
+    setSteps((oldSteps) => {
+      const index = oldSteps.findIndex((stp) => stp.id === group_id);
+      if (!oldSteps[index].rows) oldSteps[index].rows = [];
+      oldSteps[index].rows.push(newTool);
 
-        oldSteps[0].rows.push(newStep);
-        return [...oldSteps];
-      });
-    },
-    [steps],
-  );
-
-  const hadleOpenToolsModal = useCallback(() => {
-    setCurrentModal({
-      onChange: (tool: MentorTools.ToolType) => {
-        addNewStep(
-          `Etapa ${steps[0].rows.length + 1}`,
-          tool.description,
-          tool.id,
-        );
-      },
-      type: ToolListNames.ToolList.name,
+      return [...oldSteps];
     });
-    setOpen(true);
-  }, [addNewStep, steps]);
+  }, []);
+
+  const addNewGroup = useCallback(() => {
+    const newStep = {
+      id: Math.random() + '',
+      title: 'Novo Agrupador de Etapas ' + (steps.length + 1),
+      type: '0',
+      rows: [],
+    };
+
+    setSteps((oldSteps) => {
+      if (!oldSteps) oldSteps = [];
+
+      oldSteps.push(newStep);
+      return [...oldSteps];
+    });
+  }, [steps]);
+
+  const handleOpenToolsModal = useCallback(
+    (group_id) => {
+      setCurrentModal({
+        onChange: (tool: MentorTools.ToolType) => {
+          addNewTool(
+            `Nova Etapa ${
+              steps.find((stp) => stp.id === group_id).rows.length + 1
+            }`,
+            tool.description,
+            tool.id,
+            group_id,
+          );
+        },
+        type: ToolListNames.ToolList.name,
+      });
+      setOpen(true);
+    },
+    [addNewTool, steps],
+  );
 
   const HandleModal = useCallback(() => {
     return (
@@ -118,7 +177,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   const handleSave = useCallback(async () => {
     // timout para dar tempo para as imagens se organizarem
     setTimeout(async function () {
-      await UpdateMemberAreaTools(id, steps[0].rows);
+      await UpdateMemberAreaTools(id, steps);
       mutate();
     }, 1000);
   }, [id, mutate, steps]);
@@ -130,17 +189,25 @@ const EditarMentoria: FC<Props> = ({ id }) => {
         await FilesToDelete(data.toRemove);
         delete data.toRemove;
       }
-      setSteps((oldSteps) => {
-        Object.assign(
-          oldSteps[0].rows.find((r) => r.id === refId),
-          data,
-        );
-        return [...oldSteps];
-      });
+      const stepIndex = steps.findIndex((stp) => stp.id === refId + '');
 
+      if (stepIndex >= 0) {
+        setSteps((oldSteps) => {
+          Object.assign(oldSteps[stepIndex], data);
+          return [...oldSteps];
+        });
+      } else {
+        setSteps((oldSteps) => {
+          Object.assign(
+            oldSteps[0].rows.find((r) => r.id === refId),
+            data,
+          );
+          return [...oldSteps];
+        });
+      }
       handleSave();
     },
-    [handleSave],
+    [handleSave, steps],
   );
 
   const GetTypeName = useCallback((type) => {
@@ -151,10 +218,12 @@ const EditarMentoria: FC<Props> = ({ id }) => {
 
   const hasChanges = useCallback(() => {
     // verifica se todos os elementos do array são iguais
-    const haschanges = JSON.stringify(tools) !== JSON.stringify(steps[0].rows);
+    if (!steps || steps.length === 0) return false;
+    const haschanges =
+      JSON.stringify(OrganizeTools(stepsData)) !== JSON.stringify(steps);
 
     return haschanges;
-  }, [steps, tools]);
+  }, [steps, stepsData]);
 
   return (
     <>
@@ -198,38 +267,57 @@ const EditarMentoria: FC<Props> = ({ id }) => {
       <Divider
         sx={{
           borderColor: `${theme.palette.tertiary.light}`,
-          marginBottom: '1.8rem',
+          marginBottom: '1.0rem',
         }}
       />
+      <Box display="flex" alignSelf="end" gap={2} mb={2}>
+        <AddGroup
+          onClick={() => addNewGroup()}
+          variant="contained"
+          color="secondary"
+        >
+          <Workspaces />
+          Adicionar Agrupador
+        </AddGroup>
+      </Box>
       <ScrollWrapper withtoolbar="true">
         <DragNDrop
           setElements={setSteps}
           groupModel={(group_id, child) => {
-            return <GroupWrapper key={group_id}>
-              <EditMembersAreaSteps
-                isHeader
-                title={steps[group_id]?.title || 'Nova etapa'}
-                stepType={0}
-                image={Image}
-                onEdit={() => {
-                  const type = GetTypeName(0);
-                  setCurrentModal({
-                    onChange: GetOnChange,
-                    type,
-                    refId: steps[group_id].id+'',
-                    data: steps[group_id] || {},
-                  });
-                  setOpen(true);
-                }}
-                id={steps[group_id].id+''}
-              />
-              <GroupHeader>
-              {child}
-              </GroupHeader>
-            </GroupWrapper>;
+            if (!steps || steps.length === 0) return child;
+            const step = steps.find((i) => i.id === group_id);
+            return (
+              <GroupWrapper key={group_id}>
+                <EditMembersAreaSteps
+                  isHeader
+                  title={step.title || 'Nova etapa'}
+                  stepType={0}
+                  image={Image}
+                  onEdit={() => {
+                    const type = GetTypeName(0);
+                    setCurrentModal({
+                      onChange: GetOnChange,
+                      type,
+                      refId: group_id + '',
+                      data: step || {},
+                    });
+                    setOpen(true);
+                  }}
+                  id={group_id + ''}
+                />
+
+                <GroupHeader>{child}</GroupHeader>
+                <AddTool
+                  onClick={() => handleOpenToolsModal(group_id)}
+                  variant="contained"
+                >
+                  <Task />
+                  Adicionar Etapa
+                </AddTool>
+              </GroupWrapper>
+            );
           }}
-          model={(element_id) => {
-            const stp = steps[0].rows.find((stp) => stp.id == element_id);
+          model={(stp) => {
             if (!stp) return null;
 
             return (
@@ -254,30 +342,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
           elements={steps}
         />
       </ScrollWrapper>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Divider
-          orientation="vertical"
-          sx={{
-            borderColor: `${theme.palette.caption.main}`,
-            height: '1rem',
-            width: '0',
-            marginTop: '1.5rem',
-          }}
-        />
-        <Button
-          onClick={hadleOpenToolsModal}
-          sx={{ color: `${theme.palette.caption.main}` }}
-        >
-          + ADICIONAR ETAPA
-        </Button>
-        {open && HandleModal()}
-      </Box>
+      {open && HandleModal()}
     </>
   );
 };

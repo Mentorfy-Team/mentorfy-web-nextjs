@@ -19,7 +19,7 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
     delete tool.type;
     delete (tool as any).toRemove;
 
-    const isUUID = tool.id.length > 6 && tool.id.includes('-');
+    const isUUID = tool.id && tool.id.length > 6 && tool.id.includes('-');
     const tool_id = isUUID ? tool.id : null;
 
     // Se o id for maior que 6, é um id do supabase e devemos remover se o delete for true

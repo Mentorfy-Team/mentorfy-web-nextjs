@@ -16,10 +16,10 @@ import {
 } from '@dnd-kit/sortable';
 
 export type DnDObject = {
-  id: number;
+  id: string;
   title: string;
-  description: string;
-  rows: DnDRow[];
+  description?: string;
+  rows?: DnDRow[];
 };
 
 export type DnDRow = MentorTools.ToolData & { type: string };
@@ -28,13 +28,18 @@ type Props = {
   model: (element_id, group_id?) => JSX.Element;
   groupModel: (group_id, child) => JSX.Element;
   elements: {
-    id: number;
-    rows: DnDRow[];
+    id: string;
+    rows?: DnDRow[];
   }[];
   setElements: (elements: any) => void;
 };
 
-export default function DragNDrop({ model, elements, setElements, groupModel }: Props) {
+export default function DragNDrop({
+  model,
+  elements,
+  setElements,
+  groupModel,
+}: Props) {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -51,11 +56,14 @@ export default function DragNDrop({ model, elements, setElements, groupModel }: 
     setActiveId(null);
     const { active, over } = event;
     if (active.id !== over?.id) {
-      setElements((items: { rows: any[] }[]) => {
-        const oldIndex = items[0].rows.findIndex((i) => i.id === active.id);
-        const newIndex = items[0].rows.findIndex((i) => i.id === over.id);
-        const newItens = [...items];
-        newItens[0].rows = arrayMove(items[0].rows, oldIndex, newIndex);
+      const index = elements.findIndex(
+        (i) => i.rows.findIndex((j) => j.id === active.id) !== -1,
+      );
+      setElements((steps: { rows: any[] }[]) => {
+        const oldIndex = steps[index].rows.findIndex((i) => i.id === active.id);
+        const newIndex = steps[index].rows.findIndex((i) => i.id === over.id);
+        const newItens = [...steps];
+        newItens[index].rows = arrayMove(steps[index].rows, oldIndex, newIndex);
         return newItens;
       });
     }
@@ -70,12 +78,17 @@ export default function DragNDrop({ model, elements, setElements, groupModel }: 
       modifiers={[restrictToParentElement]}
     >
       {elements.map((group, groupIndex) => {
-        return groupModel(group.id, (<SortableContext
-          items={(elements[0].rows || []).filter((i)=>!i.delete).map((i) => i.id)}
-          strategy={verticalListSortingStrategy}
-        >
-          {(elements[0].rows || []).filter((i)=>!i.delete).map((item) => model(item.id))}
-        </SortableContext>));
+        const itens = group.rows.filter((i) => !i.delete);
+
+        return groupModel(
+          group.id,
+          <SortableContext
+            items={itens.map((item) => item.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {itens.map((item) => model(item))}
+          </SortableContext>,
+        );
       })}
       {/* <DragOverlay modifiers={[restrictToParentElement]}>
         {activeId ? (

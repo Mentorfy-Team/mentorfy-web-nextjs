@@ -13,7 +13,7 @@ export function useMemberAreaTools(id) {
   );
 
   return {
-    tools: data ? data.sort((a, b) => a.order - b.order) : null,
+    steps: data ? data : null,
     isLoading: !error && !data,
     isError: error,
     mutate,

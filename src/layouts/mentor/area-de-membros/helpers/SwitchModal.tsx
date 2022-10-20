@@ -166,17 +166,19 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
         />
       );
     case ToolListNames.StepGroup.name:
-      return <OpenText
-      data={data}
-      open={open}
-      setOpen={setOpen}
-      onChange={(props) =>
-        onChange({
-          data: { ...props, type: ToolListNames.StepGroup.id },
-          refId,
-        })
-      }
-    />;
+      return (
+        <OpenText
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: 0 },
+              refId,
+            })
+          }
+        />
+      );
     case ToolListNames.ToolList.name:
       return <ToolList open={open} setOpen={setOpen} onChange={onChange} />;
     default:

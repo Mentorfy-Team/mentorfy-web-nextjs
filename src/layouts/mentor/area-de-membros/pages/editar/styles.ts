@@ -12,16 +12,44 @@ export const SaveButton = styled(LoadingButton)`
 `;
 
 export const GroupHeader = styled(Box)`
-padding: 0.4rem;
-display: flex;
+  display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding: 0.4rem;
 `;
 
 export const GroupWrapper = styled(Box)`
-  
   border: 3px solid ${({ theme }) => theme.palette.primary.light};
   border-radius: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+`;
+
+export const AddGroup = styled(Button)`
+  background-color: ${({ theme }) => theme.palette.secondary.main};
+  padding-left: 0.4rem;
+  svg {
+    margin-right: 0.2rem;
+    scale: 0.7;
+  }
+`;
+
+export const AddTool = styled(Button)`
+  align-self: end;
+  background-color: transparent;
+  border: 2px solid ${({ theme }) => theme.palette.secondary.main};
+  color: ${({ theme }) => theme.palette.secondary.main};
+  height: 2rem;
+  svg {
+    margin-right: 0.2rem;
+    scale: 0.7;
+  }
+  margin-bottom: 0.4rem;
+  margin-right: 0.4rem;
+  margin-top: 0.4rem;
+  padding: 1rem 0.7rem;
+  padding-left: 0.4rem;
 `;
 
 export const ReturnButton = styled(Button)`
