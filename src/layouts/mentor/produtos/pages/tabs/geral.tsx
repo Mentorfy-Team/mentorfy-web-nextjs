@@ -1,22 +1,18 @@
 import { FC, useCallback, useState } from 'react';
 import Save from '@mui/icons-material/Save';
 import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputField from '~/components/atoms/InputField';
-import SelectField from '~/components/atoms/SelectField';
 import { MentorRoutes } from '~/consts';
 import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
+import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { UpdateProduct } from '~/services/product.service';
 import { ActionButton, ReturnButton, SaveButton, SvgWrapper } from '../styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
-
 type props = {
   product: ProductClient.Product;
 };
@@ -29,7 +25,7 @@ const Geral: FC<props> = ({ product }) => {
     banner_image: { file: product.banner_image, type: '' },
   });
   const { handleSubmit, watch, setValue } = useForm<ProductClient.Product>();
-
+  const { types } = useMemberAreaTypes();
   const onSubmit: SubmitHandler<ProductClient.CreateProduct> = useCallback(
     async (values) => {
       setIsLoading(true);
@@ -242,23 +238,23 @@ const Geral: FC<props> = ({ product }) => {
         }}
         onChange={(e) => handleChange(e, 'price')}
       />
-      <SelectField required sx={{ width: '100%' }}>
-        <InputLabel>Entrega de Conteúdo</InputLabel>
-        <Select
-          label="Entrega de Conteúdo"
-          defaultValue={product.deliver}
-          value={deliver}
-          onChange={(e) => handleChange(e, 'deliver')}
-          color="secondary"
-        >
-          <MenuItem value={'mentorfy'}>
-            Área de Membros
-            <Typography component="b">&nbsp;Mentorfy</Typography>
-          </MenuItem>
-          <MenuItem value={'external'}>Área de Membros Externa</MenuItem>
-          <MenuItem value={'signup'}>Apenas Cadastros</MenuItem>
-        </Select>
-      </SelectField>
+      <InputField
+        color="secondary"
+        value={
+          types.find((type) =>
+            type.id === product?.member_area
+              ? (product?.member_area as any).type_id
+              : 5,
+          )?.name
+        }
+        label="Tipo de Área de Membros"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        InputProps={{
+          readOnly: true,
+        }}
+      />
       {deliver === 'external' && (
         <InputField
           required
