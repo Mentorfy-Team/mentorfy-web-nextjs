@@ -1,9 +1,12 @@
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
+import { PublicRoutes } from '~/consts';
+import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import {
   CommentInput,
   CompleteButton,
@@ -16,7 +19,9 @@ import {
   Wrapper,
 } from './styles';
 
-export const VideoView = () => {
+export const VideoView = ({ member_area_id }) => {
+  const { steps: stepsData } = useMemberAreaTools(member_area_id);
+
   return (
     <>
       <Toolbar tabs={['Método 4S']} />
@@ -96,9 +101,17 @@ export const VideoView = () => {
   );
 };
 
-export async function getProps() {
-  return {
-    props: {},
-  };
-}
+// * ServerSideRender (SSR)
+export const getProps = withPageAuth({
+  authRequired: true,
+  redirectTo: PublicRoutes.login,
+  async getServerSideProps(ctx) {
+    const id = ctx.query.id as string;
+    return {
+      props: {
+        member_area_id: id,
+      },
+    };
+  },
+});
 export default VideoView;

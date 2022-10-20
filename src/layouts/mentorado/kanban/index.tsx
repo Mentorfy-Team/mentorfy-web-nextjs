@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
@@ -16,15 +16,6 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
 }) => {
   const { steps: stepsData } = useMemberAreaTools(member_area_id);
   const [steps, setSteps] = useState<DnDObject[]>([]);
-
-  const [height, setHeight] = useState(0);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    if (ref.current) {
-      setHeight(ref.current.clientHeight);
-    }
-  });
 
   useEffect(() => {
     setSteps((oldSteps) => {
@@ -49,8 +40,6 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                 />
                 <Title>{step.title}</Title>
                 <Box
-                  id="boxXXXX"
-                  ref={ref}
                   sx={{
                     width: '100%',
                     overflowY: 'auto',

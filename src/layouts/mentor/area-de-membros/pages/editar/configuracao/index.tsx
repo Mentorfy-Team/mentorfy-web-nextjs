@@ -40,9 +40,6 @@ const Geral: FC<props> = ({ id }) => {
   const theme = useTheme();
 
   useEffect(() => {
-    console.log('product', product);
-  }, [product]);
-  useEffect(() => {
     setProduct(pData);
     setProductImage({
       main_image: {
