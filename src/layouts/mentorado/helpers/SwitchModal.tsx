@@ -1,0 +1,212 @@
+import React from 'react';
+import dynamic from 'next/dynamic';
+import { LoadingComponent } from '~/components/partials/loading/loading.partial';
+
+const Checklist = dynamic(() => import('../components/checklist-modal'), {
+  loading: () => <LoadingComponent />,
+});
+const Embed = dynamic(() => import('../components/embed'), {
+  loading: () => <LoadingComponent />,
+});
+const OpenText = dynamic(() => import('../components/open-text'), {
+  loading: () => <LoadingComponent />,
+});
+const QuestionsForm = dynamic(() => import('../components/questions-forms'), {
+  loading: () => <LoadingComponent />,
+});
+const UploadFile = dynamic(() => import('../components/file-dowaload'), {
+  loading: () => <LoadingComponent />,
+});
+// const WheelOfLifeModal = dynamic(
+//   () => import('../components/'),
+//   {
+//     loading: () => <LoadingComponent />,
+//   },
+// );
+const Video = dynamic(() => import('../components/video-modal'), {
+  loading: () => <LoadingComponent />,
+});
+const Schedule = dynamic(() => import('../components/schedule'), {
+  loading: () => <LoadingComponent />,
+});
+
+export const ToolListNames = {
+  StepGroup: { name: 'Agrupador de Etapas', id: 0 },
+  QuestionsForm: { name: 'Formulário de Perguntas', id: 1 },
+  UploadFile: { name: 'Upload de Arquivos', id: 2 },
+  Checklist: { name: 'Checklist', id: 3 },
+  Video: { name: 'Upload de Vídeo', id: 4 },
+  Embed: { name: 'Embed', id: 5 },
+  OpenText: { name: 'Campo de Texto Aberto', id: 6 },
+  WheelOfLifeModal: { name: 'Roda da Vida', id: 7 },
+  Calendar: { name: 'Calendário', id: 8 },
+  ToolList: { name: 'Lista de Ferramentas', id: 9 },
+};
+
+export type ToolsModalProps = {
+  open: boolean;
+  type?: string;
+  refId?: string;
+  area_id?: string;
+  data: any;
+  onChange?: (value: any) => any;
+  setOpen?: (value: any) => any;
+};
+
+const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
+  onChange,
+  data,
+  type = ToolListNames.ToolList.name,
+  open,
+  setOpen,
+  refId,
+  area_id,
+}) => {
+  switch (type) {
+    // case ToolListNames.WheelOfLifeModal.name:
+    //   return (
+    //     <WheelOfLifeModal
+    //       data={data}
+    //       open={open}
+    //       setOpen={setOpen}
+    //       onChange={(props) =>
+    //         onChange({
+    //           data: { ...props, type: ToolListNames.WheelOfLifeModal.id },
+    //           refId,
+    //         })
+    //       }
+    //     />
+    //   );
+    case ToolListNames.Checklist.name:
+      return (
+        <Checklist
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.Checklist.id },
+              refId,
+            })
+          }
+        />
+      );
+    case ToolListNames.Embed.name:
+      return (
+        <Embed
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.Embed.id },
+              refId,
+            })
+          }
+        />
+      );
+    case ToolListNames.UploadFile.name:
+      return (
+        <UploadFile
+          area_id={area_id}
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.UploadFile.id },
+              refId,
+            })
+          }
+        />
+      );
+    case ToolListNames.OpenText.name:
+      return (
+        <OpenText
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.OpenText.id },
+              refId,
+            })
+          }
+        />
+      );
+    case ToolListNames.QuestionsForm.name:
+      return (
+        <QuestionsForm
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.QuestionsForm.id },
+              refId,
+            })
+          }
+        />
+      );
+    case ToolListNames.Video.name:
+      return (
+        <Video
+          multivideos={false}
+          area_id={area_id}
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.Video.id },
+              refId,
+            })
+          }
+        />
+      );
+    case ToolListNames.StepGroup.name:
+      return (
+        <OpenText
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: 0 },
+              refId,
+            })
+          }
+        />
+      );
+    case ToolListNames.Calendar.name:
+      return (
+        <Schedule
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: 0 },
+              refId,
+            })
+          }
+        />
+      );
+    default:
+      return (
+        <Schedule
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: 0 },
+              refId,
+            })
+          }
+        />
+      );
+  }
+};
+
+export default SwitchMentoredModal;
