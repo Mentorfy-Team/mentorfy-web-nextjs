@@ -32,6 +32,7 @@ const ToolList = dynamic(() => import('../components/ToolListModal'), {
 });
 
 export const ToolListNames = {
+  StepGroup: { name: 'Agrupador de Etapas', id: 0 },
   QuestionsForm: { name: 'Formulário de Perguntas', id: 1 },
   UploadFile: { name: 'Upload de Arquivos', id: 2 },
   Checklist: { name: 'Checklist', id: 3 },
@@ -164,6 +165,18 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
           }
         />
       );
+    case ToolListNames.StepGroup.name:
+      return <OpenText
+      data={data}
+      open={open}
+      setOpen={setOpen}
+      onChange={(props) =>
+        onChange({
+          data: { ...props, type: ToolListNames.StepGroup.id },
+          refId,
+        })
+      }
+    />;
     case ToolListNames.ToolList.name:
       return <ToolList open={open} setOpen={setOpen} onChange={onChange} />;
     default:

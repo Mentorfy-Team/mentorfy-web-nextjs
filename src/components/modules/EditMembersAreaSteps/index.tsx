@@ -13,9 +13,10 @@ type props = {
   children?: JSX.Element;
   image?: string;
   title?: JSX.Element | string;
-  stepType?: JSX.Element | string;
+  stepType?: JSX.Element | string | number;
   onEdit?: () => void;
   id?: string;
+  isHeader?: boolean;
 };
 const EditMembersAreaSteps: FC<props> = ({
   image,
@@ -23,6 +24,7 @@ const EditMembersAreaSteps: FC<props> = ({
   stepType,
   onEdit,
   id,
+  isHeader = false,
 }) => {
   const theme = useTheme();
 
@@ -49,6 +51,8 @@ const EditMembersAreaSteps: FC<props> = ({
         return ToolListNames.UploadFile.name;
       case ToolListNames.WheelOfLifeModal.id:
         return ToolListNames.WheelOfLifeModal.name;
+      case 0:
+        return 'Agrupador de Etapa';
       default:
         return 'Tipo não encontrado';
     }
@@ -56,24 +60,27 @@ const EditMembersAreaSteps: FC<props> = ({
 
   return (
     <div id={id + ''} key={id} ref={setNodeRef} style={style} {...attributes}>
-      <Step>
+      <Step sx={{
+        borderRadious: isHeader ? '0px':'1.2rem 1.2rem 0 0',
+      }}>
         <BoxHeader>
-          <Box sx={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-            <MenuIcon
+          <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            {!isHeader && <MenuIcon
               sx={{
                 color: `${theme.palette.tertiary.main}`,
                 cursor: 'pointer',
                 marginBottom: '0.5rem',
               }}
               {...listeners}
-            />
-            <Image alt="" src={image} width={50} height={50}></Image>
+            />}
+            { isHeader && <Image alt="" src={image} width={50} height={50}></Image>}
             <Box sx={{ textAlign: 'left' }}>
               <Typography
                 sx={{
                   color: `${theme.palette.text.primary}`,
-                  fontSize: '1rem',
+                  fontSize: '0.9rem',
                   fontWeight: '700',
+                  lineHeight: '1.1rem',
                 }}
               >
                 {title}
@@ -81,7 +88,8 @@ const EditMembersAreaSteps: FC<props> = ({
               <Typography
                 sx={{
                   color: `${theme.palette.success.main}`,
-                  fontSize: '1rem',
+                  fontSize: '0.9rem',
+                  lineHeight: '1.5rem',
                 }}
               >
                 {typeToScreen(parseInt(stepType as string))}

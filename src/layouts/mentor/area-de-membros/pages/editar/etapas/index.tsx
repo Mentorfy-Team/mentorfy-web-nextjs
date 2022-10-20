@@ -21,6 +21,8 @@ import {
   ReturnButton,
   SaveButton,
   ScrollWrapper,
+  GroupWrapper,
+  GroupHeader,
 } from '../styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 
@@ -48,6 +50,8 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   const [steps, setSteps] = useState<DnDObject[]>([
     {
       id: 0,
+      title: 'Etapa 1',
+      description: 'descrição da etapa 1',
       rows: [],
     },
   ]);
@@ -200,6 +204,30 @@ const EditarMentoria: FC<Props> = ({ id }) => {
       <ScrollWrapper withtoolbar="true">
         <DragNDrop
           setElements={setSteps}
+          groupModel={(group_id, child) => {
+            return <GroupWrapper key={group_id}>
+              <EditMembersAreaSteps
+                isHeader
+                title={steps[group_id]?.title || 'Nova etapa'}
+                stepType={0}
+                image={Image}
+                onEdit={() => {
+                  const type = GetTypeName(0);
+                  setCurrentModal({
+                    onChange: GetOnChange,
+                    type,
+                    refId: steps[group_id].id+'',
+                    data: steps[group_id] || {},
+                  });
+                  setOpen(true);
+                }}
+                id={steps[group_id].id+''}
+              />
+              <GroupHeader>
+              {child}
+              </GroupHeader>
+            </GroupWrapper>;
+          }}
           model={(element_id) => {
             const stp = steps[0].rows.find((stp) => stp.id == element_id);
             if (!stp) return null;

@@ -17,6 +17,8 @@ import {
 
 export type DnDObject = {
   id: number;
+  title: string;
+  description: string;
   rows: DnDRow[];
 };
 
@@ -24,6 +26,7 @@ export type DnDRow = MentorTools.ToolData & { type: string };
 
 type Props = {
   model: (element_id, group_id?) => JSX.Element;
+  groupModel: (group_id, child) => JSX.Element;
   elements: {
     id: number;
     rows: DnDRow[];
@@ -31,7 +34,7 @@ type Props = {
   setElements: (elements: any) => void;
 };
 
-export default function DragNDrop({ model, elements, setElements }: Props) {
+export default function DragNDrop({ model, elements, setElements, groupModel }: Props) {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -66,12 +69,14 @@ export default function DragNDrop({ model, elements, setElements }: Props) {
       onDragEnd={handleDragEnd}
       modifiers={[restrictToParentElement]}
     >
-      <SortableContext
-        items={(elements[0].rows || []).filter((i)=>!i.delete).map((i) => i.id)}
-        strategy={verticalListSortingStrategy}
-      >
-        {(elements[0].rows || []).filter((i)=>!i.delete).map((item) => model(item.id))}
-      </SortableContext>
+      {elements.map((group, groupIndex) => {
+        return groupModel(group.id, (<SortableContext
+          items={(elements[0].rows || []).filter((i)=>!i.delete).map((i) => i.id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {(elements[0].rows || []).filter((i)=>!i.delete).map((item) => model(item.id))}
+        </SortableContext>));
+      })}
       {/* <DragOverlay modifiers={[restrictToParentElement]}>
         {activeId ? (
           <Box
