@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
 import InputField from '~/components/atoms/InputField';
@@ -18,6 +19,8 @@ const QuestionsForm = ({
   onChange,
   userInput,
 }) => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [input, setInput] = useState([]);
   const HeadText = (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
       <Image
@@ -33,18 +36,45 @@ const QuestionsForm = ({
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado sx={{ width: '680px' }}>
         <Description>{descriptionData}</Description>
-
+        {console.log('input', input)}
         <Box sx={{ textAlign: 'center', marginTop: '3rem' }}>
           <Question>
-            5 - Qual o nome do seu 3º pet adotado pela sua família?
+            <InputField
+              label={taskData[currentQuestion].data}
+              value={input ? input[currentQuestion]?.value : ''}
+              onChange={(e) =>
+                setInput((old) => {
+                  const input = old.find((item) => item.id === currentQuestion);
+                  if (input) {
+                    input.value = e.target.value;
+                    return [...old];
+                  }
+                  return [
+                    ...old,
+                    { id: currentQuestion, value: e.target.value },
+                  ];
+                })
+              }
+              sx={{ width: '100%' }}
+            />
           </Question>
-
-          <InputField />
         </Box>
 
         <ButtonsWrapper>
-          <BackButton variant="contained">Anterior</BackButton>
-          <ForwardButton variant="contained">Próximo</ForwardButton>
+          <BackButton
+            disabled={currentQuestion <= 0}
+            variant="contained"
+            onClick={() => setCurrentQuestion((q) => q - 1)}
+          >
+            Anterior
+          </BackButton>
+          <ForwardButton
+            disabled={currentQuestion === taskData.length - 1}
+            variant="contained"
+            onClick={() => setCurrentQuestion((q) => q + 1)}
+          >
+            Próximo
+          </ForwardButton>
         </ButtonsWrapper>
       </ModalDialogContent>
     </ModalComponent>
