@@ -52,7 +52,7 @@ export const Background = styled(Box)`
 
   .slick-track .slick-slide:focus,
   .slick-track .slick-slide:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     z-index: 1;
   }
 

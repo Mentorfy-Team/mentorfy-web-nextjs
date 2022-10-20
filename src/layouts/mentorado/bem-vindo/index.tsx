@@ -13,7 +13,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/future/image';
 
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
-const Slider = dynamic(() => import('react-slick'), { ssr: false });
+const Slider: any = dynamic(() => import('react-slick'), { ssr: false });
 import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { PublicRoutes } from '~/consts';
@@ -184,7 +184,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             >
               <Image
                 alt=""
-                src={product.main_image || '/images/moonlit.png'}
+                src={product?.main_image || '/images/moonlit.png'}
                 width={350}
                 height={400}
                 style={{
@@ -197,9 +197,9 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                   Mentor<span>fy</span>
                 </CollorFullMentorfy>
               </AbsoluteTopBox>
-              {!product.banner_image && (
+              {!product?.banner_image && (
                 <AbsoluteBottomBox>
-                  <ProductTitle>{product.title}</ProductTitle>
+                  <ProductTitle>{product?.title}</ProductTitle>
                 </AbsoluteBottomBox>
               )}
             </CourseBox>
@@ -231,7 +231,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             >
               <Image
                 alt=""
-                src={product.banner_image || '/images/moonlit.png'}
+                src={product?.banner_image || '/images/moonlit.png'}
                 width={350}
                 height={190}
                 style={{
@@ -251,8 +251,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               )}
             </CourseBox>
           ))}
-          {products.length < 5 &&
-            [...Array(5 - products.length)].map((_, i) => <div key={i} />)}
+          {products?.length < 5 &&
+            [...Array(5 - products?.length)].map((_, i) => <div key={i} />)}
         </Slider>
       </ContentWidthLimit>
     </Background>
