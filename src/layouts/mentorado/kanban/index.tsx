@@ -9,7 +9,7 @@ import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
-import { FilesToDelete } from '~/services/file-upload.service';
+//import { FilesToDelete } from '~/services/file-upload.service';
 import { InputUserMemberArea } from '~/services/member-area.service';
 import { ToolListNames, ToolsModalProps } from '../helpers/SwitchModal';
 import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
@@ -18,12 +18,18 @@ const SwitchMentoredModal = dynamic<ToolsModalProps>(
   () => import('~/layouts/mentorado/helpers/SwitchModal'),
 );
 
+export type UserInput = {
+  tool_id: string;
+  data: any;
+};
+
 export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
   user,
   member_area_id,
 }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const [steps, setSteps] = useState<DnDObject[]>([]);
+  const [userInput, setUserInput] = useState<UserInput[]>([]);
   const [open, setOpen] = useState(false);
 
   const [currentModal, setCurrentModal] = useState<{
@@ -51,9 +57,10 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
         refId={currentModal.refId}
         area_id={member_area_id}
         data={currentModal.data}
+        userInput={userInput.find((inp) => inp.tool_id === currentModal.refId)}
       />
     );
-  }, [currentModal, open, member_area_id]);
+  }, [currentModal, open, member_area_id, userInput]);
 
   const GetTypeName = useCallback((type) => {
     return Object.values(ToolListNames).find((i) => {
@@ -64,36 +71,26 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
   const handleSave = useCallback(async () => {
     // timout para dar tempo para as imagens se organizarem
     setTimeout(async function () {
-      await InputUserMemberArea(member_area_id, steps);
+      await InputUserMemberArea(member_area_id, userInput);
       mutate();
     }, 1000);
-  }, [member_area_id, mutate, steps]);
+  }, [member_area_id, mutate, userInput]);
 
   const GetOnChange = useCallback(
     async ({ refId, data }) => {
-      if (data.toRemove) {
-        await FilesToDelete(data.toRemove);
-        delete data.toRemove;
-      }
-      const stepIndex = steps.findIndex((stp) => stp.id === refId + '');
+      setUserInput((oldInput) => {
+        const index = oldInput.findIndex((i) => i.tool_id == refId);
+        if (index > -1) {
+          oldInput[index].data = data;
+        } else {
+          oldInput.push({ tool_id: refId, data });
+        }
+        return [...oldInput];
+      });
 
-      if (stepIndex >= 0) {
-        setSteps((oldSteps) => {
-          Object.assign(oldSteps[stepIndex], data);
-          return [...oldSteps];
-        });
-      } else {
-        setSteps((oldSteps) => {
-          Object.assign(
-            oldSteps[0].rows.find((r) => r.id === refId),
-            data,
-          );
-          return [...oldSteps];
-        });
-      }
       handleSave();
     },
-    [handleSave, steps],
+    [handleSave],
   );
 
   return (
@@ -131,7 +128,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                           onChange: GetOnChange,
                           type,
                           refId: task.id + '',
-                          data: step || {},
+                          data: task || {},
                         });
                       }}
                     >

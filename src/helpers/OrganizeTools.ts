@@ -34,6 +34,8 @@ export const OrganizeTools = (data: DnDRow[]) => {
         steps[countSteps - 1].rows.push({
           id: sortedData[i].id,
           title: sortedData[i].title,
+          description: sortedData[i].description,
+          data: sortedData[i].data,
           type: sortedData[i].type,
         });
       }

@@ -16,6 +16,7 @@ const QuestionsForm = ({
   setOpen,
   data: { data: taskData, title: titleData, description: descriptionData },
   onChange,
+  userInput,
 }) => {
   const HeadText = (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -25,18 +26,13 @@ const QuestionsForm = ({
         height={20}
         width={18}
       />
-      <>Título do Formulário</>
+      <>{titleData}</>
     </Box>
   );
   return (
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado sx={{ width: '680px' }}>
-        <Description>
-          Descrição do Lorem Ipsum is simply dummy text of the printing and
-          typesetting industry. Lorem Ipsum has been the standard dummy text
-          ever since the 1500s, when an unknown printer took a galley of type
-          and scrambled it to make a type specimen book.
-        </Description>
+        <Description>{descriptionData}</Description>
 
         <Box sx={{ textAlign: 'center', marginTop: '3rem' }}>
           <Question>

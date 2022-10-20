@@ -8,6 +8,7 @@ const Schedule = ({
   setOpen,
   data: { data: taskData, title: titleData, description: descriptionData },
   onChange,
+  userInput,
 }) => {
   const HeadText = (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>

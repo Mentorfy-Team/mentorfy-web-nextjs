@@ -59,6 +59,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(id);
 
   useEffect(() => {
+    console.log('stepsData', stepsData);
     setSteps((oldSteps) => {
       oldSteps = [...OrganizeTools(stepsData)];
       return [...oldSteps];
@@ -285,6 +286,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
                 image={Image}
                 onEdit={() => {
                   const type = GetTypeName(stp.type);
+                  console.log('stp', stp);
                   setCurrentModal({
                     onChange: GetOnChange,
                     type,

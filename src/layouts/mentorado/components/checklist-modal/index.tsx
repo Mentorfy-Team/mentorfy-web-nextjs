@@ -20,6 +20,7 @@ const ChecklistModal = ({
   setOpen,
   data: { data: taskData, title: titleData, description: descriptionData },
   onChange,
+  userInput,
 }) => {
   const theme = useTheme();
   const [color, setColor] = useState(false);

@@ -1,6 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { LoadingComponent } from '~/components/partials/loading/loading.partial';
+import { UserInput } from '../kanban';
 
 const Checklist = dynamic(() => import('../components/checklist-modal'), {
   loading: () => <LoadingComponent />,
@@ -49,6 +50,7 @@ export type ToolsModalProps = {
   refId?: string;
   area_id?: string;
   data: any;
+  userInput: UserInput;
   onChange?: (value: any) => any;
   setOpen?: (value: any) => any;
 };
@@ -60,7 +62,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
   open,
   setOpen,
   refId,
-  area_id,
+  userInput,
 }) => {
   switch (type) {
     // case ToolListNames.WheelOfLifeModal.name:
@@ -81,6 +83,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
       return (
         <Checklist
           data={data}
+          userInput={userInput}
           open={open}
           setOpen={setOpen}
           onChange={(props) =>
@@ -95,6 +98,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
       return (
         <Embed
           data={data}
+          userInput={userInput}
           open={open}
           setOpen={setOpen}
           onChange={(props) =>
@@ -108,8 +112,8 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
     case ToolListNames.UploadFile.name:
       return (
         <UploadFile
-          area_id={area_id}
           data={data}
+          userInput={userInput}
           open={open}
           setOpen={setOpen}
           onChange={(props) =>
@@ -124,6 +128,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
       return (
         <OpenText
           data={data}
+          userInput={userInput}
           open={open}
           setOpen={setOpen}
           onChange={(props) =>
@@ -138,6 +143,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
       return (
         <QuestionsForm
           data={data}
+          userInput={userInput}
           open={open}
           setOpen={setOpen}
           onChange={(props) =>
@@ -151,9 +157,8 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
     case ToolListNames.Video.name:
       return (
         <Video
-          multivideos={false}
-          area_id={area_id}
           data={data}
+          userInput={userInput}
           open={open}
           setOpen={setOpen}
           onChange={(props) =>
@@ -168,6 +173,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
       return (
         <OpenText
           data={data}
+          userInput={userInput}
           open={open}
           setOpen={setOpen}
           onChange={(props) =>
@@ -182,6 +188,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
       return (
         <Schedule
           data={data}
+          userInput={userInput}
           open={open}
           setOpen={setOpen}
           onChange={(props) =>
@@ -196,6 +203,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
       return (
         <Schedule
           data={data}
+          userInput={userInput}
           open={open}
           setOpen={setOpen}
           onChange={(props) =>

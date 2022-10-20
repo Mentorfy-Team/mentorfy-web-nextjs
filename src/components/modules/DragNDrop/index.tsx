@@ -79,7 +79,6 @@ export default function DragNDrop({
     >
       {elements.map((group, groupIndex) => {
         const itens = group.rows.filter((i) => !i.delete);
-
         return groupModel(
           group.id,
           <SortableContext
