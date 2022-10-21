@@ -19,7 +19,13 @@ declare namespace MemberAreaTypes {
   };
 
   type Tool = typeof Database.public.Tables.mentor_tool.Row;
-  type UserInput = typeof Database.public.Tables.client_input_tool.Row;
+  type UserInput<Data = any, Extra = any> = Omit<
+    typeof Database.public.Tables.client_input_tool.Row,
+    'data' | 'extra'
+  > & {
+    data: Data;
+    extra: Extra;
+  };
 
   type DataUserInput = UserInput & { delete? };
   namespace Post {

@@ -44,7 +44,7 @@ const FilesUploadModal = ({
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
 
-  const [files, setFiles] = useState<FileType[]>(filesData || []);
+  const [files, setFiles] = useState<FileType[]>(filesData);
   const [removedFiles, setRemovedFiles] = useState<FileType[]>([]);
 
   const handleRemoveFile = (_file) => {
@@ -78,19 +78,19 @@ const FilesUploadModal = ({
   };
 
   const getImage = (file) => {
-    const isDataImage = file.data?.search('(http(s?):)*.(?:jpg|gif|png)');
-    const isSourceImage = file.sourceUrl?.search(
-      '(http(s?):)*.(?:jpg|gif|png)',
-    );
+    // const isDataImage = file.data?.search('(http(s?):)*.(?:jpg|gif|png)');
+    // const isSourceImage = file.sourceUrl?.search(
+    //   '(http(s?):)*.(?:jpg|gif|png)',
+    // );
 
-    if (
-      isDataImage !== -1 &&
-      isSourceImage !== -1 &&
-      isDataImage !== 'undefined' &&
-      isSourceImage !== 'undefined'
-    ) {
-      return file.data || file.sourceUrl;
-    }
+    // if (
+    //   isDataImage !== -1 &&
+    //   isSourceImage !== -1 &&
+    //   isDataImage !== 'undefined' &&
+    //   isSourceImage !== 'undefined'
+    // ) {
+    //   return file.data || file.sourceUrl;
+    // }
     return '/images/file.png';
   };
 
@@ -100,7 +100,7 @@ const FilesUploadModal = ({
       onSave={() => handleSave()}
       open={open}
       setOpen={setOpen}
-      title="Upload de Arquivos"
+      title="Upload de Arquivo"
     >
       <>
         <InputField
@@ -115,27 +115,31 @@ const FilesUploadModal = ({
           value={description}
           placeholder="Dê uma descrição para essa etapa"
         ></DescriptionInputField>
-        <DropzoneComponent onDrop={(_files) => handleUpload(_files)}>
-          <UploadField sx={{ marginBottom: '1.3rem' }}>
-            <Label>
-              <Image
-                alt="upload"
-                width={58}
-                height={39}
-                src="/svgs/upload.svg"
-              />
-              <UploadTypography>
-                Solte os arquivos para fazer upload
-              </UploadTypography>
-              <P>Tamanho máximo de 4mb por arquivo</P>
-              {/* // TODO: Adicionar feature de google drive */}
-              {/* <DriveButton>
+        {files.length === 0 && (
+          <DropzoneComponent onDrop={(_files) => handleUpload(_files)}>
+            <UploadField sx={{ marginBottom: '1.3rem' }}>
+              <Label>
+                <Image
+                  alt="upload"
+                  width={58}
+                  height={39}
+                  src="/svgs/upload.svg"
+                />
+                <UploadTypography>
+                  Solte o arquivo para fazer upload
+                </UploadTypography>
+                <P>Tamanho máximo de 40mb (No momento, apenas PDF) </P>
+                {/* // TODO: Adicionar feature de google drive */}
+                {/* <DriveButton>
               <GoogleDrive>Google Drive</GoogleDrive>
             </DriveButton> */}
-            </Label>
-          </UploadField>
-        </DropzoneComponent>
-        <CustomTypography>Anexados ({files?.length || 0})</CustomTypography>
+              </Label>
+            </UploadField>
+          </DropzoneComponent>
+        )}
+        {files.length !== 0 && (
+          <CustomTypography>Arquivo Anexado</CustomTypography>
+        )}
         <FilesWrapper>
           {files?.map((file) => (
             <Box

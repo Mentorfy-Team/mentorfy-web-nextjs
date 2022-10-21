@@ -6,7 +6,13 @@ const DropzoneComponent: React.FC<{ onDrop; children }> = ({
   children,
 }) => {
   return (
-    <Dropzone onDrop={(acceptedFiles) => onDrop(acceptedFiles)}>
+    <Dropzone
+      accept={{
+        'application/pdf': ['.pdf'],
+      }}
+      multiple={false}
+      onDrop={(acceptedFiles) => onDrop(acceptedFiles)}
+    >
       {({ getRootProps, getInputProps }) => (
         <section>
           <div {...getRootProps()}>

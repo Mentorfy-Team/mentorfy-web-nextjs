@@ -23,3 +23,15 @@ declare namespace UserTypes {
     };
   }
 }
+
+declare namespace MentorComponents {}
+
+declare namespace MentoredComponents {
+  type Props<ToolData = any, InputData = any, InputExtra = any> = {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+    data: { data: ToolData; title: string; description: string };
+    onChange: any;
+    userInput: MemberAreaTypes.UserInput<InputData, InputExtra>;
+  };
+}

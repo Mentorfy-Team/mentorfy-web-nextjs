@@ -13,13 +13,16 @@ import {
   Question,
 } from './styles';
 
+type DataProps = { id: string; value: string }[];
+type ExtraProps = boolean;
+
 const QuestionsForm = ({
   open,
   setOpen,
   data: { data: taskData, title: titleData, description: descriptionData },
   onChange,
   userInput,
-}) => {
+}: MentoredComponents.Props<DataProps, ExtraProps>) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [input, setInput] = useState(userInput?.data || []);
 
@@ -57,14 +60,16 @@ const QuestionsForm = ({
               placeholder="Responda aqui..."
               onChange={(e) =>
                 setInput((old) => {
-                  const input = old.find((item) => item.id === currentQuestion);
+                  const input = old.find(
+                    (item) => item.id === currentQuestion.toString(),
+                  );
                   if (input) {
                     input.value = e.target.value;
                     return [...old];
                   }
                   return [
                     ...old,
-                    { id: currentQuestion, value: e.target.value },
+                    { id: currentQuestion.toString(), value: e.target.value },
                   ];
                 })
               }

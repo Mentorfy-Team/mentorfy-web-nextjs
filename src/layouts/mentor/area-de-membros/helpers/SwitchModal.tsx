@@ -34,7 +34,7 @@ const ToolList = dynamic(() => import('../components/ToolListModal'), {
 export const ToolListNames = {
   StepGroup: { name: 'Agrupador de Etapas', id: 0 },
   QuestionsForm: { name: 'Formulário de Perguntas', id: 1 },
-  UploadFile: { name: 'Upload de Arquivos', id: 2 },
+  UploadFile: { name: 'Upload de Arquivo', id: 2 },
   Checklist: { name: 'Checklist', id: 3 },
   Video: { name: 'Upload de Vídeo', id: 4 },
   Embed: { name: 'Embed', id: 5 },
