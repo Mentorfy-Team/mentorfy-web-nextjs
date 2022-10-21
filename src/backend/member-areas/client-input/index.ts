@@ -3,58 +3,89 @@ import { CreateSupabaseWithAuth } from '../../supabase';
 type GetRequest = MemberAreaTypes.Post.Request;
 type GetResponse = MemberAreaTypes.Post.Response | any;
 
+export const get: Handler.Callback<GetRequest, GetResponse> = async (
+  req,
+  res,
+) => {
+  const supabase = CreateSupabaseWithAuth(req);
+  const { user, token } = await supabase.auth.api.getUserByCookie(req);
+
+  const { data: tools, error: errorm } = await supabase
+    .from<MentorTools.ToolData>('member_area_tool')
+    .select('*')
+    .eq('member_area', req.query.id);
+
+  // for each tool, get the user input
+  const { data: userInputs, error: erroru } = await supabase
+    .from<MemberAreaTypes.UserInput>('client_input_tool')
+    .select('*')
+    .in(
+      'member_area_tool_id',
+      tools.map((tool) => tool.id),
+    )
+    .match({
+      profile_id: user.id,
+    });
+
+  return res.status(200).json(userInputs);
+};
+
 export const post: Handler.Callback<GetRequest, GetResponse> = async (
   req,
   res,
 ) => {
   const supabase = CreateSupabaseWithAuth(req);
-  const user = supabase.auth.user();
-  const id = req.body.id.length > 6 ? req.body.id : null;
-  const tool_id = req.body.tool_id;
-  const user_input = req.body.data;
-  delete (user_input as any).toRemove;
 
-  const isUUID = id && (id + '').length > 6 && (id + '').includes('-');
-  const user_input_id = isUUID ? id : null;
+  const { user, token } = await supabase.auth.api.getUserByCookie(req);
+  const tool_id = req.body.tool_id; // tool que está sendo respondida pelo usuário
 
-  // Se o id for maior que 6, é um id do supabase e devemos remover se o delete for true
-  if (user_input.delete) {
+  const client_input = req.body.client_input;
+
+  delete (client_input as any).toRemove;
+
+  const isUUID =
+    client_input.id &&
+    (client_input.id + '').length > 6 &&
+    (client_input.id + '').includes('-');
+  const client_input_id = isUUID ? client_input.id : null;
+
+  if (client_input.delete) {
     if (isUUID) {
-      delete user_input.delete;
+      delete client_input.delete;
       const { error } = await supabase
         .from('client_input_tool')
         .delete()
-        .match({ id: user_input_id });
+        .match({ id: client_input_id });
       if (error) {
         res.status(500).json({ error: error.message });
         return;
       }
     }
-  }
-
-  // Se o id não for uuid, então é um novo registro
-  if (!isUUID) {
-    delete user_input.id;
-    const { data: memberAreaUserInput, error } = await supabase
-      .from('client_input_tool')
-      .insert({
-        ...user_input,
-        profile_id: user.id,
-        member_area_tool_id: tool_id,
-      });
-
-    return res.status(200).json(memberAreaUserInput);
   } else {
-    // Se o id for uuid, então é um registro existente
-    delete user_input.id;
-    if ((user_input.data as any)?.length === 0) {
-      user_input.data = null;
-    }
-    const { data: memberAreaUserInput, error } = await supabase
-      .from('client_input_tool')
-      .update(user_input)
-      .match({ id: user_input_id });
+    // Se o id não for uuid, então é um novo registro
+    if (!isUUID) {
+      delete client_input.id;
+      const { data: memberAreaUserInput, error } = await supabase
+        .from('client_input_tool')
+        .insert({
+          ...client_input,
+          profile_id: user.id,
+          member_area_tool_id: tool_id,
+        });
 
-    return res.status(200).json(memberAreaUserInput);
+      return res.status(200).json(memberAreaUserInput);
+    } else {
+      // Se o id for uuid, então é um registro existente
+      delete client_input.id;
+      if ((client_input.data as any)?.length === 0) {
+        client_input.data = null;
+      }
+      const { data: memberAreaUserInput, error } = await supabase
+        .from('client_input_tool')
+        .update(client_input)
+        .match({ id: client_input_id });
+
+      return res.status(200).json(memberAreaUserInput);
+    }
   }
 };

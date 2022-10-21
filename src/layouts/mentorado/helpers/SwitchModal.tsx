@@ -1,7 +1,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { LoadingComponent } from '~/components/partials/loading/loading.partial';
-import { UserInput } from '../kanban';
 
 const Checklist = dynamic(() => import('../components/checklist-modal'), {
   loading: () => <LoadingComponent />,
@@ -50,7 +49,7 @@ export type ToolsModalProps = {
   refId?: string;
   area_id?: string;
   data: any;
-  userInput: UserInput;
+  userInput: MemberAreaTypes.UserInput;
   onChange?: (value: any) => any;
   setOpen?: (value: any) => any;
 };

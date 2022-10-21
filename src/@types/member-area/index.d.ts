@@ -24,15 +24,9 @@ declare namespace MemberAreaTypes {
   type DataUserInput = UserInput & { delete? };
   namespace Post {
     interface Request extends ExternalModules.Next.NextApiRequest {
-      body: {
-        id: string;
-        tool_id: string;
-        data: DataUserInput;
-      };
+      body: any;
     }
 
-    type Response = {
-      error: string;
-    };
+    type Response = UserInput[];
   }
 }

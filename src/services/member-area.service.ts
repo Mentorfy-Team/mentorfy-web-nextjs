@@ -43,13 +43,18 @@ export const UpdateMemberAreaTools = async (id: string, steps: DnDObject[]) => {
 };
 
 export const InputUserMemberArea = async (
-  id: string,
-  userInputs: UserInput[],
+  tool_id: string,
+  client_input: Partial<UserInput> & { delete?: boolean },
 ) => {
   try {
     const response = await HttpClient.post<ProductApi.Post.Response>(
       ApiRoutes.member_areas_client_input,
-      { data: userInputs, id },
+      {
+        client_input: {
+          ...client_input,
+        },
+        tool_id,
+      },
     );
     if (response.data.error) {
       return {

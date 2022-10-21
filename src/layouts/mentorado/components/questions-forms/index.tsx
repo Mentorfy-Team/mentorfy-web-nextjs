@@ -21,7 +21,7 @@ const QuestionsForm = ({
   userInput,
 }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [input, setInput] = useState(userInput || []);
+  const [input, setInput] = useState(userInput?.data || []);
 
   const handleFinish = () => {
     onChange({ data: input, finished: taskData.length === input.length });
