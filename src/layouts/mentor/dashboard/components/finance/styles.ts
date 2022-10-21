@@ -7,8 +7,10 @@ export const Wrapper = styled(Box)`
     background-color: ${({theme}) => theme.palette.primary.light};
     border-radius: 4px;
     display: flex;
-    max-width: 74%;
+    gap: 2rem;
+    height: 266px;
     padding: 1.3rem;
+    width: 74%;
 `;
 
 export const Revenue = styled(Box)`

@@ -44,9 +44,6 @@ const ChecklistModal = ({
           padding: '0',
           color: `${theme.palette.text.primary}`,
           '& .MuiSvgIcon-root': { fontSize: 20 },
-          '&.Mui-checked': {
-            color: 'green',
-          },
         }}
         disableRipple
         icon={<BpIcon />}

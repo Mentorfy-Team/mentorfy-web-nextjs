@@ -54,3 +54,14 @@ export const ArrowBox = styled(Box)`
     justify-content: center;
     width: 50px;
 `;
+export const ImagesBox = styled(Box)<Props>`
+    background-color: ${({theme}) => theme.palette.primary.light};
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    gap: 0.5rem;
+    height: 282px;
+    max-width: 310px;
+
+`;
+
