@@ -12,7 +12,7 @@ export const ScrollArea = styled(Box)`
 
 export const Bundle = styled(Box)` 
     background-color: ${({theme}) => theme.palette.primary.light};
-    border-radius: 10px;
+    border-radius: 0 0 10px 10px;
     height: 458px;
     margin-bottom: 1.8rem;
     min-width: 342px;
