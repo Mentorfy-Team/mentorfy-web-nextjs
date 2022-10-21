@@ -27,7 +27,7 @@ const Indicators = () => {
                         <IndicatorValue>R$12.34</IndicatorValue>
                         <IndicatorPercent>+3.42%</IndicatorPercent>
                     </Box>
-                    <IndicatorTitle>Faturamento</IndicatorTitle>
+                    <IndicatorTitle>Ganhos</IndicatorTitle>
                 </Box>
 
                 <RedArrowBox>
@@ -40,7 +40,7 @@ const Indicators = () => {
                         <IndicatorValue>R$12.34</IndicatorValue>
                         <IndicatorPercent>+3.42%</IndicatorPercent>
                     </Box>
-                    <IndicatorTitle>Faturamento</IndicatorTitle>
+                    <IndicatorTitle>Clientes Ativos</IndicatorTitle>
                 </Box>
 
                 <RedArrowBox>
@@ -53,7 +53,7 @@ const Indicators = () => {
                         <IndicatorValue>R$12.34</IndicatorValue>
                         <IndicatorPercent isNegative>+3.42%</IndicatorPercent>
                     </Box>
-                    <IndicatorTitle>Faturamento</IndicatorTitle>
+                    <IndicatorTitle>Conversão checkout</IndicatorTitle>
                 </Box>
 
                 <ArrowBox>

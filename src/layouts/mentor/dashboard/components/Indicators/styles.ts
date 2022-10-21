@@ -19,7 +19,7 @@ export const Indicator = styled(Box)`
     gap: 0.5rem;
     height: 118px;
     max-width: 259px;
-    padding: 1.2rem 1.4rem ;
+    padding: 1.2rem 1rem ;
 `;
 
 export const IndicatorValue = styled(Typography)`

@@ -12,15 +12,18 @@ type Props = PageTypes.Props & {
 import ConfigPage from '~/layouts/mentor/area-de-membros/pages/editar/configuracao';
 import StepsPage from '~/layouts/mentor/area-de-membros/pages/editar/etapas';
 import { GetProfile } from '~/services/profile.service';
+import ClientJourney from './jornada-do-cliente';
 
-const tabs = ['Etapas', 'Configuração'];
+const tabs = ['Etapas', 'Jornada do Cliente', 'Configuração'];
 const EditarMentoria: FC<Props> = ({ id }) => {
   const [tabindex, setTabindex] = useState(0);
 
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
+      case 2:
+        return <ConfigPage id={id}/>;
       case 1:
-        return <ConfigPage id={id} />;
+        return <ClientJourney id={id} />;
       case 0:
         return <StepsPage id={id} />;
       default:
@@ -28,10 +31,11 @@ const EditarMentoria: FC<Props> = ({ id }) => {
     }
   }, [id, tabindex]);
 
+  const MaxWidth = tabindex != 1 && 600;
   return (
     <>
       <Toolbar onChange={(value) => setTabindex(value)} tabs={tabs} />
-      <ContentWidthLimit maxWidth={600}>{SwitchTabs()}</ContentWidthLimit>
+      <ContentWidthLimit maxWidth={MaxWidth}>{SwitchTabs()}</ContentWidthLimit>
     </>
   );
 };
