@@ -6,30 +6,35 @@ import { css, styled } from '@mui/material/styles';
 
 type Props = {
   isMentorado?: boolean;
- }
+};
 
-export const Modal = styled(Dialog)<Props>` 
-    ${({isMentorado}) => isMentorado && css`
-    .css-1hg2taq-MuiPaper-root-MuiDialog-paper  { 
-      max-height: 690px;
-      max-width: 900px;
-      overflow: unset;
-    }
-  `}
+export const Modal = styled(Dialog)<Props>`
+  ${({ isMentorado }) =>
+    isMentorado &&
+    css`
+      .css-1hg2taq-MuiPaper-root-MuiDialog-paper {
+        height: fit-content;
+        max-height: calc(100% - 5rem);
+        max-width: 900px;
+        overflow: unset;
+      }
+    `}
 `;
 
 export const ModalDialogContent = styled(DialogContent)<Props>`
   background-color: #121212;
-  
-  ${({isMentorado}) => isMentorado ? css`
-      max-height: 700px;
-      max-width: 900px;
-      overflow-y: inherit;
-      padding: 1rem;   
-    ` : css`
-    width: 480px;
-    `}
 
+  ${({ isMentorado }) =>
+    isMentorado
+      ? css`
+          max-height: 700px;
+          max-width: 900px;
+          overflow-y: auto;
+          padding: 1rem;
+        `
+      : css`
+          width: 480px;
+        `}
 `;
 export const Header = styled(Box)`
   align-items: center;

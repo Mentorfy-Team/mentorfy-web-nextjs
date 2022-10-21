@@ -1,37 +1,83 @@
+import { useState } from 'react';
 import Box from '@mui/material/Box';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import { CompleteButton, Description } from './styles';
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
+
+type InputProps = { id: string; value: boolean }[];
+type ExtraProps = boolean;
+
+type ToolProps = {
+  link: string;
+};
+type ToolExtra = {
+  name: string;
+  size: number;
+  sourceUrl: string;
+  type: string;
+};
 
 const VideoViewModal = ({
   open,
   setOpen,
-  data: { data: taskData, title: titleData, description: descriptionData },
+  data: {
+    data: taskData,
+    title: titleData,
+    description: descriptionData,
+    extra,
+  },
   onChange,
   userInput,
-}) => {
+}: MentoredComponents.Props<ToolProps, InputProps, ExtraProps, ToolExtra>) => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [input, setInput] = useState(userInput?.data || []);
+
+  const handleFinish = () => {
+    onChange({
+      data: {},
+      finished: true,
+    });
+    setOpen(false);
+  };
+
   const HeadText = (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
       <Image alt="vídeo" src="/svgs/video-icon.svg" height={20} width={18} />
-      <>Título do Vídeo</>
+      <>{titleData}</>
     </Box>
   );
   return (
     <ModalComponent title={HeadText} setOpen={setOpen} open={open} isMentorado>
       <ModalDialogContent isMentorado>
-        <Description>
-          Descrição do Lorem Ipsum is simply dummy text of the printing and
-          typesetting industry. Lorem Ipsum has been the standard dummy text
-          ever since the 1500s, when an unknown printer took a galley of type
-          and scrambled it to make a type specimen book.
-        </Description>
+        <Description>{descriptionData}</Description>
+        <Box sx={{ width: '720px', height: '420px', backgroundColor: 'black' }}>
+          {taskData?.link && (
+            <ReactPlayer
+              id="goto"
+              url={taskData.link}
+              width="100%"
+              height="100%"
+              controls={true}
+              playing={true}
+              light={extra.sourceUrl || null}
+              config={{
+                youtube: {
+                  playerVars: {
+                    showinfo: 1,
+                    controls: 1,
+                    autoplay: 1,
+                    disablekb: 0,
+                  },
+                },
+              }}
+            />
+          )}
+        </Box>
 
-        <Box
-          sx={{ width: '100%', height: '480px', backgroundColor: 'black' }}
-        ></Box>
-
-        <CompleteButton variant="contained" onClick={() => setOpen(false)}>
+        <CompleteButton variant="contained" onClick={handleFinish}>
           Concluído
         </CompleteButton>
       </ModalDialogContent>

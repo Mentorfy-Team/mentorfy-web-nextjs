@@ -5,7 +5,12 @@ import Image from 'next/image';
 
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
-import { DownloadText, DownloaddButton, FileWrapper } from './styles';
+import {
+  Description,
+  DownloadText,
+  DownloaddButton,
+  FileWrapper,
+} from './styles';
 
 const PDFReader = dynamic(
   () => import('~/components/atoms/PDFReader/PDFReader'),
@@ -35,7 +40,10 @@ const FilesDownloadModal = ({
   const [input, setInput] = useState(userInput?.data || []);
 
   const handleFinish = () => {
-    //onChange({ data: input, finished: true });
+    onChange({
+      data: {},
+      finished: true,
+    });
     setOpen(false);
   };
 
@@ -47,13 +55,13 @@ const FilesDownloadModal = ({
         height={20}
         width={22}
       />
-      <>Título do Formulário</>
+      <>{titleData}</>
     </Box>
   );
   return (
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado sx={{ textAlign: 'center' }}>
-        {console.log(taskData[0])}
+        <Description>{descriptionData}</Description>
         <FileWrapper>
           <PDFReader file={taskData[0].sourceUrl} />
         </FileWrapper>

@@ -36,6 +36,7 @@ export const OrganizeTools = (data: DnDRow[]) => {
           title: sortedData[i].title,
           description: sortedData[i].description,
           data: sortedData[i].data,
+          extra: sortedData[i].extra,
           type: sortedData[i].type,
         });
       }

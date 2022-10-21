@@ -27,7 +27,7 @@ export const Description = styled(Typography)`
   font-size: 1rem;
   font-weight: 300;
   line-height: 1.2rem;
-  margin: 3rem 0 3rem 0;
+  margin: 0rem 0 1rem 0;
   text-align: start;
 `;
 

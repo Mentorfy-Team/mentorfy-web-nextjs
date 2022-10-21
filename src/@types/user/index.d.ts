@@ -27,10 +27,20 @@ declare namespace UserTypes {
 declare namespace MentorComponents {}
 
 declare namespace MentoredComponents {
-  type Props<ToolData = any, InputData = any, InputExtra = any> = {
+  type Props<
+    ToolData = any,
+    InputData = any,
+    InputExtra = any,
+    ToolExtra = any,
+  > = {
     open: boolean;
     setOpen: (open: boolean) => void;
-    data: { data: ToolData; title: string; description: string };
+    data: {
+      data: ToolData;
+      title: string;
+      description: string;
+      extra?: ToolExtra;
+    };
     onChange: any;
     userInput: MemberAreaTypes.UserInput<InputData, InputExtra>;
   };
