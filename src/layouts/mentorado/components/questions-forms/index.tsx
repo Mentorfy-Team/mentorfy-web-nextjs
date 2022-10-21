@@ -11,6 +11,7 @@ import {
   ForwardButton,
   Question,
 } from './styles';
+import { Typography } from '@mui/material';
 
 const QuestionsForm = ({
   open,
@@ -21,6 +22,12 @@ const QuestionsForm = ({
 }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [input, setInput] = useState([]);
+
+  const handleFinish = () => {
+    onChange(input);
+    setOpen(false);
+  };
+
   const HeadText = (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
       <Image
@@ -36,12 +43,14 @@ const QuestionsForm = ({
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado sx={{ width: '680px' }}>
         <Description>{descriptionData}</Description>
-        {console.log('input', input)}
         <Box sx={{ textAlign: 'center', marginTop: '3rem' }}>
           <Question>
+            <Typography sx={{ fontWeight: 'bold' }}>
+              {taskData[currentQuestion].data}
+            </Typography>
             <InputField
-              label={taskData[currentQuestion].data}
-              value={input ? input[currentQuestion]?.value : ''}
+              value={input && input[currentQuestion]?.value ? input[currentQuestion]?.value : ''}
+              placeholder="Responda aqui..."
               onChange={(e) =>
                 setInput((old) => {
                   const input = old.find((item) => item.id === currentQuestion);
@@ -68,13 +77,20 @@ const QuestionsForm = ({
           >
             Anterior
           </BackButton>
-          <ForwardButton
-            disabled={currentQuestion === taskData.length - 1}
+          {currentQuestion !== taskData.length - 1 && <ForwardButton
+            disabled={!input[currentQuestion] || input[currentQuestion]?.value === ''}
             variant="contained"
             onClick={() => setCurrentQuestion((q) => q + 1)}
           >
             Próximo
-          </ForwardButton>
+          </ForwardButton>}
+          {currentQuestion === taskData.length - 1 && <ForwardButton
+            disabled={!input[currentQuestion] || input[currentQuestion]?.value === ''}
+            variant="contained"
+            onClick={() => handleFinish()}
+          >
+            Concluir
+          </ForwardButton>}
         </ButtonsWrapper>
       </ModalDialogContent>
     </ModalComponent>
