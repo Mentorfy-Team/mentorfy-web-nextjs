@@ -56,8 +56,8 @@ export interface Database {
         Row: {
           id: string;
           created_at: string | null;
-          member_area: string;
-          mentor_tool: number;
+          member_area: string | null;
+          mentor_tool: number | null;
           title: string | null;
           description: string | null;
           status: boolean | null;
@@ -68,8 +68,8 @@ export interface Database {
         Insert: {
           id?: string;
           created_at?: string | null;
-          member_area: string;
-          mentor_tool: number;
+          member_area?: string | null;
+          mentor_tool?: number | null;
           title?: string | null;
           description?: string | null;
           status?: boolean | null;
@@ -80,8 +80,8 @@ export interface Database {
         Update: {
           id?: string;
           created_at?: string | null;
-          member_area?: string;
-          mentor_tool?: number;
+          member_area?: string | null;
+          mentor_tool?: number | null;
           title?: string | null;
           description?: string | null;
           status?: boolean | null;
@@ -107,13 +107,14 @@ export interface Database {
           type_id?: number | null;
         };
       };
-      profile_input_tool: {
+      client_input_tool: {
         Row: {
           id: number;
           created_at: string | null;
           profile_id: string;
           member_area_tool_id: string;
           data: Json;
+          extra: Json | null;
         };
         Insert: {
           id?: number;
@@ -121,6 +122,7 @@ export interface Database {
           profile_id: string;
           member_area_tool_id: string;
           data: Json;
+          extra?: Json | null;
         };
         Update: {
           id?: number;
@@ -128,6 +130,7 @@ export interface Database {
           profile_id?: string;
           member_area_tool_id?: string;
           data?: Json;
+          extra?: Json | null;
         };
       };
       product: {

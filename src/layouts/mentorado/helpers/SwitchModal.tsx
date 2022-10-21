@@ -73,7 +73,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
     //       setOpen={setOpen}
     //       onChange={(props) =>
     //         onChange({
-    //           data: { ...props, type: ToolListNames.WheelOfLifeModal.id },
+    //           data: { ...props},
     //           refId,
     //         })
     //       }
@@ -88,7 +88,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
           setOpen={setOpen}
           onChange={(props) =>
             onChange({
-              data: { ...props, type: ToolListNames.Checklist.id },
+              ...props,
               refId,
             })
           }
@@ -103,7 +103,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
           setOpen={setOpen}
           onChange={(props) =>
             onChange({
-              data: { ...props, type: ToolListNames.Embed.id },
+              ...props,
               refId,
             })
           }
@@ -118,7 +118,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
           setOpen={setOpen}
           onChange={(props) =>
             onChange({
-              data: { ...props, type: ToolListNames.UploadFile.id },
+              ...props,
               refId,
             })
           }
@@ -133,7 +133,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
           setOpen={setOpen}
           onChange={(props) =>
             onChange({
-              data: { ...props, type: ToolListNames.OpenText.id },
+              ...props,
               refId,
             })
           }
@@ -148,7 +148,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
           setOpen={setOpen}
           onChange={(props) =>
             onChange({
-              data: { ...props, type: ToolListNames.QuestionsForm.id },
+              ...props,
               refId,
             })
           }
@@ -163,7 +163,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
           setOpen={setOpen}
           onChange={(props) =>
             onChange({
-              data: { ...props, type: ToolListNames.Video.id },
+              ...props,
               refId,
             })
           }
@@ -178,7 +178,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
           setOpen={setOpen}
           onChange={(props) =>
             onChange({
-              data: { ...props, type: 0 },
+              ...props,
               refId,
             })
           }
@@ -193,7 +193,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
           setOpen={setOpen}
           onChange={(props) =>
             onChange({
-              data: { ...props, type: 0 },
+              ...props,
               refId,
             })
           }
@@ -208,7 +208,7 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
           setOpen={setOpen}
           onChange={(props) =>
             onChange({
-              data: { ...props, type: 0 },
+              ...props,
               refId,
             })
           }

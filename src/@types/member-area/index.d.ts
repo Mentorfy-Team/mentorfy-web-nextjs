@@ -19,9 +19,16 @@ declare namespace MemberAreaTypes {
   };
 
   type Tool = typeof Database.public.Tables.mentor_tool.Row;
+  type UserInput = typeof Database.public.Tables.client_input_tool.Row;
+
+  type DataUserInput = UserInput & { delete? };
   namespace Post {
     interface Request extends ExternalModules.Next.NextApiRequest {
-      body: any;
+      body: {
+        id: string;
+        tool_id: string;
+        data: DataUserInput;
+      };
     }
 
     type Response = {

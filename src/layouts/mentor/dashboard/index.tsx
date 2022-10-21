@@ -16,19 +16,45 @@ const Dashboard: FC<PageTypes.Props> = () => {
       <Toolbar tabs={['Visão Geral']} />
       <ContentWidthLimit maxWidth={1200}>
         <Box>
-          <Image alt='banner' width={1120} height={300} src='/images/banner.png' />
+          <Image
+            alt="banner"
+            width={1120}
+            height={300}
+            src="/images/banner.png"
+          />
         </Box>
         <Indicators />
         <Finances />
-        <Box sx={{ marginTop: '1.2rem', display: 'flex', justifyContent: 'space-between'}}>
+        <Box
+          sx={{
+            marginTop: '1.2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
           <ImagesBox>
-            <Image alt='banner' width={310} height={342} src='/images/schedule.png' />
+            <Image
+              alt="banner"
+              width={310}
+              height={342}
+              src="/images/schedule.png"
+            />
           </ImagesBox>
           <ImagesBox>
-            <Image alt='banner' width={302} height={284} src='/images/basic-info.png' />
+            <Image
+              alt="banner"
+              width={302}
+              height={284}
+              src="/images/basic-info.png"
+            />
           </ImagesBox>
-          <Box sx={{width: '456px', height: '254px', cursor: 'pointer'}}>
-            <Image alt='banner' width={456} height={254} src='/images/income.png' />
+          <Box sx={{ width: '456px', height: '254px', cursor: 'pointer' }}>
+            <Image
+              alt="banner"
+              width={456}
+              height={254}
+              src="/images/income.png"
+            />
           </Box>
         </Box>
       </ContentWidthLimit>

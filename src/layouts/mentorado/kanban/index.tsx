@@ -10,7 +10,6 @@ import { PublicRoutes } from '~/consts';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 //import { FilesToDelete } from '~/services/file-upload.service';
-import { InputUserMemberArea } from '~/services/member-area.service';
 import { ToolListNames, ToolsModalProps } from '../helpers/SwitchModal';
 import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
 
@@ -21,6 +20,7 @@ const SwitchMentoredModal = dynamic<ToolsModalProps>(
 export type UserInput = {
   tool_id: string;
   data: any;
+  extra?: any;
 };
 
 export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
@@ -57,7 +57,9 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
         refId={currentModal.refId}
         area_id={member_area_id}
         data={currentModal.data}
-        userInput={userInput.find((inp) => inp.tool_id === currentModal.refId)}
+        userInput={
+          userInput.find((inp) => inp.tool_id === currentModal.refId)?.data
+        }
       />
     );
   }, [currentModal, open, member_area_id, userInput]);
@@ -71,20 +73,23 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
   const handleSave = useCallback(async () => {
     // timout para dar tempo para as imagens se organizarem
     setTimeout(async function () {
-      await InputUserMemberArea(member_area_id, userInput);
-      mutate();
+      // await InputUserMemberArea(member_area_id, userInput);
+      // mutate();
     }, 1000);
   }, [member_area_id, mutate, userInput]);
 
   const GetOnChange = useCallback(
-    async ({ refId, data }) => {
+    async ({ refId, data, finished }) => {
       setUserInput((oldInput) => {
         const index = oldInput.findIndex((i) => i.tool_id == refId);
         if (index > -1) {
           oldInput[index].data = data;
+          oldInput[index].extra = finished;
         } else {
-          oldInput.push({ tool_id: refId, data });
+          oldInput.push({ tool_id: refId, data, extra: finished });
         }
+        console.log('save refId data', refId, data);
+        console.log('save input', oldInput);
         return [...oldInput];
       });
 
@@ -139,7 +144,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                         alt="imagem"
                         width={14}
                         height={15}
-                        src="/svgs/done.svg"
+                        src={`/svgs/${task.extra ? 'done' : 'done-gray'}.svg`}
                       />
                     </Task>
                   ))}

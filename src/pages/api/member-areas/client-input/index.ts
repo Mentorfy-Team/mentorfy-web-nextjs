@@ -1,4 +1,4 @@
 import { handler } from '~/backend/handler';
-import { post, get } from '~/backend/member-areas/client-input';
+import { post } from '~/backend/member-areas/client-input';
 
-export default handler({ post, get });
+export default handler({ post });

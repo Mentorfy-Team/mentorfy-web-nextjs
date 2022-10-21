@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
 import InputField from '~/components/atoms/InputField';
@@ -11,7 +12,6 @@ import {
   ForwardButton,
   Question,
 } from './styles';
-import { Typography } from '@mui/material';
 
 const QuestionsForm = ({
   open,
@@ -21,10 +21,10 @@ const QuestionsForm = ({
   userInput,
 }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [input, setInput] = useState([]);
+  const [input, setInput] = useState(userInput || []);
 
   const handleFinish = () => {
-    onChange(input);
+    onChange({ data: input, finished: taskData.length === input.length });
     setOpen(false);
   };
 
@@ -49,7 +49,11 @@ const QuestionsForm = ({
               {taskData[currentQuestion].data}
             </Typography>
             <InputField
-              value={input && input[currentQuestion]?.value ? input[currentQuestion]?.value : ''}
+              value={
+                input && input[currentQuestion]?.value
+                  ? input[currentQuestion]?.value
+                  : ''
+              }
               placeholder="Responda aqui..."
               onChange={(e) =>
                 setInput((old) => {
@@ -77,20 +81,28 @@ const QuestionsForm = ({
           >
             Anterior
           </BackButton>
-          {currentQuestion !== taskData.length - 1 && <ForwardButton
-            disabled={!input[currentQuestion] || input[currentQuestion]?.value === ''}
-            variant="contained"
-            onClick={() => setCurrentQuestion((q) => q + 1)}
-          >
-            Próximo
-          </ForwardButton>}
-          {currentQuestion === taskData.length - 1 && <ForwardButton
-            disabled={!input[currentQuestion] || input[currentQuestion]?.value === ''}
-            variant="contained"
-            onClick={() => handleFinish()}
-          >
-            Concluir
-          </ForwardButton>}
+          {currentQuestion !== taskData.length - 1 && (
+            <ForwardButton
+              disabled={
+                !input[currentQuestion] || input[currentQuestion]?.value === ''
+              }
+              variant="contained"
+              onClick={() => setCurrentQuestion((q) => q + 1)}
+            >
+              Próximo
+            </ForwardButton>
+          )}
+          {currentQuestion === taskData.length - 1 && (
+            <ForwardButton
+              disabled={
+                !input[currentQuestion] || input[currentQuestion]?.value === ''
+              }
+              variant="contained"
+              onClick={() => handleFinish()}
+            >
+              Concluir
+            </ForwardButton>
+          )}
         </ButtonsWrapper>
       </ModalDialogContent>
     </ModalComponent>
