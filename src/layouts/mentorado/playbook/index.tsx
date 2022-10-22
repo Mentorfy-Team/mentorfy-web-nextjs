@@ -1,13 +1,12 @@
+import { useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import { useCallback, useEffect, useState } from 'react';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { DnDObject } from '~/components/modules/DragNDrop';
 import { PublicRoutes } from '~/consts';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
-import { InputUserMemberArea } from '~/services/member-area.service';
 import SwitchMentoredModal, { ToolListNames } from '../helpers/SwitchModal';
 import { UserInput } from '../kanban';
 import {
@@ -21,7 +20,6 @@ import {
 } from './styles';
 
 export const Playbook = ({ member_area_id }) => {
-  
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const [steps, setSteps] = useState<DnDObject[]>([]);
   const [userInput, setUserInput] = useState<UserInput[]>([]);
@@ -52,7 +50,9 @@ export const Playbook = ({ member_area_id }) => {
         refId={currentModal.refId}
         area_id={member_area_id}
         data={currentModal.data}
-        userInput={userInput.find((inp) => inp.tool_id === currentModal.refId)}
+        userInput={
+          userInput.find((inp) => inp.tool_id === currentModal.refId)?.data
+        }
       />
     );
   }, [currentModal, open, member_area_id, userInput]);
@@ -66,10 +66,10 @@ export const Playbook = ({ member_area_id }) => {
   const handleSave = useCallback(async () => {
     // timout para dar tempo para as imagens se organizarem
     setTimeout(async function () {
-      await InputUserMemberArea(member_area_id, userInput);
+      //await InputUserMemberArea(member_area_id, userInput);
       mutate();
     }, 1000);
-  }, [member_area_id, mutate, userInput]);
+  }, [mutate]);
 
   const GetOnChange = useCallback(
     async ({ refId, data }) => {
