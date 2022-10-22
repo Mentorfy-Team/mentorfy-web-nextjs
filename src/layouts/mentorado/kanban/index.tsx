@@ -67,7 +67,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
         refId={currentModal.refId}
         area_id={member_area_id}
         data={currentModal.data}
-        userInput={userInput.find(
+        userInput={userInput?.find(
           (inp) => inp.member_area_tool_id.toString() === currentModal.refId,
         )}
       />
@@ -93,13 +93,14 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
 
   const GetOnChange = useCallback(
     async ({ refId, data, finished }) => {
-      const index = userInput.findIndex((i) => i.member_area_tool_id == refId);
+      const index = userInput?.findIndex((i) => i.member_area_tool_id == refId);
       setUserInput((oldInput) => {
+        if (!oldInput) oldInput = [];
         if (index > -1) {
           oldInput[index].data = data;
           oldInput[index].extra = finished;
         } else {
-          oldInput.push({
+          oldInput?.push({
             member_area_tool_id: refId,
             data,
             extra: finished,
@@ -169,7 +170,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                         width={14}
                         height={15}
                         src={`/svgs/${
-                          userInput.find(
+                          userInput?.find(
                             (inp) => inp.member_area_tool_id === task.id,
                           )?.extra
                             ? 'done'
