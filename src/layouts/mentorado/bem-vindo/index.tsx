@@ -231,6 +231,18 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                 height={isDesktop ? '190px' : 'unset'}
                 width={isDesktop ? '350px' : 'unset'}
                 key={index}
+                onClick={() => {
+                  router.push(
+                    types
+                      .find((type) => type.id.toString() === product.deliver)
+                      .name.replace(/\s/g, '-')
+                      .normalize('NFD')
+                      .replace(/[\u0300-\u036f]/g, '')
+                      .toLowerCase() +
+                      '/' +
+                      product.id,
+                  );
+                }}
               >
                 <Image
                   alt=""

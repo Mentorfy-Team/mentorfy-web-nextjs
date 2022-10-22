@@ -9,7 +9,7 @@ export const LoadingWrapper = styled('div')<{ show: boolean }>`
   justify-content: center;
   left: 0;
   opacity: 0;
-  position: absolute;
+  position: fixed;
   top: 0;
   transition: ease 0.4s;
   width: 100%;
