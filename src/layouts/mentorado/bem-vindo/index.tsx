@@ -221,38 +221,43 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         <Box sx={{ display: 'flex', margin: '0rem 0 0.5rem 0' }}>
           <Typography variant="h5">Populares na Mentorfy</Typography>
         </Box>
-        <Slider {...settings} slidesToShow={5} className="container">
-          {products.map((product, index) => (
-            <CourseBox
-              onMouseOver={() => {}}
-              className="item"
-              minWidth={350}
-              key={index}
-            >
-              <Image
-                alt=""
-                src={product?.banner_image || '/images/moonlit.png'}
-                width={350}
-                height={190}
-                style={{
-                  objectFit: 'cover',
-                }}
-                quality={100}
-              />
-              <AbsoluteTopBox>
-                <CollorFullMentorfy>
-                  Mentor<span>fy</span>
-                </CollorFullMentorfy>
-              </AbsoluteTopBox>
-              {!product.banner_image && (
-                <AbsoluteBottomBox>
-                  <ProductTitle>{product.title}</ProductTitle>
-                </AbsoluteBottomBox>
-              )}
-            </CourseBox>
-          ))}
-          {products?.length < 5 &&
-            [...Array(5 - products?.length)].map((_, i) => <div key={i} />)}
+        <Slider {...settings} slidesToShow={4} className="container">
+          {products
+            .filter((p) => p.banner_image)
+            .map((product, index) => (
+              <CourseBox
+                onMouseOver={() => {}}
+                className="item"
+                height={isDesktop ? '190px' : 'unset'}
+                width={isDesktop ? '350px' : 'unset'}
+                key={index}
+              >
+                <Image
+                  alt=""
+                  src={product?.banner_image || '/images/moonlit.png'}
+                  width={300}
+                  height={190}
+                  style={{
+                    objectFit: 'cover',
+                  }}
+                  quality={100}
+                />
+                <AbsoluteTopBox>
+                  <CollorFullMentorfy>
+                    Mentor<span>fy</span>
+                  </CollorFullMentorfy>
+                </AbsoluteTopBox>
+                {!product.banner_image && (
+                  <AbsoluteBottomBox>
+                    <ProductTitle>{product.title}</ProductTitle>
+                  </AbsoluteBottomBox>
+                )}
+              </CourseBox>
+            ))}
+          {products?.filter((p) => p.banner_image)?.length < 4 &&
+            [...Array(4 - products.filter((p) => p.banner_image)?.length)].map(
+              (_, i) => <div key={i} />,
+            )}
         </Slider>
       </ContentWidthLimit>
     </Background>
