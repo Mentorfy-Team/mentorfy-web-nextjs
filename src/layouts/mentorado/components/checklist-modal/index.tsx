@@ -15,15 +15,31 @@ import {
   OptionsWrapper,
 } from './styles';
 
+type InputProps = { id: string; value: boolean }[];
+type ExtraProps = boolean;
+
+type ToolData = {
+  id: string;
+  title: string;
+};
+
 const ChecklistModal = ({
   open,
   setOpen,
   data: { data: taskData, title: titleData, description: descriptionData },
   onChange,
   userInput,
-}) => {
+}: MentoredComponents.Props<ToolData[], InputProps, ExtraProps>) => {
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [input, setInput] = useState(userInput?.data || []);
+
   const theme = useTheme();
   const [color, setColor] = useState(false);
+
+  const handleFinish = () => {
+    onChange({ data: input, finished: taskData.length === input.length });
+    setOpen(false);
+  };
 
   const HeadText = (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -33,7 +49,7 @@ const ChecklistModal = ({
         height={20}
         width={18}
       />
-      <>Título do Formulário</>
+      <>{titleData}</>
     </Box>
   );
 
@@ -55,33 +71,53 @@ const ChecklistModal = ({
       />
     );
   }
+
   return (
     <ModalComponent title={HeadText} isMentorado open={open} setOpen={setOpen}>
       <ModalDialogContent
         isMentorado
         sx={{ width: '700px', maxHeight: '500px' }}
       >
-        <Description>
-          Descrição do Lorem Ipsum is simply dummy text of the printing and
-          typesetting industry. Lorem Ipsum has been the industry s standard
-          dummy text ever since the 1500s, when an unknown printer took a galley
-          of type and scrambled it to make a type specimen book.
-        </Description>
+        <Description>{descriptionData}</Description>
 
         <OptionsWrapper>
-          <OptionsBox
-            onClick={() => setColor(!color)}
-            sx={{ cursor: 'pointer' }}
-          >
-            <BpCheckbox />
-            <OptionsText sx={{ color: `${color ? '#7DDC51' : '#E9E7E7'}` }}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry
-            </OptionsText>
-          </OptionsBox>
+          {taskData?.map((task) => (
+            <OptionsBox
+              key={task.id}
+              onClick={() => {
+                setColor((prev) => !prev);
+                const index = input.findIndex((item) => item.id === task.id);
+                if (index >= 0) {
+                  setInput((old) => {
+                    const newInput = [...old];
+                    newInput[index] = { id: task.id, value: !old[index].value };
+                    return newInput;
+                  });
+                } else {
+                  setInput((old) => [...old, { id: task.id, value: true }]);
+                }
+              }}
+              sx={{ cursor: 'pointer' }}
+            >
+              <BpCheckbox
+                checked={input?.find((i) => i.id === task.id)?.value || false}
+              />
+              <OptionsText
+                sx={{
+                  color: `${
+                    input?.find((i) => i.id === task.id)?.value
+                      ? '#7DDC51'
+                      : '#E9E7E7'
+                  }`,
+                }}
+              >
+                {task.title}
+              </OptionsText>
+            </OptionsBox>
+          ))}
         </OptionsWrapper>
 
-        <CloseButton onClick={() => setOpen(false)}>Fechar</CloseButton>
+        <CloseButton onClick={handleFinish}>Salvar</CloseButton>
       </ModalDialogContent>
     </ModalComponent>
   );

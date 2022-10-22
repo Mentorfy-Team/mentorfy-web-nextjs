@@ -1,6 +1,7 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { LoadingComponent } from '~/components/partials/loading/loading.partial';
+import WheelOfLifeModal from '../components/wheel-of-Life';
 
 const Checklist = dynamic(() => import('../components/checklist-modal'), {
   loading: () => <LoadingComponent />,
@@ -33,7 +34,7 @@ const Schedule = dynamic(() => import('../components/schedule'), {
 export const ToolListNames = {
   StepGroup: { name: 'Agrupador de Etapas', id: 0 },
   QuestionsForm: { name: 'Formulário de Perguntas', id: 1 },
-  UploadFile: { name: 'Upload de Arquivos', id: 2 },
+  UploadFile: { name: 'Upload de Arquivo', id: 2 },
   Checklist: { name: 'Checklist', id: 3 },
   Video: { name: 'Upload de Vídeo', id: 4 },
   Embed: { name: 'Embed', id: 5 },
@@ -64,20 +65,21 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
   userInput,
 }) => {
   switch (type) {
-    // case ToolListNames.WheelOfLifeModal.name:
-    //   return (
-    //     <WheelOfLifeModal
-    //       data={data}
-    //       open={open}
-    //       setOpen={setOpen}
-    //       onChange={(props) =>
-    //         onChange({
-    //           data: { ...props},
-    //           refId,
-    //         })
-    //       }
-    //     />
-    //   );
+    case ToolListNames.WheelOfLifeModal.name:
+      return (
+        <WheelOfLifeModal
+          data={data}
+          userInput={userInput}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) =>
+            onChange({
+              ...props,
+              refId,
+            })
+          }
+        />
+      );
     case ToolListNames.Checklist.name:
       return (
         <Checklist

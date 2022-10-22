@@ -147,22 +147,18 @@ const EditarMentoria: FC<Props> = ({ id }) => {
         await FilesToDelete(data.toRemove);
         delete data.toRemove;
       }
-      const stepIndex = steps.findIndex((stp) => stp.id === refId + '');
+      const stepIndex = steps.findIndex(
+        (stp) => stp.rows.findIndex((row) => row.id === refId + '') >= 0,
+      );
 
-      if (stepIndex >= 0) {
-        setSteps((oldSteps) => {
-          Object.assign(oldSteps[stepIndex], data);
-          return [...oldSteps];
-        });
-      } else {
-        setSteps((oldSteps) => {
-          Object.assign(
-            oldSteps[0].rows.find((r) => r.id === refId),
-            data,
-          );
-          return [...oldSteps];
-        });
-      }
+      setSteps((oldSteps) => {
+        Object.assign(
+          oldSteps[stepIndex].rows.find((r) => r.id === refId + ''),
+          data,
+        );
+        return [...oldSteps];
+      });
+
       handleSave();
     },
     [handleSave, steps],

@@ -44,7 +44,7 @@ const FilesUploadModal = ({
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
 
-  const [files, setFiles] = useState<FileType[]>(filesData);
+  const [files, setFiles] = useState<FileType[]>(filesData || []);
   const [removedFiles, setRemovedFiles] = useState<FileType[]>([]);
 
   const handleRemoveFile = (_file) => {
@@ -115,7 +115,8 @@ const FilesUploadModal = ({
           value={description}
           placeholder="Dê uma descrição para essa etapa"
         ></DescriptionInputField>
-        {files.length === 0 && (
+
+        {files?.length === 0 && (
           <DropzoneComponent onDrop={(_files) => handleUpload(_files)}>
             <UploadField sx={{ marginBottom: '1.3rem' }}>
               <Label>
@@ -137,7 +138,7 @@ const FilesUploadModal = ({
             </UploadField>
           </DropzoneComponent>
         )}
-        {files.length !== 0 && (
+        {files?.length !== 0 && (
           <CustomTypography>Arquivo Anexado</CustomTypography>
         )}
         <FilesWrapper>

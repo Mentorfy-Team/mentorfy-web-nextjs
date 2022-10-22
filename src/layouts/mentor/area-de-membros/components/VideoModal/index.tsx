@@ -5,7 +5,6 @@ import ModalComponent from '~/components/modules/Modal';
 import HandleFileUpload from '~/helpers/HandleFileUpload';
 import AddImage from '../AddImage';
 import ContentBox from '../ContentBox';
-import UploadToUrlFiles from '../UploadFileModal/helpers/UploadToUrlFiles';
 import Video from './components/Video';
 import { AddTaskButton } from './styles';
 
@@ -67,7 +66,7 @@ const VideoModal = ({
   };
 
   const handleSave = async (del?: boolean) => {
-    const convertedFiles = await UploadToUrlFiles([thumbnail], area_id);
+    //const convertedFiles = await UploadToUrlFiles([thumbnail], area_id);
     const filterEmpty = multivideos
       ? videos.filter((task) => task.title)
       : null;
@@ -75,7 +74,7 @@ const VideoModal = ({
     onChange({
       title,
       description,
-      extra: convertedFiles[0],
+      //extra: convertedFiles[0],
       data: multivideos ? filterEmpty : singleVideo,
       delete: del,
     });

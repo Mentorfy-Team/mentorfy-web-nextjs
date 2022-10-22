@@ -1,6 +1,7 @@
 import { DnDObject, DnDRow } from '~/components/modules/DragNDrop';
 
 export const OrganizeTools = (data: DnDRow[]) => {
+  if (!data) return;
   const sortedData = data.sort((a, b) => a.order - b.order);
 
   const steps: DnDObject[] = [];

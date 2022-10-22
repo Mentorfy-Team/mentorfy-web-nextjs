@@ -2,7 +2,12 @@ import Box from '@mui/material/Box';
 import Image from 'next/image';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
-import { CloseButton } from './syles';
+import { CloseButton, Description, EmbedHolder } from './syles';
+
+type InputProps = { id: string; value: boolean }[];
+type ExtraProps = boolean;
+
+type ToolData = string;
 
 const Embed = ({
   open,
@@ -10,7 +15,12 @@ const Embed = ({
   data: { data: taskData, title: titleData, description: descriptionData },
   onChange,
   userInput,
-}) => {
+}: MentoredComponents.Props<ToolData, InputProps, ExtraProps>) => {
+  const handleFinish = () => {
+    onChange({ data: {}, finished: true });
+    setOpen(false);
+  };
+
   const HeadText = (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
       <Image
@@ -19,13 +29,15 @@ const Embed = ({
         height={20}
         width={22}
       />
-      <>Título do Formulário</>
+      <>{titleData}</>
     </Box>
   );
   return (
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado>
-        <CloseButton>Fechar</CloseButton>
+        <Description>{descriptionData}</Description>
+        <EmbedHolder dangerouslySetInnerHTML={{ __html: taskData }} />
+        <CloseButton onClick={handleFinish}>Concluir</CloseButton>
       </ModalDialogContent>
     </ModalComponent>
   );

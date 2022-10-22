@@ -18,16 +18,20 @@ export const Modal = styled(Dialog)<Props>`
         max-width: 900px;
         overflow: unset;
       }
+      @media (max-width: 600px) {
+        .css-1hg2taq-MuiPaper-root-MuiDialog-paper {
+          height: 100%;
+          max-height: 100%;
+        }
+      }
     `}
 `;
 
 export const ModalDialogContent = styled(DialogContent)<Props>`
   background-color: #121212;
-
   ${({ isMentorado }) =>
     isMentorado
       ? css`
-          max-height: 700px;
           max-width: 900px;
           overflow-y: auto;
           padding: 1rem;

@@ -22,7 +22,7 @@ const QuestionsForm = ({
   data: { data: taskData, title: titleData, description: descriptionData },
   onChange,
   userInput,
-}: MentoredComponents.Props<DataProps, ExtraProps>) => {
+}: MentoredComponents.Props<any, DataProps, ExtraProps>) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [input, setInput] = useState(userInput?.data || []);
 
