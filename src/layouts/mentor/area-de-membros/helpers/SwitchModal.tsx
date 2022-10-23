@@ -152,8 +152,8 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
     case ToolListNames.Video.name:
       return (
         <Video
-          multivideos={false}
           area_id={area_id}
+          multivideos={false}
           data={data}
           open={open}
           setOpen={setOpen}
@@ -167,7 +167,9 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
       );
     case ToolListNames.StepGroup.name:
       return (
-        <OpenText
+        <Video
+          area_id={area_id}
+          withLink={false}
           data={data}
           open={open}
           setOpen={setOpen}

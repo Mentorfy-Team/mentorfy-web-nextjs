@@ -43,6 +43,7 @@ const Toolbar: React.FC<Props> = ({
           <TabItem
             style={{
               alignItems: 'center',
+              marginRight: theme.spacing(4),
             }}
             key={index}
             value={index}

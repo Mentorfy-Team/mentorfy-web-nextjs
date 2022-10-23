@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import { ToolListNames } from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
 import { BoxHeader, Step } from './styles';
 type props = {
@@ -60,20 +60,35 @@ const EditMembersAreaSteps: FC<props> = ({
 
   return (
     <div id={id + ''} key={id} ref={setNodeRef} style={style} {...attributes}>
-      <Step sx={{
-        borderRadious: isHeader ? '0px':'1.2rem 1.2rem 0 0',
-      }}>
+      <Step
+        sx={{
+          borderRadious: isHeader ? '0px' : '1.2rem 1.2rem 0 0',
+        }}
+      >
         <BoxHeader>
           <Box sx={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            {!isHeader && <MenuIcon
-              sx={{
-                color: `${theme.palette.tertiary.main}`,
-                cursor: 'pointer',
-                marginBottom: '0.5rem',
-              }}
-              {...listeners}
-            />}
-            { isHeader && <Image alt="" src={image} width={50} height={50}></Image>}
+            {!isHeader && (
+              <MenuIcon
+                sx={{
+                  color: `${theme.palette.tertiary.main}`,
+                  cursor: 'pointer',
+                  marginBottom: '0.5rem',
+                }}
+                {...listeners}
+              />
+            )}
+            {isHeader && (
+              <Image
+                alt=""
+                src={image}
+                style={{
+                  paddingBottom: '0.6rem',
+                  objectFit: 'contain',
+                }}
+                width={50}
+                height={50}
+              ></Image>
+            )}
             <Box sx={{ textAlign: 'left' }}>
               <Typography
                 sx={{

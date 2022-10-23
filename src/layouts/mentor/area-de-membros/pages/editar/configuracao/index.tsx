@@ -29,6 +29,7 @@ type props = {
 const Geral: FC<props> = ({ id }) => {
   const route = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [video, setVideo] = useState<string>('');
   const [productImage, setProductImage] = useState({
     main_image: { file: '', type: '' },
     banner_image: { file: '', type: '' },
@@ -51,6 +52,7 @@ const Geral: FC<props> = ({ id }) => {
         type: '',
       },
     });
+    setVideo(pData?.video || '');
   }, [pData]);
 
   const onSubmit: SubmitHandler<ProductClient.CreateProduct> = useCallback(
@@ -72,10 +74,10 @@ const Geral: FC<props> = ({ id }) => {
           old_banner_url: product.banner_image,
         });
       }
-      await UpdateProduct({ ...values, id: product.id });
+      await UpdateProduct({ ...values, video, id: product.id });
       setIsLoading(false);
     },
-    [product, productImage],
+    [product, productImage, video],
   );
 
   const handleCapture = (target, imageType: 'main_image' | 'banner_image') => {
@@ -136,114 +138,6 @@ const Geral: FC<props> = ({ id }) => {
           marginBottom: '1.8rem',
         }}
       />
-      <Grid container>
-        <Grid md={5} xs={12} display="flex" pb={2} sx={{ float: 'left' }}>
-          {productImage.main_image.file ? (
-            <Image
-              alt="imagem do produto"
-              src={productImage.main_image.file}
-              width={90}
-              height={90}
-              style={{
-                borderRadius: '10px',
-                objectFit: 'cover',
-              }}
-            />
-          ) : (
-            <Box
-              sx={{
-                bgcolor: (theme) => theme.palette.secondary.main,
-                minWidth: 90,
-                height: 90,
-                borderRadius: 1,
-                display: 'flex',
-                placeItems: 'center',
-                justifyContent: 'center',
-              }}
-            />
-          )}
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            sx={{
-              float: 'right',
-              marginLeft: '1rem',
-            }}
-          >
-            <ActionButton
-              sx={{ padding: '0px', height: '20px' }}
-              color="primary"
-              as="label"
-              onChange={(e) => handleCapture(e.target, 'main_image')}
-            >
-              Trocar imagem
-              <input hidden accept="image/*" type="file" />
-            </ActionButton>
-            <Typography
-              variant="caption"
-              color="gray"
-              sx={{ textAlign: 'initial' }}
-            >
-              Recomendação: <br />
-              256x256 pixels
-            </Typography>
-          </Box>
-        </Grid>
-        <Grid md={7} xs={12} display="flex" pb={2} sx={{ float: 'left' }}>
-          {productImage.banner_image.file ? (
-            <Image
-              alt="imagem do produto"
-              src={productImage.banner_image.file}
-              width={180}
-              height={90}
-              style={{
-                borderRadius: '10px',
-                objectFit: 'cover',
-              }}
-            />
-          ) : (
-            <Box
-              sx={{
-                bgcolor: (theme) => theme.palette.secondary.main,
-                minWidth: 180,
-                height: 90,
-                borderRadius: 1,
-                display: 'flex',
-                placeItems: 'center',
-                justifyContent: 'center',
-              }}
-            />
-          )}
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            sx={{
-              float: 'right',
-              marginLeft: '1rem',
-            }}
-          >
-            <ActionButton
-              sx={{ padding: '0px', height: '20px' }}
-              color="primary"
-              as="label"
-              onChange={(e) => handleCapture(e.target, 'banner_image')}
-            >
-              Trocar banner
-              <input hidden accept="image/*" type="file" />
-            </ActionButton>
-            <Typography
-              variant="caption"
-              color="gray"
-              sx={{ textAlign: 'initial' }}
-            >
-              Recomendação: <br />
-              600x400 pixels
-            </Typography>
-          </Box>
-        </Grid>
-      </Grid>
       <InputField
         color="secondary"
         value={product?.title}
@@ -272,7 +166,143 @@ const Geral: FC<props> = ({ id }) => {
         InputProps={{
           readOnly: true,
         }}
+        style={{ marginBottom: '1.8rem' }}
       />
+      <Grid container>
+        <Grid md={5} xs={12} pb={2} sx={{ float: 'left' }}>
+          <Typography
+            variant="body1"
+            sx={{ marginBottom: '0.6rem', textAlign: 'start' }}
+          >
+            Banner Vertical
+          </Typography>
+          <Box display="flex">
+            {productImage.main_image.file ? (
+              <Image
+                alt="imagem do produto"
+                src={productImage.main_image.file}
+                width={90}
+                height={90}
+                style={{
+                  borderRadius: '10px',
+                  objectFit: 'cover',
+                }}
+              />
+            ) : (
+              <Box
+                sx={{
+                  bgcolor: (theme) => theme.palette.secondary.main,
+                  minWidth: 90,
+                  height: 90,
+                  borderRadius: 1,
+                  display: 'flex',
+                  placeItems: 'center',
+                  justifyContent: 'center',
+                }}
+              />
+            )}
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="flex-start"
+              sx={{
+                float: 'right',
+                marginLeft: '1rem',
+              }}
+            >
+              <ActionButton
+                sx={{ padding: '0px', height: '20px' }}
+                color="primary"
+                as="label"
+                onChange={(e) => handleCapture(e.target, 'main_image')}
+              >
+                Trocar imagem
+                <input hidden accept="image/*" type="file" />
+              </ActionButton>
+              <Typography
+                variant="caption"
+                color="gray"
+                sx={{ textAlign: 'initial' }}
+              >
+                Recomendação: <br />
+                300x400 pixels
+              </Typography>
+            </Box>
+          </Box>
+        </Grid>
+        <Grid md={7} xs={12} pb={2} sx={{ float: 'left' }}>
+          <Typography
+            variant="body1"
+            sx={{ marginBottom: '0.6rem', textAlign: 'start' }}
+          >
+            Banner Horizontal
+          </Typography>
+          <Box display="flex">
+            {productImage.banner_image.file ? (
+              <Image
+                alt="imagem do produto"
+                src={productImage.banner_image.file}
+                width={180}
+                height={90}
+                style={{
+                  borderRadius: '10px',
+                  objectFit: 'cover',
+                }}
+              />
+            ) : (
+              <Box
+                sx={{
+                  bgcolor: (theme) => theme.palette.secondary.main,
+                  minWidth: 180,
+                  height: 90,
+                  borderRadius: 1,
+                  display: 'flex',
+                  placeItems: 'center',
+                  justifyContent: 'center',
+                }}
+              />
+            )}
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="flex-start"
+              sx={{
+                float: 'right',
+                marginLeft: '1rem',
+              }}
+            >
+              <ActionButton
+                sx={{ padding: '0px', height: '20px' }}
+                color="primary"
+                as="label"
+                onChange={(e) => handleCapture(e.target, 'banner_image')}
+              >
+                Trocar banner
+                <input hidden accept="image/*" type="file" />
+              </ActionButton>
+              <Typography
+                variant="caption"
+                color="gray"
+                sx={{ textAlign: 'initial' }}
+              >
+                Recomendação: <br />
+                360x190 pixels
+              </Typography>
+            </Box>
+          </Box>
+        </Grid>
+        <InputField
+          color="secondary"
+          value={video}
+          label="Vídeo de Apresentação ( opcional / recomendado )"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          placeholder="Cole o link do vídeo aqui"
+          onChange={(e) => setVideo(e.target.value)}
+          style={{ marginBottom: '1.8rem' }}
+        />
+      </Grid>
     </form>
   );
 };

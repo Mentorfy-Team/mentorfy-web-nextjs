@@ -19,6 +19,8 @@ export type DnDObject = {
   id: string;
   title: string;
   description?: string;
+  data?: any;
+  extra?: any;
   rows?: DnDRow[];
 };
 

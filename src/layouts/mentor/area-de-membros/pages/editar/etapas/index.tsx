@@ -147,18 +147,26 @@ const EditarMentoria: FC<Props> = ({ id }) => {
         await FilesToDelete(data.toRemove);
         delete data.toRemove;
       }
-      const stepIndex = steps.findIndex(
+      let stepIndex = steps.findIndex(
         (stp) => stp.rows.findIndex((row) => row.id === refId + '') >= 0,
       );
+      if (stepIndex >= 0) {
+        setSteps((oldSteps) => {
+          Object.assign(
+            oldSteps[stepIndex].rows.find((r) => r.id === refId + ''),
+            data,
+          );
+          return [...oldSteps];
+        });
+      } else {
+        stepIndex = steps.findIndex((row) => row.id === refId + '');
 
-      setSteps((oldSteps) => {
-        Object.assign(
-          oldSteps[stepIndex].rows.find((r) => r.id === refId + ''),
-          data,
-        );
-        return [...oldSteps];
-      });
-
+        setSteps((oldSteps) => {
+          Object.assign(oldSteps[stepIndex], data);
+          console.log('done', data, oldSteps);
+          return [...oldSteps];
+        });
+      }
       handleSave();
     },
     [handleSave, steps],
@@ -246,7 +254,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
                   isHeader
                   title={step.title || 'Nova etapa'}
                   stepType={0}
-                  image={Image}
+                  image={step?.extra?.sourceUrl || Image}
                   onEdit={() => {
                     const type = GetTypeName(0);
                     setCurrentModal({

@@ -15,6 +15,8 @@ export const OrganizeTools = (data: DnDRow[]) => {
         id: sortedData[i].id,
         title: sortedData[i].title,
         description: sortedData[i].description,
+        data: sortedData[i].data,
+        extra: sortedData[i].extra,
         rows: [],
       });
       countSteps++;
