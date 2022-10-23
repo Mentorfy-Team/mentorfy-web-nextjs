@@ -38,7 +38,11 @@ import {
 } from './style';
 
 const BemVindo: FC<PageTypes.Props> = ({ user }) => {
-  const isDesktop = useMediaQuery('(min-width: 600px)');
+  const sizeLg = useMediaQuery('(min-width: 1200px)');
+  const sizeMd = useMediaQuery('(min-width: 1024px)');
+  const sizeSm = useMediaQuery('(min-width: 426px)');
+
+  const numberOfSlides = sizeLg ? 5 : sizeMd ? 3 : sizeSm ? 2 : 1;
 
   const [mainVideo, setMainVideo] = useState<string>('');
   const [volume, setVolume] = useState<number>(0);
@@ -50,7 +54,14 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
   const { product: clientProducts } = useGetClientProducts(user.id);
 
   const TextBanner = (
-    <Box sx={{ maxWidth: '16.5rem', height: '8rem', textAlign: 'start' }}>
+    <Box
+      sx={{
+        maxWidth: '16.5rem',
+        height: '8rem',
+        textAlign: 'start',
+        marginTop: '-3rem',
+      }}
+    >
       <CollorFullTypography>The World´s Storytelling</CollorFullTypography>
     </Box>
   );
@@ -68,7 +79,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
       setMainVideo('https://www.youtube.com/embed/vlWBa7iqEZg');
     }, 4000);
     setTimeout(() => {
-      setVolume(0.5);
+      //setVolume(0.5);
     }, 6000);
     setTimeout(() => {
       setMainVideo(null);
@@ -100,9 +111,10 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         <VideoHolder>
           <ReactPlayer
             id="goto"
-            className={(mainVideo ? '' : 'hide') + ' video'}
+            className={(mainVideo ? '' : 'hide') + ' video' + ' react-player'}
             url={mainVideo}
             width="100%"
+            loop={true}
             height="100%"
             playing={true}
             controls={false}
@@ -119,38 +131,45 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             }}
           />
         </VideoHolder>
-
-        {TextBanner}
-        <RatingBox>
-          <Rating defaultValue={4.5} precision={0.5} size="small"></Rating>
-          <CustomTypography>2022</CustomTypography>
-          <CustomTypography>1750 Alunos</CustomTypography>
-        </RatingBox>
-        <Box sx={{ maxWidth: '37.5rem', height: '4.2rem', textAlign: 'start' }}>
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia
-          pariatur, doloremque iste corrupti perspiciatis modi, nobis quam
-          reprehenderit esse officiis, sequi at exercitationem. Tempora
-          architecto dolorem ex laborum, sequi odit?
-        </Box>
-        <Box display="flex" gap="1rem">
-          <PlayButton variant="outlined">
-            <PlayArrow />
-            Entrar
-          </PlayButton>
-          <MoreInfo variant="outlined">
-            <InfoRounded
-              sx={{
-                marginRight: '0.5rem',
-              }}
-            />
-            Mais Informações
-          </MoreInfo>
-        </Box>
+        <div
+          style={{
+            position: 'absolute',
+          }}
+        >
+          {TextBanner}
+          <RatingBox>
+            <Rating defaultValue={4.5} precision={0.5} size="small"></Rating>
+            <CustomTypography>2022</CustomTypography>
+            <CustomTypography>1750 Alunos</CustomTypography>
+          </RatingBox>
+          <Box
+            sx={{ maxWidth: '37.5rem', height: '4.2rem', textAlign: 'start' }}
+          >
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia
+            pariatur, doloremque iste corrupti perspiciatis modi, nobis quam
+            reprehenderit esse officiis, sequi at exercitationem. Tempora
+            architecto dolorem ex laborum, sequi odit?
+          </Box>
+          <Box display="flex" gap="1rem" mt={3}>
+            <PlayButton variant="outlined">
+              <PlayArrow />
+              Entrar
+            </PlayButton>
+            <MoreInfo variant="outlined">
+              <InfoRounded
+                sx={{
+                  marginRight: '0.5rem',
+                }}
+              />
+              Mais Informações
+            </MoreInfo>
+          </Box>
+        </div>
         <Box height="2rem" />
       </BannerBox>
       <ContentWidthLimit
         sx={{
-          marginTop: isDesktop ? '-6rem' : '0',
+          marginTop: sizeLg ? '-6rem' : '0',
           zIndex: 1,
           position: 'relative',
         }}
@@ -161,13 +180,16 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         <Box sx={{ display: 'flex', margin: '1.2rem 0 0.5rem 0' }}>
           <Typography variant="h5">Minhas Mentorias</Typography>
         </Box>
-        <Slider {...settings} slidesToShow={5} className="container">
+        <Slider
+          {...settings}
+          slidesToShow={numberOfSlides}
+          className="container"
+        >
           {clientProducts.map((product, index) => (
             <CourseBox
               onMouseOver={() => {}}
               className="item"
-              height={isDesktop ? '400px' : 'unset'}
-              width={isDesktop ? '300px' : 'unset'}
+              height={400}
               key={index}
               onClick={() => {
                 router.push(
@@ -185,7 +207,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               <Image
                 alt=""
                 src={product?.main_image || '/images/moonlit.png'}
-                width={350}
+                width={400}
                 height={400}
                 style={{
                   objectFit: 'cover',
@@ -206,14 +228,17 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
           ))}
           {[
             ...Array(
-              5 - (clientProducts.length > 5 ? 5 : clientProducts.length),
+              numberOfSlides -
+                (clientProducts.length > numberOfSlides
+                  ? numberOfSlides
+                  : clientProducts.length),
             ),
           ].map((_, i) => (
             <CourseBox
               onMouseOver={() => {}}
               className="item"
-              height={isDesktop ? '400px' : 'unset'}
-              width={isDesktop ? '300px' : 'unset'}
+              height={sizeLg ? '400px' : 'unset'}
+              width={sizeLg ? '300px' : 'unset'}
               key={i}
             />
           ))}
@@ -221,15 +246,19 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         <Box sx={{ display: 'flex', margin: '0rem 0 0.5rem 0' }}>
           <Typography variant="h5">Populares na Mentorfy</Typography>
         </Box>
-        <Slider {...settings} slidesToShow={4} className="container">
+        <Slider
+          {...settings}
+          slidesToShow={numberOfSlides}
+          className="container"
+        >
           {products
             .filter((p) => p.banner_image)
             .map((product, index) => (
               <CourseBox
                 onMouseOver={() => {}}
                 className="item"
-                height={isDesktop ? '190px' : 'unset'}
-                width={isDesktop ? '350px' : 'unset'}
+                height={sizeLg ? '190px' : 'unset'}
+                width={sizeLg ? '350px' : 'unset'}
                 key={index}
                 onClick={() => {
                   router.push(
@@ -247,7 +276,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                 <Image
                   alt=""
                   src={product?.banner_image || '/images/moonlit.png'}
-                  width={300}
+                  width={400}
                   height={190}
                   style={{
                     objectFit: 'cover',
@@ -266,10 +295,12 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                 )}
               </CourseBox>
             ))}
-          {products?.filter((p) => p.banner_image)?.length < 4 &&
-            [...Array(4 - products.filter((p) => p.banner_image)?.length)].map(
-              (_, i) => <div key={i} />,
-            )}
+          {products?.filter((p) => p.banner_image)?.length < numberOfSlides &&
+            [
+              ...Array(
+                numberOfSlides - products.filter((p) => p.banner_image)?.length,
+              ),
+            ].map((_, i) => <div key={i} />)}
         </Slider>
       </ContentWidthLimit>
     </Background>

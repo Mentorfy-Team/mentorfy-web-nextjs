@@ -124,7 +124,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
 
   return (
     <>
-      <Toolbar tabs={['Método 4S']} />
+      <Toolbar breadcrumbs={['Minhas mentorias', 'Método 4S']} />
       <ContentWidthLimit>
         <Wrapper>
           {steps &&

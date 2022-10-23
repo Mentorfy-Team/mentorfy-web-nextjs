@@ -11,7 +11,6 @@ type Props = {
 export const TabWrapper = styled(Tabs)<Props>`
   margin-bottom: 1rem;
   margin-top: -7px;
-  min-height: 2.8rem;
   ${({ hasmargintop }) =>
     hasmargintop &&
     css`
@@ -41,10 +40,11 @@ export const TabWrapper = styled(Tabs)<Props>`
     position: fixed;
   }
 
+  min-height: 2.8rem;
   button {
     align-items: flex-start;
     display: flex;
-    margin-left: 1rem;
+    min-width: 0px;
     padding: 0;
   }
 
@@ -52,7 +52,7 @@ export const TabWrapper = styled(Tabs)<Props>`
     forpage &&
     css`
       border-bottom: 1px dashed #363739;
-      padding-left: 1rem;
+      padding-left: 2rem;
 
       .Mui-selected {
         border-bottom: 2px solid transparent;

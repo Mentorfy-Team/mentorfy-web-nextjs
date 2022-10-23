@@ -175,8 +175,16 @@ export const MoreInfo = styled(Button)`
 export const VideoHolder = styled(Box)`
   height: 100%;
   margin: 0px !important;
-  position: absolute;
   width: 100%;
+  position: relative;
+  padding-top: 56.25%;
+
+  .react-player {
+    opacity: 0.4;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 `;
 
 export const Videoshow = styled(Box)`
@@ -204,7 +212,7 @@ export const BannerBox = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  height: 60vh;
+  height: 32rem;
   max-width: 100%;
   position: relative;
 
