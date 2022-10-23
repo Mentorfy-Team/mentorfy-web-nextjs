@@ -257,7 +257,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
                   isHeader
                   title={step.title || 'Nova etapa'}
                   stepType={0}
-                  image={step?.extra?.sourceUrl || Image}
+                  image={step?.extra ? step?.extra[0]?.sourceUrl : Image}
                   onEdit={() => {
                     const type = GetTypeName(0);
                     setCurrentModal({

@@ -27,6 +27,10 @@ const WheelOfLifeModal = dynamic(
 const Video = dynamic(() => import('../components/VideoModal'), {
   loading: () => <LoadingComponent />,
 });
+
+const GroupModal = dynamic(() => import('../components/GroupModal'), {
+  loading: () => <LoadingComponent />,
+});
 const ToolList = dynamic(() => import('../components/ToolListModal'), {
   loading: () => <LoadingComponent />,
 });
@@ -167,7 +171,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
       );
     case ToolListNames.StepGroup.name:
       return (
-        <Video
+        <GroupModal
           area_id={area_id}
           withLink={false}
           data={data}

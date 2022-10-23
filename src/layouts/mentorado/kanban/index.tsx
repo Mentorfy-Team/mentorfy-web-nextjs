@@ -134,7 +134,11 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                   alt="imagem"
                   width={50}
                   height={50}
-                  src={step?.extra?.sourceUrl || '/svgs/step-image.svg'}
+                  src={
+                    step?.extra
+                      ? step?.extra[0]?.sourceUrl
+                      : '/svgs/step-image.svg'
+                  }
                   style={{
                     objectFit: 'contain',
                     marginBottom: '0.5rem',
@@ -195,9 +199,14 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                       alt="imagem"
                       width={200}
                       height={120}
-                      src="/svgs/finished.svg"
+                      src={
+                        step.extra.length > 1
+                          ? step.extra[1].sourceUrl
+                          : '/svgs/finished.svg'
+                      }
                       style={{
                         marginTop: '1.2rem',
+                        objectFit: 'contain',
                       }}
                     />
                   )}

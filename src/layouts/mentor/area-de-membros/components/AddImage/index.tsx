@@ -8,9 +8,10 @@ import { AddImgButton, ButtonLabel } from './styles';
 type Props = {
   onUploadImage: (file: any) => void;
   thumbnail: string;
+  title?: string;
 };
 
-const AddImage: FC<Props> = ({ onUploadImage, thumbnail }) => {
+const AddImage: FC<Props> = ({ onUploadImage, thumbnail, title }) => {
   const theme = useTheme();
   return (
     <Box sx={{ display: 'flex', marginBottom: '1rem' }}>
@@ -29,7 +30,7 @@ const AddImage: FC<Props> = ({ onUploadImage, thumbnail }) => {
         }}
       >
         <Typography sx={{ fontWeight: '700', fontSize: '1rem' }}>
-          Banner
+          {title || 'Banner'}
         </Typography>
         <Typography sx={{ opacity: '0.4', fontSize: '0.8rem' }}>
           Recomendação: 70x70 pixels
@@ -38,8 +39,15 @@ const AddImage: FC<Props> = ({ onUploadImage, thumbnail }) => {
           onChange={(e) => onUploadImage(e.target)}
           variant="outlined"
         >
-          <ButtonLabel htmlFor="upload-image">Adicionar Imagem</ButtonLabel>
-          <input hidden accept="image/*" type="file" id="upload-image" />
+          <ButtonLabel htmlFor={'upload-image' + title}>
+            Adicionar Imagem
+          </ButtonLabel>
+          <input
+            hidden
+            accept="image/*"
+            type="file"
+            id={'upload-image' + title}
+          />
         </AddImgButton>
       </Box>
     </Box>
