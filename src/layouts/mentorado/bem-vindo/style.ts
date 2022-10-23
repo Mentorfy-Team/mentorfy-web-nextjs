@@ -6,19 +6,20 @@ import Typography from '@mui/material/Typography';
 
 export const Overlay = styled('div')`
   height: 100%;
-  left: 0;
+  left: -2.4rem;
   position: absolute;
   top: 0;
   width: 100%;
+  z-index: 1;
 
-  background: linear-gradient(0deg, rgba(8, 8, 8, 1) 25%, rgba(0, 0, 0, 0) 35%);
+  background: linear-gradient(0deg, rgba(8, 8, 8, 1) 0%, rgba(0, 0, 0, 0) 35%);
 `;
 
 export const Background = styled(Box)`
   background: #080808;
-  > div > img,
-  video,
+  > div > video,
   iframe {
+    z-index: -1;
     -webkit-mask-image: -webkit-gradient(
       linear,
       from(rgba(0, 0, 0, 1)),
@@ -34,6 +35,10 @@ export const Background = styled(Box)`
   // fade out if class hide is present
   .hide {
     opacity: 0;
+  }
+
+  .main_image {
+    z-index: 1;
   }
 
   .video {
@@ -188,12 +193,14 @@ export const VideoHolder = styled(Box)`
   width: 100%;
   position: relative;
   padding-top: 56.25%;
+  z-index: 0 !important;
 
   .react-player {
     opacity: 0.4;
     position: absolute;
     top: 0;
     left: 0;
+    z-index: -1;
   }
 `;
 

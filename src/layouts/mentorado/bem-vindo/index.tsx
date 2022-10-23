@@ -45,7 +45,9 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
 
   const numberOfSlides = sizeLg ? 5 : sizeMd ? 3 : sizeSm ? 2 : 1;
 
-  const [mainVideo, setMainVideo] = useState<string>('');
+  const [playVideo, setPlayVideo] = useState<boolean>(false);
+  const [playVideoFade, setPlayVideoFade] = useState<boolean>(false);
+  const [focusedProduct, setFocusedProduct] = useState<ProductTypes.Product>();
   const [volume, setVolume] = useState<number>(0);
   const [mainThumb, setMainThumb] = useState<string>('');
   const router = useRouter();
@@ -76,16 +78,36 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
   };
 
   useEffect(() => {
+    let shouldPlay = false;
+    const index = clientProducts.findIndex(
+      (product) => product.video || product.banner_image,
+    );
+    if (index !== -1) {
+      setFocusedProduct(clientProducts[index]);
+      shouldPlay = true;
+    } else {
+      const index = products.findIndex(
+        (product) => product.video || product.banner_image,
+      );
+      if (index !== -1) {
+        setFocusedProduct(products[index]);
+        shouldPlay = true;
+      }
+    }
+
     setTimeout(() => {
-      setMainVideo('https://www.youtube.com/embed/vlWBa7iqEZg');
+      if (shouldPlay) setPlayVideoFade(true);
+    }, 5000);
+    setTimeout(() => {
+      if (shouldPlay) setPlayVideo(true);
     }, 4000);
     setTimeout(() => {
       //setVolume(0.5);
     }, 6000);
     setTimeout(() => {
-      //setMainVideo(null);
-    }, 43000);
-  }, []);
+      //setPlayVideo(false);
+    }, 60000);
+  }, [products, clientProducts]);
 
   return (
     <Background>
@@ -99,8 +121,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         }}
       >
         <Image
-          className={mainVideo ? 'hide' : ''}
-          src="/images/banner.png"
+          className={(playVideoFade ? 'hide' : '') + ' main_image'}
+          src={mainThumb || '/images/banner.png'}
           style={{
             objectFit: 'contain',
             position: 'absolute',
@@ -109,11 +131,11 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
           width="1920"
           alt="banner"
         />
-        <VideoHolder>
+        <VideoHolder id="holder">
           <ReactPlayer
             id="goto"
-            className={(mainVideo ? '' : 'hide') + ' video' + ' react-player'}
-            url={mainVideo}
+            className={(playVideo ? '' : 'hide') + ' video' + ' react-player'}
+            url={playVideo ? focusedProduct?.video : ''}
             width="100%"
             loop={true}
             height="100%"
@@ -131,8 +153,9 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               },
             }}
           />
-          <Overlay />
         </VideoHolder>
+        <Overlay />
+
         <div
           style={{
             position: 'absolute',
