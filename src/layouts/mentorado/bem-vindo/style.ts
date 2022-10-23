@@ -4,6 +4,16 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
+export const Overlay = styled('div')`
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+
+  background: linear-gradient(0deg, rgba(8, 8, 8, 1) 25%, rgba(0, 0, 0, 0) 35%);
+`;
+
 export const Background = styled(Box)`
   background: #080808;
   > div > img,

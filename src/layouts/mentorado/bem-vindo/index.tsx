@@ -31,6 +31,7 @@ import {
   CourseBox,
   CustomTypography,
   MoreInfo,
+  Overlay,
   PlayButton,
   ProductTitle,
   RatingBox,
@@ -82,7 +83,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
       //setVolume(0.5);
     }, 6000);
     setTimeout(() => {
-      setMainVideo(null);
+      //setMainVideo(null);
     }, 43000);
   }, []);
 
@@ -130,6 +131,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               },
             }}
           />
+          <Overlay />
         </VideoHolder>
         <div
           style={{
@@ -243,7 +245,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             />
           ))}
         </Slider>
-        <Box sx={{ display: 'flex', margin: '0rem 0 0.5rem 0' }}>
+        <Box sx={{ display: 'flex', margin: '0.5rem 0 0.5rem 0' }}>
           <Typography variant="h5">Populares na Mentorfy</Typography>
         </Box>
         <Slider
