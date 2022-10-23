@@ -183,7 +183,23 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             {featuredProduct?.description}
           </Box>
           <Box display="flex" gap="1rem" mt={3}>
-            <PlayButton variant="outlined">
+            <PlayButton
+              onClick={() =>
+                router.push(
+                  types
+                    .find(
+                      (type) => type.id.toString() === featuredProduct.deliver,
+                    )
+                    .name.replace(/\s/g, '-')
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, '')
+                    .toLowerCase() +
+                    '/' +
+                    featuredProduct.id,
+                )
+              }
+              variant="outlined"
+            >
               <PlayArrow />
               Entrar
             </PlayButton>
