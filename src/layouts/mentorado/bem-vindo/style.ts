@@ -279,12 +279,7 @@ export const ProductTitle = styled(Typography)`
 export const CollorFullTypography = styled(Typography)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background: linear-gradient(
-    40.22deg,
-    #1774ff 22.52%,
-    #9f12e1 50.99%,
-    #ff0b0b 76.9%
-  );
+  background: linear-gradient(40.22deg, #c02425 22.52%, #f0cb35 76.9%);
   background-clip: text;
 
   font-size: 2.5rem;

@@ -51,7 +51,7 @@ const Geral: FC<props> = ({ product }) => {
     [product, productImage],
   );
 
-  const { title, price, deliver } = watch();
+  const { title, price, deliver, description } = watch();
 
   const handleChange = (e, name) => {
     setValue(name, e.target.value);
@@ -222,6 +222,20 @@ const Geral: FC<props> = ({ product }) => {
         }}
         value={title}
         onChange={(e) => handleChange(e, 'title')}
+      />
+      <InputField
+        required
+        color="secondary"
+        defaultValue={product.description}
+        label="Descrição do produto"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        multiline
+        minRows={4}
+        placeholder="Dê uma descrição detalhada do produto."
+        value={description}
+        onChange={(e) => handleChange(e, 'description')}
       />
       <InputField
         required

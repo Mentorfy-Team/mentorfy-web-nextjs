@@ -130,6 +130,9 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
   if (req.body.video) {
     Object.assign(toUpdate, { video: req.body.video });
   }
+  if (req.body.description) {
+    Object.assign(toUpdate, { description: req.body.description });
+  }
 
   const { error, data } = await supabase
     .from('product')

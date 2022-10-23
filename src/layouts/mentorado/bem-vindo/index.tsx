@@ -47,7 +47,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
 
   const [playVideo, setPlayVideo] = useState<boolean>(false);
   const [playVideoFade, setPlayVideoFade] = useState<boolean>(false);
-  const [focusedProduct, setFocusedProduct] = useState<ProductTypes.Product>();
+  const [featuredProduct, setFeaturedProduct] =
+    useState<Partial<ProductTypes.Product>>();
   const [volume, setVolume] = useState<number>(0);
   const [mainThumb, setMainThumb] = useState<string>('');
   const router = useRouter();
@@ -60,12 +61,12 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
     <Box
       sx={{
         maxWidth: '16.5rem',
-        height: '8rem',
         textAlign: 'start',
         marginTop: '-3rem',
+        marginBottom: '1rem',
       }}
     >
-      <CollorFullTypography>The World´s Storytelling</CollorFullTypography>
+      <CollorFullTypography>{featuredProduct?.title}</CollorFullTypography>
     </Box>
   );
 
@@ -83,14 +84,14 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
       (product) => product.video || product.banner_image,
     );
     if (index !== -1) {
-      setFocusedProduct(clientProducts[index]);
+      setFeaturedProduct(clientProducts[index]);
       shouldPlay = true;
     } else {
       const index = products.findIndex(
         (product) => product.video || product.banner_image,
       );
       if (index !== -1) {
-        setFocusedProduct(products[index]);
+        setFeaturedProduct(products[index]);
         shouldPlay = true;
       }
     }
@@ -135,7 +136,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
           <ReactPlayer
             id="goto"
             className={(playVideo ? '' : 'hide') + ' video' + ' react-player'}
-            url={playVideo ? focusedProduct?.video : ''}
+            url={playVideo ? featuredProduct?.video : ''}
             width="100%"
             loop={true}
             height="100%"
@@ -168,12 +169,18 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             <CustomTypography>1750 Alunos</CustomTypography>
           </RatingBox>
           <Box
-            sx={{ maxWidth: '37.5rem', height: '4.2rem', textAlign: 'start' }}
+            sx={{
+              maxWidth: '37.5rem',
+              textAlign: 'start',
+              overflow: 'hidden',
+              'text-overflow': 'ellipsis',
+              display: '-webkit-box',
+              '-webkit-line-clamp': '3',
+              'line-clamp': '3',
+              '-webkit-box-orient': 'vertical',
+            }}
           >
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quia
-            pariatur, doloremque iste corrupti perspiciatis modi, nobis quam
-            reprehenderit esse officiis, sequi at exercitationem. Tempora
-            architecto dolorem ex laborum, sequi odit?
+            {featuredProduct?.description}
           </Box>
           <Box display="flex" gap="1rem" mt={3}>
             <PlayButton variant="outlined">
