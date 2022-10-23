@@ -139,6 +139,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                 <Title>{step.title}</Title>
                 <Box
                   sx={{
+                    height: '100%',
                     width: '100%',
                     overflowY: 'auto',
                     marginTop: '1rem',
@@ -179,13 +180,23 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                       />
                     </Task>
                   ))}
-                  <Image
-                    alt="imagem"
-                    width={122}
-                    height={139}
-                    src="/images/winners.png"
-                    style={{ marginTop: '1.2rem' }}
-                  />
+
+                  {step.rows.filter(
+                    (task) =>
+                      userInput.findIndex(
+                        (inp) => inp.member_area_tool_id.toString() === task.id,
+                      ) !== -1,
+                  ).length === step.rows.length && (
+                    <Image
+                      alt="imagem"
+                      width={200}
+                      height={120}
+                      src="/svgs/finished.svg"
+                      style={{
+                        marginTop: '1.2rem',
+                      }}
+                    />
+                  )}
                 </Box>
               </Step>
             ))}
