@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
+import Image from 'next/future/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { DnDObject } from '~/components/modules/DragNDrop';
 import Toolbar from '~/components/modules/Toolbar';
@@ -132,9 +132,13 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
               <Step key={step.id}>
                 <Image
                   alt="imagem"
-                  width={43}
+                  width={50}
                   height={50}
-                  src="/svgs/step-image.svg"
+                  src={step?.extra?.sourceUrl || '/svgs/step-image.svg'}
+                  style={{
+                    objectFit: 'contain',
+                    marginBottom: '0.5rem',
+                  }}
                 />
                 <Title>{step.title}</Title>
                 <Box
