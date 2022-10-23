@@ -6,6 +6,7 @@ import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 import { DnDObject } from '~/components/modules/DragNDrop';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
@@ -56,6 +57,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   const theme = useTheme();
   const Image = '/svgs/step-image.svg';
 
+  const route = useRouter();
   const { steps: stepsData, mutate } = useMemberAreaTools(id);
 
   useEffect(() => {
@@ -199,6 +201,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
             display: 'flex',
             justifyContent: 'flex-start',
           }}
+          onClick={() => route.back()}
         >
           <ChavronLeftSvg />
           <span>Voltar</span>

@@ -9,7 +9,6 @@ import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputField from '~/components/atoms/InputField';
-import { MentorRoutes } from '~/consts';
 import { useGetProduct } from '~/hooks/useGetProduct';
 import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { UpdateProduct } from '~/services/product.service';
@@ -103,10 +102,7 @@ const Geral: FC<props> = ({ id }) => {
         justifyContent="space-between"
         pb={4}
       >
-        <ReturnButton
-          color="primary"
-          onClick={() => route.push(MentorRoutes.products)}
-        >
+        <ReturnButton color="primary" onClick={() => route.back()}>
           <ChavronLeftSvg />
           <span>Voltar</span>
         </ReturnButton>
@@ -128,9 +124,9 @@ const Geral: FC<props> = ({ id }) => {
         </SaveButton>
       </Box>
       <CustomTypograpy>
-        Recomendamos, para uma melhor experiência, que você adicione a imagem
-        principal do seu produto e a imagem de banner que é visivel para o
-        cliente na area de destaque de produtos.
+        Recomendamos, para uma melhor experiência, que você adicione o banner
+        vertical e o banner horizontal, para se tornar visivel para os usuários
+        na área de destaque de produtos.
       </CustomTypograpy>
       <Divider
         sx={{
@@ -166,6 +162,17 @@ const Geral: FC<props> = ({ id }) => {
         InputProps={{
           readOnly: true,
         }}
+        style={{ marginBottom: '1.0rem' }}
+      />
+      <InputField
+        color="secondary"
+        value={video}
+        label="Vídeo de Apresentação ( opcional / recomendado )"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        placeholder="Cole o link do vídeo aqui"
+        onChange={(e) => setVideo(e.target.value)}
         style={{ marginBottom: '1.8rem' }}
       />
       <Grid container>
@@ -291,17 +298,6 @@ const Geral: FC<props> = ({ id }) => {
             </Box>
           </Box>
         </Grid>
-        <InputField
-          color="secondary"
-          value={video}
-          label="Vídeo de Apresentação ( opcional / recomendado )"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          placeholder="Cole o link do vídeo aqui"
-          onChange={(e) => setVideo(e.target.value)}
-          style={{ marginBottom: '1.8rem' }}
-        />
       </Grid>
     </form>
   );

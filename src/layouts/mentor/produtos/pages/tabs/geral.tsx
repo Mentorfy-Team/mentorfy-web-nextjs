@@ -1,9 +1,8 @@
 import { FC, useCallback, useState } from 'react';
+import RoomPreferences from '@mui/icons-material/RoomPreferences';
 import Save from '@mui/icons-material/Save';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Unstable_Grid2';
-import Image from 'next/future/image';
+import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputField from '~/components/atoms/InputField';
@@ -11,7 +10,7 @@ import { MentorRoutes } from '~/consts';
 import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
 import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { UpdateProduct } from '~/services/product.service';
-import { ActionButton, ReturnButton, SaveButton, SvgWrapper } from '../styles';
+import { ReturnButton, SaveButton, SvgWrapper } from '../styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 type props = {
   product: ProductClient.Product;
@@ -104,7 +103,7 @@ const Geral: FC<props> = ({ product }) => {
           Salvar produto
         </SaveButton>
       </Box>
-      <Grid container>
+      {/* <Grid container>
         <Grid md={5} xs={12} display="flex" pb={2} sx={{ float: 'left' }}>
           {productImage.main_image.file ? (
             <Image
@@ -211,7 +210,7 @@ const Geral: FC<props> = ({ product }) => {
             </Typography>
           </Box>
         </Grid>
-      </Grid>
+      </Grid> */}
       <InputField
         required
         color="secondary"
@@ -252,23 +251,44 @@ const Geral: FC<props> = ({ product }) => {
         }}
         onChange={(e) => handleChange(e, 'price')}
       />
-      <InputField
-        color="secondary"
-        value={
-          types.find((type) =>
-            type.id === product?.member_area
-              ? (product?.member_area as any).type_id
-              : 5,
-          )?.name
-        }
-        label="Tipo de Área de Membros"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        InputProps={{
-          readOnly: true,
-        }}
-      />
+      <Box display="flex">
+        <InputField
+          color="secondary"
+          value={
+            types.find((type) =>
+              type.id === product?.member_area
+                ? (product?.member_area as any).type_id
+                : 5,
+            )?.name
+          }
+          label="Tipo de Área de Membros"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          InputProps={{
+            readOnly: true,
+          }}
+          style={{ flex: 1 }}
+        />
+        <Button
+          sx={{
+            float: 'right',
+            marginLeft: '2rem',
+            width: '150px',
+            margin: '0.5rem 0 0.6rem 1rem',
+          }}
+          variant="text"
+          color="primary"
+          onClick={() =>
+            route.push(MentorRoutes.members_area_editar + '/' + product.id)
+          }
+        >
+          <SvgWrapper>
+            <RoomPreferences />
+          </SvgWrapper>
+          Abrir Área
+        </Button>
+      </Box>
       {deliver === 'external' && (
         <InputField
           required
