@@ -6,6 +6,7 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { DnDObject } from '~/components/modules/DragNDrop';
+import ProgressBar from '~/components/modules/ProgressBar';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
@@ -165,7 +166,9 @@ export const VideoView = ({ member_area_id }) => {
               </SendButton>
             </Box>
           </VideoWrapper>
-          <ProgressBarWrapper></ProgressBarWrapper>
+          <ProgressBarWrapper>
+            <ProgressBar/>
+          </ProgressBarWrapper>
         </Wrapper>
       </ContentWidthLimit>
     </>
