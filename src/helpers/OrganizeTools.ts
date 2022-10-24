@@ -1,18 +1,19 @@
 import { DnDObject, DnDRow } from '~/components/modules/DragNDrop';
 
-export const OrganizeTools = (data: DnDRow[]) => {
+export const OrganizeTools = (data: DnDRow[], filterByTypeId?) => {
   if (!data) return [];
-  const sortedData = data.sort((a, b) => a.order - b.order);
+  const sortedData = data.filter(d=>!filterByTypeId || d.mentor_tool === 0 || d.mentor_tool===filterByTypeId).sort((a, b) => a.order - b.order);
+  if (!sortedData) return [];
 
   const steps: DnDObject[] = [];
   let countSteps = 0;
-
+  console.log('sortedData', sortedData);
   for (let i = 0; i < sortedData.length; i++) {
     const isStep = sortedData[i].type === 0;
-
+    
     if (isStep) {
       steps.push({
-        id: sortedData[i].id,
+        id: sortedData[i].id, 
         title: sortedData[i].title,
         description: sortedData[i].description,
         data: sortedData[i].data,

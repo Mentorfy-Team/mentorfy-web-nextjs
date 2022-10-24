@@ -11,7 +11,7 @@ import Toolbar from '~/components/modules/Toolbar';
 import { MentorRoutes, PublicRoutes } from '~/consts';
 import { useProducts } from '~/hooks/useProducts';
 import { GetProfile } from '~/services/profile.service';
-import { EmptyBox, ImageButton } from './styles';
+import { AbsoluteBottomBox, AbsoluteTopBox, AreaWrapper, CollorFullMentorfy, EmptyBox, ImageButton, ProductTitle } from './styles';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   const { products } = useProducts(user.id);
@@ -20,7 +20,7 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   return (
     <>
       <Toolbar tabs={['Áreas Ativas']} />
-      <ContentWidthLimit maxWidth={1250}>
+      <ContentWidthLimit maxWidth={1900}>
         <Box>
           <Box sx={{ float: 'left' }}>
             <Typography>Minhas Mentorias</Typography>
@@ -37,17 +37,17 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
             display: 'flex',
             flexDirection: 'row',
             overflow: 'auto',
+            overflowY: 'visible',
             gap: '2rem',
             marginTop: '1.5rem',
           }}
         >
           {products?.map((area, index) => (
-            <Box
+            <AreaWrapper
               onClick={() =>
                 router.push(MentorRoutes.members_area_editar + '/' + area.id)
               }
               key={index}
-              sx={{ cursor: 'pointer' }}
             >
               {area.main_image && (
                 <Image
@@ -72,7 +72,17 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
                   height={244}
                 />
               )}
-            </Box>
+              <AbsoluteTopBox>
+                <CollorFullMentorfy>
+                  Mentor<span>fy</span>
+                </CollorFullMentorfy>
+              </AbsoluteTopBox>
+              {!area?.banner_image && (
+                <AbsoluteBottomBox>
+                  <ProductTitle>{area?.title}</ProductTitle>
+                </AbsoluteBottomBox>
+              )}
+            </AreaWrapper>
           ))}
         </Box>
         <Divider sx={{ borderColor: '#36353A', m: '2rem 0rem' }} />

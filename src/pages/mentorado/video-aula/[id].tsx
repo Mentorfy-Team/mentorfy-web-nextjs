@@ -3,4 +3,4 @@ import { getProps as getProps} from '~/layouts/mentorado/video-view';
 
 export default VideoViewLayout;
 
-export const getServerSideReder = getProps;
+export const getServerSideProps = getProps;

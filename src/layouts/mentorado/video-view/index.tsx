@@ -30,7 +30,7 @@ export const VideoView = ({ member_area_id }) => {
   const [steps, setSteps] = useState<DnDObject[]>([]);
   const [userInput, setUserInput] = useState<UserInput[]>([]);
   const [open, setOpen] = useState(false);
-
+  
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
     type: string;
@@ -41,7 +41,8 @@ export const VideoView = ({ member_area_id }) => {
 
   useEffect(() => {
     setSteps((oldSteps) => {
-      oldSteps = [...OrganizeTools(stepsData)];
+      oldSteps = [...OrganizeTools(stepsData, ToolListNames.Video.id)];
+      console.log(oldSteps);
       return [...oldSteps];
     });
   }, [stepsData]);

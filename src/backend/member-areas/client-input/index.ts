@@ -15,13 +15,17 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     .select('*')
     .eq('member_area', req.query.id);
 
+  // if tool is not found, return 404
+  if (errorm || !tools || tools.length === 0) {
+    return res.status(404).json({ error: 'Tool not found' });
+  }
   // for each tool, get the user input
   const { data: userInputs, error: erroru } = await supabase
     .from<MemberAreaTypes.UserInput>('client_input_tool')
     .select('*')
     .in(
       'member_area_tool_id',
-      tools.map((tool) => tool.id),
+      tools?.map((tool) => tool.id),
     )
     .match({
       profile_id: user.id,

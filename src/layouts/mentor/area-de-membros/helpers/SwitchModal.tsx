@@ -56,6 +56,7 @@ export type ToolsModalProps = {
   data: any;
   onChange?: (value: any) => any;
   setOpen?: (value: any) => any;
+  rows?: any[];
 };
 
 const SwitchModal: React.FC<ToolsModalProps> = ({
@@ -66,6 +67,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
   setOpen,
   refId,
   area_id,
+  rows
 }) => {
   switch (type) {
     case ToolListNames.WheelOfLifeModal.name:
@@ -173,8 +175,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
       return (
         <GroupModal
           area_id={area_id}
-          withLink={false}
-          data={data}
+          data={{...data, rows: rows || []}}
           open={open}
           setOpen={setOpen}
           onChange={(props) =>

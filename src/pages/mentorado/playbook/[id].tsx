@@ -3,4 +3,4 @@ import { getProps as getProps} from '~/layouts/mentorado/playbook';
 
 export default PlaybookLayout;
 
-export const getServerSideRender = getProps;
+export const getServerSideProps = getProps;

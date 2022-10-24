@@ -22,6 +22,7 @@ export type DnDObject = {
   data?: any;
   extra?: any;
   rows?: DnDRow[];
+  delete?: boolean;
 };
 
 export type DnDRow = MentorTools.ToolData & { type: string };
@@ -79,7 +80,7 @@ export default function DragNDrop({
       onDragEnd={handleDragEnd}
       modifiers={[restrictToParentElement]}
     >
-      {elements.map((group, groupIndex) => {
+      {elements.filter((i) => !i.delete).map((group, groupIndex) => {
         const itens = group.rows.filter((i) => !i.delete);
         return groupModel(
           group.id,

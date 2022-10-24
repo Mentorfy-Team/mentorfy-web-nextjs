@@ -5,36 +5,31 @@ import HandleFileUpload from '~/helpers/HandleFileUpload';
 import AddImage from '../AddImage';
 import UploadToUrlFiles from '../UploadFileModal/helpers/UploadToUrlFiles';
 
-export type TaskObject = {
-  id?: string;
-  title?: string;
-  description?: string;
-  link?: string;
-};
+export type TaskObject = any[];
 
 const GroupModal = ({
   open,
   setOpen,
   data: {
-    data: videosData,
+    data: taskData,
     title: titleData,
     description: descriptionData,
     extra,
+    rows: rowsData,
   },
   onChange,
-  multivideos = false,
   area_id,
-  withLink = true,
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
+  
   const [thumbnail, setThumbnail] = useState<any>(
     extra?.length > 0 ? extra[0] : '',
   );
   const [thumbnailConclusion, setThumbnailConclusion] = useState<any>(
     extra?.length > 1 ? extra[1] : '',
   );
-  console.log('extra', extra);
+  
   const handleSave = async (del?: boolean) => {
     const images = [];
     if (thumbnail) {
@@ -68,7 +63,14 @@ const GroupModal = ({
   return (
     <ModalComponent
       onSave={() => handleSave()}
-      onDelete={() => handleSave(true)}
+      onDelete={() => {
+        // show a browser alert to confirm the delete
+        if (rowsData.length > 0) {
+          window.alert('Esse grupo tem um ou mais etapas. Exclua as etapas antes de excluir o grupo.')
+        }else{
+          handleSave(true);
+        }
+      }}
       open={open}
       setOpen={setOpen}
       title="Agrupador de Etapas"

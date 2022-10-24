@@ -49,6 +49,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
     refId?: string;
     area_id?: string;
     data?: any;
+    rows?: any[];
   }>();
   const [open, setOpen] = useState(false);
   const [steps, setSteps] = useState<DnDObject[]>([]);
@@ -130,6 +131,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
         refId={currentModal.refId}
         area_id={id}
         data={currentModal.data}
+        rows={currentModal.rows}
       />
     );
   }, [currentModal, open, id]);
@@ -265,6 +267,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
                       type,
                       refId: group_id + '',
                       data: step || {},
+                      rows: step.rows,
                     });
                     setOpen(true);
                   }}
