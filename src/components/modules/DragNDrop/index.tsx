@@ -33,6 +33,7 @@ type Props = {
   elements: {
     id: string;
     rows?: DnDRow[];
+    delete?: boolean;
   }[];
   setElements: (elements: any) => void;
 };
@@ -80,18 +81,20 @@ export default function DragNDrop({
       onDragEnd={handleDragEnd}
       modifiers={[restrictToParentElement]}
     >
-      {elements.filter((i) => !i.delete).map((group, groupIndex) => {
-        const itens = group.rows.filter((i) => !i.delete);
-        return groupModel(
-          group.id,
-          <SortableContext
-            items={itens.map((item) => item.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            {itens.map((item) => model(item))}
-          </SortableContext>,
-        );
-      })}
+      {elements
+        .filter((i) => !i.delete)
+        .map((group, groupIndex) => {
+          const itens = group.rows.filter((i) => !i.delete);
+          return groupModel(
+            group.id,
+            <SortableContext
+              items={itens.map((item) => item.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              {itens.map((item) => model(item))}
+            </SortableContext>,
+          );
+        })}
       {/* <DragOverlay modifiers={[restrictToParentElement]}>
         {activeId ? (
           <Box

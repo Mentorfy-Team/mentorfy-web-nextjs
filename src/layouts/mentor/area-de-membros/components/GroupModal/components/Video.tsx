@@ -1,7 +1,6 @@
 import React from 'react';
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
-import { TaskObject } from '..';
 import {
   DeleteButton,
   SaveButton,
@@ -11,8 +10,12 @@ import {
 } from '../styles';
 
 type Props = {
-  data: TaskObject;
-  onSaveTask: (id: string, _title: string, _description, _link) => void;
+  data: {
+    id: string;
+    title: string;
+    description: string;
+  };
+  onSaveTask: (id: string, _title: string, _description) => void;
   onDeleteTask: (id: string) => void;
 };
 
@@ -20,7 +23,6 @@ const Task: React.FC<Props> = ({ data: task, onSaveTask, onDeleteTask }) => {
   const [canEdit, setCanEdit] = React.useState(false);
   const [title, setTitle] = React.useState(task.title);
   const [description, setDescription] = React.useState(task.description);
-  const [link, setLink] = React.useState(task.link);
   const [error, setError] = React.useState(false);
 
   return (
@@ -54,7 +56,7 @@ const Task: React.FC<Props> = ({ data: task, onSaveTask, onDeleteTask }) => {
                 if (!title) {
                   setError(true);
                 } else {
-                  onSaveTask(task.id, title, description, link);
+                  onSaveTask(task.id, title, description);
                   setCanEdit(false);
                 }
               }}
@@ -85,24 +87,6 @@ const Task: React.FC<Props> = ({ data: task, onSaveTask, onDeleteTask }) => {
           </>
         )}
       </TaskWrapper>
-      {canEdit && (
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-          <TaskField
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            label="Descrição"
-            placeholder="..."
-            error={error && !description}
-          />
-          <TaskField
-            value={link}
-            onChange={(e) => setLink(e.target.value)}
-            label="Link"
-            placeholder="ex: https://www.youtube.com/watch?v=1"
-            error={error && !link}
-          />
-        </Box>
-      )}
     </Box>
   );
 };
