@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 export const Wrapper = styled(Box)`
     display: flex;
     flex-direction: column;
+    gap: 2rem;
 `;
 
 export const CircleWrapper = styled(Box)`
@@ -56,7 +57,7 @@ export const ClassesNumber = styled(Typography)`
 
 export const Line = styled(Box)`
     background-color: #363739;
-    min-height: 30px;
+    min-height: 25px;
     width: 1px;
 `;
 

@@ -168,7 +168,7 @@ export const VideoView = ({ member_area_id }) => {
             </Box>
           </VideoWrapper>
           <ProgressBarWrapper>
-            <ProgressBar/>
+            <ProgressBar data={steps}/>
           </ProgressBarWrapper>
         </Wrapper>
       </ContentWidthLimit>
