@@ -31,7 +31,7 @@ const ContinuosMentoring = ({ id }) => {
     }];
     return (
         <>
-            <Toolbar tabs={['Semestre']} />
+            <Toolbar breadcrumbs={['Minhas mentorias', 'Método 4S']} />
             <ContentWidthLimit maxWidth={1200}>
 
                 <ScrollArea>
