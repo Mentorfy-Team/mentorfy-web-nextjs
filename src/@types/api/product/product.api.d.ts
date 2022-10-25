@@ -33,6 +33,7 @@ declare namespace ProductApi {
         main_owner: string;
         main_type: string;
         old_main_url: string;
+        video: string;
       };
     }
 
