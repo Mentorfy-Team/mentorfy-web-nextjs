@@ -1,25 +1,31 @@
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
+import { Avatar } from '@mui/material';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
-import { CommentInput, CompleteButton, Description, SendButton } from './styles';
-import { Avatar } from '@mui/material';
 import { useProfile } from '~/hooks/useProfile';
+import {
+  CommentInput,
+  CompleteButton,
+  Description,
+  SendButton,
+} from './styles';
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
 type InputProps = {
   id?: string;
-  value?: boolean,
+  value?: boolean;
+};
+type ExtraProps = {
   comments: {
     user_id: string;
     comment: string;
     created_at: string;
-  }[]
+  }[];
 };
-type ExtraProps = boolean;
 
 type ToolProps = {
   link: string;
@@ -43,9 +49,12 @@ const VideoViewModal = ({
   onChange,
   userInput,
 }: MentoredComponents.Props<ToolProps, InputProps, ExtraProps, ToolExtra>) => {
-  const [input, setInput] = useState<Partial<InputProps>>(userInput?.data || {});
-  const { data: { profile } } = useProfile();
-
+  const [input, setInput] = useState<Partial<ExtraProps>>(
+    userInput?.extra || {},
+  );
+  const {
+    data: { profile },
+  } = useProfile();
   const { data } = useProfile();
   const commentRef = useRef(null);
 
@@ -53,7 +62,7 @@ const VideoViewModal = ({
     onChange({
       data: {},
       extra: {
-        finished: true
+        finished: true,
       },
     });
     setOpen(false);
@@ -62,21 +71,15 @@ const VideoViewModal = ({
   const handleComment = () => {
     const comment = commentRef.current.value;
     if (comment) {
-      setInput(inp => {
-        const newInput = {...inp};
+      setInput((inp) => {
+        const newInput = { ...inp };
         const comments = newInput.comments || [];
         comments.push({
-            user_id: data.profile.id,
-            comment,
-            // data to human readable
-            created_at: new Date().toLocaleString('pt-BR', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              hour: 'numeric',
-              minute: 'numeric',
-            }),
-          });
+          user_id: data.profile.id,
+          comment,
+          // data to human readable
+          created_at: new Date().toString(),
+        });
         newInput.comments = comments;
         return newInput;
       });
@@ -87,8 +90,15 @@ const VideoViewModal = ({
       data: {},
       extra: {
         ...extra,
-        comments: input.comments,
-      }
+        comments: [
+          ...(input.comments || []),
+          {
+            user_id: data.profile.id,
+            comment,
+            created_at: new Date().toString(),
+          },
+        ],
+      },
     });
   };
 
@@ -130,30 +140,76 @@ const VideoViewModal = ({
         <Typography variant="body1" sx={{ margin: '2.5rem 0 0.8rem 0' }}>
           Enviar mensagem ao Mentor
         </Typography>
-        <Box sx={{ width: '100%', display: 'flex', gap: '0.5rem', marginBottom: '2rem' }}>
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            gap: '0.5rem',
+            marginBottom: '2rem',
+          }}
+        >
           <CommentInput ref={commentRef} placeholder="Deixe sua mensagem" />
           <SendButton onClick={() => handleComment()} variant="contained">
             Enviar
           </SendButton>
         </Box>
-        {input.comments && input.comments?.length > 0 && <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          {input.comments.map(({ comment, created_at }, index) => (<>
-            <Box sx={{ width: '100%', display: 'flex', gap: '1rem' }}>
-            <Avatar src={data.profile.avatar} />
-            <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <Typography key={index} variant="body2" sx={{ marginTop: '-0.2rem' }}>
-                {profile.name} 
-                <Typography ml={3} color='gray' variant="caption">
-                  {created_at}
-                </Typography>
-              </Typography>
-              <Typography key={index} variant="body1" sx={{ marginTop: '-0.3rem' }}>
-                {comment}
-              </Typography>
-            </Box>
-            </Box>
-          </>))}
-        </Box>}
+        {input.comments && input.comments?.length > 0 && (
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '2rem',
+            }}
+          >
+            {input.comments
+              .sort((a, b) => {
+                return (
+                  new Date(b.created_at).getTime() -
+                  new Date(a.created_at).getTime()
+                );
+              })
+              .map(({ comment, created_at }, index) => (
+                <>
+                  <Box sx={{ width: '100%', display: 'flex', gap: '1rem' }}>
+                    <Avatar src={data.profile.avatar} />
+                    <Box
+                      sx={{
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '0.5rem',
+                      }}
+                    >
+                      <Typography
+                        key={index}
+                        variant="body2"
+                        sx={{ marginTop: '-0.2rem' }}
+                      >
+                        {profile.name}
+                        <Typography ml={3} color="gray" variant="caption">
+                          {new Date(created_at).toLocaleString('pt-BR', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: 'numeric',
+                          })}
+                        </Typography>
+                      </Typography>
+                      <Typography
+                        key={index}
+                        variant="body1"
+                        sx={{ marginTop: '-0.3rem' }}
+                      >
+                        {comment}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </>
+              ))}
+          </Box>
+        )}
       </ModalDialogContent>
     </ModalComponent>
   );
