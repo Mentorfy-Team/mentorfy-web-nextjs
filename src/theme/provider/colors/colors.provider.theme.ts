@@ -1,6 +1,6 @@
 import { PaletteOptions } from '@mui/material/styles';
 
-const primary = '#1C1B20';
+const primary = '#121212';
 const secondary = '#7586EC';
 const tertiary = '#7D7D7D';
 const accent = '#FE7D22';
@@ -12,11 +12,11 @@ export const colors: PaletteOptions = {
   success: { main: '#66cd80' },
   warning: { main: '#f9d652' },
   failure: { main: '#cc0000' },
-  caption: { main: '#7D7D7D', dark: '#36353A' },
+  caption: { main: '#7D7D7D', dark: '#363739' },
   primary: {
-    light: '#29282D',
+    light: '#1E1E1E',
     main: primary,
-    dark: '#17171A',
+    dark: '#0B0B0B',
   },
   secondary: {
     light: '#99A7F5',

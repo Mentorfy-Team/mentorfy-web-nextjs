@@ -4,22 +4,34 @@ import { ScrollArea } from './styles';
 
 type props = {
   children: any;
-  maxWidth?: number;
+  maxWidth?: number | string;
+  withToolBar?: boolean;
+  withoutScroll?: boolean;
+  sx?: any;
 };
 
-const ContentWidthLimit: React.FC<props> = ({ children, maxWidth = 1120 }) => {
+const ContentWidthLimit: React.FC<props> = ({
+  children,
+  sx,
+  maxWidth = 1280,
+  withToolBar = true,
+  withoutScroll = false,
+}) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
 
   return (
-    <Box id="ContentWidthLimit" sx={{ textAlign: '-webkit-center' }}>
+    <Box id="ContentWidthLimit" sx={{ textAlign: '-webkit-center' }} {...sx}>
       <ScrollArea
         id="ScrollArea"
         sx={{
-          width: isMobile ? '90vw' : '85vw',
+          padding: '0 2rem',
           maxWidth: `${maxWidth}px`,
           display: 'flex',
           flexDirection: 'column',
+          overflowY: withoutScroll ? 'hidden' : 'auto',
         }}
+        withtoolbar={withToolBar ? 'true' : 'false'}
+        withscroll={!withoutScroll ? 'true' : 'false'}
       >
         {children}
         <Box height="1rem" />

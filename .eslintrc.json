@@ -1,7 +1,19 @@
 {
-  "extends": "next/core-web-vitals",
-  "plugins": ["better-styled-components"],
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": [
+    "better-styled-components",
+    "unused-imports",
+    "@typescript-eslint"
+  ],
   "rules": {
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "unused-imports/no-unused-imports-ts": 2,
     "react/display-name": "off",
     "better-styled-components/sort-declarations-alphabetically": "error",
     "import/no-anonymous-default-export": "off",

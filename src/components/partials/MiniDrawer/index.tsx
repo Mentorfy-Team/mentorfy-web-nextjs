@@ -1,55 +1,29 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useTheme } from '@mui/material/styles';
-import Toolbar from '@mui/material/Toolbar';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
-import { routes } from '~/consts/routes/routes.consts';
-import AdjustName from './helper/AdjustName';
-import {
-  AppBar,
-  Drawer,
-  DrawerHeader,
-  Kind,
-  ProFree,
-  UserField,
-  UserName,
-  WrapperSupportHeader,
-} from './styles';
+import { MentorMenu } from '~/consts/routes/routes.consts';
+import { userStore } from '~/stores';
+import { AnimatedBox, Drawer, DrawerHeader } from './styles';
+import menu from '~/../public/images/menu.png';
 
 type props = {
   children?: JSX.Element;
-  supportHeader?: JSX.Element;
-  header?: JSX.Element;
-  profile?: UserClient.Profile;
 };
 
-const MiniDrawer: React.FC<props> = ({
-  children,
-  header,
-  supportHeader,
-  profile,
-}) => {
+const MiniDrawer: React.FC<props> = ({ children }) => {
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
   const isMobile = useMediaQuery('(max-width:500px)');
+  const [open, setOpen] = React.useState(isMobile ? false : true);
   const router = useRouter();
-
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+  const { isLoading, setLoading } = userStore();
 
   const getIcon = (component, path, subpaths = []) => {
     const props: any = {};
@@ -70,68 +44,55 @@ const MiniDrawer: React.FC<props> = ({
   };
 
   return (
-    <Box sx={{ display: 'flex', overflow: 'hidden', minHeight: 'inherit' }}>
-      <AppBar id="AppBar" position="fixed" open={open}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={open ? handleDrawerClose : handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: isMobile ? 2 : 5,
-              marginLeft: open ? -9.3 : -1,
-            }}
-          >
-            <Image
-              alt="menu"
-              width="18"
-              height="18"
-              src={open ? '/svgs/arrows-left.svg' : '/svgs/menu.svg'}
-            />
-          </IconButton>
-          {header}
-        </Toolbar>
-        {supportHeader && (
-          <WrapperSupportHeader open={open}>
-            {supportHeader}
-          </WrapperSupportHeader>
-        )}
-      </AppBar>
+    <Box
+      sx={{
+        position: 'relative',
+        display: 'flex',
+        overflow: 'hidden',
+        minHeight: 'inherit',
+      }}
+    >
       <Drawer id="Drawer" variant="permanent" open={open}>
         <DrawerHeader id="DrawerHeader" />
-        <UserField pl={1.5} display="flex">
-          <Avatar sx={{ backgroundColor: 'orange !important' }}>{`${
-            profile?.name[0]
-          }${
-            profile?.name.split(' ').length > 1 &&
-            profile?.name.split(' ')[1][0]
-          }`}</Avatar>
+        {/* <UserField pl={1.5} display="flex">
+          <Avatar
+            src={_profile?.avatar}
+            sx={{ backgroundColor: 'gray !important' }}
+          />
           <Box pl={2.5}>
             <UserName variant="body2" noWrap>
-              {profile?.name && AdjustName(profile?.name)}
+              {AdjustName(_profile?.name || 'Bem-vindo')}
             </UserName>
             <Box display="flex">
               <Kind variant="caption">Mentor</Kind>
-              <ProFree>{profile?.plan.toUpperCase()}</ProFree>
+              <ProFree type={_profile?.plan}>
+                {(_profile?.plan || 'Free').toUpperCase()}
+              </ProFree>
             </Box>
           </Box>
-        </UserField>
+        </UserField> */}
         <List>
-          {Object.keys(routes).map((route, index) => (
+          {Object.keys(MentorMenu).map((route, index) => (
             <ListItem
-              key={routes[route].name}
+              key={MentorMenu[route].name}
               disablePadding
-              sx={{ display: 'block' }}
+              sx={{
+                display: 'block',
+                backgroundColor: IsActiveValidator(MentorMenu[route].path)
+                  ? 'rgba(0, 0, 0, 0.15)'
+                  : 'transparent',
+              }}
             >
               <ListItemButton
                 sx={{
-                  minHeight: 70,
+                  minHeight: 40,
                   justifyContent: open ? 'initial' : 'center',
                   px: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => router.push(routes[route].path)}
+                onClick={() => {
+                  router.push(MentorMenu[route].path);
+                }}
               >
                 <ListItemIcon
                   sx={{
@@ -141,18 +102,19 @@ const MiniDrawer: React.FC<props> = ({
                   }}
                 >
                   {getIcon(
-                    routes[route].component,
-                    routes[route].path,
-                    routes[route].subpaths,
+                    MentorMenu[route].component,
+                    MentorMenu[route].path,
+                    MentorMenu[route].subpaths,
                   )}
                 </ListItemIcon>
                 <ListItemText
-                  primary={routes[route].name}
+                  primary={MentorMenu[route].name}
                   sx={{
                     opacity: open ? 1 : 0,
+                    paddingTop: 0.5,
                     color: IsActiveValidator(
-                      routes[route].path,
-                      routes[route].subpaths,
+                      MentorMenu[route].path,
+                      MentorMenu[route].subpaths,
                     )
                       ? theme.palette.accent.main
                       : theme.palette.text.primary,
@@ -167,18 +129,37 @@ const MiniDrawer: React.FC<props> = ({
         component="main"
         sx={{
           flexGrow: 1,
-          pt: 3,
-          marginTop: supportHeader ? '114px' : '60px',
+          pt: 1,
+          marginTop: '50px',
           overflow: 'auto',
+          backgroundColor: theme.palette.primary.main,
         }}
       >
-        <Box
+        <AnimatedBox
+          loading={isLoading}
           sx={{
             height: '0vh',
           }}
         >
           {children}
-        </Box>
+          <Image
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpen(!open);
+            }}
+            style={{
+              position: 'absolute',
+              top: '4rem',
+              left: open ? '174px' : '38px',
+              zIndex: 2000,
+              cursor: 'pointer',
+              transform: open ? 'rotate(0deg)' : 'rotate(180deg)',
+            }}
+            alt="menu"
+            src={menu}
+            height={20}
+          />
+        </AnimatedBox>
       </Box>
     </Box>
   );

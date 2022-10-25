@@ -5,11 +5,12 @@ import { persist } from 'zustand/middleware';
 type UserStateType = {
   userLogin: (user: ExternalModules.Supabase.User) => void;
   userLogout: () => void;
+  setLoading: (value) => void;
   user?: ExternalModules.Supabase.User | null;
 } & typeof initialUserStore;
 
 const initialUserStore = {
-  isLoggedIn: false,
+  isLoading: false,
 };
 
 const userStore = create(
@@ -19,15 +20,20 @@ const userStore = create(
       userLogin: (user: ExternalModules.Supabase.User) => {
         set(
           produce((draft: UserStateType) => {
-            draft.isLoggedIn = true;
             draft.user = user;
+          }),
+        );
+      },
+      setLoading: (value) => {
+        set(
+          produce((draft: UserStateType) => {
+            draft.isLoading = value;
           }),
         );
       },
       userLogout: () => {
         set(
           produce((draft: UserStateType) => {
-            draft.isLoggedIn = false;
             draft.user = null;
           }),
         );

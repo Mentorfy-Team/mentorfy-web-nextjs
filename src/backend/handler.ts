@@ -10,7 +10,7 @@ export const handler =
     post,
     put,
   }: {
-    del?: (req: NextApiRequest, res: NextApiResponse) => Promise<void>;
+    del?: any;
     get?: any;
     patch?: any;
     post?: any;
@@ -21,6 +21,6 @@ export const handler =
     else if (req.method === 'POST' && post) await post(req, res);
     else if (req.method === 'PATCH' && patch) await patch(req, res);
     else if (req.method === 'PUT' && put) await put(req, res);
-    else if (req.method === 'DELETE' && del) await patch(req, res);
+    else if (req.method === 'DELETE' && del) await del(req, res);
     else res.status(405).end();
   };

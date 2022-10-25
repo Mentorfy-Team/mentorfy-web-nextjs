@@ -1,0 +1,340 @@
+import { useCallback, useEffect, useState, useRef } from 'react';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { Box } from '@mui/system';
+import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import Image from 'next/image';
+import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
+import { DnDObject, DnDRow } from '~/components/modules/DragNDrop';
+import ProgressBar from '~/components/modules/ProgressBar';
+import Toolbar from '~/components/modules/Toolbar';
+import { MentoredRoutes, PublicRoutes } from '~/consts';
+import { OrganizeTools } from '~/helpers/OrganizeTools';
+import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
+import SwitchMentoredModal, { ToolListNames } from '../helpers/SwitchModal';
+const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
+import {
+  CommentInput,
+  CompleteButton,
+  LikeButton,
+  NextVButton,
+  ProgressBarWrapper,
+  SendButton,
+  VideoInteractionsBox,
+  VideoWrapper,
+  Wrapper,
+} from './styles';
+import { useUserInputs } from '~/hooks/useUserInputs';
+import { InputUserMemberArea } from '~/services/member-area.service';
+import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
+import { RouteTwoTone } from '@mui/icons-material';
+
+export const VideoView = ({ member_area_id, video_id }) => {
+  const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
+  const [videoId, setVideoId] = useState<string>(video_id);
+  const [nextVideoId, setNextVideoId] = useState<string>(null);
+  const { inputs: inputData } = useUserInputs(member_area_id);
+  const [steps, setSteps] = useState<DnDObject[]>([]);
+  const [videosOrdem, setVideosOrdem] = useState<DnDRow[]>([]);
+  const [userInput, setUserInput] = useState<
+    Partial<MemberAreaTypes.UserInput[]>
+  >([]);
+  const [open, setOpen] = useState(false);
+
+  const commentRef = useRef(null);
+
+  const [currentModal, setCurrentModal] = useState<{
+    onChange: any;
+    type: string;
+    refId?: string;
+    area_id?: string;
+    data?: any;
+  }>();
+  const route = useRouter();
+
+  useEffect(() => {
+    if (inputData !== userInput) {
+      setUserInput(inputData)
+      GetCurrentVideo();
+    };
+  }, [inputData, userInput]);
+
+  useEffect(() => {
+    setSteps((oldSteps) => {
+      oldSteps = [...OrganizeTools(stepsData, ToolListNames.Video.id)];
+      return [...oldSteps];
+    });
+    setVideosOrdem(stepsData.filter((step) => step.type === ToolListNames.Video.id).sort((a, b) => a.order - b.order));
+  }, [stepsData]);
+
+  const HandleModal = useCallback(() => {
+    return (
+      <SwitchMentoredModal
+        open={open}
+        setOpen={setOpen}
+        onChange={currentModal.onChange}
+        type={currentModal.type}
+        refId={currentModal.refId}
+        area_id={member_area_id}
+        data={currentModal.data}
+        userInput={userInput?.find(
+          (inp) => inp.member_area_tool_id.toString() === currentModal.refId,
+        )}
+      />
+    );
+  }, [currentModal, open, member_area_id, userInput]);
+
+  const GetTypeName = useCallback((type) => {
+    return Object.values(ToolListNames).find((i) => {
+      return i.id == parseInt(type);
+    }).name;
+  }, []);
+
+  const handleSave = useCallback(
+    async ({ tool_id, client_input }) => {
+      // timout para dar tempo para as imagens se organizarem
+      setTimeout(async function () {
+        await InputUserMemberArea(tool_id, client_input);
+        mutate();
+      }, 1000);
+    },
+    [mutate],
+  );
+
+  const GetOnChange = useCallback(
+    async ({ refId, finished }) => {
+      const index = userInput?.findIndex((i) => i.member_area_tool_id == refId);
+      setUserInput((oldInput) => {
+        if (!oldInput) oldInput = [];
+        if (index > -1) {
+          oldInput[index].extra = finished;
+        } else {
+          oldInput?.push({
+            member_area_tool_id: refId,
+            extra: {
+              ...(index > -1 ? userInput[index].extra:{}),
+              finished
+            },
+          } as any);
+        }
+        return [...oldInput];
+      });
+
+      handleSave({
+        tool_id: refId,
+        client_input: {
+          id: index > -1 ? userInput[index].id : '0',
+          extra: {
+            ...(index > -1 ? userInput[index].extra:{}),
+            finished
+          },
+        },
+      });
+    },
+    [handleSave, userInput],
+  );
+
+  // search for the first not finished step and set the video id
+  const GetCurrentVideo = useCallback(() => {
+    let lastId;
+    let nextVideo;
+    steps.forEach(stp => {
+      if (!nextVideo)
+        stp.rows.find(row => {
+          if (lastId) {
+            nextVideo = row.id;
+          }
+          if (!(row.extra as any)?.finished && !nextVideo) {
+            lastId = row.id;
+          }
+        });
+    });
+    
+    if (lastId) {
+      if (lastId !== videoId) {
+        const id = !video_id ? lastId:video_id
+        setVideoId(id);
+        route.push({
+          pathname: MentoredRoutes.video_view + '/' + member_area_id,
+          query: { v: id }
+        })
+      }
+      setNextVideoId(nextVideo);
+    } else {
+      setVideoId(null);
+    }
+  }, [steps, userInput, route, video_id]);
+
+  const onSelectedNext = useCallback(() => {
+      const next = videosOrdem.findIndex((i) => i.id == videoId)+1;
+      
+      if (next !== 0 && next < videosOrdem.length) {
+        setVideoId(videosOrdem[next].id);
+        route.push({
+          pathname: MentoredRoutes.video_view + '/' + member_area_id,
+          query: { v: videosOrdem[next].id }
+        }, undefined, { shallow: true })
+      }
+      if (next+1 >= videosOrdem.length){
+        setNextVideoId(null);
+      }
+  }, [videosOrdem, videoId]);
+
+  const onSelectedVideo = useCallback((id) => {
+    if (!id) return;
+    setVideoId(id);
+    route.push({
+      pathname: MentoredRoutes.video_view + '/' + member_area_id,
+      query: { v: id }
+    }, undefined, { shallow: true })
+
+    const next = videosOrdem.findIndex((i) => i.id == id)+1;
+    if (next >= videosOrdem.length){
+      setNextVideoId(null);
+    } else {
+      setNextVideoId(videosOrdem[next].id);
+    }
+  }, []);
+
+  const getVideo = useCallback(() => {
+    const video = steps.find(stp => stp.rows.find(row => row.id == videoId))?.rows.find(row => row.id == videoId);
+    return video;
+  }, [steps, videoId]);
+
+  const SendComment = useCallback(() => {
+    if (commentRef.current.value) {
+      const index = userInput?.findIndex((i) => i.id.toString() == videoId);
+
+      handleSave({
+        tool_id: videoId,
+        client_input: {
+          id: index > -1 ? userInput[index].id : '0',
+          extra: {
+            ...(index > -1 ? userInput[index].extra:{}),
+            comments: [...(index > -1 ? userInput[index].extra.comments:[]), commentRef.current.value],
+          },
+        },
+      });
+      commentRef.current.value = '';
+    }
+  }, []);
+
+  return (
+    <>
+      <Toolbar tabs={['Método 4S']} />
+      <ContentWidthLimit maxWidth={1900}>
+        <Wrapper>
+          <VideoWrapper>
+            <Typography variant="h6" sx={{ margin: '1rem 0' }}>
+              {getVideo()?.title}
+            </Typography>
+            <Box
+              sx={{ width: '985px', height: '509px', backgroundColor: 'black' }}
+            >
+              <ReactPlayer
+                url={(getVideo()?.data as any)?.link}
+                width="100%"
+                onEnded={() => GetOnChange({ refId: videoId, finished: true })}
+                height="100%"
+                controls={true}
+                config={{
+                  youtube: {
+                    playerVars: {
+                      showinfo: 0,
+                      controls: 1,
+                      disablekb: 0,
+                    },
+                  },
+                }}
+              />
+            </Box>
+            {/* <IconButton sx={{ float: 'right' }}>
+              <Image
+                alt=""
+                width={15}
+                height={15}
+                src="/svgs/arrow-expand.svg"
+              />
+            </IconButton> */}
+            <VideoInteractionsBox>
+              <Box sx={{ display: 'flex', gap: '0.5rem' }}>
+                <LikeButton>
+                  <Image
+                    alt=""
+                    width={24}
+                    height={24}
+                    src="/svgs/like-thumb.svg"
+                  />
+                </LikeButton>
+                <LikeButton>
+                  <Image
+                    alt=""
+                    width={24}
+                    height={24}
+                    src="/svgs/unlike-thumb.svg"
+                  />
+                </LikeButton>
+                {userInput.find(inp => inp.id.toString() === videoId) && <CompleteButton>
+                  Concluído
+                  <Image
+                    alt=""
+                    width={15}
+                    height={15}
+                    src="/svgs/done-simbol.svg"
+                  />
+                </CompleteButton>}
+              </Box>
+              {nextVideoId && <NextVButton onClick={() => onSelectedNext()}>
+                Próximo
+                <Image
+                  alt=""
+                  width={15}
+                  height={15}
+                  src="/svgs/arrow-right.svg"
+                />
+              </NextVButton>}
+            </VideoInteractionsBox>
+
+            <Typography variant="body1" sx={{ margin: '1rem 0', maxWidth: 1000, width: '100%' }}>
+              {getVideo()?.description}
+            </Typography>
+
+            <Typography variant="body1" sx={{ margin: '2.5rem 0 0.8rem 0' }}>
+              Comentários ( Apenas o mentor pode ver )
+            </Typography>
+
+            <Box sx={{ width: '100%', display: 'flex', gap: '0.5rem' }}>
+              <CommentInput ref={commentRef} placeholder="Deixar mensagem para o mentor" />
+              <SendButton onClick={()=>SendComment()} variant="contained">
+                Enviar
+                <Image alt="" width={15} height={15} src="/svgs/share.svg" />
+              </SendButton>
+            </Box>
+
+          </VideoWrapper>
+          <ProgressBarWrapper>
+            <ProgressBar data={steps} input={userInput} activeid={videoId} onGoTo={(id) => onSelectedVideo(id)} />
+          </ProgressBarWrapper>
+        </Wrapper>
+      </ContentWidthLimit>
+    </>
+  );
+};
+
+// * ServerSideRender (SSR)
+export const getProps = withPageAuth({
+  authRequired: true,
+  redirectTo: PublicRoutes.login,
+  async getServerSideProps(ctx) {
+    const id = ctx.query.id as string;
+    const video_id = (ctx.query.v || 0) as string;
+    return {
+      props: {
+        member_area_id: id,
+        video_id,
+      },
+    };
+  },
+});
+export default VideoView;

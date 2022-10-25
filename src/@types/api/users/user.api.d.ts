@@ -4,6 +4,7 @@ declare namespace UsersApi {
       body: {
         email: string;
         password: string;
+        phone?: string;
         name: string;
         role: string;
         plan: string;
@@ -12,7 +13,7 @@ declare namespace UsersApi {
       };
     }
 
-    type Result = {};
+    type Result = any;
 
     type User = ExternalModules.Supabase.Database.User &
       ExternalModules.Supabase.Database.public.Tables.profile.Row;

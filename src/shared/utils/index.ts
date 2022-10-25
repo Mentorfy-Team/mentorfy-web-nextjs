@@ -1,5 +1,3 @@
-
-export {AppUtil} from './app/app.util';
-export {DataUtil} from './data/data.util';
-export {ValidationUtil} from './validation/validation.util';
-export {CookieUtil} from './cookie/cookie.util';
+export { DataUtil } from './data/data.util';
+export { ValidationUtil } from './validation/validation.util';
+export { CookieUtil } from './cookie/cookie.util';

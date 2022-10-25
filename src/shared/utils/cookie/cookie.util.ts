@@ -1,14 +1,26 @@
 import { default as cookieHelper } from 'cookie';
-import { AppUtil } from '..';
 
 export class CookieUtil {
+  public static fromReq(req: any) {
+    if (!req?.headers?.cookie) {
+      throw new Error('Não foi possível encontrar os cookies.');
+    }
+    const cookie = this.toJson(req?.headers?.cookie)['sb-access-token'];
+    if (!cookie) {
+      throw new Error(
+        'Não foi possível encontrar os cookies. Verifique seu serviço.',
+      );
+    }
+    return this.toJson(req.headers.cookie)['sb-access-token'];
+  }
+
   public static toJson(cookie: string) {
     const parsed = cookieHelper.parse(cookie);
     return parsed;
   }
 
   public static fromJson(cookie: { [key: string]: string }) {
-    let parsed: string = '';
+    let parsed = '';
     Object.keys(cookie).forEach((k, index, list) => {
       parsed += `${cookieHelper.serialize(k, cookie[k])}`;
       if (index < list.length - 1) parsed += '; ';
@@ -18,10 +30,7 @@ export class CookieUtil {
 
   public static get(): any {
     this.checkEnv();
-    const { accessToken } = this.toJson(document.cookie);
-    return {
-      accessToken: accessToken === 'null' ? null : accessToken,
-    };
+    return this.toJson(document.cookie);
   }
 
   public static set(cookie: { [key: string]: string }): string {
@@ -43,7 +52,7 @@ export class CookieUtil {
   public static clear() {
     this.checkEnv();
     const cookies = document.cookie.split(';');
-    for (var i = 0; i < cookies.length; i++) {
+    for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i];
       const eqPos = cookie.indexOf('=');
       const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
@@ -51,9 +60,5 @@ export class CookieUtil {
     }
   }
 
-  private static checkEnv() {
-    if (!AppUtil.isClientSide()) {
-      throw new Error('Cannot set on server side.');
-    }
-  }
+  private static checkEnv() {}
 }

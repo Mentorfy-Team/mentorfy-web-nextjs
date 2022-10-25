@@ -38,7 +38,7 @@ pop3_port = 54326
 # in emails.
 site_url = "https://mentoryfy.io"
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
-additional_redirect_urls = ["https://localhost:3000", "https://mentoryfy.io"]
+additional_redirect_urls = ["http://localhost:3000", "http://192.168.1.2:3000","https://mentoryfy.io"]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 seconds (one
 # week).
 jwt_expiry = 3600

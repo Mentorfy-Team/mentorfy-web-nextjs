@@ -1,37 +1,22 @@
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Auth } from '~/@types/api/auth/auth';
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from '../HttpClient';
 
 export const Authenticate = async (auth: Auth) => {
   try {
-    const response = await HttpClient.post<UsersApi.Post.Response>(
-      ApiRoutes.auth,
-      auth,
-    );
-    let responseCookie;
+    await HttpClient.post<UsersApi.Post.Response>(ApiRoutes.auth, auth);
 
-    if (response.data) {
-      const { session } = response.data;
-      responseCookie = await HttpClient.post<UsersApi.Post.Response>(
-        ApiRoutes.auth_cookies,
-        {
-          event: 'SIGNED_IN',
-          session,
-        },
-        {
-          headers: {
-            Authenticate: `Bearer ${session.access_token}`,
-          },
-        },
-      );
-    }
+    const response = {
+      data: {
+        error: null,
+      },
+    };
     if (response.data.error) {
       return {
         error: response.data.error,
       };
     }
-    return responseCookie?.data;
+    return response.data;
   } catch (error) {
     return {
       error: 'Erro ao cadastrar usuário',

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Container, Wrapper } from './styles';
 
 type props = {
-  children: React.ReactElement;
+  children: React.ReactElement | React.ReactElement[];
   darkMode?: boolean;
 };
 

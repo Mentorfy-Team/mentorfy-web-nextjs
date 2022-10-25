@@ -8,15 +8,16 @@ export const PoliciesWrapper = styled(Box)`
 
   .MuiCheckbox-root {
     color: ${({ theme }) => theme.palette.caption.main};
+    padding-left: 10px;
   }
 
   .Mui-checked {
-    color: ${({ theme }) => theme.palette.success.main};
+    color: ${({ theme }) => theme.palette.success.main} !important;
   }
 `;
 
 export const Policies = styled(Typography)`
-  color: ${({ theme }) => theme.palette.caption.main};
+  color: ${({ theme }) => theme.palette.text.primary};
 
   a {
     color: ${({ theme }) => theme.palette.accent.main};
@@ -27,4 +28,8 @@ export const Policies = styled(Typography)`
 export const FormWrapper = styled('form')`
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  overflow-y: auto;
+  padding-right: 8px;
 `;

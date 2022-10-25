@@ -5,9 +5,9 @@ import { TextFieldProps } from '@mui/material/TextField/TextField';
 import { MUIStyledCommonProps } from '@mui/system';
 import { TextField } from './styles';
 
-const InputField: FC<TextFieldProps & MUIStyledCommonProps<Theme>> = (
-  props,
-) => {
+const InputField: FC<
+  TextFieldProps & MUIStyledCommonProps<Theme> & { register? }
+> = (props) => {
   return (
     <TextField
       color="secondary"

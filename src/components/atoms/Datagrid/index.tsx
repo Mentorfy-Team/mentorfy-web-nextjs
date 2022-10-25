@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
 import Button from '@mui/material/Button';
-import SvgIcon from '@mui/material/SvgIcon';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,8 +9,8 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
-import chavron_left_svg from '~/../public/svgs/chavron-left';
-import chavron_right_svg from '~/../public/svgs/chavron-right';
+import ChavronLeftSvg from '~/../public/svgs/chavron-left';
+import ChavronRightSvg from '~/../public/svgs/chavron-right';
 
 export type Column = {
   id: string;
@@ -43,6 +42,12 @@ export default function StickyHeadTable({
   const isMobile = useMediaQuery('(max-width: 490px)');
   const handleChangePage = (event: unknown, newPage: number) => {
     if (newPage >= 1) onPageChange(newPage);
+  };
+
+  const CreateButtons = (row) => {
+    const ac = actionButtons;
+
+    return ac(row);
   };
 
   //? TODO: Implementar rows per page se necessário
@@ -102,31 +107,34 @@ export default function StickyHeadTable({
                 .map((row, index) => {
                   return (
                     <CustomRow hover role="checkbox" tabIndex={-1} key={index}>
-                      {columns.map((column, index) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell
-                            onClick={() =>
-                              index === 0 &&
-                              onTitleClick &&
-                              onTitleClick(column.id)
-                            }
-                            sx={{
-                              cursor:
-                                index === 0 && onTitleClick
-                                  ? 'pointer'
-                                  : 'auto',
-                            }}
-                            key={column.id}
-                            align={column.align}
-                          >
-                            {column.format && typeof value === 'number'
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
-                      {actionButtons && actionButtons(index)}
+                      <>
+                        {columns.map((column, index) => {
+                          const value = row[column.id];
+                          return (
+                            <TableCell
+                              onClick={() =>
+                                index === 0 &&
+                                onTitleClick &&
+                                onTitleClick(row.id)
+                              }
+                              sx={{
+                                padding: '8px 16px',
+                                height: '45px',
+                                cursor:
+                                  index === 0 && onTitleClick
+                                    ? 'pointer'
+                                    : 'auto',
+                              }}
+                              key={column.id}
+                              align={column.align}
+                            >
+                              {column.format && typeof value === 'number'
+                                ? column.format(value)
+                                : value}
+                            </TableCell>
+                          );
+                        })}
+                      </>
                     </CustomRow>
                   );
                 })}
@@ -139,16 +147,16 @@ export default function StickyHeadTable({
           disabled={page !== maxPages || page === 1}
           onClick={(e) => handleChangePage(e, page - 1)}
         >
-          <SvgIcon component={chavron_left_svg} />
+          <ChavronLeftSvg />
         </Button>
-        <Typography marginX={isMobile ? 0 : 4} mt={1}>{`${
+        <Typography variant="body2" marginX={isMobile ? 0 : 4} mt={1}>{`${
           isMobile ? page : `Página ${page}`
         } de ${maxPages}`}</Typography>
         <Button
           disabled={page === maxPages || maxPages === 0}
           onClick={(e) => handleChangePage(e, page + 1)}
         >
-          <SvgIcon component={chavron_right_svg} />
+          <ChavronRightSvg />
         </Button>
       </CustomNavigation>
     </PaperWrapper>

@@ -2,11 +2,15 @@ import { styled } from '@mui/material/styles';
 import txtField from '@mui/material/TextField';
 
 export const TextField = styled(txtField)`
-  margin: 1rem 0;
+  margin: 0.7rem 0;
   width: 100%;
 
   @media (max-width: 500px) {
     margin: 1rem 0;
+  }
+
+  input {
+    font-size: 1rem;
   }
 
   .MuiFormLabel-root {

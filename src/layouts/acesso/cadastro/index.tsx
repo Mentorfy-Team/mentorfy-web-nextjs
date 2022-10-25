@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import Link from 'next/link';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { NewUserForm } from '~/@types/api/users/user';
+import InputField from '~/components/atoms/InputField';
 import { RegisterNewUser } from '~/services/user.service';
 import { userStore } from '~/stores';
 import { AcessoSubPage } from '..';
@@ -11,7 +11,6 @@ import {
   Accent,
   LoginButton as CadastroButton,
   InfoText,
-  InputField,
   LinkButton,
   SubTitle,
 } from '../styles';
@@ -31,9 +30,9 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
   const [error, setError] = useState<string>();
   const [rePassword, setRePassword] = useState('');
   const [acceptPolices, setAcceptPolices] = useState(false);
-  const { register, handleSubmit } = useForm<NewUserForm>();
+  const { register, handleSubmit } = useForm<UserClient.SignUp>();
   const { userLogin } = userStore();
-
+  const [index, setIndex] = useState(1);
   const RePasswordCheck = useMemo(() => {
     return rePassword === password && rePassword.length > 0;
   }, [password, rePassword]);
@@ -61,7 +60,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
     return false;
   }, [RePasswordCheck, acceptPolices, passed]);
 
-  const onSubmit: SubmitHandler<NewUserForm> = useCallback(
+  const onSubmit: SubmitHandler<UserClient.SignUp> = useCallback(
     async (values) => {
       setIsLoading(true);
       if (values.password.length <= 0) values.password = password;
@@ -87,7 +86,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
   );
 
   return (
-    <>
+    <div>
       <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
         Para se{' '}
         <Accent>
@@ -104,7 +103,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
             shrink: true,
           }}
           required
-          {...register('name')}
+          register={register('name')}
         />
         <InputField
           required
@@ -114,7 +113,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
           InputLabelProps={{
             shrink: true,
           }}
-          {...register('email')}
+          register={register('email')}
           onChange={(e) => setError('')}
           error={!!error}
           helperText={error}
@@ -127,7 +126,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
           InputLabelProps={{
             shrink: true,
           }}
-          {...register('password')}
+          register={register('password')}
           onChange={(e) => setPassword(e.target.value)}
         />
         {PasswordChecker()}
@@ -145,19 +144,19 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
           InputLabelProps={{
             shrink: true,
           }}
-          {...register('confirmPassword')}
+          register={register('confirmPassword')}
           onChange={(e) => setRePassword(e.target.value)}
         />
         <PoliciesWrapper>
           <Checkbox
-            sx={{ alignSelf: 'flex-start', marginLeft: '-0.8rem' }}
+            sx={{ alignSelf: 'flex-start', marginLeft: '0rem' }}
             {...register('policies')}
             checked={acceptPolices}
             onChange={(e) => setAcceptPolices(e.target.checked)}
           />
           <Policies variant="caption">
             Eu li e aceito os <Link href="/">Termos de Uso</Link> e os{' '}
-            <Link href="/">Termos de Responsabilidades Fiscal.</Link>
+            <Link href="/">Termos de Responsabilidades Fiscais.</Link>
           </Policies>
         </PoliciesWrapper>
         <CadastroButton
@@ -176,7 +175,8 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
           </LinkButton>
         </Accent>
       </InfoText>
-    </>
+      <Box height="64px" />
+    </div>
   );
 };
 
