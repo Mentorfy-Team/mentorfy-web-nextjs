@@ -7,7 +7,7 @@ export const OrganizeTools = (data: DnDRow[], filterByTypeId?) => {
 
   const steps: DnDObject[] = [];
   let countSteps = 0;
-  console.log('sortedData', sortedData);
+  
   for (let i = 0; i < sortedData.length; i++) {
     const isStep = sortedData[i].type === 0;
     

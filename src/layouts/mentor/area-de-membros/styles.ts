@@ -60,9 +60,9 @@ export const ProductTitle = styled(Typography)`
   line-height: 2rem;
   margin-bottom: 0.5rem;
 
-  max-width: 23ch;
   overflow: hidden;
   text-align: start;
+  max-width: 23ch;
   text-overflow: ellipsis;
 
   display: -webkit-box;

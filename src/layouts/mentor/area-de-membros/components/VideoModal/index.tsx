@@ -68,7 +68,9 @@ const VideoModal = ({
   };
 
   const handleSave = async (del?: boolean) => {
-    const convertedFiles = await UploadToUrlFiles([thumbnail], area_id);
+    let convertedFiles;
+    if(thumbnail)
+      convertedFiles = await UploadToUrlFiles([thumbnail], area_id);
     const filterEmpty = multivideos
       ? videos.filter((task) => task.title)
       : null;
@@ -76,7 +78,7 @@ const VideoModal = ({
     onChange({
       title,
       description,
-      extra: convertedFiles[0],
+      extra: convertedFiles ? convertedFiles[0]: null,
       data: multivideos ? filterEmpty : singleVideo,
       delete: del,
     });

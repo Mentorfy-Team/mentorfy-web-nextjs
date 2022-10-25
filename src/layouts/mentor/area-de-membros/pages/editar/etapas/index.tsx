@@ -167,7 +167,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
 
         setSteps((oldSteps) => {
           Object.assign(oldSteps[stepIndex], data);
-          console.log('done', data, oldSteps);
+          
           return [...oldSteps];
         });
       }

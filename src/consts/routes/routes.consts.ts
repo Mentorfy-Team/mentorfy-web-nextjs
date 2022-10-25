@@ -36,7 +36,11 @@ export enum MentorRoutes {
 
 export enum MentoredRoutes {
   //* Rotas de produto
-  home = '/mentorado/meus-produtos',
+  home = '/mentorado/bem-vindo',
+
+  kanban = '/mentorado/kanban',
+
+  video_view = '/mentorado/video-aula',
 
   //* Rota de Perfil/Configurações do usuário
   settings = '/mentorado/meu-perfil',

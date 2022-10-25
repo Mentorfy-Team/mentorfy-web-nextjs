@@ -7,6 +7,7 @@ export const Wrapper = styled(Box)`
     display: flex;
     flex-direction: column;
     gap: 2rem;
+    margin-top: 1rem;
 `;
 
 export const CircleWrapper = styled(Box)`
@@ -22,6 +23,19 @@ export const StepsWrapper = styled(Box)`
     display: flex;
     gap: 1.2rem;
     justify-content: center;
+    max-height: 45px;
+    cursor: pointer;
+
+    :hover {
+        opacity: 0.8;
+    }
+
+    .active {
+        color: ${({ theme }) => theme.palette.accent.main};
+    }
+    .active-background {
+        background-color: ${({ theme }) => theme.palette.accent.main};
+    }
 `;
 
 export const BundleWrapper = styled(Box)`
@@ -53,11 +67,18 @@ export const ClassesNumber = styled(Typography)`
     font-weight: 600;
     line-height: 1rem;
     margin-top: 0.3rem;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
 `;
 
 export const Line = styled(Box)`
     background-color: #363739;
-    min-height: 25px;
+    min-height: 16px;
     width: 1px;
 `;
 

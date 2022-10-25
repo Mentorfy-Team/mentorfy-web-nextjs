@@ -101,7 +101,6 @@ const GroupModal = ({
               : null
           }
           onUploadImage={(target) => {
-            console.log(target.files);
             handleCaptureConclusion(target.files);
           }}
         />
