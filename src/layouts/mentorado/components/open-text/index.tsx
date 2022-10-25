@@ -20,7 +20,9 @@ const OpenText = ({
   userInput,
 }: MentoredComponents.Props<ToolData[], InputProps, ExtraProps>) => {
   const handleFinish = () => {
-    onChange({ data: {}, finished: true });
+    onChange({ data: {}, extra: {
+      finished: true
+    } });
     setOpen(false);
   };
 

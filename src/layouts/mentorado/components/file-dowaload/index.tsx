@@ -42,7 +42,9 @@ const FilesDownloadModal = ({
   const handleFinish = () => {
     onChange({
       data: {},
-      finished: true,
+      extra: {
+        finished: true
+      },
     });
     setOpen(false);
   };

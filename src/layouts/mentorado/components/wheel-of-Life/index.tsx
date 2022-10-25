@@ -42,7 +42,9 @@ const WheelOfLifeModal = ({
     return data;
   }, []);
   const handleFinish = () => {
-    onChange({ data: input, finished: taskData.length === input.length });
+    onChange({ data: input, extra: {
+      finished: taskData.length === input.length
+    } });
     setOpen(false);
   };
 

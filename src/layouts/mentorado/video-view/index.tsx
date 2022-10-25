@@ -103,19 +103,17 @@ export const VideoView = ({ member_area_id, video_id }) => {
   );
 
   const GetOnChange = useCallback(
-    async ({ refId, finished }) => {
+    async ({ refId, data, extra }) => {
       const index = userInput?.findIndex((i) => i.member_area_tool_id == refId);
       setUserInput((oldInput) => {
         if (!oldInput) oldInput = [];
         if (index > -1) {
-          oldInput[index].extra = finished;
+          oldInput[index].data = data;
+          oldInput[index].extra = extra;
         } else {
           oldInput?.push({
             member_area_tool_id: refId,
-            extra: {
-              ...(index > -1 ? userInput[index].extra:{}),
-              finished
-            },
+            extra: Object.assign(oldInput[index].extra, extra),
           } as any);
         }
         return [...oldInput];
@@ -125,10 +123,8 @@ export const VideoView = ({ member_area_id, video_id }) => {
         tool_id: refId,
         client_input: {
           id: index > -1 ? userInput[index].id : '0',
-          extra: {
-            ...(index > -1 ? userInput[index].extra:{}),
-            finished
-          },
+          extra: Object.assign(userInput[index].extra, extra),
+          data: Object.assign(userInput[index].data, data),
         },
       });
     },
@@ -220,6 +216,10 @@ export const VideoView = ({ member_area_id, video_id }) => {
     }
   }, []);
 
+  const handleLike = useCallback(() => {
+    // TODO: implementar like
+  }, []);
+
   return (
     <>
       <Toolbar tabs={['Método 4S']} />
@@ -235,7 +235,9 @@ export const VideoView = ({ member_area_id, video_id }) => {
               <ReactPlayer
                 url={(getVideo()?.data as any)?.link}
                 width="100%"
-                onEnded={() => GetOnChange({ refId: videoId, finished: true })}
+                onEnded={() => GetOnChange({ refId: videoId, data: {}, extra: {
+                  finished: true
+                } })}
                 height="100%"
                 controls={true}
                 config={{
@@ -259,7 +261,7 @@ export const VideoView = ({ member_area_id, video_id }) => {
             </IconButton> */}
             <VideoInteractionsBox>
               <Box sx={{ display: 'flex', gap: '0.5rem' }}>
-                <LikeButton>
+                <LikeButton onClick={()=> handleLike(true)}>
                   <Image
                     alt=""
                     width={24}
@@ -267,7 +269,7 @@ export const VideoView = ({ member_area_id, video_id }) => {
                     src="/svgs/like-thumb.svg"
                   />
                 </LikeButton>
-                <LikeButton>
+                <LikeButton onClick={()=> handleLike(false)}>
                   <Image
                     alt=""
                     width={24}
@@ -306,7 +308,7 @@ export const VideoView = ({ member_area_id, video_id }) => {
 
             <Box sx={{ width: '100%', display: 'flex', gap: '0.5rem' }}>
               <CommentInput ref={commentRef} placeholder="Deixar mensagem para o mentor" />
-              <SendButton onClick={()=>SendComment()} variant="contained">
+              <SendButton onClick={()=>handleLike()} variant="contained">
                 Enviar
                 <Image alt="" width={15} height={15} src="/svgs/share.svg" />
               </SendButton>

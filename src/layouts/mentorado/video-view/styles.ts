@@ -19,10 +19,10 @@ export const ProgressBarWrapper = styled(Box)`
 export const VideoInteractionsBox = styled(Box)`
   align-items: end;
   border-bottom: 1px dotted #424242;
-  padding-bottom: 1.5rem;
+  padding-bottom: 1.2rem;
   margin-top: 1rem;
   display: flex;
-  height: 4rem;
+  height: 3.5rem;
   justify-content: space-between;
   width: 100%;
 `;
@@ -47,7 +47,7 @@ export const LikeButton = styled('button')`
 export const CompleteButton = styled(Button)`
   align-items: center;
   background-color: #20361f;
-  border-radius: 10px;
+  border-radius: 4px;
   color: ${({ theme }) => theme.palette.success.main};
   display: flex;
   gap: 0.5rem;
@@ -58,7 +58,7 @@ export const CompleteButton = styled(Button)`
 export const NextVButton = styled(Button)`
   align-items: center;
   background-color: #424242;
-  border-radius: 10px;
+  border-radius: 4px;
   color: ${({ theme }) => theme.palette.text.primary};
   display: flex;
   gap: 0.5rem;
@@ -68,7 +68,7 @@ export const NextVButton = styled(Button)`
 export const CommentInput = styled('textarea')`
   background-color: #252525;
   border: 1px solid ${({ theme }) => theme.palette.caption.dark};
-  border-radius: 10px;
+  border-radius: 4px;
   color: ${({ theme }) => theme.palette.text.primary};
   flex-grow: 1;
   font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
@@ -83,7 +83,7 @@ export const CommentInput = styled('textarea')`
 
 export const SendButton = styled(Button)`
   align-items: center;
-  border-radius: 10px;
+  border-radius: 4px;
   display: flex;
   gap: 0.5rem;
   width: 12%;

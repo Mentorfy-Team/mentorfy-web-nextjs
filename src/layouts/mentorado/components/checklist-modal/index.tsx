@@ -37,7 +37,9 @@ const ChecklistModal = ({
   const [color, setColor] = useState(false);
 
   const handleFinish = () => {
-    onChange({ data: input, finished: taskData.length === input.length });
+    onChange({ data: input, extra: {
+      finished: taskData.length === input.length
+    } });
     setOpen(false);
   };
 

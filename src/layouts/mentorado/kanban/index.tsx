@@ -82,6 +82,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
 
   const handleSave = useCallback(
     async ({ tool_id, client_input }) => {
+      console.log('client_input', client_input);
       // timout para dar tempo para as imagens se organizarem
       setTimeout(async function () {
         await InputUserMemberArea(tool_id, client_input);
@@ -92,29 +93,30 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
   );
 
   const GetOnChange = useCallback(
-    async ({ refId, data, finished }) => {
+    async ({ refId, data, extra }) => {
       const index = userInput?.findIndex((i) => i.member_area_tool_id == refId);
       setUserInput((oldInput) => {
         if (!oldInput) oldInput = [];
         if (index > -1) {
           oldInput[index].data = data;
-          oldInput[index].extra = finished;
+          oldInput[index].extra = extra;
         } else {
           oldInput?.push({
             member_area_tool_id: refId,
-            data,
-            extra: finished,
+            data: oldInput[index] ? Object.assign(oldInput[index].data, data): data,
+            extra: oldInput[index] ? Object.assign(oldInput[index].extra, extra): extra,
           } as any);
         }
         return [...oldInput];
       });
-
+      console.log('check: ', index, userInput);
+      console.log(data);
       handleSave({
         tool_id: refId,
         client_input: {
-          data,
+          data: userInput[index] ? Object.assign(userInput[index].data, data):data,
+          extra: userInput[index] ? Object.assign(userInput[index].extra, extra):extra,
           id: index > -1 ? userInput[index].id : '0',
-          extra: finished,
           delete: data.delete,
         },
       });
