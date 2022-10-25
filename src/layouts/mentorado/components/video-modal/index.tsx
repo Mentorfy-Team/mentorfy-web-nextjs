@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
-import { CompleteButton, Description } from './styles';
+import { CommentInput, CompleteButton, Description, SendButton } from './styles';
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
 type InputProps = { id: string; value: boolean }[];
@@ -77,6 +78,15 @@ const VideoViewModal = ({
           )}
         </Box>
 
+        <Typography variant="body1" sx={{ margin: '2.5rem 0 0.8rem 0' }}>
+          Enviar mensagem ao Mentor
+        </Typography>
+        <Box sx={{ width: '100%', display: 'flex', gap: '0.5rem', marginBottom: '2rem' }}>
+          <CommentInput placeholder="Deixe sua mensagem" />
+          <SendButton variant="contained">
+            Enviar
+          </SendButton>
+        </Box>
         <CompleteButton variant="contained" onClick={handleFinish}>
           Concluído
         </CompleteButton>
