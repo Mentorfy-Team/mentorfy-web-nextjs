@@ -81,7 +81,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
   useEffect(() => {
     let shouldPlay = false;
     const index = clientProducts.findIndex(
-      (product) => product.video || product.banner_image,
+      (product) => product?.video || product?.banner_image,
     );
     if (index !== -1) {
       setFeaturedProduct(clientProducts[index]);
@@ -225,72 +225,76 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         withoutScroll
       >
         {/* // TODO: fix 'Meus estudos' margin-top when it´s mobile */}
-        <Box sx={{ display: 'flex', margin: '1.2rem 0 0.5rem 0' }}>
-          <Typography variant="h5">Minhas Mentorias</Typography>
-        </Box>
-        <Slider
-          {...settings}
-          slidesToShow={numberOfSlides}
-          className="container"
-        >
-          {clientProducts.map((product, index) => (
-            <CourseBox
-              onMouseOver={() => {}}
-              className="item"
-              height={400}
-              key={index}
-              onClick={() => {
-                router.push(
-                  types
-                    .find((type) => type.id.toString() === product.deliver)
-                    .name.replace(/\s/g, '-')
-                    .normalize('NFD')
-                    .replace(/[\u0300-\u036f]/g, '')
-                    .toLowerCase() +
-                    '/' +
-                    product.id,
-                );
-              }}
+        {clientProducts?.length > 0 && (
+          <>
+            <Box sx={{ display: 'flex', margin: '1.2rem 0 0.5rem 0' }}>
+              <Typography variant="h5">Minhas Mentorias</Typography>
+            </Box>
+            <Slider
+              {...settings}
+              slidesToShow={numberOfSlides}
+              className="container"
             >
-              <Image
-                alt=""
-                src={product?.main_image || '/images/moonlit.png'}
-                width={400}
-                height={400}
-                style={{
-                  objectFit: 'cover',
-                }}
-                quality={100}
-              />
-              <AbsoluteTopBox>
-                <CollorFullMentorfy>
-                  Mentor<span>fy</span>
-                </CollorFullMentorfy>
-              </AbsoluteTopBox>
-              {!product?.banner_image && (
-                <AbsoluteBottomBox>
-                  <ProductTitle>{product?.title}</ProductTitle>
-                </AbsoluteBottomBox>
-              )}
-            </CourseBox>
-          ))}
-          {[
-            ...Array(
-              numberOfSlides -
-                (clientProducts.length > numberOfSlides
-                  ? numberOfSlides
-                  : clientProducts.length),
-            ),
-          ].map((_, i) => (
-            <CourseBox
-              onMouseOver={() => {}}
-              className="item"
-              height={sizeLg ? '400px' : 'unset'}
-              width={sizeLg ? '300px' : 'unset'}
-              key={i}
-            />
-          ))}
-        </Slider>
+              {clientProducts.map((product, index) => (
+                <CourseBox
+                  onMouseOver={() => {}}
+                  className="item"
+                  height={400}
+                  key={index}
+                  onClick={() => {
+                    router.push(
+                      types
+                        .find((type) => type.id.toString() === product.deliver)
+                        .name.replace(/\s/g, '-')
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '')
+                        .toLowerCase() +
+                        '/' +
+                        product.id,
+                    );
+                  }}
+                >
+                  <Image
+                    alt=""
+                    src={product?.main_image || '/images/moonlit.png'}
+                    width={400}
+                    height={400}
+                    style={{
+                      objectFit: 'cover',
+                    }}
+                    quality={100}
+                  />
+                  <AbsoluteTopBox>
+                    <CollorFullMentorfy>
+                      Mentor<span>fy</span>
+                    </CollorFullMentorfy>
+                  </AbsoluteTopBox>
+                  {!product?.banner_image && (
+                    <AbsoluteBottomBox>
+                      <ProductTitle>{product?.title}</ProductTitle>
+                    </AbsoluteBottomBox>
+                  )}
+                </CourseBox>
+              ))}
+              {[
+                ...Array(
+                  numberOfSlides -
+                    (clientProducts.length > numberOfSlides
+                      ? numberOfSlides
+                      : clientProducts.length),
+                ),
+              ].map((_, i) => (
+                <CourseBox
+                  onMouseOver={() => {}}
+                  className="item"
+                  height={sizeLg ? '400px' : 'unset'}
+                  width={sizeLg ? '300px' : 'unset'}
+                  key={i}
+                />
+              ))}
+            </Slider>
+          </>
+        )}
         <Box sx={{ display: 'flex', margin: '0.5rem 0 0.5rem 0' }}>
           <Typography variant="h5">Populares na Mentorfy</Typography>
         </Box>
@@ -350,6 +354,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               ),
             ].map((_, i) => <div key={i} />)}
         </Slider>
+        {clientProducts?.length === 0 && <Box height="14rem" />}
       </ContentWidthLimit>
     </Background>
   );

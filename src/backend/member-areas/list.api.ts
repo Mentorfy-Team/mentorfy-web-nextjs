@@ -11,7 +11,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
 
   const { data: products, error } = await supabase
     .from('product')
-    .select('id, title, status, member_area!member_area_id_fkey(id)')
+    .select('id, title, status, member_area(id)')
     .eq('owner', req.query.id)
     .eq('deliver', 'mentorfy');
 

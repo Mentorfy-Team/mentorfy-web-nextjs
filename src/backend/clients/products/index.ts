@@ -18,17 +18,18 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     .select('*, member_area(*)')
     .eq('owner', req.query.id);
 
-  if (productsOwned) listProducts = listProducts.concat(productsOwned);
+  if (productsOwned && productsOwned.length > 0)
+    listProducts = listProducts.concat(productsOwned);
 
   if (clientProducts && clientProducts.length > 0) {
     const { data: products, error } = await supabase
       .from('product')
-      .select('*, member_area!member_area_id_fkey(*)')
+      .select('*, member_area(*)')
       .in(
         'id',
         clientProducts?.map((relation) => relation.product_id),
       );
-    listProducts = listProducts.concat(products);
+    if (products) listProducts = listProducts.concat(products);
   }
 
   return res.status(200).json(listProducts);

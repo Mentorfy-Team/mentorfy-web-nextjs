@@ -5,7 +5,7 @@ import { Auth } from '~/@types/api/auth/auth';
 import InputField from '~/components/atoms/InputField';
 import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
-import { MentorRoutes } from '~/consts/routes/routes.consts';
+import { MentorRoutes, MentoredRoutes } from '~/consts/routes/routes.consts';
 import { Authenticate } from '~/services/auth/auth.service';
 import { userStore } from '~/stores';
 import { AcessoSubPage } from '..';
@@ -42,7 +42,11 @@ const Login: FC<props> = ({ pageChange }) => {
       const registerData = await Authenticate({ email, password });
       if (!registerData.error) {
         //userLogin(registerData.user);
-        route.push(MentorRoutes.home);
+        if (registerData?.user?.type === 'mentor') {
+          route.push(MentorRoutes.home);
+        } else {
+          route.push(MentoredRoutes.home);
+        }
       } else {
         if (registerData.error.includes('email')) {
           setError('*Email e ou senha incorretos, tente novamente!');

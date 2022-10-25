@@ -21,17 +21,15 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   let errorRes;
   if (!userRef) {
     // * Convida um usuário e cria no banco de autenticação
-    const { data: user } = await supabaseAdmin.auth.api.inviteUserByEmail(
-      email,
-      {
+    const { data: user, error: ierror } =
+      await supabaseAdmin.auth.api.inviteUserByEmail(email, {
         data: {
           name,
           phone,
           product,
         },
         redirectTo: process.env.NEXT_PUBLIC_APP_URL + '?pid=' + product,
-      },
-    );
+      });
     // * Depois de convidado, o usuário já existe,
     // * atualizamos com dados extras a autenticação e o perfil
     const { data, error } = await supabaseAdmin.auth.api.updateUserById(
@@ -39,12 +37,13 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
       { phone },
     );
     if (error) {
-      errorRes = 'Esse telefone já está cadastrado em outro usuário';
+      errorRes =
+        'Usuário convidado, porém esse telefone já está cadastrado em outro usuário, por isso esse numero foi ignorado.';
     }
 
     await supabaseAdmin
       .from('profile')
-      .update({ name, email: email, phone: data.phone })
+      .update({ name, email: email, phone: data?.phone })
       .eq('id', user.id);
 
     userRef = user;

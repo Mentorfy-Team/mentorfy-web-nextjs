@@ -21,7 +21,7 @@ const CreateClientDialog = dynamic(
 const Clients: FC<PageTypes.Props> = ({ user, access_token }) => {
   const isMobile = useMediaQuery('(max-width: 500px)');
   const [openCreatePage, setOpenCreatePage] = useState(false);
-  const { clients } = useClients(user.id);
+  const { clients, mutate } = useClients(user.id);
 
   const ProductsTableComponent = useCallback(() => {
     return <ClientsTable rows={clients} />;
@@ -80,7 +80,7 @@ const Clients: FC<PageTypes.Props> = ({ user, access_token }) => {
         <CreateClientDialog
           open={openCreatePage}
           setOpen={setOpenCreatePage}
-          onUpdate={() => {}}
+          onUpdate={() => mutate()}
           user={user}
         />
       )}
