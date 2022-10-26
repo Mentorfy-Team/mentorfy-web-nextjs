@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
@@ -11,11 +11,16 @@ import Toolbar from '~/components/modules/Toolbar';
 import { MentorRoutes, PublicRoutes } from '~/consts';
 import { useProducts } from '~/hooks/useProducts';
 import { GetProfile } from '~/services/profile.service';
-import { AbsoluteBottomBox, AbsoluteTopBox, AreaWrapper, CollorFullMentorfy, EmptyBox, ImageButton, ProductTitle } from './styles';
+import { AbsoluteBottomBox, AbsoluteTopBox, AreaWrapper, CollorFullMentorfy, CreatAreaButton, EmptyBox, ImageButton, ProductTitle } from './styles';
+import { useTheme } from '@mui/material/styles';
+import PlusSvg from '~/../public/svgs/plus';
+import CreateProductDialog from './components/CreateProductDialog';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   const { products } = useProducts(user.id);
   const router = useRouter();
+  const theme = useTheme();
+  const [openCreatePage, setOpenCreatePage] = useState(false);
 
   return (
     <>
@@ -25,12 +30,12 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
           <Box sx={{ float: 'left' }}>
             <Typography>Minhas Mentorias</Typography>
           </Box>
-          {/* <Box sx={{ float: 'right' }}>
+          <Box sx={{ float: 'right' }} onClick={() => setOpenCreatePage(true)}>
             <CreatAreaButton variant="outlined">
-              <SvgComponent fill={theme.palette.accent.main} />
-              {creatNewMembersArea}
+              <PlusSvg fill={theme.palette.accent.main} />
+              Criar Mentoria
             </CreatAreaButton>
-          </Box> */}
+          </Box>
         </Box>
         <Box
           sx={{
@@ -89,7 +94,7 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
         <Box sx={{ display: 'flex' }}>
           <Typography sx={{ mb: '1.5rem' }}>Modelos Prontos</Typography>
         </Box>
-        <EmptyBox sx={{ backgroundColor: '#36353A' }}>
+        <EmptyBox sx={{ backgroundColor: '#36353a50' }}>
           <ImageButton>Em breve</ImageButton>
         </EmptyBox>
         {/* <Box sx={{ display: 'flex', flexDirection: 'row', overflow: 'auto' }}>
@@ -111,6 +116,7 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
           )}
         </Box> */}
       </ContentWidthLimit>
+      <CreateProductDialog open={openCreatePage} setOpen={setOpenCreatePage} />
     </>
   );
 };

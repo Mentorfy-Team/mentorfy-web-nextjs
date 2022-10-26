@@ -39,13 +39,9 @@ export default function CreateProductDialog({ open, setOpen }) {
       }
       setValue('title', '');
       setValue('price', '');
-      console.log(types);
-      console.log(product);
-      console.log(types[0].id.toString() === product.deliver);
       route.push(
         MentorRoutes.members_area +
-          '/' +
-          types.find((t) => t.id.toString() === product.deliver) +
+          '/editar/' +
           product.id,
       );
       setOpen(false);
@@ -70,7 +66,7 @@ export default function CreateProductDialog({ open, setOpen }) {
           id="customized-dialog-title"
           onClose={handleClose}
         >
-          Novo Produto
+          Nova Mentoria
         </BootstrapDialogTitle>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <DialogContent
@@ -80,7 +76,7 @@ export default function CreateProductDialog({ open, setOpen }) {
             dividers
           >
             <Typography gutterBottom>
-              Para criar seu novo produto, preencha os campos a seguir.
+              Para criar sua nova mentoria, preencha os campos a seguir.
             </Typography>
             <InputField
               required
@@ -94,7 +90,7 @@ export default function CreateProductDialog({ open, setOpen }) {
               onChange={(e) => handleChange(e, 'title')}
               value={title}
             />
-            <InputField
+            {/* <InputField
               required
               color="secondary"
               label="Preço"
@@ -108,7 +104,7 @@ export default function CreateProductDialog({ open, setOpen }) {
               register={register('price')}
               onChange={(e) => handleChange(e, 'price')}
               value={price}
-            />
+            /> */}
             <SelectField required sx={{ width: '100%' }}>
               <InputLabel>Tipo de Área de Membros</InputLabel>
               <Select

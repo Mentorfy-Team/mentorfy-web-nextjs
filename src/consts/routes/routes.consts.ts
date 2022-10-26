@@ -52,11 +52,11 @@ export const MentorMenu = {
     name: 'Dashboard',
     component: home_svg,
   },
-  products: {
-    path: MentorRoutes.products,
-    name: 'Produtos',
-    component: my_products_svg,
-  },
+  // products: {
+  //   path: MentorRoutes.products,
+  //   name: 'Produtos',
+  //   component: my_products_svg,
+  // },
   members_area: {
     path: MentorRoutes.members_area,
     name: 'Área de membros',
