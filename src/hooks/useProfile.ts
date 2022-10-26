@@ -18,7 +18,7 @@ export function useProfile(
     }
   };
 
-  const { data, error } = useSWR<
+  const { data, error, mutate } = useSWR<
     UserTypes.ProfileWithAddress & { logout?: () => void }
   >(`${ApiRoutes.users_profile}?withAddress=${withAddress}`, fetcher, {
     fallbackData: {
@@ -32,5 +32,6 @@ export function useProfile(
     data: { ...data, logout: () => logout() },
     isLoading: !error && !data,
     isError: error,
+    mutate
   };
 }

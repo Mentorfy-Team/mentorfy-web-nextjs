@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
@@ -17,6 +17,8 @@ import {
   LoginButton,
   Title,
 } from '../styles';
+import { CookieUtil } from '~/shared/utils/cookie/cookie.util';
+import { useProfile } from '~/hooks/useProfile';
 
 type props = {
   pageChange: (page: AcessoSubPage) => void;
@@ -32,6 +34,8 @@ const Login: FC<props> = ({ pageChange }) => {
   const { userLogin } = userStore();
   const { register, handleSubmit } = useForm<Auth>();
 
+  const { data: {profile}, mutate } = useProfile();
+
   const onSubmit: SubmitHandler<Auth> = useCallback(
     async (values) => {
       if (!email || !password) {
@@ -40,13 +44,8 @@ const Login: FC<props> = ({ pageChange }) => {
       }
       setIsLoading(true);
       const registerData = await Authenticate({ email, password });
+      mutate();
       if (!registerData.error) {
-        //userLogin(registerData.user);
-        if (registerData?.user?.type === 'mentor') {
-          route.push(MentorRoutes.home);
-        } else {
-          route.push(MentoredRoutes.home);
-        }
       } else {
         if (registerData.error.includes('email')) {
           setError('*Email e ou senha incorretos, tente novamente!');
@@ -56,6 +55,16 @@ const Login: FC<props> = ({ pageChange }) => {
     },
     [email, password, route],
   );
+
+  useEffect(() => {
+    if (profile?.id) {
+      if (profile?.access_type === 'mentor') {
+        route.push(MentorRoutes.home);
+      } else {
+        route.push(MentoredRoutes.home);
+      }
+    }
+  }, [profile]);
 
   return (
     <>
