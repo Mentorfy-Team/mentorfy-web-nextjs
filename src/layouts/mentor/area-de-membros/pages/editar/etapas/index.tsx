@@ -7,6 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 import { DnDObject } from '~/components/modules/DragNDrop';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
@@ -137,6 +138,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   }, [currentModal, open, id]);
 
   const handleSave = useCallback(async () => {
+    toast.success('Alterações salvas com sucesso', {autoClose: 2000,});
     // timout para dar tempo para as imagens se organizarem
     setTimeout(async function () {
       await UpdateMemberAreaTools(id, steps);
@@ -167,7 +169,6 @@ const EditarMentoria: FC<Props> = ({ id }) => {
 
         setSteps((oldSteps) => {
           Object.assign(oldSteps[stepIndex], data);
-          
           return [...oldSteps];
         });
       }

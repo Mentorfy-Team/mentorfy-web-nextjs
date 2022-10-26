@@ -7,6 +7,7 @@ import Select from '@mui/material/Select';
 
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { UpdateProfile } from '~/services/profile.service';
 import { ActionButton } from '../../produtos/pages/styles';
 import {
@@ -99,6 +100,7 @@ const MyProfile = ({ profile, address, access_token }) => {
       if (registerData.error) {
         setError('Ocorreu um erro na hora de salvar os seus dados.');
       }
+      toast.success('Informações salvas com sucesso');
       setIsLoading(false);
       router.reload();
     },

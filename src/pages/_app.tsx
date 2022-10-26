@@ -7,6 +7,8 @@ import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { SupabaseWithouAuth } from '~/backend/supabase';
 import createEmotionCache from '~/createEmotionCache';
 import { GlobalStyles, ThemeProvider } from '~/theme';
@@ -115,6 +117,11 @@ const App = (props: MyAppProps) => {
             </UserProvider>
           </PageWrapper>
           <LoadingPartial />
+          <ToastContainer
+            theme='dark'
+            autoClose={5000}
+            hideProgressBar={false}
+          />
         </Wrapper>
       </ThemeProvider>
     </CacheProvider>

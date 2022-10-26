@@ -8,6 +8,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import InputField from '~/components/atoms/InputField';
 import { useGetProduct } from '~/hooks/useGetProduct';
 import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
@@ -74,6 +75,7 @@ const Geral: FC<props> = ({ id }) => {
         });
       }
       await UpdateProduct({ ...values, video, id: product.id });
+      toast.success('Alterações salvas com sucesso', {autoClose: 2000,});
       setIsLoading(false);
     },
     [product, productImage, video],
