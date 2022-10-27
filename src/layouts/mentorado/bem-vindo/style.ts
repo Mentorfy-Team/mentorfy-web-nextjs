@@ -301,3 +301,20 @@ export const CollorFullMentorfy = styled(Typography)`
     color: #fe7d22;
   }
 `;
+
+export const VolumeButton = styled(Box)`
+  width: 35px;
+  height: 35px;
+  border: 1px solid #93898A;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  
+  :hover { 
+    background-color: transparent;
+    opacity: 0.5;
+  }
+`;

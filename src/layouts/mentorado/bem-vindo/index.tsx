@@ -36,6 +36,7 @@ import {
   ProductTitle,
   RatingBox,
   VideoHolder,
+  VolumeButton,
 } from './style';
 
 const BemVindo: FC<PageTypes.Props> = ({ user }) => {
@@ -103,7 +104,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
       if (shouldPlay) setPlayVideo(true);
     }, 4000);
     setTimeout(() => {
-      //setVolume(0.5);
+      setVolume(0.5);
     }, 6000);
     setTimeout(() => {
       //setPlayVideo(false);
@@ -156,7 +157,6 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
           />
         </VideoHolder>
         <Overlay />
-
         <div
           style={{
             position: 'absolute',
@@ -182,7 +182,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
           >
             {featuredProduct?.description}
           </Box>
-          <Box display="flex" gap="1rem" mt={3}>
+          <Box display="flex" gap="1rem" mt={3} width='100%'>
             <PlayButton
               onClick={() =>
                 router.push(
@@ -194,8 +194,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                     .normalize('NFD')
                     .replace(/[\u0300-\u036f]/g, '')
                     .toLowerCase() +
-                    '/' +
-                    featuredProduct.id,
+                  '/' +
+                  featuredProduct.id,
                 )
               }
               variant="outlined"
@@ -211,9 +211,16 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               />
               Mais Informações
             </MoreInfo>
+            <VolumeButton onClick={() => volume === 0 ? setVolume(0.5) : setVolume(0)}>
+              <Image
+                src={volume === 0 ? '/svgs/volume-xmark.svg' : '/svgs/volume.svg'}
+                alt='volume-icon'
+                height={18}
+                width={18}
+              />
+            </VolumeButton>
           </Box>
         </div>
-        <Box height="2rem" />
       </BannerBox>
       <ContentWidthLimit
         sx={{
@@ -224,7 +231,6 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         maxWidth="100%"
         withoutScroll
       >
-        {/* // TODO: fix 'Meus estudos' margin-top when it´s mobile */}
         {clientProducts?.length > 0 && (
           <>
             <Box sx={{ display: 'flex', margin: '1.2rem 0 0.5rem 0' }}>
@@ -237,7 +243,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             >
               {clientProducts.map((product, index) => (
                 <CourseBox
-                  onMouseOver={() => {}}
+                  onMouseOver={() => { }}
                   className="item"
                   height={400}
                   key={index}
@@ -249,8 +255,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                         .normalize('NFD')
                         .replace(/[\u0300-\u036f]/g, '')
                         .toLowerCase() +
-                        '/' +
-                        product.id,
+                      '/' +
+                      product.id,
                     );
                   }}
                 >
@@ -279,13 +285,13 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               {[
                 ...Array(
                   numberOfSlides -
-                    (clientProducts.length > numberOfSlides
-                      ? numberOfSlides
-                      : clientProducts.length),
+                  (clientProducts.length > numberOfSlides
+                    ? numberOfSlides
+                    : clientProducts.length),
                 ),
               ].map((_, i) => (
                 <CourseBox
-                  onMouseOver={() => {}}
+                  onMouseOver={() => { }}
                   className="item"
                   height={sizeLg ? '400px' : 'unset'}
                   width={sizeLg ? '300px' : 'unset'}
@@ -307,7 +313,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             .filter((p) => p.banner_image)
             .map((product, index) => (
               <CourseBox
-                onMouseOver={() => {}}
+                onMouseOver={() => { }}
                 className="item"
                 height={sizeLg ? '190px' : 'unset'}
                 width={sizeLg ? '350px' : 'unset'}
@@ -320,8 +326,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                       .normalize('NFD')
                       .replace(/[\u0300-\u036f]/g, '')
                       .toLowerCase() +
-                      '/' +
-                      product.id,
+                    '/' +
+                    product.id,
                   );
                 }}
               >
