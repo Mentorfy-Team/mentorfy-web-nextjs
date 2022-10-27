@@ -11,6 +11,7 @@ type props = {
   withoutSave?: boolean;
   open?: boolean;
   isMentorado?: boolean;
+  deleteMessage?: boolean
   setOpen?: (value: boolean) => void;
   onSave?: () => void;
   onDelete?: () => void;
@@ -22,6 +23,7 @@ const ModalComponent: FC<props> = ({
   withoutSave = false,
   open,
   isMentorado,
+  deleteMessage,
   setOpen,
   onSave,
   onDelete,
@@ -45,12 +47,12 @@ const ModalComponent: FC<props> = ({
               width: '40%',
               marginTop: '1rem',
               height: '2.5rem',
-              backgroundColor: 'green',
+              backgroundColor: `${deleteMessage ? '' : 'green'}`,
               color: 'white',
             }}
             onClick={() => onSave()}
           >
-            Salvar
+            {deleteMessage ? 'Cancelar' : 'Salvar'}
           </Button>
         )}
         {onDelete && (
@@ -61,7 +63,8 @@ const ModalComponent: FC<props> = ({
               float: 'left',
               width: '40%',
               marginTop: '1rem',
-              color: 'gray',
+              color: `${deleteMessage ? 'white' : 'gray'}`,
+              backgroundColor: `${deleteMessage &&'red'}`,
               fontWeight: '300',
               height: '2.5rem',
             }}

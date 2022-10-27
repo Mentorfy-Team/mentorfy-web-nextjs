@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
@@ -11,10 +12,9 @@ import Toolbar from '~/components/modules/Toolbar';
 import { MentorRoutes, PublicRoutes } from '~/consts';
 import { useProducts } from '~/hooks/useProducts';
 import { GetProfile } from '~/services/profile.service';
-import { AbsoluteBottomBox, AbsoluteTopBox, AreaWrapper, CollorFullMentorfy, CreatAreaButton, EmptyBox, ImageButton, ProductTitle } from './styles';
-import { useTheme } from '@mui/material/styles';
-import PlusSvg from '~/../public/svgs/plus';
 import CreateProductDialog from './components/CreateProductDialog';
+import { AbsoluteBottomBox, AbsoluteTopBox, AreaWrapper, CollorFullMentorfy, CreatAreaButton, EmptyBox, ImageButton, ProductTitle } from './styles';
+import PlusSvg from '~/../public/svgs/plus';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   const { products } = useProducts(user.id);
