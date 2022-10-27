@@ -70,7 +70,8 @@ const GroupModal = ({
         // show a browser alert to confirm the delete
         if (rowsData.length > 0) {
           setDeleteGroup(true);
-        } if (deleteGroup === true) {
+        }
+        if (deleteGroup === true) {
           handleSave(true);
         }
       }}
