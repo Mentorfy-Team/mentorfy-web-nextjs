@@ -1,7 +1,9 @@
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from './HttpClient';
 
-export const RegisterNewUser = async (user: UserClient.SignUp) => {
+export const RegisterNewUser = async (
+  user: UserClient.SignUp,
+): Promise<UsersApi.Post.Response> => {
   try {
     const response = await HttpClient.post<UsersApi.Post.Response>(
       ApiRoutes.users,
@@ -13,9 +15,9 @@ export const RegisterNewUser = async (user: UserClient.SignUp) => {
       };
     }
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     return {
-      error: 'Erro ao cadastrar usuário',
+      error: error.response?.data?.error || error.message,
     };
   }
 };

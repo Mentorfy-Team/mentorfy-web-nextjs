@@ -1,8 +1,7 @@
-import { FC, useCallback, useMemo, useState } from 'react';
+import { FC, useCallback, useMemo, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import Link from 'next/link';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import InputField from '~/components/atoms/InputField';
 import { RegisterNewUser } from '~/services/user.service';
 import { userStore } from '~/stores';
@@ -25,21 +24,26 @@ type props = {
 };
 
 const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
-  const [password, setPassword] = useState('');
+  const [inputs, setInputs] = useState({
+    name: '',
+    email: '',
+    password: '',
+    passwordConfirm: '',
+    policies: false,
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>();
-  const [rePassword, setRePassword] = useState('');
-  const [acceptPolices, setAcceptPolices] = useState(false);
-  const { register, handleSubmit } = useForm<UserClient.SignUp>();
   const { userLogin } = userStore();
-  const [index, setIndex] = useState(1);
   const RePasswordCheck = useMemo(() => {
-    return rePassword === password && rePassword.length > 0;
-  }, [password, rePassword]);
+    return (
+      inputs.passwordConfirm === inputs.password &&
+      inputs.passwordConfirm.length > 0
+    );
+  }, [inputs.password, inputs.passwordConfirm]);
 
   const { minChars, hasNumber, hasSpecial, hasUpper, passed } = useMemo(
-    () => passwordValidator(password),
-    [password],
+    () => passwordValidator(inputs.password),
+    [inputs],
   );
 
   const PasswordChecker = useCallback(() => {
@@ -56,37 +60,46 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
   }, [hasNumber, hasSpecial, hasUpper, minChars]);
 
   const CheckComplete = useMemo(() => {
-    if (passed && RePasswordCheck && acceptPolices) return true;
+    if (passed && RePasswordCheck && inputs.policies) return true;
     return false;
-  }, [RePasswordCheck, acceptPolices, passed]);
+  }, [RePasswordCheck, inputs.policies, passed]);
 
-  const onSubmit: SubmitHandler<UserClient.SignUp> = useCallback(
-    async (values) => {
-      setIsLoading(true);
-      if (values.password.length <= 0) values.password = password;
-      const registerData = await RegisterNewUser(values);
+  const formRef = useRef(null);
 
-      if (!registerData.error) {
-        userLogin(registerData.user);
-        setInfo(
-          <>
-            <Text>Seu cadastro foi concluido com sucesso!</Text>
-            <Text>Você já pode acessar clicando em continuar.</Text>
-          </>,
-        );
-        pageChange('sucesso');
-      } else {
-        if (registerData.error.includes('email')) {
-          setError('Email já cadastrado');
-        }
-      }
-      setIsLoading(false);
+  const onSubmit = useCallback(async () => {
+    const values = inputs;
+    setIsLoading(true);
+
+    const registerData = await RegisterNewUser(values);
+
+    if (!registerData.error) {
+      userLogin(registerData.user);
+      setInfo(
+        <>
+          <Text>Seu cadastro foi concluido com sucesso!</Text>
+          <Text>Você já pode acessar clicando em continuar.</Text>
+        </>,
+      );
+      pageChange('sucesso');
+    } else {
+      setError(registerData.error);
+    }
+    setIsLoading(false);
+  }, [inputs, pageChange, setInfo, userLogin]);
+
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setInputs((prev) => ({
+        ...prev,
+        [event.target.name]: event.target.value || event.target.checked,
+      }));
     },
-    [pageChange, password, setInfo, userLogin],
+    [],
   );
 
   return (
     <div>
+      {inputs.password + ' :::'}
       <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
         Para se{' '}
         <Accent>
@@ -94,65 +107,66 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
         </Accent>
         , preencha os campos abaixo corretamente.
       </SubTitle>
-      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+      <FormWrapper onSubmit={onSubmit}>
         <InputField
           label="Nome completo"
+          name="name"
           type={'text'}
           placeholder="Digite seu nome completo"
           InputLabelProps={{
             shrink: true,
           }}
+          onChange={handleChange}
           required
-          register={register('name')}
         />
         <InputField
           required
           label="E-mail"
           type={'email'}
+          name="email"
           placeholder="Digite seu email"
           InputLabelProps={{
             shrink: true,
           }}
-          register={register('email')}
-          onChange={(e) => setError('')}
+          onChange={handleChange}
           error={!!error}
           helperText={error}
         />
         <InputField
           required
           label="Senha"
+          name="password"
           type={'password'}
           placeholder="Digite sua senha"
           InputLabelProps={{
             shrink: true,
           }}
-          register={register('password')}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handleChange}
         />
         {PasswordChecker()}
         <InputField
           required
-          error={!RePasswordCheck && rePassword.length > 0}
+          error={!RePasswordCheck && inputs.passwordConfirm.length > 0}
           label="Confirme sua senha"
           type={'password'}
+          name="passwordConfirm"
           placeholder="Confirme sua senha"
           helperText={
-            !RePasswordCheck && rePassword.length > 0
+            !RePasswordCheck && inputs.passwordConfirm.length > 0
               ? 'As senhas não conferem'
               : ''
           }
           InputLabelProps={{
             shrink: true,
           }}
-          register={register('confirmPassword')}
-          onChange={(e) => setRePassword(e.target.value)}
+          onChange={handleChange}
         />
         <PoliciesWrapper>
           <Checkbox
             sx={{ alignSelf: 'flex-start', marginLeft: '0rem' }}
-            {...register('policies')}
-            checked={acceptPolices}
-            onChange={(e) => setAcceptPolices(e.target.checked)}
+            checked={inputs.policies}
+            name="policies"
+            onChange={handleChange}
           />
           <Policies variant="caption">
             Eu li e aceito os <Link href="/">Termos de Uso</Link> e os{' '}
@@ -162,7 +176,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
         <CadastroButton
           loading={isLoading}
           disabled={!CheckComplete || isLoading}
-          type="submit"
+          onClick={onSubmit}
         >
           {!isLoading && 'Cadastrar'}
         </CadastroButton>

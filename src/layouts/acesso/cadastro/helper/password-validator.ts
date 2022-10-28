@@ -1,4 +1,5 @@
 export default (password: string) => {
+  if (!password) return false;
   let minChars = false,
     hasNumber = false,
     hasUpper = false,

@@ -20,6 +20,8 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   const { user, token } = await supabase.auth.api.getUserByCookie(req);
   const result = {};
 
+  if (!user) return res.status(401).json({ error: 'Unauthorized' });
+
   const { data: profile, error } = await supabase
     .from('profile')
     .select('*')

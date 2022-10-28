@@ -17,7 +17,7 @@ export const PasswordRecover = async (email: string) => {
     return response.data;
   } catch (error) {
     return {
-      error: 'Erro ao cadastrar usuário',
+      error: 'Erro ao tentar recuperar a senha usuário',
     };
   }
 };
