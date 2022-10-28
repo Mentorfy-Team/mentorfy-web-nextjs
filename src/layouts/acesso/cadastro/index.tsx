@@ -28,7 +28,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
     name: '',
     email: '',
     password: '',
-    passwordConfirm: '',
+    confirmPassword: '',
     policies: false,
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -36,10 +36,10 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
   const { userLogin } = userStore();
   const RePasswordCheck = useMemo(() => {
     return (
-      inputs.passwordConfirm === inputs.password &&
-      inputs.passwordConfirm.length > 0
+      inputs.confirmPassword === inputs.password &&
+      inputs.confirmPassword.length > 0
     );
-  }, [inputs.password, inputs.passwordConfirm]);
+  }, [inputs.password, inputs.confirmPassword]);
 
   const { minChars, hasNumber, hasSpecial, hasUpper, passed } = useMemo(
     () => passwordValidator(inputs.password),
@@ -146,13 +146,13 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
         {PasswordChecker()}
         <InputField
           required
-          error={!RePasswordCheck && inputs.passwordConfirm.length > 0}
+          error={!RePasswordCheck && inputs.confirmPassword.length > 0}
           label="Confirme sua senha"
           type={'password'}
-          name="passwordConfirm"
+          name="confirmPassword"
           placeholder="Confirme sua senha"
           helperText={
-            !RePasswordCheck && inputs.passwordConfirm.length > 0
+            !RePasswordCheck && inputs.confirmPassword.length > 0
               ? 'As senhas não conferem'
               : ''
           }
