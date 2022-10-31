@@ -71,6 +71,9 @@ const GroupModal = ({
         if (rowsData.length > 0) {
           setDeleteGroup(true);
         }
+        if (rowsData.length === 0) {
+          handleSave(true);
+        }
         if (deleteGroup === true) {
           handleSave(true);
         }
