@@ -138,7 +138,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   }, [currentModal, open, id]);
 
   const handleSave = useCallback(async () => {
-    toast.success('Alterações salvas com sucesso', {autoClose: 2000,});
+    toast.success('Alterações salvas com sucesso', { autoClose: 2000 });
     // timout para dar tempo para as imagens se organizarem
     setTimeout(async function () {
       await UpdateMemberAreaTools(id, steps);
@@ -166,11 +166,23 @@ const EditarMentoria: FC<Props> = ({ id }) => {
         });
       } else {
         stepIndex = steps.findIndex((row) => row.id === refId + '');
-
-        setSteps((oldSteps) => {
-          Object.assign(oldSteps[stepIndex], data);
-          return [...oldSteps];
-        });
+        if (data.delete) {
+          setSteps((oldSteps) => {
+            Object.assign(oldSteps[stepIndex], data);
+            oldSteps[stepIndex].rows = oldSteps[stepIndex].rows.map((tasks) => {
+              tasks.delete = true;
+              console.log('task delete');
+              return { ...tasks };
+            });
+            console.log('oldStep', oldSteps[stepIndex].rows);
+            return [...oldSteps];
+          });
+        } else {
+          setSteps((oldSteps) => {
+            Object.assign(oldSteps[stepIndex], data);
+            return [...oldSteps];
+          });
+        }
       }
       handleSave();
     },
@@ -260,7 +272,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
                   isHeader
                   title={step.title || 'Nova etapa'}
                   stepType={0}
-                  image={step?.extra ? step?.extra[0]?.sourceUrl : Image}
+                  image={step?.extra ? step?.extra[0]?.sourceUrl : null}
                   onEdit={() => {
                     const type = GetTypeName(0);
                     setCurrentModal({

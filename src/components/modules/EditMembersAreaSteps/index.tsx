@@ -77,7 +77,7 @@ const EditMembersAreaSteps: FC<props> = ({
                 {...listeners}
               />
             )}
-            {isHeader && (
+            {isHeader && image && (
               <Image
                 alt=""
                 src={image}
