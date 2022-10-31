@@ -39,9 +39,11 @@ const Geral: FC<props> = ({ id }) => {
   const [product, setProduct] = useState<typeof pData>(pData);
   const { types } = useMemberAreaTypes();
   const theme = useTheme();
+  const title = watch('title');
 
   useEffect(() => {
     setProduct(pData);
+    setValue('title', pData?.title);
     setProductImage({
       main_image: {
         file: pData?.main_image || '',
@@ -75,7 +77,7 @@ const Geral: FC<props> = ({ id }) => {
         });
       }
       await UpdateProduct({ ...values, video, id: product.id });
-      toast.success('Alterações salvas com sucesso', {autoClose: 2000,});
+      toast.success('Alterações salvas com sucesso', { autoClose: 2000 });
       setIsLoading(false);
     },
     [product, productImage, video],
@@ -138,33 +140,12 @@ const Geral: FC<props> = ({ id }) => {
       />
       <InputField
         color="secondary"
-        value={product?.title}
+        value={title}
         label="Produto Relacionado"
         InputLabelProps={{
           shrink: true,
         }}
-        InputProps={{
-          readOnly: true,
-        }}
-      />
-
-      <InputField
-        color="secondary"
-        value={
-          types.find((type) =>
-            type.id === product?.member_area
-              ? (product?.member_area as any).type_id
-              : 5,
-          )?.name
-        }
-        label="Tipo de Área de Membros"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        InputProps={{
-          readOnly: true,
-        }}
-        style={{ marginBottom: '1.0rem' }}
+        onChange={(e) => setValue('title', e.target.value)}
       />
       <InputField
         color="secondary"
@@ -175,6 +156,24 @@ const Geral: FC<props> = ({ id }) => {
         }}
         placeholder="Cole o link do vídeo aqui"
         onChange={(e) => setVideo(e.target.value)}
+      />
+      <InputField
+        color="secondary"
+        value={
+          types.find((type) =>
+            type.id === product?.member_area
+              ? (product?.member_area as any).type_id
+              : 5,
+          )?.name
+        }
+        disabled
+        label="Tipo de Área de Membros"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        InputProps={{
+          readOnly: true,
+        }}
         style={{ marginBottom: '1.8rem' }}
       />
       <Grid container>

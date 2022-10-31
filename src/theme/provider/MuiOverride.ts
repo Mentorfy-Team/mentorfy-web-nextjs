@@ -43,6 +43,15 @@ const TextFieldStyle = {
   } as ComponentsProps['MuiTextField'],
   styleOverrides: {
     root: {
+      '.Mui-disabled': {
+        fieldset: {
+          border: '1px solid #333333 !important',
+        },
+        input: {
+          '-webkit-text-fill-color': '#666666 ',
+          'fill-color': '#666666 ',
+        },
+      },
       input: {
         height: '1.8rem',
       },
