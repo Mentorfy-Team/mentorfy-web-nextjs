@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Task, Workspaces } from '@mui/icons-material';
 import Save from '@mui/icons-material/Save';
 import Box from '@mui/material/Box';
@@ -18,6 +18,7 @@ import {
 } from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
 import { FilesToDelete } from '~/services/file-upload.service';
 import { UpdateMemberAreaTools } from '~/services/member-area.service';
+import { userStore } from '~/stores';
 import {
   AddGroup,
   AddTool,
@@ -54,13 +55,16 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   }>();
   const [open, setOpen] = useState(false);
   const [steps, setSteps] = useState<DnDObject[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const { isLoading, setLoading } = userStore();
   const theme = useTheme();
   const Image = '/svgs/step-image.svg';
 
   const route = useRouter();
-  const { steps: stepsData, mutate } = useMemberAreaTools(id);
+  const {
+    steps: stepsData,
+    mutate,
+    isLoading: loadingTools,
+  } = useMemberAreaTools(id);
 
   useEffect(() => {
     setSteps((oldSteps) => {
@@ -138,13 +142,17 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   }, [currentModal, open, id]);
 
   const handleSave = useCallback(async () => {
-    toast.success('Alterações salvas com sucesso', { autoClose: 2000 });
+    setLoading(true);
     // timout para dar tempo para as imagens se organizarem
-    setTimeout(async function () {
+    setTimeout(async () => {
       await UpdateMemberAreaTools(id, steps);
-      mutate();
+      await mutate();
+      toast.success('Alterações salvas com sucesso', { autoClose: 2000 });
+      setTimeout(() => {
+        setLoading(false);
+      }, 250);
     }, 1000);
-  }, [id, mutate, steps]);
+  }, [id, mutate, setLoading, steps]);
 
   // refId é enviado automaticamente antes de chegar aqui.
   const GetOnChange = useCallback(
@@ -195,7 +203,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
     }).name;
   }, []);
 
-  const hasChanges = useCallback(() => {
+  const hasChanges = useMemo(() => {
     // verifica se todos os elementos do array são iguais
     if (!steps || steps.length === 0) return false;
     const haschanges =
@@ -230,10 +238,14 @@ const EditarMentoria: FC<Props> = ({ id }) => {
           color="primary"
           onClick={() => handleSave()}
           loading={isLoading}
-          disabled={!hasChanges() || isLoading}
+          disabled={!hasChanges || isLoading}
         >
           <Save />
-          <Typography variant="body2" ml={1}>
+          <Typography
+            sx={{ color: isLoading ? 'transparent' : null }}
+            variant="body2"
+            ml={1}
+          >
             Salvar alterações
           </Typography>
         </SaveButton>

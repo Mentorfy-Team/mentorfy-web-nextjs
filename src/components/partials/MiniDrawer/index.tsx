@@ -134,7 +134,7 @@ const MiniDrawer: React.FC<props> = ({ children }) => {
         }}
       >
         <AnimatedBox
-          loading={isLoading}
+          loading={false}
           sx={{
             height: '0vh',
           }}

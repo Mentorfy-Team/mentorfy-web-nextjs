@@ -110,8 +110,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
       if (shouldPlay) setPlayVideo(true);
     }, 2000);
     setTimeout(() => {
-      //setVolume(0.5);
-    }, 6000);
+      setVolume(0);
+    }, 45000);
     setTimeout(() => {
       //setPlayVideo(false);
     }, 60000);
