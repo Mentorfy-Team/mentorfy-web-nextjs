@@ -37,9 +37,13 @@ const ChecklistModal = ({
   const [color, setColor] = useState(false);
 
   const handleFinish = () => {
-    onChange({ data: input, extra: {
-      finished: taskData.length === input.length
-    } });
+    if (taskData)
+      onChange({
+        data: input,
+        extra: {
+          finished: taskData.length === input.length,
+        },
+      });
     setOpen(false);
   };
 
@@ -82,42 +86,47 @@ const ChecklistModal = ({
       >
         <Description>{descriptionData}</Description>
 
-        <OptionsWrapper>
-          {taskData?.map((task) => (
-            <OptionsBox
-              key={task.id}
-              onClick={() => {
-                setColor((prev) => !prev);
-                const index = input.findIndex((item) => item.id === task.id);
-                if (index >= 0) {
-                  setInput((old) => {
-                    const newInput = [...old];
-                    newInput[index] = { id: task.id, value: !old[index].value };
-                    return newInput;
-                  });
-                } else {
-                  setInput((old) => [...old, { id: task.id, value: true }]);
-                }
-              }}
-              sx={{ cursor: 'pointer' }}
-            >
-              <BpCheckbox
-                checked={input?.find((i) => i.id === task.id)?.value || false}
-              />
-              <OptionsText
-                sx={{
-                  color: `${
-                    input?.find((i) => i.id === task.id)?.value
-                      ? '#7DDC51'
-                      : '#E9E7E7'
-                  }`,
+        {taskData && (
+          <OptionsWrapper>
+            {taskData?.map((task) => (
+              <OptionsBox
+                key={task.id}
+                onClick={() => {
+                  setColor((prev) => !prev);
+                  const index = input.findIndex((item) => item.id === task.id);
+                  if (index >= 0) {
+                    setInput((old) => {
+                      const newInput = [...old];
+                      newInput[index] = {
+                        id: task.id,
+                        value: !old[index].value,
+                      };
+                      return newInput;
+                    });
+                  } else {
+                    setInput((old) => [...old, { id: task.id, value: true }]);
+                  }
                 }}
+                sx={{ cursor: 'pointer' }}
               >
-                {task.title}
-              </OptionsText>
-            </OptionsBox>
-          ))}
-        </OptionsWrapper>
+                <BpCheckbox
+                  checked={input?.find((i) => i.id === task.id)?.value || false}
+                />
+                <OptionsText
+                  sx={{
+                    color: `${
+                      input?.find((i) => i.id === task.id)?.value
+                        ? '#7DDC51'
+                        : '#E9E7E7'
+                    }`,
+                  }}
+                >
+                  {task.title}
+                </OptionsText>
+              </OptionsBox>
+            ))}
+          </OptionsWrapper>
+        )}
 
         <CloseButton onClick={handleFinish}>Salvar</CloseButton>
       </ModalDialogContent>
