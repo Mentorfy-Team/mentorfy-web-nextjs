@@ -42,7 +42,8 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
             display: 'flex',
             flexDirection: 'row',
             overflow: 'auto',
-            overflowY: 'visible',
+            overflowY: 'hidden',
+            height: '100%',
             gap: '2rem',
             marginTop: '1.5rem',
           }}
