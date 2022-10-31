@@ -118,7 +118,7 @@ const App = (props: MyAppProps) => {
           </PageWrapper>
           <LoadingPartial />
           <ToastContainer
-            theme='dark'
+            theme="dark"
             autoClose={5000}
             hideProgressBar={false}
           />
