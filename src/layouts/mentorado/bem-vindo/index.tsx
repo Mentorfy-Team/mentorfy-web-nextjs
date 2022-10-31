@@ -99,12 +99,12 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
 
     setTimeout(() => {
       if (shouldPlay) setPlayVideoFade(true);
-    }, 5000);
+    }, 3000);
     setTimeout(() => {
       if (shouldPlay) setPlayVideo(true);
-    }, 4000);
+    }, 2000);
     setTimeout(() => {
-      setVolume(0.5);
+      //setVolume(0.5);
     }, 6000);
     setTimeout(() => {
       //setPlayVideo(false);
