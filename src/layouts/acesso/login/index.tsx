@@ -1,4 +1,4 @@
-import { FC, useCallback, useState, useEffect } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
@@ -6,6 +6,7 @@ import InputField from '~/components/atoms/InputField';
 import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
 import { MentorRoutes, MentoredRoutes } from '~/consts/routes/routes.consts';
+import { useProfile } from '~/hooks/useProfile';
 import { Authenticate } from '~/services/auth/auth.service';
 import { userStore } from '~/stores';
 import { AcessoSubPage } from '..';
@@ -17,8 +18,6 @@ import {
   LoginButton,
   Title,
 } from '../styles';
-import { CookieUtil } from '~/shared/utils/cookie/cookie.util';
-import { useProfile } from '~/hooks/useProfile';
 
 type props = {
   pageChange: (page: AcessoSubPage) => void;
@@ -45,12 +44,11 @@ const Login: FC<props> = ({ pageChange }) => {
       setIsLoading(true);
       const registerData = await Authenticate({ email, password });
       mutate();
-      if (!registerData.error) {
-      } else {
-        if (registerData.error.includes('email')) {
-          setError('*Email e ou senha incorretos, tente novamente!');
-        }
+
+      if (values.email !== email || values.password !== password) {
+        setError('*Email e ou senha incorretos, tente novamente!');
       }
+
       setIsLoading(false);
     },
     [email, password, route],
