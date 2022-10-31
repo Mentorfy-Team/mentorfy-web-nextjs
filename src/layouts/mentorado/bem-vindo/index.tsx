@@ -67,7 +67,13 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         marginBottom: '1rem',
       }}
     >
-      <CollorFullTypography>{featuredProduct?.title}</CollorFullTypography>
+      <CollorFullTypography
+        one={featuredProduct?.extra?.titleGradiente?.one || 'white'}
+        two={featuredProduct?.extra?.titleGradiente?.two || 'white'}
+        three={featuredProduct?.extra?.titleGradiente?.three || 'white'}
+      >
+        {featuredProduct?.title}
+      </CollorFullTypography>
     </Box>
   );
 
@@ -182,7 +188,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
           >
             {featuredProduct?.description}
           </Box>
-          <Box display="flex" gap="1rem" mt={3} width='100%'>
+          <Box display="flex" gap="1rem" mt={3} width="100%">
             <PlayButton
               onClick={() =>
                 router.push(
@@ -194,8 +200,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                     .normalize('NFD')
                     .replace(/[\u0300-\u036f]/g, '')
                     .toLowerCase() +
-                  '/' +
-                  featuredProduct.id,
+                    '/' +
+                    featuredProduct.id,
                 )
               }
               variant="outlined"
@@ -211,10 +217,14 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               />
               Mais Informações
             </MoreInfo>
-            <VolumeButton onClick={() => volume === 0 ? setVolume(0.5) : setVolume(0)}>
+            <VolumeButton
+              onClick={() => (volume === 0 ? setVolume(0.5) : setVolume(0))}
+            >
               <Image
-                src={volume === 0 ? '/svgs/volume-xmark.svg' : '/svgs/volume.svg'}
-                alt='volume-icon'
+                src={
+                  volume === 0 ? '/svgs/volume-xmark.svg' : '/svgs/volume.svg'
+                }
+                alt="volume-icon"
                 height={18}
                 width={18}
               />
@@ -243,7 +253,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             >
               {clientProducts.map((product, index) => (
                 <CourseBox
-                  onMouseOver={() => { }}
+                  onMouseOver={() => {}}
                   className="item"
                   height={400}
                   key={index}
@@ -255,8 +265,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                         .normalize('NFD')
                         .replace(/[\u0300-\u036f]/g, '')
                         .toLowerCase() +
-                      '/' +
-                      product.id,
+                        '/' +
+                        product.id,
                     );
                   }}
                 >
@@ -285,13 +295,13 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               {[
                 ...Array(
                   numberOfSlides -
-                  (clientProducts.length > numberOfSlides
-                    ? numberOfSlides
-                    : clientProducts.length),
+                    (clientProducts.length > numberOfSlides
+                      ? numberOfSlides
+                      : clientProducts.length),
                 ),
               ].map((_, i) => (
                 <CourseBox
-                  onMouseOver={() => { }}
+                  onMouseOver={() => {}}
                   className="item"
                   height={sizeLg ? '400px' : 'unset'}
                   width={sizeLg ? '300px' : 'unset'}
@@ -313,7 +323,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             .filter((p) => p.banner_image)
             .map((product, index) => (
               <CourseBox
-                onMouseOver={() => { }}
+                onMouseOver={() => {}}
                 className="item"
                 height={sizeLg ? '190px' : 'unset'}
                 width={sizeLg ? '350px' : 'unset'}
@@ -326,8 +336,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                       .normalize('NFD')
                       .replace(/[\u0300-\u036f]/g, '')
                       .toLowerCase() +
-                    '/' +
-                    product.id,
+                      '/' +
+                      product.id,
                   );
                 }}
               >

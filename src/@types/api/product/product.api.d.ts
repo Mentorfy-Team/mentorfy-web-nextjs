@@ -34,6 +34,7 @@ declare namespace ProductApi {
         main_type: string;
         old_main_url: string;
         video: string;
+        extra: any;
       };
     }
 

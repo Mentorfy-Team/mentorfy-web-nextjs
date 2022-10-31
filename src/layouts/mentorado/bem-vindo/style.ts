@@ -276,10 +276,11 @@ export const ProductTitle = styled(Typography)`
   -webkit-box-orient: vertical;
 `;
 
-export const CollorFullTypography = styled(Typography)`
+export const CollorFullTypography = styled(Typography)<{ one; two; three }>`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background: linear-gradient(40.22deg, #c02425 22.52%, #f0cb35 76.9%);
+  background: ${({ one, two, three }) =>
+    `linear-gradient(90deg, ${one} 0%, ${two} 50%, ${three} 100%)`};
   background-clip: text;
 
   font-size: 2.5rem;
@@ -305,15 +306,14 @@ export const CollorFullMentorfy = styled(Typography)`
 export const VolumeButton = styled(Box)`
   width: 35px;
   height: 35px;
-  border: 1px solid #93898A;
+  border: 1px solid #93898a;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  
-  :hover { 
+  :hover {
     background-color: transparent;
     opacity: 0.5;
   }

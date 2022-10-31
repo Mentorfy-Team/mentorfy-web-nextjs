@@ -1,4 +1,5 @@
 import LoadingButton from '@mui/lab/LoadingButton';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -12,6 +13,17 @@ export const SvgWrapper = styled('div')`
 `;
 
 export const SaveButton = styled(LoadingButton)``;
+
+export const AbsolutePosition = styled(Box)`
+  position: absolute;
+  z-index: 2;
+`;
+
+export const PickerWrapper = styled(Box)`
+  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
+  text-align: start;
+`;
 
 export const ReturnButton = styled(Button)`
   height: 2.5rem;
