@@ -41,13 +41,12 @@ const Login: FC<props> = ({ pageChange }) => {
         setError('*Preencha todos os campos');
         return;
       }
-      setIsLoading(true);
-      const registerData = await Authenticate({ email, password });
-      mutate();
-
       if (values.email !== email || values.password !== password) {
         setError('*Email e ou senha incorretos, tente novamente!');
       }
+      setIsLoading(true);
+      const registerData = await Authenticate({ email, password });
+      mutate();
 
       setIsLoading(false);
     },
