@@ -2,11 +2,12 @@ import { useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
+import Description from '~/components/atoms/ModalDescription';
 import TextRating from '~/components/atoms/Rating';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import Heatmap from './Heatmap';
-import { ButtonsWrapper, Description, ForwardButton, Question } from './styles';
+import { ButtonsWrapper, ForwardButton, Question } from './styles';
 
 type InputProps = { id: string; rating: number }[];
 type ExtraProps = boolean;

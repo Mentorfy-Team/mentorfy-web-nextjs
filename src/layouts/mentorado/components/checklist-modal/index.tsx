@@ -3,13 +3,13 @@ import Box from '@mui/material/Box';
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 import { useTheme } from '@mui/material/styles';
 import Image from 'next/image';
+import Description from '~/components/atoms/ModalDescription';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import {
   BpCheckedIcon,
   BpIcon,
   CloseButton,
-  Description,
   OptionsBox,
   OptionsText,
   OptionsWrapper,

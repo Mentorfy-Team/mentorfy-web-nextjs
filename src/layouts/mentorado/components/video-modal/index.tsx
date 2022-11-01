@@ -4,13 +4,13 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import Description from '~/components/atoms/ModalDescription';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import { useProfile } from '~/hooks/useProfile';
 import {
   CommentInput,
   CompleteButton,
-  Description,
   SendButton,
 } from './styles';
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });

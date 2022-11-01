@@ -3,12 +3,12 @@ import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
 import InputField from '~/components/atoms/InputField';
+import Description from '~/components/atoms/ModalDescription';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import {
   BackButton,
   ButtonsWrapper,
-  Description,
   ForwardButton,
   Question,
 } from './styles';
