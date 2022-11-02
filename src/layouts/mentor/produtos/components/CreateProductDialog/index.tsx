@@ -39,9 +39,6 @@ export default function CreateProductDialog({ open, setOpen }) {
       }
       setValue('title', '');
       setValue('price', '');
-      console.log(types);
-      console.log(product);
-      console.log(types[0].id.toString() === product.deliver);
       route.push(
         MentorRoutes.members_area +
           '/' +

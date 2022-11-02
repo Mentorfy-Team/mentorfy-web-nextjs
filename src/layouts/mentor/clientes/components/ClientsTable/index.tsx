@@ -24,6 +24,10 @@ const columns: Column[] = [
     label: 'PRODUTOS',
   },
   {
+    id: 'state',
+    label: 'STATUS',
+  },
+  {
     id: 'date',
     label: 'ÚLTIMA COMPRA',
   },
@@ -34,6 +38,7 @@ interface Data {
   email: string;
   product: JSX.Element;
   date: JSX.Element;
+  state: JSX.Element;
 }
 
 const ClientsTable = ({ rows = [] }: { rows: UserClient.ClientRelation[] }) => {
@@ -46,6 +51,7 @@ const ClientsTable = ({ rows = [] }: { rows: UserClient.ClientRelation[] }) => {
       product: string,
       qty: number,
       date: string,
+      state: string,
     ): Data => {
       return {
         name,
@@ -53,9 +59,10 @@ const ClientsTable = ({ rows = [] }: { rows: UserClient.ClientRelation[] }) => {
         product: (
           <ProductWrapper>
             <ProductBox>{product}</ProductBox>
-            <Qty>+{qty}</Qty>
+            {qty > 1 ? <Qty>+{qty - 1}</Qty> : ''}
           </ProductWrapper>
         ),
+        state: <div>{state}</div>,
         date: (
           <Box
             sx={{
@@ -110,6 +117,7 @@ const ClientsTable = ({ rows = [] }: { rows: UserClient.ClientRelation[] }) => {
           lastProduct.title,
           row.products.length,
           lastProduct.subscribed_at,
+          'Ativo',
         );
       })}
       onPageChange={setPage}

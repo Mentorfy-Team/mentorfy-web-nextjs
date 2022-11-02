@@ -17,10 +17,6 @@ const Dashboard: FC<PageTypes.Props> = () => {
   useEffect(() => {
     setWidth(ref.current.offsetWidth);
     setHeight(ref.current.offsetHeight);
-
-    console.log(ref.current.parentElement);
-    console.log(ref.current.parentElement.offsetHeight);
-    console.log(ref.current.parentElement.offsetWidth);
   }, []);
   return (
     <>

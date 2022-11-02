@@ -1,0 +1,26 @@
+import useSWR from 'swr';
+import { ProductTypes } from '~/@types/product';
+import { ApiRoutes } from '~/consts/routes/api.routes';
+import { fetcher } from '~/hooks/fetcher';
+
+type props = Partial<ProductTypes.ClientJorney>;
+
+export function useListOfClientsInProduct(id) {
+  const { data, error } = useSWR<props>(
+    `${ApiRoutes.products_clients_list}?id=${id}`,
+    fetcher,
+    {
+      fallbackData: {
+        clients: [],
+        tools: [],
+        result: [],
+      },
+    },
+  );
+
+  return {
+    data: data || {},
+    isLoading: !error && !data,
+    isError: error,
+  };
+}

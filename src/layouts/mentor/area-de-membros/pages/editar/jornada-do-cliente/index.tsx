@@ -1,15 +1,16 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Image from 'next/image';
+import Image from 'next/future/image';
+import { ProductTypes } from '~/@types/product';
 import SearchInput from '~/components/atoms/SearchInput';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
+import { useListOfClientsInProduct } from '~/hooks/useListOfClientsInProduct';
 import CompletedClientsTable from './components/Tabela-Clientes-Concluído';
 import {
   Bundle,
   BundleAmount,
-  BundleDescription,
   BundleHeader,
   Class,
   ClassDescription,
@@ -25,178 +26,72 @@ type props = {
 
 const ClientJourney: FC<props> = ({ id }) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
+  const [steps, setSteps] = useState<ProductTypes.resultJorney[]>([]);
+  const {
+    data: { clients, result: stepsData },
+  } = useListOfClientsInProduct(id);
+
+  useEffect(() => {
+    setSteps(stepsData);
+  }, [stepsData]);
 
   return (
     <ContentWidthLimit withoutScroll maxWidth={1900}>
       <ScrollArea>
-        <Bundle>
-          <BundleHeader>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <ImageWrapper>
-                <Image
-                  alt="imagem-principal"
-                  width={40}
-                  height={40}
-                  src="/svgs/step-image.svg"
-                />
-                <ImageText>Madrugada</ImageText>
-              </ImageWrapper>
-
-              <Box sx={{ textAlign: 'right' }}>
-                <Typography sx={{ fontWeight: '600' }}>
-                  Total de Mentorandos
-                </Typography>
-                <BundleAmount>272</BundleAmount>
+        {steps.map((step, index) => (
+          <Bundle key={index}>
+            <BundleHeader>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    gap: '0.5rem',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <ImageWrapper>
+                    <Image
+                      alt="imagem-principal"
+                      width={40}
+                      height={40}
+                      src={steps[index].extra ? step?.extra[0]?.sourceUrl : ''}
+                    />
+                  </ImageWrapper>
+                  <ImageText>{step.title}</ImageText>
+                </Box>
+                <Box sx={{ textAlign: 'right' }}>
+                  <Typography sx={{ fontWeight: '600' }}>
+                    Total de Mentorandos
+                  </Typography>
+                  <BundleAmount>{step.currentClients.length}</BundleAmount>
+                </Box>
               </Box>
-            </Box>
+            </BundleHeader>
 
-            <BundleDescription>
-              Lorem ipsum dolor aist devellum lorem ipsum.
-            </BundleDescription>
-          </BundleHeader>
+            <ClassWrapper>
+              {step.rows.map((task, taskIndex) => {
+                const percent = task.progress || 0;
+                return (
+                  <Class key={task.id}>
+                    <ClassDescription>{task.title}</ClassDescription>
 
-          <ClassWrapper>
-            <Class>
-              <ClassDescription>Etapa 1 - Aula 1 Lorem Ipsum</ClassDescription>
-
-              <ClassDescription>
-                100%{' '}
-                <Image
-                  alt="imagem-principal"
-                  width={13}
-                  height={13}
-                  src="/svgs/done.svg"
-                />
-              </ClassDescription>
-            </Class>
-          </ClassWrapper>
-        </Bundle>
-        <Bundle>
-          <BundleHeader>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <ImageWrapper>
-                <Image
-                  alt="imagem-principal"
-                  width={40}
-                  height={40}
-                  src="/svgs/step-image.svg"
-                />
-                <ImageText>Madrugada</ImageText>
-              </ImageWrapper>
-
-              <Box sx={{ textAlign: 'right' }}>
-                <Typography sx={{ fontWeight: '600' }}>
-                  Total de Mentorandos
-                </Typography>
-                <BundleAmount>272</BundleAmount>
-              </Box>
-            </Box>
-
-            <BundleDescription>
-              Lorem ipsum dolor aist devellum lorem ipsum.
-            </BundleDescription>
-          </BundleHeader>
-
-          <ClassWrapper>
-            <Class>
-              <ClassDescription>Etapa 1 - Aula 1 Lorem Ipsum</ClassDescription>
-
-              <ClassDescription>
-                100%{' '}
-                <Image
-                  alt="imagem-principal"
-                  width={13}
-                  height={13}
-                  src="/svgs/done.svg"
-                />
-              </ClassDescription>
-            </Class>
-          </ClassWrapper>
-        </Bundle>
-        <Bundle>
-          <BundleHeader>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <ImageWrapper>
-                <Image
-                  alt="imagem-principal"
-                  width={40}
-                  height={40}
-                  src="/svgs/step-image.svg"
-                />
-                <ImageText>Madrugada</ImageText>
-              </ImageWrapper>
-
-              <Box sx={{ textAlign: 'right' }}>
-                <Typography sx={{ fontWeight: '600' }}>
-                  Total de Mentorandos
-                </Typography>
-                <BundleAmount>272</BundleAmount>
-              </Box>
-            </Box>
-
-            <BundleDescription>
-              Lorem ipsum dolor aist devellum lorem ipsum.
-            </BundleDescription>
-          </BundleHeader>
-
-          <ClassWrapper>
-            <Class>
-              <ClassDescription>Etapa 1 - Aula 1 Lorem Ipsum</ClassDescription>
-
-              <ClassDescription>
-                100%{' '}
-                <Image
-                  alt="imagem-principal"
-                  width={13}
-                  height={13}
-                  src="/svgs/done.svg"
-                />
-              </ClassDescription>
-            </Class>
-          </ClassWrapper>
-        </Bundle>
-        <Bundle>
-          <BundleHeader>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-              <ImageWrapper>
-                <Image
-                  alt="imagem-principal"
-                  width={40}
-                  height={40}
-                  src="/svgs/step-image.svg"
-                />
-                <ImageText>Madrugada</ImageText>
-              </ImageWrapper>
-
-              <Box sx={{ textAlign: 'right' }}>
-                <Typography sx={{ fontWeight: '600' }}>
-                  Total de Mentorandos
-                </Typography>
-                <BundleAmount>272</BundleAmount>
-              </Box>
-            </Box>
-
-            <BundleDescription>
-              Lorem ipsum dolor aist devellum lorem ipsum.
-            </BundleDescription>
-          </BundleHeader>
-
-          <ClassWrapper>
-            <Class>
-              <ClassDescription>Etapa 1 - Aula 1 Lorem Ipsum</ClassDescription>
-
-              <ClassDescription>
-                100%{' '}
-                <Image
-                  alt="imagem-principal"
-                  width={13}
-                  height={13}
-                  src="/svgs/done.svg"
-                />
-              </ClassDescription>
-            </Class>
-          </ClassWrapper>
-        </Bundle>
+                    <ClassDescription>
+                      {percent}%{' '}
+                      <Image
+                        alt="imagem-principal"
+                        width={13}
+                        height={13}
+                        src={`/svgs/${
+                          percent === 100 ? 'done' : 'done-gray'
+                        }.svg`}
+                      />
+                    </ClassDescription>
+                  </Class>
+                );
+              })}
+            </ClassWrapper>
+          </Bundle>
+        ))}
       </ScrollArea>
 
       <SearchInput
@@ -205,7 +100,7 @@ const ClientJourney: FC<props> = ({ id }) => {
           margin: '1rem 0',
         }}
       />
-      <CompletedClientsTable />
+      <CompletedClientsTable clients={clients} />
     </ContentWidthLimit>
   );
 };

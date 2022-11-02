@@ -60,11 +60,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   const Image = '/svgs/step-image.svg';
 
   const route = useRouter();
-  const {
-    steps: stepsData,
-    mutate,
-    isLoading: loadingTools,
-  } = useMemberAreaTools(id);
+  const { steps: stepsData, mutate } = useMemberAreaTools(id);
 
   useEffect(() => {
     setSteps((oldSteps) => {
@@ -179,10 +175,8 @@ const EditarMentoria: FC<Props> = ({ id }) => {
             Object.assign(oldSteps[stepIndex], data);
             oldSteps[stepIndex].rows = oldSteps[stepIndex].rows.map((tasks) => {
               tasks.delete = true;
-              console.log('task delete');
               return { ...tasks };
             });
-            console.log('oldStep', oldSteps[stepIndex].rows);
             return [...oldSteps];
           });
         } else {

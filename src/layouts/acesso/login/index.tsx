@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
@@ -38,35 +38,33 @@ const Login: FC<props> = ({ pageChange }) => {
     mutate,
   } = useProfile();
 
-  const onSubmit: SubmitHandler<Auth> = useCallback(
-    async (values) => {
-      if (!email || !password) {
-        setError('*Preencha todos os campos');
-        return;
-      }
-      setIsLoading(true);
-      const registerData = await Authenticate({ email, password });
-      if (!registerData || registerData.error) {
-        setError('*Email e ou senha incorretos, tente novamente!');
-        setIsLoading(false);
-        return;
-      } else {
-        mutate();
-      }
-      setIsLoading(false);
-    },
-    [email, mutate, password],
-  );
-
-  useEffect(() => {
+  const enter = useCallback(async () => {
     if (profile?.id) {
       if (profile?.access_type === 'mentor') {
-        route.push(MentorRoutes.home);
+        await route.push(MentorRoutes.home);
       } else {
-        route.push(MentoredRoutes.home);
+        await route.push(MentoredRoutes.home);
       }
+      setIsLoading(false);
     }
   }, [profile, route]);
+
+  const onSubmit: SubmitHandler<Auth> = useCallback(async () => {
+    if (!email || !password) {
+      setError('*Preencha todos os campos');
+      return;
+    }
+    setIsLoading(true);
+    const registerData = await Authenticate({ email, password });
+    if (!registerData || registerData.error) {
+      setError('*Email e ou senha incorretos, tente novamente!');
+      setIsLoading(false);
+      return;
+    } else {
+      mutate();
+      enter();
+    }
+  }, [email, enter, mutate, password]);
 
   return (
     <>
