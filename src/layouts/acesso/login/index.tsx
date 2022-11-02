@@ -33,7 +33,10 @@ const Login: FC<props> = ({ pageChange }) => {
   const { userLogin } = userStore();
   const { register, handleSubmit } = useForm<Auth>();
 
-  const { data: {profile}, mutate } = useProfile();
+  const {
+    data: { profile },
+    mutate,
+  } = useProfile();
 
   const onSubmit: SubmitHandler<Auth> = useCallback(
     async (values) => {
@@ -41,16 +44,18 @@ const Login: FC<props> = ({ pageChange }) => {
         setError('*Preencha todos os campos');
         return;
       }
-      if (values.email !== email || values.password !== password) {
-        setError('*Email e ou senha incorretos, tente novamente!');
-      }
       setIsLoading(true);
       const registerData = await Authenticate({ email, password });
-      mutate();
-
+      if (!registerData || registerData.error) {
+        setError('*Email e ou senha incorretos, tente novamente!');
+        setIsLoading(false);
+        return;
+      } else {
+        mutate();
+      }
       setIsLoading(false);
     },
-    [email, password, route],
+    [email, mutate, password],
   );
 
   useEffect(() => {
@@ -61,7 +66,7 @@ const Login: FC<props> = ({ pageChange }) => {
         route.push(MentoredRoutes.home);
       }
     }
-  }, [profile]);
+  }, [profile, route]);
 
   return (
     <>
@@ -108,7 +113,10 @@ const Login: FC<props> = ({ pageChange }) => {
             shrink: true,
           }}
           error={!!error}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setError(null);
+          }}
         />
         <InputField
           id="outlined-required"
@@ -119,7 +127,10 @@ const Login: FC<props> = ({ pageChange }) => {
             shrink: true,
           }}
           error={!!error}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError(null);
+          }}
         />
         {error && <ErrorHelper>{error}</ErrorHelper>}
         <LoginButton loading={isLoading} disabled={isLoading} type="submit">
