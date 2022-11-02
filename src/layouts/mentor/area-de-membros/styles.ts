@@ -6,13 +6,13 @@ import Typography from '@mui/material/Typography';
 export const OptionsWrapper = styled(Box)``;
 
 export const AreaWrapper = styled(Box)`
-cursor: pointer;
-position: relative;
-transition: all 0.1s ease-in-out;
- :hover {
-  transform: scale(0.95);
- }
- margin-bottom: 1rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  position: relative;
+  :hover {
+    transform: scale(0.95);
+  }
+  transition: all 0.1s ease-in-out;
 `;
 
 export const HeaderWrapper = styled(Box)`
@@ -51,24 +51,25 @@ export const AbsoluteBottomBox = styled(Box)`
   left: 0;
   margin: 6%;
   position: absolute;
+  width: 270px;
 `;
 
 export const ProductTitle = styled(Typography)`
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
   font-size: 1.5rem;
   font-style: normal;
+
   font-weight: 900;
+  line-clamp: 2;
   line-height: 2rem;
   margin-bottom: 0.5rem;
 
-  overflow: hidden;
-  text-align: start;
   max-width: 23ch;
+  overflow: hidden; /* number of lines to show */
+  text-align: start;
   text-overflow: ellipsis;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2; /* number of lines to show */
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
 `;
 
 export const ImageButton = styled(Box)`

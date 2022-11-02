@@ -35,6 +35,34 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   });
 };
 
+export const del: Handler.Callback<GetRequest, GetResponse> = async (
+  req,
+  res,
+) => {
+  const supabase = CreateSupabaseWithAuth(req);
+  // find relations
+
+  const { data: relations } = await supabase
+    .from('client_product')
+    .select('*')
+    .eq('product_id', req.query.id);
+
+  if (relations.length > 0) {
+    return res.status(400).json({
+      error:
+        'You can not delete this product because it has relations with clients',
+    });
+  }
+
+  await supabase.from('product').delete().eq('id', req.query.id);
+
+  await supabase.from('member_area').delete().eq('id', req.query.id);
+
+  return res.status(200).json({
+    message: 'Product deleted',
+  });
+};
+
 export const post: Handler.Callback<PostRequest, PostResponse> = async (
   req,
   res,

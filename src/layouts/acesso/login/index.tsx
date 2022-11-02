@@ -40,12 +40,14 @@ const Login: FC<props> = ({ pageChange }) => {
 
   const enter = useCallback(async () => {
     if (profile?.id) {
-      if (profile?.access_type === 'mentor') {
-        await route.push(MentorRoutes.home);
-      } else {
-        await route.push(MentoredRoutes.home);
-      }
-      setIsLoading(false);
+      setTimeout(async () => {
+        if (profile?.access_type === 'mentor') {
+          await route.push(MentorRoutes.home);
+        } else {
+          await route.push(MentoredRoutes.home);
+        }
+        setIsLoading(false);
+      }, 1000);
     }
   }, [profile, route]);
 
@@ -56,12 +58,13 @@ const Login: FC<props> = ({ pageChange }) => {
     }
     setIsLoading(true);
     const registerData = await Authenticate({ email, password });
+    console.log('registerData', registerData);
     if (!registerData || registerData.error) {
       setError('*Email e ou senha incorretos, tente novamente!');
       setIsLoading(false);
       return;
     } else {
-      mutate();
+      await mutate();
       enter();
     }
   }, [email, enter, mutate, password]);

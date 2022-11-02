@@ -1,17 +1,19 @@
 import { FC, useState } from 'react';
+import { DeleteForever } from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import { MentorRoutes, PublicRoutes } from '~/consts';
+import ModalComponent from '~/components/modules/Modal';
+import { PublicRoutes } from '~/consts';
 import { useProducts } from '~/hooks/useProducts';
 import { GetProfile } from '~/services/profile.service';
 import CreateProductDialog from './components/CreateProductDialog';
+import { DeleteText } from './components/GroupModal/styles';
 import {
   AbsoluteBottomBox,
   AbsoluteTopBox,
@@ -25,10 +27,25 @@ import {
 import PlusSvg from '~/../public/svgs/plus';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
-  const { products } = useProducts(user.id);
+  const { products, mutate } = useProducts(user.id);
   const router = useRouter();
   const theme = useTheme();
   const [openCreatePage, setOpenCreatePage] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [productId, setProductId] = useState('');
+
+  const handleDeleteProduct = async (id: string) => {
+    setProductId(id);
+    setShowConfirmDelete(true);
+  };
+
+  const confirmDeleteProduct = async () => {
+    setShowConfirmDelete(false);
+    await fetch(`/api/products?id=${productId}`, {
+      method: 'DELETE',
+    });
+    mutate();
+  };
 
   return (
     <>
@@ -56,8 +73,9 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
         >
           {products?.map((area, index) => (
             <AreaWrapper
-              onClick={() =>
-                router.push(MentorRoutes.members_area_editar + '/' + area.id)
+              onClick={
+                () => {}
+                // router.push(MentorRoutes.members_area_editar + '/' + area.id)
               }
               key={index}
             >
@@ -94,6 +112,22 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
                   <ProductTitle>{area?.title}</ProductTitle>
                 </AbsoluteBottomBox>
               )}
+              {area.relations?.length === 0 && (
+                <DeleteForever
+                  className="delete-icon"
+                  color="error"
+                  style={{
+                    position: 'absolute',
+                    bottom: '15px',
+                    right: '15px',
+                    opacity: 0.5,
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteProduct(area.id);
+                  }}
+                />
+              )}
             </AreaWrapper>
           ))}
         </Box>
@@ -124,6 +158,20 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
         </Box> */}
       </ContentWidthLimit>
       <CreateProductDialog open={openCreatePage} setOpen={setOpenCreatePage} />
+      <ModalComponent
+        onDelete={() => confirmDeleteProduct()}
+        onSave={() => setShowConfirmDelete(false)}
+        open={showConfirmDelete}
+        title="Remover Mentoria"
+        deleteMessage={true}
+      >
+        <Box sx={{ textAlign: 'center' }}>
+          <DeleteText>
+            Ao remover, você perderá todos os dados relacionados a essa
+            mentoria. Deseja continuar mesmo assim?
+          </DeleteText>
+        </Box>
+      </ModalComponent>
     </>
   );
 };
