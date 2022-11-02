@@ -8,12 +8,20 @@ import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import Toolbar from '~/components/modules/Toolbar';
 import { MentorRoutes, PublicRoutes } from '~/consts';
 import { useProducts } from '~/hooks/useProducts';
 import { GetProfile } from '~/services/profile.service';
 import CreateProductDialog from './components/CreateProductDialog';
-import { AbsoluteBottomBox, AbsoluteTopBox, AreaWrapper, CollorFullMentorfy, CreatAreaButton, EmptyBox, ImageButton, ProductTitle } from './styles';
+import {
+  AbsoluteBottomBox,
+  AbsoluteTopBox,
+  AreaWrapper,
+  CollorFullMentorfy,
+  CreatAreaButton,
+  EmptyBox,
+  ImageButton,
+  ProductTitle,
+} from './styles';
 import PlusSvg from '~/../public/svgs/plus';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
@@ -24,9 +32,8 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
 
   return (
     <>
-      <Toolbar tabs={['Áreas Ativas']} />
-      <ContentWidthLimit maxWidth={1900}>
-        <Box>
+      <ContentWidthLimit withoutScroll maxWidth={1900}>
+        <Box mt={3}>
           <Box sx={{ float: 'left' }}>
             <Typography>Minhas Mentorias</Typography>
           </Box>
@@ -45,7 +52,6 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
             overflowY: 'hidden',
             height: '100%',
             gap: '2rem',
-            marginTop: '1.5rem',
           }}
         >
           {products?.map((area, index) => (
@@ -63,8 +69,8 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
                     objectFit: 'cover',
                     borderRadius: '0.5rem',
                   }}
-                  width={246}
-                  height={244}
+                  width={300}
+                  height={400}
                 />
               )}
               {!area.main_image && (
@@ -74,8 +80,8 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
                     background:
                       'linear-gradient(180deg, #464646 0%, #161616 100%)',
                   }}
-                  width={246}
-                  height={244}
+                  width={300}
+                  height={400}
                 />
               )}
               <AbsoluteTopBox>
