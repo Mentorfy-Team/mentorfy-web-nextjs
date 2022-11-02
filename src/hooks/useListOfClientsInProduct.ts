@@ -9,13 +9,6 @@ export function useListOfClientsInProduct(id) {
   const { data, error } = useSWR<props>(
     `${ApiRoutes.products_clients_list}?id=${id}`,
     fetcher,
-    {
-      fallbackData: {
-        clients: [],
-        tools: [],
-        result: [],
-      },
-    },
   );
 
   return {

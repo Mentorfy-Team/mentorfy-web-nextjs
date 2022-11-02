@@ -7,6 +7,7 @@ import { ProductTypes } from '~/@types/product';
 import SearchInput from '~/components/atoms/SearchInput';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { useListOfClientsInProduct } from '~/hooks/useListOfClientsInProduct';
+import { userStore } from '~/stores';
 import CompletedClientsTable from './components/Tabela-Clientes-Concluído';
 import {
   Bundle,
@@ -29,16 +30,22 @@ const ClientJourney: FC<props> = ({ id }) => {
   const [steps, setSteps] = useState<ProductTypes.resultJorney[]>([]);
   const {
     data: { clients, result: stepsData },
+    isLoading,
   } = useListOfClientsInProduct(id);
+  const { setLoading } = userStore();
 
   useEffect(() => {
     setSteps(stepsData);
   }, [stepsData]);
 
+  useEffect(() => {
+    setLoading(isLoading);
+  }, [isLoading, setLoading]);
+
   return (
     <ContentWidthLimit withoutScroll maxWidth={1900}>
       <ScrollArea>
-        {steps.map((step, index) => (
+        {steps?.map((step, index) => (
           <Bundle key={index}>
             <BundleHeader>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -94,13 +101,17 @@ const ClientJourney: FC<props> = ({ id }) => {
         ))}
       </ScrollArea>
 
-      <SearchInput
-        sx={{
-          width: isMobile ? '90vw' : '15vw',
-          margin: '1rem 0',
-        }}
-      />
-      <CompletedClientsTable clients={clients} />
+      {!isLoading && (
+        <>
+          <SearchInput
+            sx={{
+              width: isMobile ? '90vw' : '15vw',
+              margin: '1rem 0',
+            }}
+          />
+          <CompletedClientsTable clients={clients} />
+        </>
+      )}
     </ContentWidthLimit>
   );
 };
