@@ -1,5 +1,3 @@
-import { DnDObject, DnDRow } from '~/components/modules/DragNDrop';
-
 const Database: ExternalModules.Supabase.Database;
 
 declare namespace ProductTypes {

@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Image from 'next/future/image';
-import { ProductTypes } from '~/@types/product';
 import SearchInput from '~/components/atoms/SearchInput';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { useListOfClientsInProduct } from '~/hooks/useListOfClientsInProduct';

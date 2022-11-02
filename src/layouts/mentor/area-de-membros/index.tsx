@@ -112,7 +112,7 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
                   <ProductTitle>{area?.title}</ProductTitle>
                 </AbsoluteBottomBox>
               )}
-              {area.relations?.length === 0 && (
+              {(area as any).relations?.length === 0 && (
                 <DeleteForever
                   className="delete-icon"
                   color="error"

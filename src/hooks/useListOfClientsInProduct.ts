@@ -1,5 +1,4 @@
 import useSWR from 'swr';
-import { ProductTypes } from '~/@types/product';
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { fetcher } from '~/hooks/fetcher';
 

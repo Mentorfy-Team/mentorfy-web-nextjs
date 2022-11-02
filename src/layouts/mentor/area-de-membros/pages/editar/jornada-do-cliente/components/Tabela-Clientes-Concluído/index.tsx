@@ -1,5 +1,4 @@
 import dynamic from 'next/dynamic';
-import { ProductTypes } from '~/@types/product';
 import { Column } from '~/components/atoms/Datagrid';
 
 const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
