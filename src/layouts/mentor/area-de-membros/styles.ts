@@ -143,5 +143,8 @@ export const ProductsSelectField = styled(SelectField)`
   }
   .MuiOutlinedInput-input {
     padding: 9.5px 14px;
+  } 
+  svg { 
+    fill: #ffffff;
   }
 `;
