@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
@@ -36,20 +36,22 @@ const Login: FC<props> = ({ pageChange }) => {
   const {
     data: { profile },
     mutate,
+    isLoading: isProfileLoading,
   } = useProfile();
 
-  const enter = useCallback(async () => {
-    if (profile?.id) {
-      setTimeout(async () => {
+  useEffect(() => {
+    if (!isProfileLoading) {
+      if (profile?.id) {
         if (profile?.access_type === 'mentor') {
-          await route.push(MentorRoutes.home);
+          route.push(MentorRoutes.home);
         } else {
-          await route.push(MentoredRoutes.home);
+          route.push(MentoredRoutes.home);
         }
-        setIsLoading(false);
-      }, 1000);
+      }
     }
-  }, [profile, route]);
+    if (profile?.id) setIsLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isProfileLoading, profile]);
 
   const onSubmit: SubmitHandler<Auth> = useCallback(async () => {
     if (!email || !password) {
@@ -58,16 +60,15 @@ const Login: FC<props> = ({ pageChange }) => {
     }
     setIsLoading(true);
     const registerData = await Authenticate({ email, password });
-    console.log('registerData', registerData);
+
     if (!registerData || registerData.error) {
       setError('*Email e ou senha incorretos, tente novamente!');
       setIsLoading(false);
       return;
     } else {
       await mutate();
-      enter();
     }
-  }, [email, enter, mutate, password]);
+  }, [email, mutate, password]);
 
   return (
     <>
