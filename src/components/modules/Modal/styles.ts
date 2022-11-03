@@ -10,9 +10,7 @@ type Props = {
 };
 
 export const Modal = styled(Dialog)<Props>`
-  .css-1hg2taq-MuiPaper-root-MuiDialog-paper { 
-    background-color: ${({theme}) => theme.palette.primary.dark};
-  }
+
   ${({ isMentorado }) =>
     isMentorado &&
     css`
@@ -33,8 +31,7 @@ export const Modal = styled(Dialog)<Props>`
     popularProduct &&
     css`
       .css-1hg2taq-MuiPaper-root-MuiDialog-paper {
-        
-        height: fit-content;
+        background-color: #121212;
         max-height: 100%;
         max-width: 900px;
       }
@@ -43,7 +40,6 @@ export const Modal = styled(Dialog)<Props>`
 `;
 
 export const ModalDialogContent = styled(DialogContent)<Props>`
-  background-color: #121212;
   ${({ isMentorado }) =>
     isMentorado
       ? css`
@@ -58,7 +54,8 @@ export const ModalDialogContent = styled(DialogContent)<Props>`
   ${({ popularProduct }) =>
     popularProduct
       && css`
-          max-height: 100%;
+      background-color: #080808;
+          height: 100%;
           overflow: hidden;
           padding: 0;
           width: 800px;

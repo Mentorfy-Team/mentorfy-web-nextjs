@@ -29,6 +29,7 @@ import {
   Background,
   BannerBox,
   CollorFullMentorfy,
+  CollorFullPopular,
   CollorFullTypography,
   CourseBox,
   CustomTypography,
@@ -36,6 +37,7 @@ import {
   Overlay,
   OverlayPopular,
   PlayButton,
+  PopularButton,
   PopularProductDescription,
   ProductTitle,
   RatingBox,
@@ -57,6 +59,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
   const [featuredProduct, setFeaturedProduct] =
     useState<Partial<ProductTypes.Product>>();
   const [volume, setVolume] = useState<number>(0);
+  const [popularVolume, setPopularVolume] = useState<number>(0);
   const [mainThumb, setMainThumb] = useState<string>('');
   const router = useRouter();
 
@@ -386,7 +389,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                   height="100%"
                   playing={true}
                   controls={false}
-                  volume={volume}
+                  volume={popularVolume}
                   config={{
                     youtube: {
                       playerVars: {
@@ -417,34 +420,50 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             sx={{
               maxWidth: '100%',
               textAlign: 'start',
-              display: '-webkit-box',
-              '-webkit-line-clamp': '3',
-              'line-clamp': '3',
-              '-webkit-box-orient': 'vertical',
-              marginTop: '-3rem',
-              position: 'absolute',
+              display: 'flex',
+              flexDirection: 'column',
+              margin: '-4rem 1rem 1rem 1rem',
+              position: 'relative',
+              gap: '0.5rem'
             }}
           >
             <Box
               sx={{
-                maxWidth: '16.5rem',
                 textAlign: 'start',
-                marginTop: '-3rem',
-                marginBottom: '1rem',
+                display: 'flex',
+                gap: '1rem',
+                alignItems: 'center'
               }}
             >
-              <CollorFullTypography
+              <CollorFullPopular
                 one={currentProduct?.extra?.titleGradiente?.one || 'white'}
                 two={currentProduct?.extra?.titleGradiente?.two || 'white'}
                 three={currentProduct?.extra?.titleGradiente?.three || 'white'}
               >
                 {currentProduct.title}
-              </CollorFullTypography>
+              </CollorFullPopular>
+              <VolumeButton
+                onClick={() => (popularVolume === 0 ? setPopularVolume(0.5) : setPopularVolume(0))}
+              >
+                <Image
+                  src={
+                    popularVolume === 0 ? '/svgs/volume-xmark.svg' : '/svgs/volume.svg'
+                  }
+                  alt="volume-icon"
+                  height={18}
+                  width={18}
+                />
+              </VolumeButton>
             </Box>
             <PopularProductDescription>
               {currentProduct.description}
             </PopularProductDescription>
-          </Box>
+              <PopularButton
+                variant="outlined"
+              >
+                Comprar
+              </PopularButton>
+            </Box>
         </ModalDialogContent>
       </ModalComponent>
     </Background>
