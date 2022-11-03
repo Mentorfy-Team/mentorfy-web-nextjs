@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
@@ -33,35 +33,41 @@ const Login: FC<props> = ({ pageChange }) => {
   const { userLogin } = userStore();
   const { register, handleSubmit } = useForm<Auth>();
 
-  const { data: {profile}, mutate } = useProfile();
+  const {
+    data: { profile },
+    mutate,
+  } = useProfile();
 
-  const onSubmit: SubmitHandler<Auth> = useCallback(
-    async (values) => {
-      if (!email || !password) {
-        setError('*Preencha todos os campos');
-        return;
-      }
-      if (values.email !== email || values.password !== password) {
-        setError('*Email e ou senha incorretos, tente novamente!');
-      }
-      setIsLoading(true);
-      const registerData = await Authenticate({ email, password });
-      mutate();
-
-      setIsLoading(false);
-    },
-    [email, password, route],
-  );
-
-  useEffect(() => {
+  const enter = useCallback(async () => {
     if (profile?.id) {
-      if (profile?.access_type === 'mentor') {
-        route.push(MentorRoutes.home);
-      } else {
-        route.push(MentoredRoutes.home);
-      }
+      setTimeout(async () => {
+        if (profile?.access_type === 'mentor') {
+          await route.push(MentorRoutes.home);
+        } else {
+          await route.push(MentoredRoutes.home);
+        }
+        setIsLoading(false);
+      }, 1000);
     }
-  }, [profile]);
+  }, [profile, route]);
+
+  const onSubmit: SubmitHandler<Auth> = useCallback(async () => {
+    if (!email || !password) {
+      setError('*Preencha todos os campos');
+      return;
+    }
+    setIsLoading(true);
+    const registerData = await Authenticate({ email, password });
+    console.log('registerData', registerData);
+    if (!registerData || registerData.error) {
+      setError('*Email e ou senha incorretos, tente novamente!');
+      setIsLoading(false);
+      return;
+    } else {
+      await mutate();
+      enter();
+    }
+  }, [email, enter, mutate, password]);
 
   return (
     <>
@@ -108,7 +114,10 @@ const Login: FC<props> = ({ pageChange }) => {
             shrink: true,
           }}
           error={!!error}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setError(null);
+          }}
         />
         <InputField
           id="outlined-required"
@@ -119,7 +128,10 @@ const Login: FC<props> = ({ pageChange }) => {
             shrink: true,
           }}
           error={!!error}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError(null);
+          }}
         />
         {error && <ErrorHelper>{error}</ErrorHelper>}
         <LoginButton loading={isLoading} disabled={isLoading} type="submit">

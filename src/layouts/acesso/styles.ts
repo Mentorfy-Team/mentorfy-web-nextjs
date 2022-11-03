@@ -36,7 +36,8 @@ export const AlignSelf = styled(Box)`
 export const ErrorHelper = styled(Typography)`
   color: ${({ theme }) => theme.palette.error.main};
   font-size: 0.8rem;
-  margin-top: 1rem;
+  margin-bottom: -1.2rem;
+  margin-top: -0.5rem;
   text-align: center;
 `;
 

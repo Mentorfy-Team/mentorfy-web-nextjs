@@ -12,7 +12,6 @@ import BootstrapDialog from '~/components/atoms/BootstrapDialog';
 import InputField from '~/components/atoms/InputField';
 import SelectField from '~/components/atoms/SelectField';
 import { MentorRoutes } from '~/consts';
-import { MoneyFormatComponent } from '~/helpers/MoneyFormatComponent';
 import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { CreateProduct } from '~/services/product.service';
 import { BootstrapDialogTitle, Form } from './styles';
@@ -39,11 +38,7 @@ export default function CreateProductDialog({ open, setOpen }) {
       }
       setValue('title', '');
       setValue('price', '');
-      route.push(
-        MentorRoutes.members_area +
-          '/editar/' +
-          product.id,
-      );
+      route.push(MentorRoutes.members_area + '/editar/' + product.id);
       setOpen(false);
       setIsLoading(false);
     },
@@ -113,7 +108,7 @@ export default function CreateProductDialog({ open, setOpen }) {
                 defaultValue={1}
                 {...register('deliver')}
               >
-                {types.map((tp) => (
+                {types?.map((tp) => (
                   <MenuItem key={tp.id} value={tp.id}>
                     {tp.name}
                   </MenuItem>

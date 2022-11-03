@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 
 export const ProductBox = styled(Box)`
   background: ${({ theme }) => theme.palette.secondary.main};
-  border-radius: 10px;
+  border-radius: 2px;
   display: flex;
   height: 24px;
   justify-content: center;

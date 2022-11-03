@@ -1,5 +1,5 @@
 import { handler } from '~/backend/handler';
-import { get, post, put } from '~/backend/products';
+import { del, get, post, put } from '~/backend/products';
 
 export const config = {
   api: {
@@ -9,4 +9,4 @@ export const config = {
   },
 };
 
-export default handler({ post, get, put });
+export default handler({ post, get, put, del });

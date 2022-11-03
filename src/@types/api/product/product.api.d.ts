@@ -20,7 +20,9 @@ declare namespace ProductApi {
       };
     }
     interface Response {
-      products?: Product[];
+      products?: (Product & {
+        relations: typeof Database.public.Tables.client_product.Row[];
+      })[];
       error?: string;
     }
   }
