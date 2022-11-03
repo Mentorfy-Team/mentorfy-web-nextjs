@@ -10,7 +10,6 @@ type Props = {
 };
 
 export const Modal = styled(Dialog)<Props>`
-
   ${({ isMentorado }) =>
     isMentorado &&
     css`
@@ -40,6 +39,7 @@ export const Modal = styled(Dialog)<Props>`
 `;
 
 export const ModalDialogContent = styled(DialogContent)<Props>`
+  background-color: ${({theme}) => theme.palette.primary.main};
   ${({ isMentorado }) =>
     isMentorado
       ? css`
