@@ -7,11 +7,12 @@ import { Header, Modal, ModalDialogContent, ModalDialogTitle } from './styles';
 
 type props = {
   children?: JSX.Element | JSX.Element[];
-  title: JSX.Element | string;
+  title?: JSX.Element | string;
   withoutSave?: boolean;
   open?: boolean;
   isMentorado?: boolean;
   deleteMessage?: boolean
+  popularProduct?: boolean
   setOpen?: (value: boolean) => void;
   onSave?: () => void;
   onDelete?: () => void;
@@ -24,19 +25,25 @@ const ModalComponent: FC<props> = ({
   open,
   isMentorado,
   deleteMessage,
+  popularProduct,
   setOpen,
   onSave,
   onDelete,
 }) => {
   return (
-    <Modal open={open} onClose={() => setOpen(false)} isMentorado={isMentorado}>
-      <Header>
-        <ModalDialogTitle>{title}</ModalDialogTitle>
-        <IconButton onClick={() => setOpen(false)}>
-          <CloseIcon sx={{ color: 'white' }} />
-        </IconButton>
-      </Header>
-      <ModalDialogContent isMentorado={isMentorado}>
+    <Modal open={open} onClose={() => setOpen(false)} isMentorado={isMentorado} popularProduct={popularProduct}>
+      {
+        popularProduct ?
+          ''
+          :
+          <Header>
+            <ModalDialogTitle>{title}</ModalDialogTitle>
+            <IconButton onClick={() => setOpen(false)}>
+              <CloseIcon sx={{ color: 'white' }} />
+            </IconButton>
+          </Header>
+      }
+      <ModalDialogContent isMentorado={isMentorado} popularProduct={popularProduct}>
         {children}
         {onSave && (
           <Button
@@ -64,7 +71,7 @@ const ModalComponent: FC<props> = ({
               width: '40%',
               marginTop: '1rem',
               color: `${deleteMessage ? 'white' : 'gray'}`,
-              backgroundColor: `${deleteMessage &&'red'}`,
+              backgroundColor: `${deleteMessage && 'red'}`,
               fontWeight: '300',
               height: '2.5rem',
             }}

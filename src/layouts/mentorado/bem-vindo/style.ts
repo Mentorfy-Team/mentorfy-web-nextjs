@@ -15,6 +15,17 @@ export const Overlay = styled('div')`
   background: linear-gradient(0deg, rgba(8, 8, 8, 1) 0%, rgba(0, 0, 0, 0) 35%);
 `;
 
+export const OverlayPopular = styled('div')`
+  height: 100%;
+  
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+
+  background: linear-gradient(0deg, rgba(8, 8, 8, 1) 0%, rgba(0, 0, 0, 0) 50%);
+`;
+
 export const Background = styled(Box)`
   background: #080808;
   > div > video,
@@ -202,6 +213,14 @@ export const VideoHolder = styled(Box)`
     left: 0;
     z-index: -1;
   }
+  .react-player-popular {
+    opacity: 0.8;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+
 `;
 
 export const Videoshow = styled(Box)`
@@ -317,4 +336,11 @@ export const VolumeButton = styled(Box)`
     background-color: transparent;
     opacity: 0.5;
   }
+`;
+
+export const PopularProductDescription = styled(Typography)`
+  font-size: 1.1rem;
+  font-weight: 500;
+  line-height: 1rem;
+  text-align: start;
 `;

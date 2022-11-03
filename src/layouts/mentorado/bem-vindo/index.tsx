@@ -16,6 +16,8 @@ const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 const Slider: any = dynamic(() => import('react-slick'), { ssr: false });
 import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
+import ModalComponent from '~/components/modules/Modal';
+import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import { PublicRoutes } from '~/consts';
 import { useGetClientProducts } from '~/hooks/useGetClientProducts';
 import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
@@ -32,7 +34,9 @@ import {
   CustomTypography,
   MoreInfo,
   Overlay,
+  OverlayPopular,
   PlayButton,
+  PopularProductDescription,
   ProductTitle,
   RatingBox,
   VideoHolder,
@@ -46,6 +50,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
 
   const numberOfSlides = sizeLg ? 5 : sizeMd ? 3 : sizeSm ? 2 : 1;
 
+  const [currentProduct, setCurrentProduct] = useState<any>([]);
+  const [open, setOpen] = useState<boolean>(false);
   const [playVideo, setPlayVideo] = useState<boolean>(false);
   const [playVideoFade, setPlayVideoFade] = useState<boolean>(false);
   const [featuredProduct, setFeaturedProduct] =
@@ -117,6 +123,11 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
     }, 60000);
   }, [products, clientProducts]);
 
+  const handlePopularProductsModal = (product) => {
+    setCurrentProduct(product);
+    setOpen(true);
+    console.log(currentProduct);
+  };
   return (
     <Background>
       <BannerBox
@@ -200,8 +211,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                     .normalize('NFD')
                     .replace(/[\u0300-\u036f]/g, '')
                     .toLowerCase() +
-                    '/' +
-                    featuredProduct.id,
+                  '/' +
+                  featuredProduct.id,
                 )
               }
               variant="outlined"
@@ -253,7 +264,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             >
               {clientProducts.map((product, index) => (
                 <CourseBox
-                  onMouseOver={() => {}}
+                  onMouseOver={() => { }}
                   className="item"
                   height={400}
                   key={index}
@@ -265,8 +276,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                         .normalize('NFD')
                         .replace(/[\u0300-\u036f]/g, '')
                         .toLowerCase() +
-                        '/' +
-                        product.id,
+                      '/' +
+                      product.id,
                     );
                   }}
                 >
@@ -295,13 +306,13 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               {[
                 ...Array(
                   numberOfSlides -
-                    (clientProducts.length > numberOfSlides
-                      ? numberOfSlides
-                      : clientProducts.length),
+                  (clientProducts.length > numberOfSlides
+                    ? numberOfSlides
+                    : clientProducts.length),
                 ),
               ].map((_, i) => (
                 <CourseBox
-                  onMouseOver={() => {}}
+                  onMouseOver={() => { }}
                   className="item"
                   height={sizeLg ? '400px' : 'unset'}
                   width={sizeLg ? '300px' : 'unset'}
@@ -323,23 +334,12 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             .filter((p) => p.banner_image)
             .map((product, index) => (
               <CourseBox
-                onMouseOver={() => {}}
+                onMouseOver={() => { }}
                 className="item"
                 height={sizeLg ? '190px' : 'unset'}
                 width={sizeLg ? '350px' : 'unset'}
                 key={index}
-                onClick={() => {
-                  router.push(
-                    types
-                      .find((type) => type.id.toString() === product.deliver)
-                      .name.replace(/\s/g, '-')
-                      .normalize('NFD')
-                      .replace(/[\u0300-\u036f]/g, '')
-                      .toLowerCase() +
-                      '/' +
-                      product.id,
-                  );
-                }}
+                onClick={() => handlePopularProductsModal(product)}
               >
                 <Image
                   alt=""
@@ -372,6 +372,81 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         </Slider>
         {clientProducts?.length === 0 && <Box height="14rem" />}
       </ContentWidthLimit>
+      <ModalComponent open={open} setOpen={setOpen} popularProduct >
+        <ModalDialogContent popularProduct>
+          <>
+            <VideoHolder id="holder">
+              {currentProduct.video ?
+                <ReactPlayer
+                  id="goto"
+                  className={(playVideo ? '' : 'hide') + ' video' + ' react-player-popular'}
+                  url={playVideo ? currentProduct?.video : ''}
+                  width="100%"
+                  loop={true}
+                  height="100%"
+                  playing={true}
+                  controls={false}
+                  volume={volume}
+                  config={{
+                    youtube: {
+                      playerVars: {
+                        showinfo: 0,
+                        controls: 0,
+                        autoplay: 1,
+                        disablekb: 0,
+                      },
+                    },
+                  }}
+                />
+                :
+                <Image
+                  alt=""
+                  src={currentProduct.banner_image}
+                  width={800}
+                  height={300}
+                  style={{
+                    objectFit: 'cover',
+                  }}
+                  quality={100}
+                />
+              }
+              <OverlayPopular />
+            </VideoHolder>
+          </>
+          <Box
+            sx={{
+              maxWidth: '100%',
+              textAlign: 'start',
+              display: '-webkit-box',
+              '-webkit-line-clamp': '3',
+              'line-clamp': '3',
+              '-webkit-box-orient': 'vertical',
+              marginTop: '-3rem',
+              position: 'absolute',
+            }}
+          >
+            <Box
+              sx={{
+                maxWidth: '16.5rem',
+                textAlign: 'start',
+                marginTop: '-3rem',
+                marginBottom: '1rem',
+              }}
+            >
+              <CollorFullTypography
+                one={currentProduct?.extra?.titleGradiente?.one || 'white'}
+                two={currentProduct?.extra?.titleGradiente?.two || 'white'}
+                three={currentProduct?.extra?.titleGradiente?.three || 'white'}
+              >
+                {currentProduct.title}
+              </CollorFullTypography>
+            </Box>
+            <PopularProductDescription>
+              {currentProduct.description}
+            </PopularProductDescription>
+          </Box>
+        </ModalDialogContent>
+      </ModalComponent>
     </Background>
   );
 };
