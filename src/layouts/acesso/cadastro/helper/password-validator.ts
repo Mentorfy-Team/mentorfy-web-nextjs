@@ -1,9 +1,17 @@
 export default (password: string) => {
-  if (!password) return;
   let minChars = false,
     hasNumber = false,
     hasUpper = false,
     hasSpecial = false;
+
+  if (!password)
+    return {
+      minChars,
+      hasNumber,
+      hasUpper,
+      hasSpecial,
+      passed: false,
+    };
 
   if (password.length >= 8) minChars = true;
   if (password.match(/[0-9]/)) hasNumber = true;
