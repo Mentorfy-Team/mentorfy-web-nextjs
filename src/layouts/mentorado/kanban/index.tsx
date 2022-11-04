@@ -140,7 +140,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                   src={
                     step?.extra
                       ? step?.extra[0]?.sourceUrl
-                      : '/svgs/step-image.svg'
+                      : ''
                   }
                   style={{
                     objectFit: 'contain',
