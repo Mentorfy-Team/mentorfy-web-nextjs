@@ -58,7 +58,7 @@ const ClientsTable = ({ rows = [] }: { rows: UserClient.ClientRelation[] }) => {
         email,
         product: (
           <ProductWrapper>
-            <ProductBox>{product}</ProductBox>
+            <ProductBox><p>{product}</p></ProductBox>
             {qty > 1 ? <Qty>+{qty - 1}</Qty> : ''}
           </ProductWrapper>
         ),

@@ -7,8 +7,16 @@ export const ProductBox = styled(Box)`
   border-radius: 2px;
   display: flex;
   height: 24px;
-  justify-content: center;
+  max-width: 150px;
   padding: 3px 10px 0 10px;
+  
+  p { 
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 `;
 
 export const ProductWrapper = styled(Box)`

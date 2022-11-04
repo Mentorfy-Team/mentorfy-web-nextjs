@@ -10,6 +10,7 @@ type Props = {
 };
 
 export const Modal = styled(Dialog)<Props>`
+max-width: 900px;
   ${({ isMentorado }) =>
     isMentorado &&
     css`
