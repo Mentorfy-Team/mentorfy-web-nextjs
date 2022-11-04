@@ -16,8 +16,8 @@ export const CompleteButton = styled(Button)`
   background-color: ${({ theme }) => theme.palette.primary.light};
   color: ${({ theme }) => theme.palette.accent.main};
   float: right;
-  margin-top: 1rem;
   margin-bottom: 1rem;
+  margin-top: 1rem;
   width: 10rem;
 `;
 
@@ -30,11 +30,11 @@ export const CommentInput = styled('textarea')`
   font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
   font-size: 0.9rem;
   font-weight: 400;
-  max-width: 88%;
   height: 2.3rem;
+  max-width: 88%;
   min-width: 88%;
   overflow-y: hidden;
-  padding: 0.6rem 1rem;
+  padding: 0.4rem 1rem;
   resize: none;
 `;
 

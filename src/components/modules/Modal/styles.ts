@@ -10,13 +10,12 @@ type Props = {
 };
 
 export const Modal = styled(Dialog)<Props>`
-max-width: 900px;
   ${({ isMentorado }) =>
     isMentorado &&
     css`
       .css-1hg2taq-MuiPaper-root-MuiDialog-paper {
         height: fit-content;
-        max-height: calc(100% - 5rem);
+        max-height: 100%;
         max-width: 900px;
         overflow: unset;
       }
@@ -46,7 +45,7 @@ export const ModalDialogContent = styled(DialogContent)<Props>`
       ? css`
           max-width: 900px;
           overflow-y: auto;
-          padding: 1rem;
+          padding: 0.5rem 1rem;
         `
       : css`
           width: 480px;

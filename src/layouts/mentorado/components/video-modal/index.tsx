@@ -112,7 +112,7 @@ const VideoViewModal = ({
     <ModalComponent title={HeadText} setOpen={setOpen} open={open} isMentorado>
       <ModalDialogContent isMentorado>
         <Description>{descriptionData}</Description>
-        <Box sx={{ width: '720px', height: '420px', backgroundColor: 'black' }}>
+        <Box sx={{ width: '100%', height: '463px'}}>
           {taskData?.link && (
             <ReactPlayer
               id="goto"
@@ -137,7 +137,7 @@ const VideoViewModal = ({
           Concluír
         </CompleteButton>
 
-        <Typography variant="body1" sx={{ margin: '2.5rem 0 0.8rem 0' }}>
+        <Typography variant="body1" sx={{ margin: '2.8rem 0 0.8rem 0' }}>
           Enviar mensagem ao Mentor
         </Typography>
         <Box
