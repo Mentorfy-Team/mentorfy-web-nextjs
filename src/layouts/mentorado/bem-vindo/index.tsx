@@ -375,8 +375,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         </Slider>
         {clientProducts?.length === 0 && <Box height="14rem" />}
       </ContentWidthLimit>
-      <ModalComponent open={open} setOpen={setOpen} popularProduct >
-        <ModalDialogContent popularProduct>
+      <ModalComponent open={open} setOpen={setOpen} popularProduct isMentorado>
+        <ModalDialogContent popularProduct isMentorado>
           <>
             <VideoHolder id="holder">
               {currentProduct.video ?
