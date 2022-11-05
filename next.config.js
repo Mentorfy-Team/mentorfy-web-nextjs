@@ -7,6 +7,14 @@ const nextConfig = {
     images: {
       allowFutureImage: true,
     },
+    modularizeImports: {
+      '@mui/material': {
+        transform: '@mui/material/{{member}}',
+      },
+      '@mui/icons-material': {
+        transform: '@mui/icons-material/{{member}}',
+      },
+    },
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if
