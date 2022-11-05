@@ -11,11 +11,12 @@ type props = {
   withoutSave?: boolean;
   open?: boolean;
   isMentorado?: boolean;
-  deleteMessage?: boolean
-  popularProduct?: boolean
+  deleteMessage?: boolean;
+  popularProduct?: boolean;
   setOpen?: (value: boolean) => void;
   onSave?: () => void;
   onDelete?: () => void;
+  id: string;
 };
 
 const ModalComponent: FC<props> = ({
@@ -29,21 +30,30 @@ const ModalComponent: FC<props> = ({
   setOpen,
   onSave,
   onDelete,
+  id,
 }) => {
   return (
-    <Modal open={open} onClose={() => setOpen(false)} isMentorado={isMentorado} popularProduct={popularProduct}>
-      {
-        popularProduct ?
-          ''
-          :
-          <Header>
-            <ModalDialogTitle>{title}</ModalDialogTitle>
-            <IconButton onClick={() => setOpen(false)}>
-              <CloseIcon sx={{ color: 'white' }} />
-            </IconButton>
-          </Header>
-      }
-      <ModalDialogContent isMentorado={isMentorado} popularProduct={popularProduct}>
+    <Modal
+      id={id ? id : `${Math.random() * 1000}`}
+      open={open}
+      onClose={() => setOpen(false)}
+      isMentorado={isMentorado}
+      popularProduct={popularProduct}
+    >
+      {popularProduct ? (
+        ''
+      ) : (
+        <Header>
+          <ModalDialogTitle>{title}</ModalDialogTitle>
+          <IconButton onClick={() => setOpen(false)}>
+            <CloseIcon sx={{ color: 'white' }} />
+          </IconButton>
+        </Header>
+      )}
+      <ModalDialogContent
+        isMentorado={isMentorado}
+        popularProduct={popularProduct}
+      >
         {children}
         {onSave && (
           <Button

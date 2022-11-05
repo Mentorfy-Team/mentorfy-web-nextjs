@@ -214,8 +214,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                     .normalize('NFD')
                     .replace(/[\u0300-\u036f]/g, '')
                     .toLowerCase() +
-                  '/' +
-                  featuredProduct.id,
+                    '/' +
+                    featuredProduct.id,
                 )
               }
               variant="outlined"
@@ -267,7 +267,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             >
               {clientProducts.map((product, index) => (
                 <CourseBox
-                  onMouseOver={() => { }}
+                  onMouseOver={() => {}}
                   className="item"
                   height={400}
                   key={index}
@@ -279,8 +279,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                         .normalize('NFD')
                         .replace(/[\u0300-\u036f]/g, '')
                         .toLowerCase() +
-                      '/' +
-                      product.id,
+                        '/' +
+                        product.id,
                     );
                   }}
                 >
@@ -309,13 +309,13 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               {[
                 ...Array(
                   numberOfSlides -
-                  (clientProducts.length > numberOfSlides
-                    ? numberOfSlides
-                    : clientProducts.length),
+                    (clientProducts.length > numberOfSlides
+                      ? numberOfSlides
+                      : clientProducts.length),
                 ),
               ].map((_, i) => (
                 <CourseBox
-                  onMouseOver={() => { }}
+                  onMouseOver={() => {}}
                   className="item"
                   height={sizeLg ? '400px' : 'unset'}
                   width={sizeLg ? '300px' : 'unset'}
@@ -337,7 +337,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             .filter((p) => p.banner_image)
             .map((product, index) => (
               <CourseBox
-                onMouseOver={() => { }}
+                onMouseOver={() => {}}
                 className="item"
                 height={sizeLg ? '190px' : 'unset'}
                 width={sizeLg ? '350px' : 'unset'}
@@ -375,14 +375,24 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         </Slider>
         {clientProducts?.length === 0 && <Box height="14rem" />}
       </ContentWidthLimit>
-      <ModalComponent open={open} setOpen={setOpen} popularProduct isMentorado>
+      <ModalComponent
+        id="modal_destaque"
+        open={open}
+        setOpen={setOpen}
+        popularProduct
+        isMentorado
+      >
         <ModalDialogContent popularProduct isMentorado>
           <>
             <VideoHolder id="holder">
-              {currentProduct.video ?
+              {currentProduct.video ? (
                 <ReactPlayer
                   id="goto"
-                  className={(playVideo ? '' : 'hide') + ' video' + ' react-player-popular'}
+                  className={
+                    (playVideo ? '' : 'hide') +
+                    ' video' +
+                    ' react-player-popular'
+                  }
                   url={playVideo ? currentProduct?.video : ''}
                   width="100%"
                   loop={true}
@@ -401,7 +411,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                     },
                   }}
                 />
-                :
+              ) : (
                 <Image
                   alt=""
                   src={currentProduct.banner_image}
@@ -412,7 +422,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                   }}
                   quality={100}
                 />
-              }
+              )}
               <OverlayPopular />
             </VideoHolder>
           </>
@@ -424,7 +434,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               flexDirection: 'column',
               margin: '-4rem 1rem 1rem 1rem',
               position: 'relative',
-              gap: '0.5rem'
+              gap: '0.5rem',
             }}
           >
             <Box
@@ -432,7 +442,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                 textAlign: 'start',
                 display: 'flex',
                 gap: '1rem',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <CollorFullPopular
@@ -443,11 +453,17 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                 {currentProduct.title}
               </CollorFullPopular>
               <VolumeButton
-                onClick={() => (popularVolume === 0 ? setPopularVolume(0.5) : setPopularVolume(0))}
+                onClick={() =>
+                  popularVolume === 0
+                    ? setPopularVolume(0.5)
+                    : setPopularVolume(0)
+                }
               >
                 <Image
                   src={
-                    popularVolume === 0 ? '/svgs/volume-xmark.svg' : '/svgs/volume.svg'
+                    popularVolume === 0
+                      ? '/svgs/volume-xmark.svg'
+                      : '/svgs/volume.svg'
                   }
                   alt="volume-icon"
                   height={18}
@@ -458,12 +474,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
             <PopularProductDescription>
               {currentProduct.description}
             </PopularProductDescription>
-              <PopularButton
-                variant="outlined"
-              >
-                Comprar
-              </PopularButton>
-            </Box>
+            <PopularButton variant="outlined">Comprar</PopularButton>
+          </Box>
         </ModalDialogContent>
       </ModalComponent>
     </Background>
