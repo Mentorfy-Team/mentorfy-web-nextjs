@@ -1,4 +1,7 @@
-import { CreateSupabaseWithAdmin } from '~/backend/supabase';
+import {
+  CreateSupabaseWithAdmin,
+  CreateSupabaseWithAuth,
+} from '~/backend/supabase';
 type Request = UserClient.Post.Request;
 type Response = UserClient.Post.Response;
 
@@ -65,6 +68,40 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
 
   res.status(200).json({
     error: errorRes,
+  });
+};
+
+export const del = async (req, res) => {
+  const supabase = CreateSupabaseWithAuth(req);
+  // find relations
+
+  const { data: products } = await supabase
+    .from('product')
+    .select('id')
+    .eq('owner', req.query.owner_id);
+
+  if (!products) {
+    return res.status(400).json({
+      error: 'Não foi possível encontrar produtos relacionados.',
+    });
+  }
+  const { error: errorRelation } = await supabase
+    .from('client_product')
+    .delete()
+    .in(
+      'product_id',
+      products.map((p) => p.id),
+    )
+    .eq('user_id', req.query.client_id);
+
+  if (errorRelation) {
+    return res.status(400).json({
+      error: 'Não foi possivel remover a relação com o cliente.',
+    });
+  }
+
+  return res.status(200).json({
+    message: 'Relação removida com sucesso.',
   });
 };
 

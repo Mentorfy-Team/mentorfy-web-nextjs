@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
@@ -9,13 +10,28 @@ export const ProductBox = styled(Box)`
   height: 24px;
   max-width: 150px;
   padding: 3px 10px 0 10px;
-  
-  p { 
+
+  p {
     font-family: 'Roboto', sans-serif;
     font-size: 0.9rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+`;
+
+export const RemoveButton = styled(Button)`
+  color: ${({ theme }) => theme.palette.error.light};
+  * {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+`;
+
+export const SeeMoreButton = styled(Button)`
+  * {
+    font-size: 0.9rem;
+    font-weight: 400;
   }
 `;
 

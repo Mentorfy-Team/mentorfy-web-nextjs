@@ -8,6 +8,7 @@ import { DnDObject } from '~/components/modules/DragNDrop';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
+import { fetcher } from '~/hooks/fetcher';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 //import { FilesToDelete } from '~/services/file-upload.service';
 import { useUserInputs } from '~/hooks/useUserInputs';
@@ -26,10 +27,9 @@ export type UserInput = {
   extra?: any;
 };
 
-export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
-  user,
-  member_area_id,
-}) => {
+export const KanbanView: FC<
+  PageTypes.Props & { member_area_id: string; memberArea: any }
+> = ({ user, member_area_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<DnDObject[]>([]);
@@ -47,8 +47,10 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
   }>();
 
   useEffect(() => {
-    if (inputData !== userInput) setUserInput(inputData);
-  }, [inputData, userInput]);
+    console.log('memberArea', memberArea);
+
+    //setUserInput(inputData);
+  }, [inputData]);
 
   useEffect(() => {
     setSteps((oldSteps) => {
@@ -91,9 +93,8 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
     [mutate],
   );
 
-  const GetOnChange = useCallback(
-    async ({ refId, data, extra }) => {
-      const index = userInput?.findIndex((i) => i.member_area_tool_id == refId);
+  const saveUserInput = useCallback(
+    ({ refId, data, extra, index, inputs }) => {
       setUserInput((oldInput) => {
         if (!oldInput) oldInput = [];
         if (index > -1) {
@@ -111,18 +112,24 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
       handleSave({
         tool_id: refId,
         client_input: {
-          data: userInput[index]
-            ? Object.assign(userInput[index].data, data)
-            : data,
-          extra: userInput[index]
-            ? Object.assign(userInput[index].extra, extra)
+          data: inputs[index] ? Object.assign(inputs[index].data, data) : data,
+          extra: inputs[index]
+            ? Object.assign(inputs[index].extra, extra)
             : extra,
-          id: index > -1 ? userInput[index].id : '0',
+          id: index > -1 ? inputs[index].id : '0',
           delete: data.delete,
         },
       });
     },
-    [handleSave, userInput],
+    [handleSave],
+  );
+
+  const GetOnChange = useCallback(
+    async ({ refId, data, extra }) => {
+      const index = userInput?.findIndex((i) => i.member_area_tool_id == refId);
+      saveUserInput({ refId, data, extra, index, inputs: userInput });
+    },
+    [saveUserInput, userInput],
   );
 
   return (
@@ -137,11 +144,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                   alt="imagem"
                   width={50}
                   height={50}
-                  src={
-                    step?.extra
-                      ? step?.extra[0]?.sourceUrl
-                      : ''
-                  }
+                  src={step?.extra ? step?.extra[0]?.sourceUrl : ''}
                   style={{
                     objectFit: 'contain',
                     marginBottom: '0.5rem',
@@ -229,9 +232,13 @@ export const getProps = withPageAuth({
   redirectTo: PublicRoutes.login,
   async getServerSideProps(ctx) {
     const id = ctx.query.id as string;
+
+    // fetch for member area
+    const memberArea = await fetcher(`api/products/${id}`);
     return {
       props: {
         member_area_id: id,
+        memberArea,
       },
     };
   },

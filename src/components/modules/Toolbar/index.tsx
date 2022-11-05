@@ -17,7 +17,7 @@ const Toolbar: React.FC<Props> = ({
   breadcrumbs = [],
 }) => {
   const [tabindex, setTabindex] = React.useState(0);
-  const [hasmargintop, setHasMarginTop] = useState(false);
+  const [hasmargintop, setHasMarginTop] = useState<boolean | null>(null);
   const route = useRouter();
   const theme = useTheme();
 
@@ -52,33 +52,36 @@ const Toolbar: React.FC<Props> = ({
         ))}
       {tabs.length === 0 &&
         breadcrumbs.length > 0 &&
-        breadcrumbs.map((tab, index) => (
-          <>
-            <TabItem
-              style={{
-                alignItems: 'center',
-                cursor: index === 0 ? 'pointer' : 'default',
-              }}
-              onClick={() => {
-                if (index === 0) {
-                  route.push('/mentorado/bem-vindo');
-                }
-              }}
-              key={index}
-              value={index}
-              label={tab}
-            />
+        breadcrumbs.map((tab, index) => [
+          <TabItem
+            style={{
+              alignItems: 'center',
+              cursor: index === 0 ? 'pointer' : 'default',
+            }}
+            onClick={() => {
+              if (index === 0) {
+                route.push('/mentorado/bem-vindo');
+              }
+            }}
+            key={index}
+            value={index}
+            label={tab}
+          />,
+          <div
+            key={index + 'sub'}
+            style={{ alignSelf: 'center', marginBottom: '-0.3rem' }}
+          >
             {index === 0 && breadcrumbs.length > 1 && (
               <ChevronRightSharp
                 sx={{
                   alignSelf: 'center',
-                  margin: '0 1rem',
+                  margin: '0rem 1rem',
                 }}
                 fontSize="small"
               />
             )}
-          </>
-        ))}
+          </div>,
+        ])}
     </Tabbar>
   );
 };

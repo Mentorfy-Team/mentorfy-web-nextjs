@@ -27,7 +27,7 @@ export const PopoverBox = styled(Box)`
     height: 2rem;
     justify-content: left;
     min-width: 8rem;
-    width: 100px;
+    width: 100%;
     .MuiSvgIcon-root {
       width: 1rem !important;
     }
@@ -36,7 +36,7 @@ export const PopoverBox = styled(Box)`
 
 export const OptionsButton = styled(Button)`
   align-items: center;
-  background-color: ${({ theme }) => theme.palette.caption.dark};
+  background-color: ${({ theme }) => theme.palette.primary.dark};
   display: flex;
   justify-content: center;
   min-width: 32px;

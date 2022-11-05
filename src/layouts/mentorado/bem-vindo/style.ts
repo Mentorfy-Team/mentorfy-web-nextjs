@@ -17,7 +17,7 @@ export const Overlay = styled('div')`
 
 export const OverlayPopular = styled('div')`
   height: 100%;
-  
+
   position: absolute;
   top: 0;
   width: 100%;
@@ -220,7 +220,6 @@ export const VideoHolder = styled(Box)`
     left: 0;
     z-index: -1;
   }
-
 `;
 
 export const Videoshow = styled(Box)`
@@ -356,8 +355,8 @@ export const VolumeButton = styled(Box)`
 
 export const PopularProductDescription = styled(Typography)`
   font-size: 1.1rem;
-  font-weight: 500;
-  line-height: 1rem;
+  font-weight: 300;
+  line-height: 1.4rem;
   text-align: start;
   opacity: 0.8;
 `;
