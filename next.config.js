@@ -4,9 +4,6 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
-    images: {
-      allowFutureImage: true,
-    },
     modularizeImports: {
       '@mui/material': {
         transform: '@mui/material/{{member}}',

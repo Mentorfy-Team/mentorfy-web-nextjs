@@ -13,14 +13,12 @@ export const Modal = styled(Dialog)<Props>`
   ${({ isMentorado }) =>
     isMentorado &&
     css`
-      .css-1hg2taq-MuiPaper-root-MuiDialog-paper {
+      .MuiPaper-root {
         height: fit-content;
         max-height: 100%;
         max-width: 900px;
         overflow: unset;
-      }
-      @media (max-width: 600px) {
-        .css-1hg2taq-MuiPaper-root-MuiDialog-paper {
+        @media (max-width: 600px) {
           height: 100%;
           max-height: 100%;
         }
@@ -29,17 +27,16 @@ export const Modal = styled(Dialog)<Props>`
   ${({ popularProduct }) =>
     popularProduct &&
     css`
-      .css-1hg2taq-MuiPaper-root-MuiDialog-paper {
+      .MuiPaper-root {
         background-color: #121212;
         max-height: 100%;
         max-width: 900px;
       }
-      
     `}
 `;
 
 export const ModalDialogContent = styled(DialogContent)<Props>`
-  background-color: ${({theme}) => theme.palette.primary.main};
+  background-color: ${({ theme }) => theme.palette.primary.main};
   ${({ isMentorado }) =>
     isMentorado
       ? css`
@@ -52,15 +49,14 @@ export const ModalDialogContent = styled(DialogContent)<Props>`
         `}
 
   ${({ popularProduct }) =>
-    popularProduct
-      && css`
+    popularProduct &&
+    css`
       background-color: #080808;
-          height: 100%;
-          overflow: hidden;
-          padding: 0;
-          width: 800px;
-        `
-      }
+      height: 100%;
+      overflow: hidden;
+      padding: 0;
+      width: 800px;
+    `}
 `;
 export const Header = styled(Box)`
   align-items: center;
