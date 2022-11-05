@@ -16,7 +16,7 @@ type props = {
   setOpen?: (value: boolean) => void;
   onSave?: () => void;
   onDelete?: () => void;
-  id: string;
+  id?: string;
 };
 
 const ModalComponent: FC<props> = ({
