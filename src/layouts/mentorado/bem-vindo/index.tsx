@@ -129,7 +129,6 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
   const handlePopularProductsModal = (product) => {
     setCurrentProduct(product);
     setOpen(true);
-    console.log(currentProduct);
   };
   return (
     <Background>

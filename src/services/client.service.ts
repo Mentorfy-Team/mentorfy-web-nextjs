@@ -54,7 +54,9 @@ export const ListClients = async (
   id,
 ): Promise<UserClient.Post.ClientsResponse> => {
   try {
-    const response = await HttpClient.get<UserClient.Post.ClientsResponse>(
+    const {
+      data: { error, result },
+    } = await HttpClient.get<UserClient.Post.ClientsResponse>(
       ApiRoutes.clients_list,
       {
         // * Passa a autenticação para frente
@@ -67,13 +69,13 @@ export const ListClients = async (
       },
     );
 
-    if (response.data.error) {
+    if (error) {
       return {
-        error: response.data.error,
+        error,
       };
     }
     return {
-      clients: response.data.clients,
+      result,
       error: null,
     };
   } catch (error: any) {

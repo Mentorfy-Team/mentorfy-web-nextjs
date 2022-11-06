@@ -25,6 +25,15 @@ export const get = async (req, res) => {
       'id',
       relations.map((relation) => relation.user_id),
     );
+
+  const { count: views, error } = await supabase
+    .from('profile_history')
+    .select('*', { count: 'exact' })
+    .in(
+      'profile_id',
+      relations.map((relation) => relation.user_id),
+    );
+
   const clients = users.map((user) => {
     const relation = relations.filter(
       (relation) => relation.user_id === user.id,
@@ -43,5 +52,8 @@ export const get = async (req, res) => {
   });
 
   // TODO: Adicionar log de erros detalhados
-  res.status(200).json(clients);
+  res.status(200).json({
+    clients,
+    statistics: { totalClients: clients.length, totalAccesses: views },
+  });
 };

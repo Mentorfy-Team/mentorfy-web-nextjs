@@ -18,7 +18,6 @@ export class LogHistory {
         .select('id')
         .gt('created_at', firstSecond.toISOString());
 
-      console.log(data, error);
       return !data || data.length === 0;
     }
     return true;

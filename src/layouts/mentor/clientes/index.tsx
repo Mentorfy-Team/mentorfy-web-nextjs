@@ -27,7 +27,12 @@ const Clients: FC<PageTypes.Props> = ({ user, access_token }) => {
   const [openCreatePage, setOpenCreatePage] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
-  const { clients, mutate, isLoading: isLoadingClient } = useClients(user.id);
+  const {
+    clients,
+    statistics,
+    mutate,
+    isLoading: isLoadingClient,
+  } = useClients(user.id);
   const [selectedClient, setSelectedClient] = useState(null);
   // userStore
   const { setLoading: setGlobalLoading, isLoading: GlobalLoading } =
@@ -74,9 +79,9 @@ const Clients: FC<PageTypes.Props> = ({ user, access_token }) => {
       <Box sx={{ paddingTop: '2rem' }}>
         <ContentWidthLimit>
           <ClientsGrid
-            mentorados={clients.length}
-            acessos={clients.length * 4}
-            alunos={clients.length}
+            mentorados={statistics.totalClients}
+            alunos={statistics.totalClients}
+            acessos={statistics.totalAccesses}
           />
           <ButtonsWrapper>
             <ClientsOptionsButton variant="outlined">

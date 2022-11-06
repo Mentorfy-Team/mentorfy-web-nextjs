@@ -36,7 +36,10 @@ declare namespace UserClient {
     };
 
     type ClientsResponse = {
-      clients?: ClientRelation[];
+      result?: {
+        clients: ClientRelation[];
+        statistics: { totalClients: number; totalAccesses: number };
+      };
       error?: string;
     };
   }
