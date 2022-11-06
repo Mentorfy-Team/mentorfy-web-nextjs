@@ -20,18 +20,18 @@ export function useProfile(
 
   const { data, error, mutate } = useSWR<
     UserTypes.ProfileWithAddress & { logout?: () => void }
-  >(`${ApiRoutes.users_profile}?withAddress=${withAddress}`, fetcher, {
-    fallbackData: {
-      profile: defaultProfile || {},
-      address: defaultAddress || {},
-      logout: () => logout(),
-    },
-  });
+  >(`${ApiRoutes.users_profile}?withAddress=${withAddress}`, fetcher);
 
   return {
-    data: { ...data, logout: () => logout() },
+    data: data
+      ? { ...data, logout: () => logout() }
+      : {
+          profile: defaultProfile || {},
+          address: defaultAddress || {},
+          logout: () => logout(),
+        },
     isLoading: !error && !data,
     isError: error,
-    mutate
+    mutate,
   };
 }

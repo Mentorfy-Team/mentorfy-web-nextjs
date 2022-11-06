@@ -12,10 +12,9 @@ import { DnDObject } from '~/components/modules/DragNDrop';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
-import {
-  ToolListNames,
-  ToolsModalProps,
-} from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
+import { useMentorTools } from '~/hooks/useMentorTools';
+import { ToolListNames } from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
+import SwitchModal from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
 import { FilesToDelete } from '~/services/file-upload.service';
 import { UpdateMemberAreaTools } from '~/services/member-area.service';
 import { userStore } from '~/stores';
@@ -35,10 +34,6 @@ import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
   ssr: false,
 });
-
-const SwitchModal = dynamic<ToolsModalProps>(
-  () => import('~/layouts/mentor/area-de-membros/helpers/SwitchModal'),
-);
 
 type Props = {
   id: string;
@@ -61,6 +56,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
 
   const route = useRouter();
   const { steps: stepsData, mutate } = useMemberAreaTools(id);
+  const { tools } = useMentorTools();
 
   useEffect(() => {
     setSteps((oldSteps) => {

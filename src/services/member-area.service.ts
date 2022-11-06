@@ -45,6 +45,7 @@ export const UpdateMemberAreaTools = async (id: string, steps: DnDObject[]) => {
 export const InputUserMemberArea = async (
   tool_id: string,
   client_input: Partial<UserInput> & { delete?: boolean },
+  member_area_id,
 ) => {
   try {
     const response = await HttpClient.post<ProductApi.Post.Response>(
@@ -54,6 +55,7 @@ export const InputUserMemberArea = async (
           ...client_input,
         },
         tool_id,
+        member_area_id,
       },
     );
     if (response.data.error) {

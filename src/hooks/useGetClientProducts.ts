@@ -8,9 +8,6 @@ export function useGetClientProducts(id) {
   const { data, error } = useSWR<props>(
     `${ApiRoutes.client_products}?id=${id}`,
     fetcher,
-    {
-      fallbackData: [],
-    },
   );
 
   return {

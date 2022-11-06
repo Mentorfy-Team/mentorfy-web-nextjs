@@ -7,6 +7,7 @@ type PostResponse = ProductApi.Post.Response | any;
 import { decode } from 'base64-arraybuffer';
 import { nanoid } from 'nanoid';
 import { CreateSupabaseWithAuth } from '~/backend/supabase';
+import { LogHistory } from '../helpers/LogHistory';
 
 export function fixBase64(data) {
   return decode(
@@ -23,11 +24,34 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   res,
 ) => {
   const supabase = CreateSupabaseWithAuth(req);
+  const { user, token } = await supabase.auth.api.getUserByCookie(req);
   const { data: product, error } = await supabase
     .from('product')
     .select('*, member_area(*)')
     .eq('id', req.query.id)
     .single();
+
+  // Registra a visualização do produto/mentoria, contanto que o usuário não seja o dono do produto
+  if (user?.id !== product?.owner_id) {
+    LogHistory.Create(
+      user?.id,
+      100,
+      `Visualizou o produto: ${product?.title}`,
+      0,
+      {
+        product_id: product?.id,
+      },
+    );
+    LogHistory.Create(
+      req.query.id,
+      100,
+      `Visualizou a mentoria: ${product?.title}`,
+      1,
+      {
+        user_id: user?.id,
+      },
+    );
+  }
 
   return res.status(200).json({
     product,

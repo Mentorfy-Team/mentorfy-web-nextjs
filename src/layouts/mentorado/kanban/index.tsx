@@ -8,11 +8,11 @@ import { DnDObject } from '~/components/modules/DragNDrop';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
-import { fetcher } from '~/hooks/fetcher';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 //import { FilesToDelete } from '~/services/file-upload.service';
 import { useUserInputs } from '~/hooks/useUserInputs';
 import { InputUserMemberArea } from '~/services/member-area.service';
+import { GetProduct } from '~/services/product.service';
 import { ToolListNames, ToolsModalProps } from '../helpers/SwitchModal';
 import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
 
@@ -47,9 +47,7 @@ export const KanbanView: FC<
   }>();
 
   useEffect(() => {
-    console.log('memberArea', memberArea);
-
-    //setUserInput(inputData);
+    setUserInput(inputData);
   }, [inputData]);
 
   useEffect(() => {
@@ -86,11 +84,11 @@ export const KanbanView: FC<
     async ({ tool_id, client_input }) => {
       // timout para dar tempo para as imagens se organizarem
       setTimeout(async function () {
-        await InputUserMemberArea(tool_id, client_input);
+        await InputUserMemberArea(tool_id, client_input, member_area_id);
         mutate();
       }, 1000);
     },
-    [mutate],
+    [member_area_id, mutate],
   );
 
   const saveUserInput = useCallback(
@@ -234,11 +232,21 @@ export const getProps = withPageAuth({
     const id = ctx.query.id as string;
 
     // fetch for member area
-    const memberArea = await fetcher(`api/products/${id}`);
+    const memberArea = await GetProduct(ctx.req, id);
+
+    if (!memberArea) {
+      return {
+        notFound: true,
+      };
+    }
     return {
       props: {
         member_area_id: id,
-        memberArea,
+        memberArea: {
+          id: memberArea.id,
+          title: memberArea.title,
+          description: memberArea.description,
+        },
       },
     };
   },

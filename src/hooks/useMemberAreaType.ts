@@ -6,13 +6,10 @@ export function useMemberAreaTypes() {
   const { data, error, mutate } = useSWR<MemberAreaTypes.Type[]>(
     `${ApiRoutes.member_areas_type_list}`,
     fetcher,
-    {
-      fallbackData: [],
-    },
   );
 
   return {
-    types: data,
+    types: data || [],
     isLoading: !error && !data,
     isError: error,
     mutate,

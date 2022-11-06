@@ -6,13 +6,10 @@ export function useProducts(id?) {
   const { data, error, mutate } = useSWR<ProductTypes.Product[]>(
     `${ApiRoutes.products_list}?id=${id}`,
     fetcher,
-    {
-      fallbackData: [],
-    },
   );
 
   return {
-    products: data,
+    products: data || [],
     isLoading: !error && !data,
     isError: error,
     mutate,

@@ -6,13 +6,10 @@ export function useClients(id) {
   const { data, error, mutate } = useSWR<ClientTypes.Client[]>(
     `${ApiRoutes.clients_list}?id=${id}`,
     fetcher,
-    {
-      fallbackData: [],
-    },
   );
 
   return {
-    clients: data,
+    clients: data || [],
     isLoading: !error && !data,
     isError: error,
     mutate,

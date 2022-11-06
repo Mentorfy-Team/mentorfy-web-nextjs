@@ -38,9 +38,11 @@ export default function CreateClientDialog({ open, setOpen, onUpdate, user }) {
       setValue('email', '');
       setValue('product', '');
 
-      onUpdate();
-      setOpen(false);
-      setIsLoading(false);
+      await onUpdate();
+      setTimeout(() => {
+        setOpen(false);
+        setIsLoading(false);
+      }, 1000);
     },
     [onUpdate, setOpen, setValue],
   );
@@ -70,6 +72,7 @@ export default function CreateClientDialog({ open, setOpen, onUpdate, user }) {
               com detalhes de acesso será enviado para o email do cliente.
             </Typography>
             <InputField
+              disabled={isLoading}
               required
               color="secondary"
               label="Nome"
@@ -81,6 +84,7 @@ export default function CreateClientDialog({ open, setOpen, onUpdate, user }) {
               value={name}
             />
             <InputField
+              disabled={isLoading}
               required
               color="secondary"
               label="Email"
@@ -92,6 +96,7 @@ export default function CreateClientDialog({ open, setOpen, onUpdate, user }) {
               value={email}
             />
             <InputField
+              disabled={isLoading}
               color="secondary"
               label="Telefone (Opcional)"
               placeholder=""
@@ -104,6 +109,7 @@ export default function CreateClientDialog({ open, setOpen, onUpdate, user }) {
             <SelectField required sx={{ width: '100%' }}>
               <InputLabel>Produto Relacionado</InputLabel>
               <Select
+                disabled={isLoading}
                 label="Produto Relacionado"
                 color="secondary"
                 value={product}

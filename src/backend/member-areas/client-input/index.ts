@@ -1,3 +1,4 @@
+import { LogHistory } from '~/backend/helpers/LogHistory';
 import { CreateSupabaseWithAuth } from '../../supabase';
 
 type GetRequest = MemberAreaTypes.Post.Request;
@@ -53,6 +54,18 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
     (client_input.id + '').includes('-');
   const client_input_id = isUUID ? client_input.id : null;
 
+  const { data: product, error: errorProduct } = await supabase
+    .from('product')
+    .select('id, title')
+    .eq('id', req.body.member_area_id)
+    .single();
+
+  const { data: tool, error: errorTool } = await supabase
+    .from('member_area_tool')
+    .select('id, title')
+    .eq('member_area', req.body.member_area_id)
+    .single();
+
   if (client_input.delete) {
     if (isUUID) {
       delete client_input.delete;
@@ -75,7 +88,19 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
           ...client_input,
           profile_id: user.id,
           member_area_tool_id: tool_id,
-        });
+        })
+        .single();
+
+      if (!error && !errorProduct) {
+        // ? Registra que o cliente interagiu com uma mentoria
+        LogHistory.Create(
+          user.id,
+          320,
+          `Interagiu ou concluiu uma etapa na mentoria: ${product?.title} - ${tool?.title}`,
+          0,
+          { id: product?.id },
+        );
+      }
 
       return res.status(200).json(memberAreaUserInput);
     } else {
@@ -88,6 +113,20 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
         .from('client_input_tool')
         .update(client_input)
         .match({ id: client_input_id });
+
+      if (!error && !errorProduct) {
+        // ? Registra que o cliente interagiu com uma mentoria
+        LogHistory.Create(
+          user.id,
+          320,
+          `Interagiu ou concluiu uma etapa na mentoria: ${product?.title} - ${tool?.title}`,
+          0,
+          {
+            id: product?.id,
+            tool_id: tool?.id,
+          },
+        );
+      }
 
       return res.status(200).json(memberAreaUserInput);
     }

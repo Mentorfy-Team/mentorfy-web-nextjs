@@ -1,4 +1,4 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -26,10 +26,12 @@ const Clients: FC<PageTypes.Props> = ({ user, access_token }) => {
   const isMobile = useMediaQuery('(max-width: 500px)');
   const [openCreatePage, setOpenCreatePage] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  const { clients, mutate, isLoading } = useClients(user.id);
+  const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
+  const { clients, mutate, isLoading: isLoadingClient } = useClients(user.id);
   const [selectedClient, setSelectedClient] = useState(null);
   // userStore
-  const { setLoading } = userStore();
+  const { setLoading: setGlobalLoading, isLoading: GlobalLoading } =
+    userStore();
 
   const handleSeeMore = useCallback((id) => {}, []);
 
@@ -42,11 +44,15 @@ const Clients: FC<PageTypes.Props> = ({ user, access_token }) => {
     fetch(`/api/clients?owner_id=${user.id}&client_id=${selectedClient}`, {
       method: 'DELETE',
     });
-    setLoading(true);
+    setIsLoadingUpdate(true);
     await mutate();
     setShowConfirmDelete(false);
-    setLoading(false);
-  }, [mutate, selectedClient, setLoading, user]);
+    setIsLoadingUpdate(false);
+  }, [mutate, selectedClient, setIsLoadingUpdate, user]);
+
+  useEffect(() => {
+    setGlobalLoading(isLoadingClient || isLoadingUpdate);
+  }, [setGlobalLoading, isLoadingClient, GlobalLoading, isLoadingUpdate]);
 
   const ProductsTableComponent = useCallback(() => {
     return (
@@ -111,7 +117,11 @@ const Clients: FC<PageTypes.Props> = ({ user, access_token }) => {
         <CreateClientDialog
           open={openCreatePage}
           setOpen={setOpenCreatePage}
-          onUpdate={() => mutate()}
+          onUpdate={async () => {
+            setIsLoadingUpdate(true);
+            await mutate();
+            setIsLoadingUpdate(false);
+          }}
           user={user}
         />
       )}

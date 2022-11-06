@@ -14,13 +14,10 @@ export function useGetProduct(id) {
   const { data, error } = useSWR<{ product?: props }>(
     `${ApiRoutes.products}?id=${id}`,
     fetcher,
-    {
-      fallbackData: { product: {} },
-    },
   );
 
   return {
-    product: data.product,
+    product: data ? data.product : { product: {} },
     isLoading: !error && !data,
     isError: error,
   };

@@ -7,13 +7,10 @@ export function useMemberAreaTools(id) {
   const { data, error, mutate } = useSWR<DnDRow[]>(
     `${ApiRoutes.member_areas_tool_list}?id=${id}`,
     fetcher,
-    {
-      fallbackData: [],
-    },
   );
 
   return {
-    steps: data ? data : null,
+    steps: data ? data : [],
     isLoading: !error && !data,
     isError: error,
     mutate,
