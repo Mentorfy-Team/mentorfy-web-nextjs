@@ -63,7 +63,7 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
   const { data: tool, error: errorTool } = await supabase
     .from('member_area_tool')
     .select('id, title')
-    .eq('member_area', req.body.member_area_id)
+    .eq('id', tool_id)
     .single();
 
   if (client_input.delete) {

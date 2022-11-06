@@ -6,6 +6,7 @@ declare namespace ProductApi {
     interface Request {
       query: {
         id: string;
+        related_id?: string;
       };
     }
     interface Response {

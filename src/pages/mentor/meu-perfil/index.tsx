@@ -8,7 +8,7 @@ export const getServerSideProps = getProps;
 export const config: PageConfig = {
   api: {
     bodyParser: {
-      sizeLimit: '4mb',
+      sizeLimit: '10mb',
     },
   },
 };

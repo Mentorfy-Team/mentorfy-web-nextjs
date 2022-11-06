@@ -3,6 +3,7 @@ declare namespace ProfileApi {
     interface Request {
       query: {
         withAddress?: boolean;
+        id?: string;
       };
     }
     interface Response {

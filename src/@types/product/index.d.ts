@@ -3,6 +3,7 @@ const Database: ExternalModules.Supabase.Database;
 declare namespace ProductTypes {
   type Product = typeof Database.public.Tables.product.Row & {
     extra: any;
+    progress?: number;
   };
   type Address = typeof Database.public.Tables.address.Row;
 

@@ -22,10 +22,12 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
 
   if (!user) return res.status(401).json({ error: 'Unauthorized' });
 
+  const id = req.query.id || user.id;
+
   const { data: profile, error } = await supabase
     .from('profile')
     .select('*')
-    .eq('id', user.id)
+    .eq('id', id)
     .single();
 
   result['profile'] = profile;
@@ -35,7 +37,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     const { data: address, error } = await supabase
       .from('address')
       .select('*')
-      .eq('id', user.id)
+      .eq('id', id)
       .single();
     result['address'] = address;
   }

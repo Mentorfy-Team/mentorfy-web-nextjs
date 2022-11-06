@@ -4,9 +4,11 @@ import { fetcher } from '~/hooks/fetcher';
 
 type props = Partial<ProductTypes.Product>[];
 
-export function useGetClientProducts(id) {
+export function useGetClientProducts(id, related_id?) {
   const { data, error } = useSWR<props>(
-    `${ApiRoutes.client_products}?id=${id}`,
+    `${ApiRoutes.client_products}?id=${id}${
+      related_id ? `&related_id=${related_id}` : ''
+    }`,
     fetcher,
   );
 

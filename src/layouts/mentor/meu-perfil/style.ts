@@ -16,7 +16,7 @@ export const Card = styled(Box)`
 `;
 
 export const Spacing = styled(Box)`
-  padding: 0 1.5rem;
+  padding: 0rem 1.5rem;
 `;
 
 export const Title = styled(Typography)`
@@ -80,7 +80,7 @@ export const AvatarWrapper = styled('div')`
   display: flex;
   gap: 1rem;
   justify-content: center;
-  
+
   svg {
   }
 `;
@@ -98,7 +98,7 @@ export const CardDivider = styled('div')`
   display: flex;
   height: 50px;
   justify-content: space-between;
-  margin: 1.5rem 0;
+  margin: 0rem 0;
   padding: 0 1.5rem;
   width: 100%;
 `;

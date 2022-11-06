@@ -21,4 +21,18 @@ declare namespace LogTypes {
     viewed_mentory = 100,
     upload_file = 110,
   }
+
+  type History = {
+    id: string;
+    profile_id: string;
+    description: string;
+    code: Codes;
+    created_at: string;
+    extra?: any;
+    visibility: number;
+    log_type: {
+      title: string;
+      description: string;
+    };
+  };
 }

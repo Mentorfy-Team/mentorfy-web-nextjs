@@ -32,5 +32,45 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     if (products) listProducts = listProducts.concat(products);
   }
 
-  return res.status(200).json(listProducts);
+  const { data: tools, error: errorTools } = await supabase
+    .from<MentorTools.ToolData>('member_area_tool')
+    .select('*')
+    .in(
+      'member_area',
+      listProducts.map((p) => p.id),
+    );
+
+  const toolsList = tools?.map((tool) => {
+    tool['type'] = (tool as any).mentor_tool;
+    return tool;
+  });
+
+  const { data: userInputs, error: erroru } = await supabase
+    .from<MemberAreaTypes.UserInput>('client_input_tool')
+    .select('*')
+    .eq('profile_id', req.query.id);
+
+  const productsWithProgress = listProducts.map((p) => {
+    return {
+      ...p,
+      progress: parseFloat(
+        (
+          (userInputs.filter(
+            (input) =>
+              !!toolsList.find((tl) => tl.id === input.member_area_tool_id),
+          ).length /
+            toolsList.filter((t) => t.type !== 0).length) *
+          100
+        ).toFixed(2),
+      ),
+    };
+  });
+
+  return res
+    .status(200)
+    .json(
+      productsWithProgress.filter(
+        (p) => !req.query.related_id || p.owner === req.query.related_id,
+      ),
+    );
 };

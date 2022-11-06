@@ -6,8 +6,6 @@ import dynamic from 'next/dynamic';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';
-import SsrIsLogged from '~/helpers/SsrIsLogged';
-import { GetProduct } from '~/services/product.service';
 import { GetProfile } from '~/services/profile.service';
 
 import GeralPage from './tabs/geral';
@@ -23,40 +21,66 @@ enum tabs {
 type props = PageTypes.Props & {
   product: ProductClient.Product;
   tab: string;
+  isViewingMentored: boolean;
 };
 
-const MinhaConta: FC<props> = ({ profile, tab = tabs.Geral.toString(), address, access_token }) => {
+const MinhaConta: FC<props> = ({
+  user,
+  profile,
+  tab = tabs.Geral.toString(),
+  address,
+  access_token,
+  isViewingMentored,
+}) => {
   const [tabindex, setTabindex] = useState<string>(tab);
   const isMobile = useMediaQuery('(max-width: 400px)');
 
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
       case tabs.Geral.toString():
-        return <GeralPage profile={profile}/>;
+        return (
+          <GeralPage
+            isViewingMentored={isViewingMentored}
+            user={user}
+            profile={profile}
+          />
+        );
       case tabs.Links.toString():
-        return <DadosPage profile={profile} address={address} access_token={access_token} />;
+        return (
+          <DadosPage
+            profile={profile}
+            address={address}
+            access_token={access_token}
+          />
+        );
       default:
-        return <GeralPage profile={profile} />;
+        return (
+          <GeralPage
+            isViewingMentored={isViewingMentored}
+            user={user}
+            profile={profile}
+          />
+        );
     }
   }, [tabindex]);
 
   return (
     <>
-        <Toolbar
-          onChange={(value) => setTabindex(value.toString())}
-          tabs={['Geral', 'Links']}
-        />
-        <ContentWidthLimit>
-          <Box
-            sx={{
-              backgroundColor: (theme) => theme.palette.primary.light,
-              borderRadius: 1,
-            }}
-          >
-            {SwitchTabs()}
-          </Box>
-        </ContentWidthLimit>
-      </>
+      <Toolbar
+        onChange={(value) => setTabindex(value.toString())}
+        tabs={['Geral', 'Links']}
+      />
+      <ContentWidthLimit>
+        <Box
+          sx={{
+            backgroundColor: (theme) => theme.palette.primary.light,
+            borderRadius: 1,
+          }}
+        >
+          {SwitchTabs()}
+        </Box>
+      </ContentWidthLimit>
+    </>
   );
 };
 
@@ -65,9 +89,10 @@ export const getProps = withPageAuth({
   authRequired: true,
   redirectTo: PublicRoutes.login,
   async getServerSideProps(ctx) {
-    const { profile, address } = await GetProfile(ctx.req, true);
+    const id = ctx.query.id;
+    const { profile, address } = await GetProfile(ctx.req, true, id);
     return {
-      props: { profile, address },
+      props: { profile, address, isViewingMentored: !!id },
     };
   },
 });
