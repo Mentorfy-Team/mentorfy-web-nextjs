@@ -42,6 +42,7 @@ const CompletedClientsTable = ({
       columns={columns}
       rows={clients.map((client) => {
         return {
+          id: client.id,
           name: client.name,
           email: client.email,
           since: (

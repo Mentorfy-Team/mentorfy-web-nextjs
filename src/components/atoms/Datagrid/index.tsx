@@ -11,6 +11,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 import ChavronRightSvg from '~/../public/svgs/chavron-right';
+import { useRouter } from 'next/router';
 
 export type Column = {
   id: string;
@@ -43,7 +44,7 @@ export default function StickyHeadTable({
   const handleChangePage = (event: unknown, newPage: number) => {
     if (newPage >= 1) onPageChange(newPage);
   };
-
+  const route = useRouter();
   const CreateButtons = (row) => {
     const ac = actionButtons;
 
@@ -71,6 +72,13 @@ export default function StickyHeadTable({
       </Typography>
     );
   }, [rows]);
+
+  const handleGoToProfile = useCallback(
+    (id) => {
+      route.push('/mentor/meu-perfil?id=' + id);
+    },
+    [route],
+  );
 
   return (
     <PaperWrapper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -106,7 +114,13 @@ export default function StickyHeadTable({
                 )
                 .map((row, index) => {
                   return (
-                    <CustomRow hover role="checkbox" tabIndex={-1} key={index}>
+                    <CustomRow
+                      onClick={() => handleGoToProfile(row.id)}
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={index}
+                    >
                       <>
                         {columns.map((column, index) => {
                           const value = row[column.id];
