@@ -93,12 +93,13 @@ const Geral: FC<props> = ({ id }) => {
         ...values,
         video,
         id: product.id,
+        description,
         extra: { titleGradiente: colorPick },
       });
       toast.success('Alterações salvas com sucesso', { autoClose: 2000 });
       setIsLoading(false);
     },
-    [product, productImage, video, colorPick],
+    [product, productImage, video, colorPick, description],
   );
 
   const handleCapture = (target, imageType: 'main_image' | 'banner_image') => {
