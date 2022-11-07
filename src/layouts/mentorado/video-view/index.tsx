@@ -90,11 +90,11 @@ export const VideoView = ({ member_area_id, video_id }) => {
     async ({ tool_id, client_input }) => {
       // timout para dar tempo para as imagens se organizarem
       setTimeout(async function () {
-        await InputUserMemberArea(tool_id, client_input);
+        await InputUserMemberArea(tool_id, client_input, member_area_id);
         mutate();
       }, 1000);
     },
-    [mutate],
+    [mutate, member_area_id],
   );
 
   const GetOnChange = useCallback(
