@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import DescriptionInputField from '~/components/atoms/DescriptionInputField';
@@ -6,6 +6,7 @@ import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
 import ContentBox from '../ContentBox';
 import WheelOfLifeAreas, { WheelAreasObject } from './components/Areas';
+import { AddAreaButton } from './styles';
 
 const WheelOfLifeModal = ({
   open,
@@ -21,21 +22,34 @@ const WheelOfLifeModal = ({
   const [description, setDescription] = useState(descriptionData);
 
   const [areas, setAreas] = useState<WheelAreasObject[]>(
-     [
+    [
       {
         id: Math.random() + '',
-        title: 'Primeira área 1',
-        checked: true,
+        title: 'Nova área 1',
       }
     ]
   );
+
+  const addNewArea = useCallback(() => {
+    const newArea = {
+      id: Math.random() + '',
+      title: 'Nova área ' + (areas.length + 1),
+    };
+    setAreas([...areas, newArea]);
+  }, [areas]);
+
+  const handleDeleteArea = (area_id: string) => {
+    setAreas((oldAreas) => {
+      const filteredAreas = oldAreas.filter((_area) => _area.id !== area_id);
+      return [...filteredAreas];
+    });
+  };
   const handleSave = (del?: boolean) => {
-    // onChange({
-    //   title,
-    //   description,
-    //   data: checkWheel,
-    //   delete: del,
-    // });
+    onChange({
+      title,
+      description,
+      delete: del,
+    });
     setOpen(false);
   };
 
@@ -76,12 +90,17 @@ const WheelOfLifeModal = ({
             </Box>
             {areas.map((area) => (
               <WheelOfLifeAreas
-              key={area.id}
-              data={area}
-              onSaveArea={() =>{}}
-              onDeleteArea={() => {}}
+                key={area.id}
+                data={area}
+                onSaveArea={() => { }}
+                onDeleteArea={(area_id) => handleDeleteArea(area_id)}
               />
             ))}
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+              <AddAreaButton onClick={() => addNewArea()}>
+                + Nova Área
+              </AddAreaButton>
+            </Box>
           </>
         </ContentBox>
       </>

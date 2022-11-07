@@ -1,7 +1,6 @@
 import React from 'react';
 import { AreaField, AreaTitle, AreasBox, DeleteButton, SaveButton } from '../styles';
-import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
-import { useTheme } from '@mui/material/styles';
+import MenuIcon from '@mui/icons-material/Menu';
 
 type Props = {
     data: WheelAreasObject;
@@ -12,36 +11,16 @@ type Props = {
 export type WheelAreasObject = {
     id: string;
     title: string;
-    checked: boolean;
 };
 const WheelOfLifeAreas: React.FC<Props> = ({
     data: area,
     onSaveArea,
     onDeleteArea,
 }) => {
-    const theme = useTheme();
-    const [checkWheel, setCheckWheel] = React.useState(area.checked);
     const [title, setTitle] = React.useState(area.title);
     const [canEdit, setCanEdit] = React.useState(false);
     const [error, setError] = React.useState(false);
 
-    function BpCheckbox(props: CheckboxProps) {
-        return (
-            <Checkbox
-                sx={{
-                    padding: '0',
-                    color: `${theme.palette.caption.dark}`,
-                    '& .MuiSvgIcon-root': { fontSize: 18 },
-                    '&.Mui-checked': {
-                        color: 'green',
-                    },
-                }}
-                disableRipple
-                color="default"
-                {...props}
-            />
-        );
-    }
     return (
         <AreasBox>
             {canEdit ?
@@ -79,15 +58,7 @@ const WheelOfLifeAreas: React.FC<Props> = ({
                 </>
                 :
                 <>
-                    <BpCheckbox
-                        checked={area.checked}
-                        onChange={(e) => {
-                            setCheckWheel(!checkWheel);
-                            // const newCheckWheel = [...checkWheel];
-                            // newCheckWheel[index.id].checked = e.target.checked;
-                            // setCheckWheel(newCheckWheel);
-                        }}
-                    />
+                <MenuIcon/>
                     <AreaTitle>
                         {title}
                     </AreaTitle>

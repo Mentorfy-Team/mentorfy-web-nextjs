@@ -37,15 +37,15 @@ export const DeleteButton = styled(Button)`
 
 export const AddAreaButton = styled(Button)`
   color: ${({ theme }) => theme.palette.accent.main};
-  font-size: 0.8rem;
-  font-weight: 400;
+  font-size: 0.9rem;
+  font-weight: 600;
   line-height: 0.9rem;
-  padding: 0px;
+  margin-top: 1rem;
   text-transform: none;
 `;
 
 export const AreaTitle = styled(Typography)`
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 1rem;
   margin-left: 0.5rem;
@@ -61,4 +61,3 @@ export const AreaField = styled(InputField)`
     height: 2rem;
   }
 `;
-
