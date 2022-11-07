@@ -58,7 +58,7 @@ export const ModalDialogContent = styled(DialogContent)<Props>`
       height: 100%;
       overflow: hidden;
       padding: 0;
-      width: 800px;
+      width: 900px;
     `}
 `;
 export const Header = styled(Box)`

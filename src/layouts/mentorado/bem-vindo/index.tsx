@@ -379,9 +379,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         open={open}
         setOpen={setOpen}
         popularProduct
-        isMentorado
       >
-        <ModalDialogContent popularProduct isMentorado>
+        <ModalDialogContent popularProduct >
           <>
             <VideoHolder id="holder">
               {currentProduct.video ? (
