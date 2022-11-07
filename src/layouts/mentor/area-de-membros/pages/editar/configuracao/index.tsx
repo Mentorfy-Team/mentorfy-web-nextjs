@@ -38,6 +38,7 @@ const Geral: FC<props> = ({ id }) => {
   const { handleSubmit, watch, setValue } = useForm<ProductClient.Product>();
   const { product: pData } = useGetProduct(id);
   const [product, setProduct] = useState<typeof pData>(pData);
+  const [description, setDescription] = useState<string>('');
   const { types } = useMemberAreaTypes();
   const theme = useTheme();
   const title = watch('title');
@@ -54,6 +55,7 @@ const Geral: FC<props> = ({ id }) => {
 
   useEffect(() => {
     setProduct(pData);
+    setDescription(description);
     setValue('title', pData?.title);
     setProductImage({
       main_image: {
@@ -66,7 +68,7 @@ const Geral: FC<props> = ({ id }) => {
       },
     });
     setVideo(pData?.video || '');
-  }, [pData, setValue]);
+  }, [pData, setValue, description]);
 
   const onSubmit: SubmitHandler<ProductClient.CreateProduct> = useCallback(
     async (values) => {
@@ -162,6 +164,16 @@ const Geral: FC<props> = ({ id }) => {
           shrink: true,
         }}
         onChange={(e) => setValue('title', e.target.value)}
+      />
+      <InputField
+        color="secondary"
+        value={description}
+        label="Descrição"
+        placeholder='Escreva a descrição do seu produto aqui'
+        InputLabelProps={{
+          shrink: true,
+        }}
+        onChange={(e) => setDescription(e.target.value)}
       />
       <InputField
         color="secondary"
