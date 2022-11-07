@@ -16,7 +16,7 @@ export const Modal = styled(Dialog)<Props>`
       .MuiPaper-root {
         height: fit-content;
         max-height: 100%;
-        max-width: 900px;
+        max-width: 1000px;
         overflow: unset;
         @media (max-width: 600px) {
           height: 100%;
@@ -40,9 +40,12 @@ export const ModalDialogContent = styled(DialogContent)<Props>`
   ${({ isMentorado }) =>
     isMentorado
       ? css`
-          max-width: 900px;
-          overflow-y: auto;
+         .MuiDialogContent-root { 
+          overflow: hidden;
           padding: 0.5rem 1rem;
+          width: 900px;
+
+        }
         `
       : css`
           width: 480px;
