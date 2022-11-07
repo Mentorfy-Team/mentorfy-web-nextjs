@@ -17,7 +17,7 @@ export function useGetProduct(id) {
   );
 
   return {
-    product: data ? data.product : { product: {} },
+    product: data ? data.product : {},
     isLoading: !error && !data,
     isError: error,
   };
