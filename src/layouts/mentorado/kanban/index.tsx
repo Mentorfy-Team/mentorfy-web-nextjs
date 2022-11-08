@@ -138,17 +138,21 @@ export const KanbanView: FC<
           {steps &&
             steps.map((step) => (
               <Step key={step.id}>
-                <Image
-                  alt="imagem"
-                  width={50}
-                  height={50}
-                  src={step?.extra ? step?.extra[0]?.sourceUrl : ''}
-                  style={{
-                    objectFit: 'contain',
-                    marginBottom: '0.5rem',
-                  }}
-                />
-                <Title>{step.title}</Title>
+                {step?.extra && step?.extra[0]?.sourceUrl && (
+                  <Image
+                    alt="imagem"
+                    width={50}
+                    height={50}
+                    src={step?.extra[0]?.sourceUrl}
+                    style={{
+                      objectFit: 'contain',
+                      marginBottom: '0.5rem',
+                    }}
+                  />
+                )}
+                <Title mt={step?.extra && step?.extra[0]?.sourceUrl ? 0 : 4}>
+                  {step.title}
+                </Title>
                 <Box
                   sx={{
                     height: '100%',

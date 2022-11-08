@@ -1,11 +1,19 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
 import Description from '~/components/atoms/ModalDescription';
 import TextRating from '~/components/atoms/Rating';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
-import { BackButton, ButtonsWrapper, ContentWrapper, ForwardButton, TextQuestion } from './styles';
+import {
+  BackButton,
+  ButtonsWrapper,
+  ContentWrapper,
+  ForwardButton,
+  TextQuestion,
+} from './styles';
+import PDFDownload from '~/components/atoms/PDFDownload';
+import WheelOfLifeTemplate from './template/WheelOfLifeTemplate';
 
 type InputProps = { id: string; rating: number }[];
 type ExtraProps = boolean;
@@ -25,26 +33,27 @@ const WheelOfLifeModal = ({
   const [input, setInput] = useState(userInput?.data || []);
   const [currentArea, setCurrentArea] = useState(0);
 
-  const generateData = useCallback((areas: string[], input: InputProps) => {
-    // for each area, create a new object with the area name and the rating
-    const data = [];
-    for (let i = 0; i < areas.length; i++) {
-      for (let j = 0; j < 10; j++) {
-        data.push({
-          value: input[i]?.rating > j ? 1 : 0,
-          area: areas[i],
-          rating: j,
-        });
-      }
-    }
-    return data;
-  }, []);
+  // const generateData = useCallback((areas: string[], input: InputProps) => {
+  //   // for each area, create a new object with the area name and the rating
+  //   const data = [];
+  //   for (let i = 0; i < areas.length; i++) {
+  //     for (let j = 0; j < 10; j++) {
+  //       data.push({
+  //         value: input[i]?.rating > j ? 1 : 0,
+  //         area: areas[i],
+  //         rating: j,
+  //       });
+  //     }
+  //   }
+  //   return data;
+  // }, []);
+
   const handleFinish = () => {
     onChange({
       data: input,
       extra: {
-        finished: taskData.length === input.length
-      }
+        finished: taskData.length === input.length,
+      },
     });
     setOpen(false);
   };
@@ -64,39 +73,45 @@ const WheelOfLifeModal = ({
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado sx={{ maxWidth: '680px' }}>
         <Description>{descriptionData}</Description>
-        <ContentWrapper >
-            {taskData && (
-              <>
-                <TextQuestion>
-                  De 0 a 10, como está o(a)
-                  <span>
-                  {' ' +
-                  !!taskData &&
-                  !!taskData[currentArea] &&
-                  taskData[currentArea].title + ' '}
-                  </span>
-                  na sua vida ?
-                </TextQuestion>
-                <TextRating
+        <ContentWrapper>
+          {taskData && (
+            <>
+              <TextQuestion>
+                De 0 a 10, como está o(a)
+                <span>
+                  {' ' + !!taskData &&
+                    !!taskData[currentArea] &&
+                    taskData[currentArea].title + ' '}
+                </span>
+                na sua vida ?
+              </TextQuestion>
+              <TextRating
                 isWheelOLife
-                  setValue={(value) => {
-                    const index = input.findIndex(
-                      (item) => item.id === taskData[currentArea].id,
-                    );
-                    setInput((prev) => {
-                      if (index === -1) {
-                        return [...prev, { id: taskData[currentArea].id, rating: value }];
-                      } else {
-                        prev[index].rating = value;
-                        return [...prev];
-                      }
-                    });
-                  }}
-                  value={input.find((inp) => inp.id === taskData[currentArea].id)?.rating || 0}
-                />
-              </>
-            )}
+                setValue={(value) => {
+                  const index = input.findIndex(
+                    (item) => item.id === taskData[currentArea].id,
+                  );
+                  setInput((prev) => {
+                    if (index === -1) {
+                      return [
+                        ...prev,
+                        { id: taskData[currentArea].id, rating: value },
+                      ];
+                    } else {
+                      prev[index].rating = value;
+                      return [...prev];
+                    }
+                  });
+                }}
+                value={
+                  input.find((inp) => inp.id === taskData[currentArea].id)
+                    ?.rating || 0
+                }
+              />
+            </>
+          )}
         </ContentWrapper>
+
         {/* <Heatmap
           data={generateData(
             taskData.map((task) => task.title),
@@ -114,14 +129,30 @@ const WheelOfLifeModal = ({
           </BackButton>
           {currentArea !== taskData?.length - 1 && (
             <ForwardButton
-              disabled={
-            !input[currentArea] || input[currentArea]?.rating === 0
-              }
+              disabled={!input[currentArea] || input[currentArea]?.rating === 0}
               variant="contained"
               onClick={() => setCurrentArea((q) => q + 1)}
             >
               Próximo
             </ForwardButton>
+          )}
+          {currentArea === taskData?.length - 1 && (
+            <PDFDownload
+              fileName="wheel-of-life.pdf"
+              pageStyles={{}}
+              template={WheelOfLifeTemplate(taskData, input)}
+            >
+              <ForwardButton
+                disabled={
+                  !taskData ||
+                  !input[currentArea] ||
+                  input[currentArea]?.rating === 0
+                }
+                variant="contained"
+              >
+                Download
+              </ForwardButton>
+            </PDFDownload>
           )}
           {currentArea === taskData?.length - 1 && (
             <ForwardButton
