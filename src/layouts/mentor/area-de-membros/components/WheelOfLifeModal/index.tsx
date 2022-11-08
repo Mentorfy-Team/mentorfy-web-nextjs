@@ -13,7 +13,7 @@ const WheelOfLifeModal = ({
   setOpen,
   onChange,
   data: {
-    data: areaData,
+    data: areasData,
     title: titleData,
     description: descriptionData,
   },
@@ -22,7 +22,7 @@ const WheelOfLifeModal = ({
   const [description, setDescription] = useState(descriptionData);
 
   const [areas, setAreas] = useState<WheelAreasObject[]>(
-    [
+    areasData || [
       {
         id: Math.random() + '',
         title: 'Nova área 1',
@@ -44,10 +44,18 @@ const WheelOfLifeModal = ({
       return [...filteredAreas];
     });
   };
+
+  const onTitleChange = (_title, id) => {
+    setAreas((oldAreas) => {
+      oldAreas.find((_areas) => _areas.id === id).title = _title;
+      return [...oldAreas];
+    });
+  };
   const handleSave = (del?: boolean) => {
     onChange({
       title,
       description,
+      data: areas,
       delete: del,
     });
     setOpen(false);
@@ -92,7 +100,7 @@ const WheelOfLifeModal = ({
               <WheelOfLifeAreas
                 key={area.id}
                 data={area}
-                onSaveArea={() => { }}
+                onSaveArea={(_title, id) => onTitleChange(_title, id)}
                 onDeleteArea={(area_id) => handleDeleteArea(area_id)}
               />
             ))}
