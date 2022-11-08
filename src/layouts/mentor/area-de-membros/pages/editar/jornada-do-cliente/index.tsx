@@ -55,15 +55,20 @@ const ClientJourney: FC<props> = ({ id }) => {
                     flexDirection: 'column',
                   }}
                 >
-                  <ImageWrapper>
-                    <Image
-                      alt="imagem-principal"
-                      width={40}
-                      height={40}
-                      src={steps[index].extra ? step?.extra[0]?.sourceUrl : ''}
-                    />
-                  </ImageWrapper>
-                  <ImageText>{step.title}</ImageText>
+                  {steps[index].extra && step?.extra[0]?.sourceUrl &&
+                    <ImageWrapper>
+                      <Image
+                        alt="imagem-principal"
+                        width={40}
+                        height={40}
+                        src={step?.extra[0]?.sourceUrl}
+                      />
+                    </ImageWrapper>
+                  }
+                  <ImageText sx={{
+                    marginTop: `${steps[index].extra && step?.extra[0]?.sourceUrl ? '0' : '2.5rem'}`,
+                    fontSize: `${steps[index].extra && step?.extra[0]?.sourceUrl ? '0.8rem' : '0.9rem'}`
+                }}>{step.title}</ImageText>
                 </Box>
                 <Box sx={{ textAlign: 'right' }}>
                   <Typography sx={{ fontWeight: '600' }}>
@@ -87,9 +92,8 @@ const ClientJourney: FC<props> = ({ id }) => {
                         alt="imagem-principal"
                         width={13}
                         height={13}
-                        src={`/svgs/${
-                          percent === 100 ? 'done' : 'done-gray'
-                        }.svg`}
+                        src={`/svgs/${percent === 100 ? 'done' : 'done-gray'
+                          }.svg`}
                       />
                     </ClassDescription>
                   </Class>
