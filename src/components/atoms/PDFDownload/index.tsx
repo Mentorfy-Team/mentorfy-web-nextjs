@@ -1,8 +1,10 @@
 import { Document, PDFDownloadLink, Page } from '@react-pdf/renderer';
 import { Style } from '@react-pdf/types';
+import { toPng } from 'html-to-image';
+import Image from 'next/image';
 
 type Props = {
-  template: React.ReactNode;
+  template: HTMLElement;
   pageStyles: Style;
   fileName: string;
   children: React.ReactNode;
@@ -30,23 +32,33 @@ export default ({
   );
 };
 
-const GenerateDocument = (template: React.ReactNode, pageStyles: Style) => {
-  const convertToImage = htmlToImage(template);
+const GenerateDocument = (template: HTMLElement, pageStyles: Style) => {
+
+  const convertToImage = async () => {
+
+   const pdfFile = await toPng(template);
+
+   await function (dataUrl) {
+
+     const img = new Image(pdfFile);
+     img.src = dataUrl;
+     document.body.appendChild(img);
+   };
+           };
+
   return (
     <Document>
       <Page size="A4" style={pageStyles}>
-        {convertToImage}
+        <Image src={convertToImage} alt='pdf'/>
       </Page>
     </Document>
   );
 };
 
 // TODO: Converter html em imagem
-const htmlToImage = (html: string) => {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = reject;
-    img.src = `data:image/svg+xml,${encodeURIComponent(html)}`;
-  });
-};
+// toPng(template)
+//   .then(function (dataUrl) {
+//       const img = new Image();
+//       img.src = dataUrl;
+//       document.body.appendChild(img);
+//     });
