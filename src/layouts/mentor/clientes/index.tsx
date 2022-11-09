@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import ModalComponent from '~/components/modules/Modal';

@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useProfile } from '~/hooks/useProfile';
 import { AppBar, AvatarWrapper, MenuItem, PopoverBox } from './styles';

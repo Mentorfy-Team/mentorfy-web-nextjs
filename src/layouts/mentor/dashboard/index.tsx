@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
 import { PublicRoutes } from '~/consts';

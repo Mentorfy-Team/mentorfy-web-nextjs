@@ -5,7 +5,7 @@ import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { SketchPicker } from 'react-color';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -170,7 +170,7 @@ const Geral: FC<props> = ({ id }) => {
         color="secondary"
         value={description}
         label="Descrição"
-        placeholder='Escreva a descrição do seu produto aqui'
+        placeholder="Escreva a descrição do seu produto aqui"
         InputLabelProps={{
           shrink: true,
         }}

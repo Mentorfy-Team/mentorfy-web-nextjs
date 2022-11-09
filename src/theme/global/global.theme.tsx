@@ -1,5 +1,6 @@
 import { Global } from '@emotion/react';
 import { css } from '@mui/material/styles';
+import { MainFont } from '~/pages/_app';
 
 const globalStyles = css`
   & :-webkit-autofill {
@@ -76,10 +77,10 @@ const globalStyles = css`
       padding: 0;
     }
   }
+  html {
+    font-family: ${MainFont.className};
+  }
   body {
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-      Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-      Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     overflow: auto;
   }
   h1,
@@ -88,9 +89,6 @@ const globalStyles = css`
   h4,
   h5,
   h6 {
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-      Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-      Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   }
   h1 {
     line-height: 2.4rem;
@@ -103,9 +101,6 @@ const globalStyles = css`
   p,
   b,
   input {
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-      Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif,
-      Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
   }
   button,
   input &:active,

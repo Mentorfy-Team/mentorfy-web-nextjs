@@ -8,8 +8,8 @@ export const Wrapper = styled(Box)`
 `;
 
 export const VideoWrapper = styled(Box)`
-  text-align: start;
   padding-bottom: 3rem;
+  text-align: start;
 `;
 
 export const ProgressBarWrapper = styled(Box)`
@@ -19,11 +19,11 @@ export const ProgressBarWrapper = styled(Box)`
 export const VideoInteractionsBox = styled(Box)`
   align-items: end;
   border-bottom: 1px dotted #424242;
-  padding-bottom: 1.2rem;
-  margin-top: 1rem;
   display: flex;
   height: 3.5rem;
   justify-content: space-between;
+  margin-top: 1rem;
+  padding-bottom: 1.2rem;
   width: 100%;
 `;
 
@@ -71,7 +71,6 @@ export const CommentInput = styled('textarea')`
   border-radius: 4px;
   color: ${({ theme }) => theme.palette.text.primary};
   flex-grow: 1;
-  font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
   font-size: 0.9rem;
   font-weight: 400;
   max-width: 88%;

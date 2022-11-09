@@ -7,7 +7,7 @@ import Select from '@mui/material/Select';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
@@ -46,7 +46,6 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   };
 
   const confirmDeleteProduct = async () => {
-
     if (!showConfirmDelete) {
       setShowConfirmDelete(true);
     } else {
@@ -67,8 +66,11 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
           <Box sx={{ float: 'left' }}>
             <Typography>Minhas Mentorias</Typography>
           </Box>
-          <Box sx={{ float: 'right' }} >
-            <CreateAreaButton variant="outlined" onClick={() => setOpenCreatePage(true)}>
+          <Box sx={{ float: 'right' }}>
+            <CreateAreaButton
+              variant="outlined"
+              onClick={() => setOpenCreatePage(true)}
+            >
               <PlusSvg fill={theme.palette.accent.main} />
               Criar Mentoria
             </CreateAreaButton>
@@ -97,7 +99,9 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
           {products?.map((area, index) => (
             <AreaWrapper
               onClick={
-                () => { router.push(MentorRoutes.members_area_editar + '/' + area.id); }
+                () => {
+                  router.push(MentorRoutes.members_area_editar + '/' + area.id);
+                }
                 // router.push(MentorRoutes.members_area_editar + '/' + area.id)
               }
               key={index}
@@ -170,22 +174,21 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
         onSave={() => {
           setOpen(false);
           setShowConfirmDelete(false);
-        }
-        }
+        }}
         open={open}
         setOpen={setOpen}
         title="Remover Mentoria"
         deleteMessage={true}
       >
-        {showConfirmDelete ?
+        {showConfirmDelete ? (
           <Box sx={{ textAlign: 'center' }}>
             <DeleteText>
               Ao remover, você perderá todos os dados relacionados a essa
               mentoria. Deseja continuar mesmo assim?
             </DeleteText>
           </Box>
-          :
-          <Box >
+        ) : (
+          <Box>
             <DeleteText>Escolha qual produto deseja excluir</DeleteText>
             <ProductsSelectField
               required
@@ -199,16 +202,18 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
                 notched={true}
               >
                 {products.map((product) => (
-                  <MenuItem key={product.id} value={product.id}
-                  onClick={() => setProductId(product.id)}>
+                  <MenuItem
+                    key={product.id}
+                    value={product.id}
+                    onClick={() => setProductId(product.id)}
+                  >
                     {product.title}
                   </MenuItem>
                 ))}
               </Select>
             </ProductsSelectField>
           </Box>
-        }
-
+        )}
       </ModalComponent>
     </>
   );
