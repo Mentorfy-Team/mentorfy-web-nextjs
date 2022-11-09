@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Image from 'next/image';
 import SearchInput from '~/components/atoms/SearchInput';
@@ -18,6 +19,8 @@ import {
   ImageText,
   ImageWrapper,
   ScrollArea,
+  TipText,
+  TipWrapper,
 } from './styles';
 
 type props = {
@@ -26,6 +29,9 @@ type props = {
 
 const ClientJourney: FC<props> = ({ id }) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
+  const theme = useTheme();
+  const [background, setBackground] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<any>([]);
   const [steps, setSteps] = useState<ProductTypes.resultJorney[]>([]);
   const {
     data: { clients, result: stepsData },
@@ -41,8 +47,22 @@ const ClientJourney: FC<props> = ({ id }) => {
     setLoading(isLoading);
   }, [isLoading, setLoading]);
 
+  const handleSelectedStep = (task) => {
+    setSelectedTask(task);
+    console.log(task);
+  };
+
   return (
     <ContentWidthLimit withoutScroll maxWidth={1900}>
+      <TipWrapper>
+        <Image alt='tip-icon' src='/svgs/tip-icon.svg' width={22} height={22} />
+        <TipText>
+          Clique em uma etapa para
+          <span>filtrar a lista de mentorados</span>
+          que concluíram a etapa. Clique novamente para cancelar.
+        </TipText>
+      </TipWrapper>
+
       <ScrollArea>
         {steps?.map((step, index) => (
           <Bundle key={index}>
@@ -67,16 +87,14 @@ const ClientJourney: FC<props> = ({ id }) => {
                   )}
                   <ImageText
                     sx={{
-                      marginTop: `${
-                        steps[index].extra && step?.extra[0]?.sourceUrl
+                      marginTop: `${steps[index].extra && step?.extra[0]?.sourceUrl
                           ? '0'
                           : '2.5rem'
-                      }`,
-                      fontSize: `${
-                        steps[index].extra && step?.extra[0]?.sourceUrl
+                        }`,
+                      fontSize: `${steps[index].extra && step?.extra[0]?.sourceUrl
                           ? '0.8rem'
                           : '0.9rem'
-                      }`,
+                        }`,
                     }}
                   >
                     {step.title}
@@ -95,7 +113,10 @@ const ClientJourney: FC<props> = ({ id }) => {
               {step.rows.map((task, taskIndex) => {
                 const percent = task.progress || 0;
                 return (
-                  <Class key={task.id}>
+                  <Class key={task.id}
+                  onClick={(e) => handleSelectedStep(task)}
+                  sx={{backgroundColor: `${task.id === selectedTask.id ? theme.palette.secondary.main : ''}`}}
+                  >
                     <ClassDescription>{task.title}</ClassDescription>
 
                     <ClassDescription>
@@ -104,9 +125,8 @@ const ClientJourney: FC<props> = ({ id }) => {
                         alt="imagem-principal"
                         width={13}
                         height={13}
-                        src={`/svgs/${
-                          percent === 100 ? 'done' : 'done-gray'
-                        }.svg`}
+                        src={`/svgs/${percent === 100 ? 'done' : 'done-gray'
+                          }.svg`}
                       />
                     </ClassDescription>
                   </Class>

@@ -82,8 +82,8 @@ export const Class = styled(Box)`
   padding-top: 0.45rem;
 
   :hover {
-    background-color: ${({ theme }) => theme.palette.caption.dark}55;
     cursor: pointer;
+    opacity: 0.8;
   }
 `;
 
@@ -101,4 +101,24 @@ export const ClassDescription = styled(Typography)`
   white-space: nowrap;
   width: max-content;
   max-width: 220px;
+`;
+
+export const TipText = styled(Typography)`
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1rem;
+
+  span { 
+    color: ${({ theme }) => theme.palette.secondary.main};
+    margin: 0 0.2rem 0 0.2rem;
+  }
+`;
+
+export const TipWrapper = styled(Box)`
+  align-items: center;
+  background-color: ${({ theme }) => theme.palette.primary.light};
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
 `;
