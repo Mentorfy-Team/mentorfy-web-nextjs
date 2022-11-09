@@ -1,4 +1,5 @@
 import { Components, ComponentsProps, Theme } from '@mui/material';
+import { MainFont } from '~/pages/_app';
 
 const ButtonStyle = {
   defaultProps: {
@@ -75,4 +76,12 @@ export const MuiOverride: Components<Theme> = {
   MuiButton: ButtonStyle,
   MuiTextField: TextFieldStyle,
   MuiFormControl: FormControlStyle,
+  MuiTypography: {
+    styleOverrides: {
+      root: {
+        ...MainFont.style,
+        letterSpacing: '0.05rem',
+      },
+    },
+  },
 };

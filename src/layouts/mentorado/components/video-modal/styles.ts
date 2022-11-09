@@ -27,7 +27,6 @@ export const CommentInput = styled('textarea')`
   border-radius: 10px;
   color: ${({ theme }) => theme.palette.text.primary};
   flex-grow: 1;
-  font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
   font-size: 0.9rem;
   font-weight: 400;
   height: 2.3rem;

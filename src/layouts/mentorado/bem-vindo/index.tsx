@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
-import Image from 'next/future/image';
+import Image from 'next/image';
 
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 const Slider: any = dynamic(() => import('react-slick'), { ssr: false });
@@ -380,7 +380,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         setOpen={setOpen}
         popularProduct
       >
-        <ModalDialogContent popularProduct >
+        <ModalDialogContent popularProduct>
           <>
             <VideoHolder id="holder">
               {currentProduct.video ? (

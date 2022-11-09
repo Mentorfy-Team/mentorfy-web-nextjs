@@ -52,6 +52,7 @@ export const IndicatorTitle = styled(Typography)<Props>`
 `;
 
 export const ArrowBox = styled(Box)`
+  align-items: center;
   background-color: #162f29;
   border-radius: 4px;
   display: flex;
@@ -60,6 +61,7 @@ export const ArrowBox = styled(Box)`
   width: 50px;
 `;
 export const RedArrowBox = styled(Box)`
+  align-items: center;
   background-color: #312127;
   border-radius: 4px;
   display: flex;

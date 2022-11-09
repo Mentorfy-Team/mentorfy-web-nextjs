@@ -12,6 +12,7 @@ const nextConfig = {
         transform: '@mui/icons-material/{{member}}',
       },
     },
+    appDir: false,
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if

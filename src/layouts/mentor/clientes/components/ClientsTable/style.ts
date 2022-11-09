@@ -12,7 +12,6 @@ export const ProductBox = styled(Box)`
   padding: 3px 10px 0 10px;
 
   p {
-    font-family: 'Roboto', sans-serif;
     font-size: 0.9rem;
     overflow: hidden;
     text-overflow: ellipsis;

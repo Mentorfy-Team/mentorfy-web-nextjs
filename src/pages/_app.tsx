@@ -14,6 +14,13 @@ import createEmotionCache from '~/createEmotionCache';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
 const clientSideEmotionCache = createEmotionCache();
+import { Anybody } from '@next/font/google';
+
+export const MainFont = Anybody({
+  weight: ['300', '400', '500', '700'],
+  variable: '--main-font',
+  subsets: ['latin'],
+});
 
 const LoadingPartial = dynamic(
   () => import('~/components/partials/loading/loading.partial'),
@@ -99,32 +106,34 @@ const App = (props: MyAppProps) => {
   );
 
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>Mentorfy</title>
-        <meta content="width=device-width, initial-scale=1" />
-      </Head>
-      <GlobalStyles />
-      <CssBaseline />
-      <ThemeProvider>
-        <Wrapper id="WrapperRoot">
-          <PageWrapper>
-            <UserProvider supabaseClient={supabaseClient}>
-              {router.asPath.includes('/m') && <HeaderPartial />}
-              <Drawer>
-                <Component {...pageProps} {...{ urlParams: params }} />
-              </Drawer>
-            </UserProvider>
-          </PageWrapper>
-          <LoadingPartial />
-          <ToastContainer
-            theme="dark"
-            autoClose={2000}
-            hideProgressBar={false}
-          />
-        </Wrapper>
-      </ThemeProvider>
-    </CacheProvider>
+    <main className={MainFont.className}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>Mentorfy</title>
+          <meta content="width=device-width, initial-scale=1" />
+        </Head>
+        <GlobalStyles />
+        <CssBaseline />
+        <ThemeProvider>
+          <Wrapper id="WrapperRoot">
+            <PageWrapper>
+              <UserProvider supabaseClient={supabaseClient}>
+                {router.asPath.includes('/m') && <HeaderPartial />}
+                <Drawer>
+                  <Component {...pageProps} {...{ urlParams: params }} />
+                </Drawer>
+              </UserProvider>
+            </PageWrapper>
+            <LoadingPartial />
+            <ToastContainer
+              theme="dark"
+              autoClose={2000}
+              hideProgressBar={false}
+            />
+          </Wrapper>
+        </ThemeProvider>
+      </CacheProvider>
+    </main>
   );
 };
 

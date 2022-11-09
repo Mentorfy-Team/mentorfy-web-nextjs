@@ -8,7 +8,7 @@ interface AppBarProps {
   open?: boolean;
 }
 
-const DrawerWidth = '185px';
+const DrawerWidth = '200px';
 
 const openedMixin = (theme: Theme) => `
   width: ${DrawerWidth};

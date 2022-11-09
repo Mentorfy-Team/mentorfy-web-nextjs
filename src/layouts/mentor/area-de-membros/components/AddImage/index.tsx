@@ -20,7 +20,9 @@ const AddImage: FC<Props> = ({ onUploadImage, thumbnail, title }) => {
         src={thumbnail || '/svgs/step-image.svg'}
         width={100}
         height={70}
-        objectFit="contain"
+        style={{
+          objectFit: 'contain'
+        }}
       ></Image>
       <Box
         sx={{
