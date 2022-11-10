@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Image from 'next/image';
 import SearchInput from '~/components/atoms/SearchInput';
@@ -29,7 +28,6 @@ type props = {
 
 const ClientJourney: FC<props> = ({ id }) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
-  const theme = useTheme();
   const [background, setBackground] = useState('#7586EC');
   const [completedClients, setcompletedClients] = useState<any>([]);
   const [selectedTask, setSelectedTask] = useState<any>([]);
@@ -51,12 +49,6 @@ const ClientJourney: FC<props> = ({ id }) => {
   const handleSelectedStep = (task) => {
     setSelectedTask(task);
 
-    // setcompletedClients(() => {
-    //   console.log(selectedTask.clients);
-    //   const maxProgress = selectedTask.clients.filter((client) => client.progress === 100);
-    //   return [...maxProgress];
-    // });
-
     if(task.id === selectedTask.id && background === '#7586EC') {
       setBackground('inherit');
     }
@@ -71,12 +63,13 @@ const ClientJourney: FC<props> = ({ id }) => {
     }
   };
 
-  // useEffect(() => {
-  //   setcompletedClients((selectedTask) => {
-  //     selectedTask.filter((task) => task.clients.progress === 100);
-  //     return [completedClients];
-  //   });
-  // }, [completedClients, selectedTask]);
+  const handleClientsTable = (task) => {
+    setcompletedClients(() => {
+      console.log(task);
+      const maxProgress = task.clients.filter((client) => client.progress === 18.18);
+      return [...maxProgress];
+    });
+  };
 
   return (
     <ContentWidthLimit withoutScroll maxWidth={1900}>
@@ -140,7 +133,10 @@ const ClientJourney: FC<props> = ({ id }) => {
                 const percent = task.progress || 0;
                 return (
                   <Class key={task.id}
-                  onClick={() => handleSelectedStep(task)}
+                  onClick={() => {
+                    handleClientsTable(task);
+                    handleSelectedStep(task);
+                  }}
                   sx={{backgroundColor: `${task.id === selectedTask.id && background}`}}
                   >
                     <ClassDescription>{task.title}</ClassDescription>
@@ -171,7 +167,7 @@ const ClientJourney: FC<props> = ({ id }) => {
               margin: '1rem 0',
             }}
           />
-          <CompletedClientsTable clients={clients} />
+          <CompletedClientsTable clients={completedClients !== null ? completedClients : clients} />
         </>
       )}
     </ContentWidthLimit>

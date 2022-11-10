@@ -99,7 +99,6 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
 
   return (
     <div>
-      {inputs.password + ' :::'}
       <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
         Para se{' '}
         <Accent>

@@ -40,6 +40,7 @@ const CompletedClientsTable = ({
   return (
     <Datagrid
       columns={columns}
+      completedClientsTable
       rows={clients.map((client) => {
         return {
           id: client.id,
