@@ -79,51 +79,57 @@ const WheelOfLifeModal = ({
   return (
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado sx={{ maxWidth: '680px' }}>
-        <Description>{descriptionData}</Description>
-        <ContentWrapper>
-          {currentArea !== taskData?.length && taskData && (
-            <>
-              <TextQuestion>
-                De 0 a 10, como está o(a)
-                <span>
-                  {' ' + !!taskData &&
-                    !!taskData[currentArea] &&
-                    taskData[currentArea].title + ' '}
-                </span>
-                na sua vida ?
-              </TextQuestion>
-              <TextRating
-                isWheelOLife
-                setValue={(value) => {
-                  const index = input.findIndex(
-                    (item) => item.id === taskData[currentArea].id,
-                  );
-                  setInput((prev) => {
-                    if (index === -1) {
-                      return [
-                        ...prev,
-                        { id: taskData[currentArea].id, rating: value },
-                      ];
-                    } else {
-                      prev[index].rating = value;
-                      return [...prev];
-                    }
-                  });
-                }}
-                value={
-                  input.find((inp) => inp.id === taskData[currentArea].id)
-                    ?.rating || 0
-                }
-              />
-            </>
-          )}
-          {currentArea === taskData?.length && (
-            <WheelWrapper id="wheel-id">
-              <WheelOfLifeTemplate taskData={taskData} input={input} />
-            </WheelWrapper>
-          )}
-        </ContentWrapper>
-
+        <div
+          style={{
+            backgroundColor: '#121212',
+          }}
+          id="wheel-id"
+        >
+          <Description>{descriptionData}</Description>
+          <ContentWrapper>
+            {currentArea !== taskData?.length && taskData && (
+              <>
+                <TextQuestion>
+                  De 0 a 10, como está o(a)
+                  <span>
+                    {' ' + !!taskData &&
+                      !!taskData[currentArea] &&
+                      taskData[currentArea].title + ' '}
+                  </span>
+                  na sua vida ?
+                </TextQuestion>
+                <TextRating
+                  isWheelOLife
+                  setValue={(value) => {
+                    const index = input.findIndex(
+                      (item) => item.id === taskData[currentArea].id,
+                    );
+                    setInput((prev) => {
+                      if (index === -1) {
+                        return [
+                          ...prev,
+                          { id: taskData[currentArea].id, rating: value },
+                        ];
+                      } else {
+                        prev[index].rating = value;
+                        return [...prev];
+                      }
+                    });
+                  }}
+                  value={
+                    input.find((inp) => inp.id === taskData[currentArea].id)
+                      ?.rating || 0
+                  }
+                />
+              </>
+            )}
+            {currentArea === taskData?.length && (
+              <WheelWrapper>
+                <WheelOfLifeTemplate taskData={taskData} input={input} />
+              </WheelWrapper>
+            )}
+          </ContentWrapper>
+        </div>
         {/* <Heatmap
           data={generateData(
             taskData.map((task) => task.title),

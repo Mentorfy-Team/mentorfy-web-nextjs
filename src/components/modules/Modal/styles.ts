@@ -37,15 +37,16 @@ export const Modal = styled(Dialog)<Props>`
 
 export const ModalDialogContent = styled(DialogContent)<Props>`
   background-color: ${({ theme }) => theme.palette.primary.main};
+  overflow-x: hidden;
+  overflow-y: auto;
   ${({ isMentorado }) =>
     isMentorado
       ? css`
-         .MuiDialogContent-root { 
-          overflow: hidden;
-          padding: 0.5rem 1rem;
-          width: 900px;
-
-        }
+          .MuiDialogContent-root {
+            overflow: hidden;
+            padding: 0.5rem 1rem;
+            width: 900px;
+          }
         `
       : css`
           width: 480px;
