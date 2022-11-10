@@ -27,6 +27,12 @@ export default ({
   const [pdfDocument, setPdfDocument] = useState<any>();
   // generate a pdf
   const GenerateDocument = async (template_id, pageStyles: Style) => {
+    pageStyles = {
+      ...pageStyles,
+      padding: '25px',
+      backgroundColor: '#121212',
+    };
+
     toPng(document.getElementById(template_id)).then((dataUrl) => {
       setPdfDocument(
         <Document>

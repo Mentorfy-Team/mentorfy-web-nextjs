@@ -31,6 +31,7 @@ export const ButtonsWrapper = styled('div')`
 `;
 
 export const WheelWrapper = styled(Box)`
+  background-color: ${({ theme }) => theme.palette.primary.main};
   width: 100%;
 `;
 
