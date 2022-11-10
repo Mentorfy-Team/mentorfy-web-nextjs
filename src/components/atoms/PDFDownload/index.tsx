@@ -1,10 +1,16 @@
-import { Document, PDFDownloadLink, Page } from '@react-pdf/renderer';
+import {
+  Document,
+  Image as ImageRP,
+  PDFDownloadLink,
+  Page,
+} from '@react-pdf/renderer';
 import { Style } from '@react-pdf/types';
 import { toPng } from 'html-to-image';
-import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import React from 'react';
 
 type Props = {
-  template: HTMLElement;
+  template_id: string;
   pageStyles: Style;
   fileName: string;
   children: React.ReactNode;
@@ -12,46 +18,39 @@ type Props = {
 };
 
 export default ({
-  template,
+  template_id,
   children,
   pageStyles,
   fileName,
   loadingComponent,
 }: Props): JSX.Element => {
+  const [pdfDocument, setPdfDocument] = useState<any>();
   // generate a pdf
-  const Document = GenerateDocument(template, pageStyles);
+  const GenerateDocument = async (template_id, pageStyles: Style) => {
+    toPng(document.getElementById(template_id)).then((dataUrl) => {
+      setPdfDocument(
+        <Document>
+          <Page size="A4" style={pageStyles}>
+            <ImageRP src={dataUrl} />
+          </Page>
+        </Document>,
+      );
+    });
+  };
+
+  // monitora e atualiza/roda a função de geração do pdf
+  useEffect(() => {
+    GenerateDocument(template_id, pageStyles);
+  }, [template_id, pageStyles]);
 
   return (
-    <PDFDownloadLink document={Document} fileName={fileName}>
+    <PDFDownloadLink document={pdfDocument} fileName={fileName}>
       {({ blob, url, loading, error }) => {
         // TODO: handle error
         // TODO: handle doc ready
         return loading ? loadingComponent || 'Carregando...' : children;
       }}
     </PDFDownloadLink>
-  );
-};
-
-const GenerateDocument = (template: HTMLElement, pageStyles: Style) => {
-
-  const convertToImage = async () => {
-
-   const pdfFile = await toPng(template);
-
-   await function (dataUrl) {
-
-     const img = new Image(pdfFile);
-     img.src = dataUrl;
-     document.body.appendChild(img);
-   };
-           };
-
-  return (
-    <Document>
-      <Page size="A4" style={pageStyles}>
-        <Image src={convertToImage} alt='pdf'/>
-      </Page>
-    </Document>
   );
 };
 

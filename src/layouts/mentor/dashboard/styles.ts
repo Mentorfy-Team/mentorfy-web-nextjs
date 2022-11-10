@@ -3,7 +3,7 @@ import { css, styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 type Props = {
-  isNegative?: boolean;
+  isNegative?: string;
 };
 export const IndicatorsWrapper = styled(Box)`
   display: flex;
@@ -35,7 +35,7 @@ export const IndicatorPercent = styled(Typography)<Props>`
   line-height: 110.52%;
 
   ${({ isNegative }) =>
-    isNegative &&
+    !!isNegative &&
     css`
       color: #00d75b;
     `}

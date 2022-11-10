@@ -11,8 +11,15 @@ import {
   ContentWrapper,
   ForwardButton,
   TextQuestion,
+  WheelWrapper,
 } from './styles';
-import PDFDownload from '~/components/atoms/PDFDownload';
+
+import dynamic from 'next/dynamic';
+
+const PDFDownload = dynamic(() => import('~/components/atoms/PDFDownload'), {
+  ssr: false,
+});
+
 import WheelOfLifeTemplate from './template/WheelOfLifeTemplate';
 
 type InputProps = { id: string; rating: number }[];
@@ -74,7 +81,7 @@ const WheelOfLifeModal = ({
       <ModalDialogContent isMentorado sx={{ maxWidth: '680px' }}>
         <Description>{descriptionData}</Description>
         <ContentWrapper>
-          {taskData && (
+          {currentArea !== taskData?.length && taskData && (
             <>
               <TextQuestion>
                 De 0 a 10, como está o(a)
@@ -110,6 +117,11 @@ const WheelOfLifeModal = ({
               />
             </>
           )}
+          {currentArea === taskData?.length && (
+            <WheelWrapper id="wheel-id">
+              <WheelOfLifeTemplate taskData={taskData} input={input} />
+            </WheelWrapper>
+          )}
         </ContentWrapper>
 
         {/* <Heatmap
@@ -127,7 +139,7 @@ const WheelOfLifeModal = ({
           >
             Anterior
           </BackButton>
-          {currentArea !== taskData?.length - 1 && (
+          {currentArea !== taskData?.length && (
             <ForwardButton
               disabled={!input[currentArea] || input[currentArea]?.rating === 0}
               variant="contained"
@@ -136,34 +148,17 @@ const WheelOfLifeModal = ({
               Próximo
             </ForwardButton>
           )}
-          {currentArea === taskData?.length - 1 && (
+          {currentArea === taskData?.length && (
             <PDFDownload
               fileName="wheel-of-life.pdf"
               pageStyles={{}}
-              template={WheelOfLifeTemplate(taskData, input)}
+              template_id="wheel-id"
             >
-              <ForwardButton
-                disabled={
-                  !taskData ||
-                  !input[currentArea] ||
-                  input[currentArea]?.rating === 0
-                }
-                variant="contained"
-              >
-                Download
-              </ForwardButton>
+              <ForwardButton variant="contained">Download</ForwardButton>
             </PDFDownload>
           )}
-          {currentArea === taskData?.length - 1 && (
-            <ForwardButton
-              disabled={
-                !taskData ||
-                !input[currentArea] ||
-                input[currentArea]?.rating === 0
-              }
-              variant="contained"
-              onClick={() => handleFinish()}
-            >
+          {currentArea === taskData?.length && (
+            <ForwardButton variant="contained" onClick={() => handleFinish()}>
               Concluir
             </ForwardButton>
           )}

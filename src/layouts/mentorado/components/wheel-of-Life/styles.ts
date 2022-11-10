@@ -1,3 +1,4 @@
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import { styled } from '@mui/material/styles';
@@ -23,14 +24,23 @@ export const ButtonsWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   margin-top: 2rem;
+
+  a {
+    text-decoration: none;
+  }
 `;
+
+export const WheelWrapper = styled(Box)`
+  width: 100%;
+`;
+
 export const ContentWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin-top: 3rem;
   gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
 `;
 
 export const ForwardButton = styled(Button)`
@@ -46,7 +56,7 @@ export const BackButton = styled(Button)`
 
 export const TextQuestion = styled(Typography)`
   font-size: 1.2rem;
-  span { 
+  span {
     font-weight: bold;
     margin-left: 0.2rem;
   }

@@ -80,7 +80,7 @@ export const MuiOverride: Components<Theme> = {
     styleOverrides: {
       root: {
         ...MainFont.style,
-        letterSpacing: '0.05rem',
+        letterSpacing: '0.02rem',
       },
     },
   },

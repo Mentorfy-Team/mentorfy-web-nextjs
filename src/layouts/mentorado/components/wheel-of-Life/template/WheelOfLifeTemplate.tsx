@@ -15,13 +15,11 @@ const generateData = (areas: string[], input) => {
   return data;
 };
 
-export default function PDFReader(taskData, input) {
-  return (
-    <Heatmap
-      data={generateData(
-        taskData.map((task) => task.title),
-        input,
-      )}
-    />
-  );
+export default function ({ taskData, input }) {
+  return Heatmap({
+    data: generateData(
+      taskData.map((task) => task.title),
+      input,
+    ),
+  });
 }
