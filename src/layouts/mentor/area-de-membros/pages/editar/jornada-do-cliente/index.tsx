@@ -30,7 +30,8 @@ type props = {
 const ClientJourney: FC<props> = ({ id }) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
   const theme = useTheme();
-  const [background, setBackground] = useState(false);
+  const [background, setBackground] = useState('#7586EC');
+  const [completedClients, setcompletedClients] = useState<any>([]);
   const [selectedTask, setSelectedTask] = useState<any>([]);
   const [steps, setSteps] = useState<ProductTypes.resultJorney[]>([]);
   const {
@@ -49,8 +50,33 @@ const ClientJourney: FC<props> = ({ id }) => {
 
   const handleSelectedStep = (task) => {
     setSelectedTask(task);
-    console.log(task);
+
+    // setcompletedClients(() => {
+    //   console.log(selectedTask.clients);
+    //   const maxProgress = selectedTask.clients.filter((client) => client.progress === 100);
+    //   return [...maxProgress];
+    // });
+
+    if(task.id === selectedTask.id && background === '#7586EC') {
+      setBackground('inherit');
+    }
+    if(task.id === selectedTask.id && background === 'inherit') {
+      setBackground('#7586EC');
+    }
+    if(task.id !== selectedTask.id && background === 'inherit') {
+      setBackground('#7586EC');
+    }
+    if(background === '#7586EC' && task.id !== selectedTask.id) {
+      setBackground('#7586EC');
+    }
   };
+
+  // useEffect(() => {
+  //   setcompletedClients((selectedTask) => {
+  //     selectedTask.filter((task) => task.clients.progress === 100);
+  //     return [completedClients];
+  //   });
+  // }, [completedClients, selectedTask]);
 
   return (
     <ContentWidthLimit withoutScroll maxWidth={1900}>
@@ -114,8 +140,8 @@ const ClientJourney: FC<props> = ({ id }) => {
                 const percent = task.progress || 0;
                 return (
                   <Class key={task.id}
-                  onClick={(e) => handleSelectedStep(task)}
-                  sx={{backgroundColor: `${task.id === selectedTask.id ? theme.palette.secondary.main : ''}`}}
+                  onClick={() => handleSelectedStep(task)}
+                  sx={{backgroundColor: `${task.id === selectedTask.id && background}`}}
                   >
                     <ClassDescription>{task.title}</ClassDescription>
 
