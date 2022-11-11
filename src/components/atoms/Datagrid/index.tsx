@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,6 +12,8 @@ import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 import ChavronRightSvg from '~/../public/svgs/chavron-right';
 import { useRouter } from 'next/router';
+import ModalComponent from '~/components/modules/Modal';
+import { ModalDialogContent } from '~/components/modules/Modal/styles';
 
 export type Column = {
   id: string;
@@ -26,6 +28,8 @@ type TableProps = {
   columns: Column[];
   rows: any[];
   page: number;
+  completedClientsTable?: any[],
+  selectedTask?: any[],
   onPageChange?: (page: number) => void;
   onRowsPerPageChange?: (rowsPerPage: number) => void;
   onTitleClick?: (id) => void;
@@ -37,9 +41,14 @@ export default function StickyHeadTable({
   onPageChange,
   rows = [],
   columns = [],
+  completedClientsTable = [],
+  selectedTask = [],
   onTitleClick,
 }: TableProps) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [open, setOpen] = useState(false);
+  const [task, setTask] = useState<any>([]);
+  const [clientInputs, setClientInputs] = useState<any>([]);
   const isMobile = useMediaQuery('(max-width: 490px)');
   const handleChangePage = (event: unknown, newPage: number) => {
     if (newPage >= 1) onPageChange(newPage);
@@ -51,6 +60,9 @@ export default function StickyHeadTable({
     return ac(row);
   };
 
+  useEffect(() => {
+
+  });
   //? TODO: Implementar rows per page se necessário
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -79,6 +91,13 @@ export default function StickyHeadTable({
     },
     [route],
   );
+
+  const handleOpenModal = (client) => {
+    setOpen(true);
+    setClientInputs(client[0].inputs?.filter((input) => input.member_area_tool_id === selectedTask.id));
+
+    setTask(selectedTask.data);
+  };
 
   return (
     <PaperWrapper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -115,7 +134,14 @@ export default function StickyHeadTable({
                 .map((row, index) => {
                   return (
                     <CustomRow
-                      onClick={() => handleGoToProfile(row.id)}
+                      onClick={() => {
+                        // console.log(client);
+                        if(completedClientsTable){
+                          handleOpenModal(completedClientsTable);
+                        } else {
+                        handleGoToProfile(row.id);
+                      }}
+                    }
                       hover
                       role="checkbox"
                       tabIndex={-1}
@@ -173,6 +199,13 @@ export default function StickyHeadTable({
           <ChavronRightSvg />
         </Button>
       </CustomNavigation>
+      <ModalComponent title='Amém' open={open} setOpen={setOpen}>
+        <ModalDialogContent>
+        {task.map((question) => (
+          <Typography key={question.id}>{question.data}</Typography>
+          ))}
+        </ModalDialogContent>
+      </ModalComponent>
     </PaperWrapper>
   );
 }

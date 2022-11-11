@@ -33,14 +33,17 @@ interface Data {
 
 const CompletedClientsTable = ({
   clients = [],
+  selectedTask = [],
 }: {
-  clients: ProductTypes.Client[];
+  clients: ProductTypes.Client[],
+  selectedTask: any[],
 }) => {
   const createData = [];
   return (
     <Datagrid
       columns={columns}
-      completedClientsTable
+      completedClientsTable={clients}
+      selectedTask={selectedTask}
       rows={clients.map((client) => {
         return {
           id: client.id,

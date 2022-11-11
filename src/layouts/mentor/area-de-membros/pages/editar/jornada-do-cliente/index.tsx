@@ -167,7 +167,7 @@ const ClientJourney: FC<props> = ({ id }) => {
               margin: '1rem 0',
             }}
           />
-          <CompletedClientsTable clients={completedClients !== null ? completedClients : clients} />
+          <CompletedClientsTable selectedTask={selectedTask} clients={completedClients !== null ? completedClients : clients} />
         </>
       )}
     </ContentWidthLimit>
