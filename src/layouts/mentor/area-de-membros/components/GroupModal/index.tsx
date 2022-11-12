@@ -25,6 +25,7 @@ const GroupModal = ({
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
   const [deleteGroup, setDeleteGroup] = useState(false);
+  const [isSavingImage, setIsSavingImage] = useState(false);
 
   const [thumbnail, setThumbnail] = useState<any>(
     extra?.length > 0 ? extra[0] : '',
@@ -53,13 +54,17 @@ const GroupModal = ({
   };
 
   const handleCapture = (_files: any) => {
+    setIsSavingImage(true);
     HandleFileUpload([_files['0']], (file) => {
       setThumbnail(file);
+      setIsSavingImage(false);
     });
   };
   const handleCaptureConclusion = (_files: any) => {
+    setIsSavingImage(true);
     HandleFileUpload([_files['0']], (file) => {
       setThumbnailConclusion(file);
+      setIsSavingImage(false);
     });
   };
 
@@ -82,39 +87,53 @@ const GroupModal = ({
       setOpen={setOpen}
       title="Agrupador de Etapas"
       deleteMessage={deleteGroup}
+      isBlocked={isSavingImage}
     >
       <>
-        {deleteGroup ?
+        {deleteGroup ? (
           <>
-            <Box sx={{textAlign: 'center'}}>
-              <DeleteText>Esse agrupador possui uma ou mais etapas. Você tem certeza que deseja excluir?</DeleteText>
+            <Box sx={{ textAlign: 'center' }}>
+              <DeleteText>
+                Esse agrupador possui uma ou mais etapas. Você tem certeza que
+                deseja excluir?
+              </DeleteText>
             </Box>
           </>
-          :
+        ) : (
           <>
             <InputField
               label="Título"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            ></InputField><InputField
+            ></InputField>
+            <InputField
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               label="Descrição"
               placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum facilisis in lobortis orci aliquet. In nisl elit sodales morbi euismod ullamcorper egestas aenean amet. Gravida penatibus massa, duis felis. Vitae, pellentesque eget nunc facilisi in dictumst. Malesuada sed condimentum viverra vel pellentesque magna."
-            ></InputField><AddImage
+            ></InputField>
+            <AddImage
               title="Icone/Imagem do agrupador"
-              thumbnail={thumbnail ? thumbnail.data || thumbnail.sourceUrl : null}
-              onUploadImage={(target) => handleCapture(target.files)} /><AddImage
+              thumbnail={
+                thumbnail ? thumbnail.data || thumbnail.sourceUrl : null
+              }
+              onUploadImage={(target) => handleCapture(target.files)}
+            />
+            <AddImage
               title="Imagem de conclusão"
-              thumbnail={thumbnailConclusion
-                ? thumbnailConclusion.data || thumbnailConclusion.sourceUrl
-                : null}
+              thumbnail={
+                thumbnailConclusion
+                  ? thumbnailConclusion.data || thumbnailConclusion.sourceUrl
+                  : null
+              }
+              isBlocked={isSavingImage}
               onUploadImage={(target) => {
                 handleCaptureConclusion(target.files);
-              }} />
+              }}
+            />
           </>
-        }
+        )}
       </>
     </ModalComponent>
   );

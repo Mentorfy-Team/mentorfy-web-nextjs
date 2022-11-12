@@ -17,6 +17,7 @@ type props = {
   onSave?: () => void;
   onDelete?: () => void;
   id?: string;
+  isBlocked?: boolean;
 };
 
 const ModalComponent: FC<props> = ({
@@ -31,6 +32,7 @@ const ModalComponent: FC<props> = ({
   onSave,
   onDelete,
   id,
+  isBlocked = false,
 }) => {
   return (
     <Modal
@@ -67,6 +69,7 @@ const ModalComponent: FC<props> = ({
               backgroundColor: `${deleteMessage ? '' : 'green'}`,
               color: 'white',
             }}
+            disabled={isBlocked}
             onClick={() => onSave()}
           >
             {deleteMessage ? 'Cancelar' : 'Salvar'}
@@ -85,6 +88,7 @@ const ModalComponent: FC<props> = ({
               fontWeight: '300',
               height: '2.5rem',
             }}
+            disabled={isBlocked}
             onClick={() => onDelete()}
           >
             Excluir

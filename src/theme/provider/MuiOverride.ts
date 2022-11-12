@@ -34,6 +34,9 @@ const ButtonStyle = {
           },
         },
       }),
+      '&:hover': {
+        backgroundColor: theme.palette.primary.dark + 'aa',
+      },
     }),
   },
 };
