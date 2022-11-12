@@ -35,6 +35,7 @@ const GroupModal = ({
   );
 
   const handleSave = async (del?: boolean) => {
+    setIsSavingImage(true);
     const images = [];
     if (thumbnail) {
       images.push(thumbnail);
@@ -50,6 +51,7 @@ const GroupModal = ({
       extra: convertedFiles,
       delete: del,
     });
+    setIsSavingImage(false);
     setOpen(false);
   };
 
@@ -118,6 +120,7 @@ const GroupModal = ({
               thumbnail={
                 thumbnail ? thumbnail.data || thumbnail.sourceUrl : null
               }
+              isBlocked={isSavingImage}
               onUploadImage={(target) => handleCapture(target.files)}
             />
             <AddImage
