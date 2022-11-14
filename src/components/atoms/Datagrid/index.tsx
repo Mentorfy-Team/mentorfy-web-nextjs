@@ -8,12 +8,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
+import { AvatarWrapper, ClientName, CustomNavigation, CustomRow, FinishedDate, PaperWrapper, QuestionsText, ResponseText, TitleWrapper } from './styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 import ChavronRightSvg from '~/../public/svgs/chavron-right';
 import { useRouter } from 'next/router';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
+import Box from '@mui/material/Box';
+import Image from 'next/image';
 
 export type Column = {
   id: string;
@@ -47,8 +49,9 @@ export default function StickyHeadTable({
 }: TableProps) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [open, setOpen] = useState(false);
-  const [task, setTask] = useState<any>([]);
+  const [client, setClient] = useState<any>([]);
   const [clientInputs, setClientInputs] = useState<any>([]);
+  const [finishedDate, setFinishedDate] = useState<string>('');
   const isMobile = useMediaQuery('(max-width: 490px)');
   const handleChangePage = (event: unknown, newPage: number) => {
     if (newPage >= 1) onPageChange(newPage);
@@ -94,11 +97,40 @@ export default function StickyHeadTable({
 
   const handleOpenModal = (client) => {
     setOpen(true);
-    setClientInputs(client[0].inputs?.filter((input) => input.member_area_tool_id === selectedTask.id));
+    setClient(client);
+    console.log(finishedDate);
+    // console.log(client);
 
-    setTask(selectedTask.data);
+    setClientInputs(() => {
+      const Inputs = client[0].inputs?.filter((input) => input.member_area_tool_id === selectedTask.id);
+      setFinishedDate(Inputs[0].created_at);
+      const InputsData = Inputs[0].data;
+      return InputsData;
+    });
   };
 
+  const ModalTitle = (
+    <TitleWrapper>
+        {client.avatar ? (
+      <AvatarWrapper>
+        <Image
+        alt='avatar'
+        src={client[0] && client[0].avatar}
+        width={40}
+        height={40}
+        />
+      </AvatarWrapper>
+        ) : null}
+      <ClientName>{client[0] && client[0].name}</ClientName>
+      <FinishedDate>{
+        new Date(finishedDate).toLocaleDateString('pt-BR', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        })
+      }</FinishedDate>
+    </TitleWrapper>
+  );
   return (
     <PaperWrapper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer>
@@ -136,12 +168,13 @@ export default function StickyHeadTable({
                     <CustomRow
                       onClick={() => {
                         // console.log(client);
-                        if(completedClientsTable){
+                        if (completedClientsTable) {
                           handleOpenModal(completedClientsTable);
                         } else {
-                        handleGoToProfile(row.id);
-                      }}
-                    }
+                          handleGoToProfile(row.id);
+                        }
+                      }
+                      }
                       hover
                       role="checkbox"
                       tabIndex={-1}
@@ -189,9 +222,8 @@ export default function StickyHeadTable({
         >
           <ChavronLeftSvg />
         </Button>
-        <Typography variant="body2" marginX={isMobile ? 0 : 4} mt={1}>{`${
-          isMobile ? page : `Página ${page}`
-        } de ${maxPages}`}</Typography>
+        <Typography variant="body2" marginX={isMobile ? 0 : 4} mt={1}>{`${isMobile ? page : `Página ${page}`
+          } de ${maxPages}`}</Typography>
         <Button
           disabled={page === maxPages || maxPages === 0}
           onClick={(e) => handleChangePage(e, page + 1)}
@@ -199,11 +231,25 @@ export default function StickyHeadTable({
           <ChavronRightSvg />
         </Button>
       </CustomNavigation>
-      <ModalComponent title='Amém' open={open} setOpen={setOpen}>
+
+      <ModalComponent title={ModalTitle} open={open} setOpen={setOpen}>
         <ModalDialogContent>
-        {task.map((question) => (
-          <Typography key={question.id}>{question.data}</Typography>
-          ))}
+          <Box sx={{position: 'absolute', display: 'flex', flexDirection: 'column', gap: '3rem'}}>
+            {
+              selectedTask.data?.map((question) => (
+
+                <QuestionsText key={question.id}>{question.data}</QuestionsText>
+              ))
+            }
+          </Box>
+          <Box sx={{marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '3rem'}}>
+            {
+              clientInputs.map((response) => (
+
+                <ResponseText key={response.id}>{'R:' + ' ' + response.value}</ResponseText>
+              ))
+            }
+          </Box>
         </ModalDialogContent>
       </ModalComponent>
     </PaperWrapper>

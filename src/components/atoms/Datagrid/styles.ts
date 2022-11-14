@@ -1,5 +1,6 @@
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 import TableRow from '@mui/material/TableRow';
 
 export const PaperWrapper = styled(Paper)`
@@ -69,3 +70,42 @@ export const Wrapper = styled('div')`
     place-content: space-between;
   }
 `;
+
+export const QuestionsText = styled(Typography)`
+  color: ${({theme}) => theme.palette.secondary.main};
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1rem;
+`;
+
+export const ResponseText = styled(Typography)`
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 0.9rem;
+`;
+
+export const ClientName = styled(Typography)`
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.1rem;
+`;
+export const FinishedDate = styled(Typography)`
+  color: ${({theme}) => theme.palette.caption.main};
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.1rem;
+`;
+
+export const TitleWrapper = styled('div')`
+ align-items: center;
+ display: flex;
+ flex-direction: column;
+ left: 90%;
+ position: relative;
+`;
+export const AvatarWrapper = styled('div')`
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+`;
+
