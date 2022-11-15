@@ -49,24 +49,25 @@ const ClientJourney: FC<props> = ({ id }) => {
   const handleSelectedStep = (task) => {
     setSelectedTask(task);
 
-    if(task.id === selectedTask.id && background === '#7586EC') {
+    if (task.id === selectedTask.id && background === '#7586EC') {
       setBackground('inherit');
     }
-    if(task.id === selectedTask.id && background === 'inherit') {
+    if (task.id === selectedTask.id && background === 'inherit') {
       setBackground('#7586EC');
     }
-    if(task.id !== selectedTask.id && background === 'inherit') {
+    if (task.id !== selectedTask.id && background === 'inherit') {
       setBackground('#7586EC');
     }
-    if(background === '#7586EC' && task.id !== selectedTask.id) {
+    if (background === '#7586EC' && task.id !== selectedTask.id) {
       setBackground('#7586EC');
     }
   };
 
   const handleClientsTable = (task) => {
     setcompletedClients(() => {
-      console.log(task);
-      const maxProgress = task.clients.filter((client) => client.progress === 18.18);
+      const maxProgress = task.clients.filter(
+        (client) => client.progress === 18.18,
+      );
       return [...maxProgress];
     });
   };
@@ -74,7 +75,7 @@ const ClientJourney: FC<props> = ({ id }) => {
   return (
     <ContentWidthLimit withoutScroll maxWidth={1900}>
       <TipWrapper>
-        <Image alt='tip-icon' src='/svgs/tip-icon.svg' width={22} height={22} />
+        <Image alt="tip-icon" src="/svgs/tip-icon.svg" width={22} height={22} />
         <TipText>
           Clique em uma etapa para
           <span>filtrar a lista de mentorados</span>
@@ -106,14 +107,16 @@ const ClientJourney: FC<props> = ({ id }) => {
                   )}
                   <ImageText
                     sx={{
-                      marginTop: `${steps[index].extra && step?.extra[0]?.sourceUrl
+                      marginTop: `${
+                        steps[index].extra && step?.extra[0]?.sourceUrl
                           ? '0'
                           : '2.5rem'
-                        }`,
-                      fontSize: `${steps[index].extra && step?.extra[0]?.sourceUrl
+                      }`,
+                      fontSize: `${
+                        steps[index].extra && step?.extra[0]?.sourceUrl
                           ? '0.8rem'
                           : '0.9rem'
-                        }`,
+                      }`,
                     }}
                   >
                     {step.title}
@@ -132,12 +135,17 @@ const ClientJourney: FC<props> = ({ id }) => {
               {step.rows.map((task, taskIndex) => {
                 const percent = task.progress || 0;
                 return (
-                  <Class key={task.id}
-                  onClick={() => {
-                    handleClientsTable(task);
-                    handleSelectedStep(task);
-                  }}
-                  sx={{backgroundColor: `${task.id === selectedTask.id && background}`}}
+                  <Class
+                    key={task.id}
+                    onClick={() => {
+                      handleClientsTable(task);
+                      handleSelectedStep(task);
+                    }}
+                    sx={{
+                      backgroundColor: `${
+                        task.id === selectedTask.id && background
+                      }`,
+                    }}
                   >
                     <ClassDescription>{task.title}</ClassDescription>
 
@@ -147,8 +155,9 @@ const ClientJourney: FC<props> = ({ id }) => {
                         alt="imagem-principal"
                         width={13}
                         height={13}
-                        src={`/svgs/${percent === 100 ? 'done' : 'done-gray'
-                          }.svg`}
+                        src={`/svgs/${
+                          percent === 100 ? 'done' : 'done-gray'
+                        }.svg`}
                       />
                     </ClassDescription>
                   </Class>
@@ -167,7 +176,10 @@ const ClientJourney: FC<props> = ({ id }) => {
               margin: '1rem 0',
             }}
           />
-          <CompletedClientsTable selectedTask={selectedTask} clients={completedClients !== null ? completedClients : clients} />
+          <CompletedClientsTable
+            selectedTask={selectedTask}
+            clients={completedClients !== null ? completedClients : clients}
+          />
         </>
       )}
     </ContentWidthLimit>

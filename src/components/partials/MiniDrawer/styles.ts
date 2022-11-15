@@ -106,7 +106,7 @@ export const Kind = styled(Typography)`
   color: ${({ theme }) => theme.palette.caption.main};
 `;
 
-export const AnimatedBox = styled(Box)<{ loading: boolean }>`
+export const AnimatedBox = styled(Box)<{ loading?: boolean }>`
   opacity: ${({ loading }) => (loading ? 0 : 1)};
 
   ${({ theme }) => css`

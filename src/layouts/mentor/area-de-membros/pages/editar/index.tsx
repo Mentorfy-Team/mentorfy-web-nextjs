@@ -13,15 +13,18 @@ import ConfigPage from '~/layouts/mentor/area-de-membros/pages/editar/configurac
 import StepsPage from '~/layouts/mentor/area-de-membros/pages/editar/etapas';
 import { GetProfile } from '~/services/profile.service';
 import ClientJourney from './jornada-do-cliente';
+import Links from './links';
 
-const tabs = ['Etapas', 'Jornada do Cliente', 'Configuração'];
+const tabs = ['Etapas', 'Jornada do Cliente', 'Configuração', 'Links'];
 const EditarMentoria: FC<Props> = ({ id }) => {
   const [tabindex, setTabindex] = useState(0);
 
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
+      case 3:
+        return <Links id={id} />;
       case 2:
-        return <ConfigPage id={id}/>;
+        return <ConfigPage id={id} />;
       case 1:
         return <ClientJourney id={id} />;
       case 0:

@@ -2,15 +2,31 @@ import produce from 'immer';
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
 
+type Params = {
+  signup: Partial<{
+    product_id: string;
+    image: string;
+    refeerer: string;
+    title: string;
+  }>;
+  mb: {
+    product_id: string;
+  };
+  subpage: string;
+};
+
 type UserStateType = {
   userLogin: (user: ExternalModules.Supabase.User) => void;
   userLogout: () => void;
   setLoading: (value) => void;
+  setAppParams: (appParams: Partial<Params>) => void;
   user?: ExternalModules.Supabase.User | null;
+  appParams?: Partial<Params>;
 } & typeof initialUserStore;
 
 const initialUserStore = {
   isLoading: false,
+  appParams: {},
 };
 
 const userStore = create(
@@ -35,6 +51,13 @@ const userStore = create(
         set(
           produce((draft: UserStateType) => {
             draft.user = null;
+          }),
+        );
+      },
+      setAppParams: (appParams) => {
+        set(
+          produce((draft: UserStateType) => {
+            draft.appParams = { ...draft.appParams, ...appParams };
           }),
         );
       },

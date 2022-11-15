@@ -23,6 +23,10 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   req,
   res,
 ) => {
+  if (!req.query.id) {
+    return res.status(200).send('Done');
+  }
+
   const supabase = CreateSupabaseWithAuth(req);
   const { user, token } = await supabase.auth.api.getUserByCookie(req);
   const { data: product, error } = await supabase

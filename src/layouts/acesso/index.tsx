@@ -1,12 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { InferGetStaticPropsType } from 'next';
+import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import handleAcessoSubPage from './helper/SwitchSubPages';
-import { AlignSelf, BackgroundHolder, Grid, Wrapper } from './styles';
+import {
+  AlignSelf,
+  BackgroundHolder,
+  Grid,
+  HeaderTitle,
+  Welcome,
+  Wrapper,
+} from './styles';
 import backgroundImage from '~/../public/images/background-login.jpg';
 import tipografiaImage from '~/../public/images/tipografia.png';
+import { userStore } from '~/stores';
+import { useRouter } from 'next/router';
+// eslint-disable-next-line unused-imports/no-unused-imports-ts
+import HandlePageWithParams from '~/helpers/HandlePageParams';
 
 export type AcessoSubPage =
   | 'login'
@@ -16,28 +26,40 @@ export type AcessoSubPage =
   | 'sucesso'
   | 'confirmar-conta';
 
-function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
+function LoginView({
+  urlParams,
+}: InferGetServerSidePropsType<typeof getProps>) {
   const mobile = useMediaQuery('(max-width:500px)');
-  const [AcessosubPage, setAcessoSubPage] = useState<AcessoSubPage>('login');
-  const route = useRouter();
+  const { appParams, setAppParams } = userStore();
   const [info, setInfo] = useState<any>();
-  const [urlProps, setUrlProps] = useState<any>();
-
-  useEffect(() => {
-    if ((props as any).urlParams) {
-      setUrlProps((props as any).urlParams);
-    }
-  }, [props, route.pathname]);
+  const [Header, setHeader] = useState<any>();
+  const router = useRouter();
 
   const handleSubPages = useCallback(() => {
-    return handleAcessoSubPage(
-      AcessosubPage,
-      setAcessoSubPage,
-      info,
-      setInfo,
-      urlProps,
+    return handleAcessoSubPage(info, setInfo, urlParams);
+  }, [info, urlParams]);
+
+  const ImageHeader = useCallback(() => {
+    return !appParams.signup ? (
+      <Image
+        width={300 / (1.75 + (mobile ? 0.5 : 0))}
+        height={75 / (1.75 + (mobile ? 0.5 : 0))}
+        src={tipografiaImage}
+        placeholder="blur"
+        alt="logo"
+      />
+    ) : (
+      <HeaderTitle>{appParams.signup.title}</HeaderTitle>
     );
-  }, [AcessosubPage, info, urlProps]);
+  }, [appParams.signup, mobile]);
+
+  useEffect(() => {
+    HandlePageWithParams(router, setAppParams, urlParams);
+  }, [router, setAppParams, urlParams]);
+
+  useEffect(() => {
+    setHeader(<ImageHeader />);
+  }, [ImageHeader]);
 
   return (
     <>
@@ -66,13 +88,8 @@ function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
           lg={5.5}
         >
           <AlignSelf pt={mobile ? 6 : 10} pb={4}>
-            <Image
-              width={300 / (1.75 + (mobile ? 0.5 : 0))}
-              height={75 / (1.75 + (mobile ? 0.5 : 0))}
-              src={tipografiaImage}
-              placeholder="blur"
-              alt="logo"
-            />
+            <Welcome>BEM-VINDO A</Welcome>
+            {Header}
           </AlignSelf>
           <Wrapper>{handleSubPages()}</Wrapper>
         </Grid>
@@ -81,10 +98,12 @@ function LoginView(props: InferGetStaticPropsType<typeof getProps>) {
   );
 }
 
-export async function getProps(params) {
+export const getProps: GetServerSideProps = async (ctx) => {
   return {
-    props: {},
+    props: {
+      urlParams: ctx.query,
+    },
   };
-}
+};
 
 export default LoginView;

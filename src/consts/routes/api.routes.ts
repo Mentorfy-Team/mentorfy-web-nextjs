@@ -13,6 +13,7 @@ export enum ApiRoutes {
 
   //* Rotas para api de usuários
   products = '/api/products',
+  products_image = '/api/products/image',
   products_list = '/api/products/list',
   products_update = '/api/products/update',
   products_clients_list = '/api/products/clients/list',
