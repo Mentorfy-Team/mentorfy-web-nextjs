@@ -76,7 +76,7 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
       if (!urlProps.signup) {
         setInfo(
           <>
-            <Text>Seu cadastro foi concluido com sucesso!</Text>
+            <Text>Seu cadastro foi concluído com sucesso!</Text>
             <Text>Você já pode acessar clicando em continuar.</Text>
           </>,
         );
@@ -90,7 +90,7 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
                 color: 'green',
               }}
             >
-              Seu cadastro foi concluido com sucesso!
+              Seu cadastro foi concluído com sucesso!
             </Text>
             <Text
               sx={{

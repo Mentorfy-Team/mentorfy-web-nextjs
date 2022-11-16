@@ -301,7 +301,7 @@ export const CollorFullTypography = styled(Typography)<{ one; two; three }>`
     `linear-gradient(90deg, ${one} 0%, ${two} 50%, ${three} 100%)`};
   background-clip: text;
 
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-style: normal;
   font-weight: 900;
   line-height: 3rem;

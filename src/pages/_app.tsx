@@ -17,7 +17,7 @@ const clientSideEmotionCache = createEmotionCache();
 import { Roboto } from '@next/font/google';
 
 export const MainFont = Roboto({
-  weight: ['300', '400', '500', '700'],
+  weight: ['300', '400', '500', '700', '900'],
   variable: '--main-font',
   subsets: ['latin'],
 });

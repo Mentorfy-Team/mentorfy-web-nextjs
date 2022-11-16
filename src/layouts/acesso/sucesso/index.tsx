@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { AnimatedView, LoginButton, SubTitle } from '../styles';
+import { userStore } from '~/stores';
 
 type props = {
   info: any;
@@ -9,6 +10,7 @@ type props = {
 const Sucesso: FC<props> = ({ info }) => {
   const route = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { setAppParams } = userStore();
 
   return (
     <AnimatedView
@@ -27,6 +29,7 @@ const Sucesso: FC<props> = ({ info }) => {
         disabled={isLoading}
         onClick={() => {
           setIsLoading(true);
+          setAppParams({ subpage: 'login', signup: null });
           route.reload();
           setIsLoading(false);
         }}

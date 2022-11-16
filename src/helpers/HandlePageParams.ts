@@ -16,7 +16,7 @@ const HandlePageWithParams = async (
   urlParams,
 ) => {
   if (!urlParams || JSON.stringify(urlParams) === '{}') {
-    setAppParams({ subpage: 'login' });
+    setAppParams({ subpage: 'login', signup: null });
   }
 
   //? [ Supabase auth ] [ MENTOR ]
