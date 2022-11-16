@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect } from 'react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { supabaseClient } from '@supabase/auth-helpers-nextjs';
@@ -14,10 +14,10 @@ import createEmotionCache from '~/createEmotionCache';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
 const clientSideEmotionCache = createEmotionCache();
-import { Anybody } from '@next/font/google';
+import { Roboto } from '@next/font/google';
 
-export const MainFont = Anybody({
-  weight: ['300', '400', '500', '700'],
+export const MainFont = Roboto({
+  weight: ['300', '400', '500', '700', '900'],
   variable: '--main-font',
   subsets: ['latin'],
 });
@@ -34,46 +34,13 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
-const URLSearchParams2JSON_1 = (str: string) => {
-  const searchParams = new URLSearchParams(str);
-  return Object.fromEntries([...searchParams]);
-};
-
-export type RecoveryProps = {
-  access_token: string;
-  token_type: string;
-  expires_in: string;
-  refresh_token: string;
-  type: string;
-};
-
 const App = (props: MyAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const router = useRouter();
-  const [params, setParams] = useState({});
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (router.asPath.includes('#')) {
-      const recoveryData = URLSearchParams2JSON_1(
-        router.asPath.split('#')[1],
-      ) as RecoveryProps;
-
-      if (recoveryData.access_token && recoveryData.type == 'magiclink') {
-        const { user } = SupabaseWithouAuth.auth.setAuth(
-          recoveryData.access_token,
-        );
-        if (user && router.pathname === '/') {
-          router.push('/mentor/dashboard');
-        }
-      }
-
-      if (recoveryData.type == 'invite') {
-        SupabaseWithouAuth.auth.setAuth(recoveryData.access_token);
-      }
-
-      if (recoveryData) {
-        setParams(recoveryData);
-      }
+      router.replace(router.asPath.replace('#', '?'));
     }
   }, [router]);
 
@@ -120,7 +87,7 @@ const App = (props: MyAppProps) => {
               <UserProvider supabaseClient={supabaseClient}>
                 {router.asPath.includes('/m') && <HeaderPartial />}
                 <Drawer>
-                  <Component {...pageProps} {...{ urlParams: params }} />
+                  <Component {...pageProps} />
                 </Drawer>
               </UserProvider>
             </PageWrapper>

@@ -2,14 +2,17 @@ declare namespace UsersApi {
   namespace Post {
     interface Request extends ExternalModules.Next.NextApiRequest {
       body: {
-        email: string;
-        password: string;
-        phone?: string;
-        name: string;
-        role: string;
-        plan: string;
-        session?: any;
-        event?: string;
+        user: {
+          email: string;
+          password: string;
+          phone?: string;
+          name: string;
+          role: string;
+          plan: string;
+          session?: any;
+          event?: string;
+        };
+        refeerer?: string;
       };
     }
 

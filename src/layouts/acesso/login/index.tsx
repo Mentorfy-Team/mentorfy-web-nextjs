@@ -9,10 +9,10 @@ import { MentorRoutes, MentoredRoutes } from '~/consts/routes/routes.consts';
 import { useProfile } from '~/hooks/useProfile';
 import { Authenticate } from '~/services/auth/auth.service';
 import { userStore } from '~/stores';
-import { AcessoSubPage } from '..';
 import { FormWrapper } from '../cadastro/styles';
 import {
   Accent,
+  AnimatedView,
   ErrorHelper,
   ForgotPassButton,
   LoginButton,
@@ -20,17 +20,17 @@ import {
 } from '../styles';
 
 type props = {
-  pageChange: (page: AcessoSubPage) => void;
+  urlProps: any[];
 };
 
-const Login: FC<props> = ({ pageChange }) => {
+const Login: FC<props> = ({ urlProps }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [index, setIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>();
   const route = useRouter();
-  const { userLogin } = userStore();
+  const { setParams, params } = userStore();
   const { register, handleSubmit } = useForm<Auth>();
 
   const {
@@ -53,6 +53,14 @@ const Login: FC<props> = ({ pageChange }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isProfileLoading, profile]);
 
+  useEffect(() => {
+    if (urlProps?.length > 0) {
+      if (urlProps[0].type === 'signup') {
+        setParams({ subpage: 'cadastro' });
+      }
+    }
+  }, [urlProps, setParams]);
+
   const onSubmit: SubmitHandler<Auth> = useCallback(async () => {
     if (!email || !password) {
       setError('*Preencha todos os campos');
@@ -71,13 +79,13 @@ const Login: FC<props> = ({ pageChange }) => {
   }, [email, mutate, password]);
 
   return (
-    <>
-      <Title>
-        Bem vindo a
+    <AnimatedView>
+      <Title variant="body2" fontWeight="300">
+        Entre com seu email e senha para acessar sua{' '}
         <Accent>
-          <b> área de membros </b>
-        </Accent>
-        da Mentorfy.
+          <b>área de membros</b>
+        </Accent>{' '}
+        exclusiva.
       </Title>
       <Tabbar
         withborder
@@ -99,7 +107,7 @@ const Login: FC<props> = ({ pageChange }) => {
             marginLeft: '0px !important',
           }}
           label="Crie sua conta"
-          onClick={() => pageChange('cadastro')}
+          onClick={() => setParams({ subpage: 'cadastro' })}
         />
       </Tabbar>
       <FormWrapper
@@ -139,10 +147,12 @@ const Login: FC<props> = ({ pageChange }) => {
           ENTRAR
         </LoginButton>
       </FormWrapper>
-      <ForgotPassButton onClick={() => pageChange('esqueci-minha-senha')}>
+      <ForgotPassButton
+        onClick={() => setParams({ subpage: 'esqueci-minha-senha' })}
+      >
         Esqueci minha senha
       </ForgotPassButton>
-    </>
+    </AnimatedView>
   );
 };
 

@@ -3,11 +3,12 @@ import { HttpClient } from './HttpClient';
 
 export const RegisterNewUser = async (
   user: UserClient.SignUp,
+  refeerer?: string,
 ): Promise<UsersApi.Post.Response> => {
   try {
     const response = await HttpClient.post<UsersApi.Post.Response>(
       ApiRoutes.users,
-      user,
+      { user, refeerer },
     );
     if (response.data.error) {
       return {

@@ -1,32 +1,30 @@
 import { FC, useState } from 'react';
 import InputField from '~/components/atoms/InputField';
 import { PasswordRecover } from '~/services/auth/recover.service';
-import { AcessoSubPage } from '..';
+import { userStore } from '~/stores';
 import {
   Accent,
+  AnimatedView,
   InfoText,
   LinkButton,
   LoginButton,
   SubTitle,
 } from '../styles';
 
-type props = {
-  pageChange: (page: AcessoSubPage) => void;
-};
-
-const EsqueciMinhaSenha: FC<props> = ({ pageChange }) => {
+const EsqueciMinhaSenha: FC = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const { setParams, params } = userStore();
 
   const HandleLogin = async () => {
     setIsLoading(true);
     await PasswordRecover(email);
     setIsLoading(false);
-    pageChange('confirmar-conta');
+    setParams({ subpage: 'login' });
   };
 
   return (
-    <>
+    <AnimatedView>
       <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
         Para{' '}
         <Accent>
@@ -54,12 +52,12 @@ const EsqueciMinhaSenha: FC<props> = ({ pageChange }) => {
       <InfoText>
         Já possui conta?{' '}
         <Accent>
-          <LinkButton onClick={() => pageChange('login')}>
+          <LinkButton onClick={() => setParams({ subpage: 'login' })}>
             Clique Aqui
           </LinkButton>
         </Accent>
       </InfoText>
-    </>
+    </AnimatedView>
   );
 };
 

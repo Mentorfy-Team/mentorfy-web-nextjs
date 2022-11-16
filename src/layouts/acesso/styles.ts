@@ -1,9 +1,9 @@
 import LoadingButton from '@mui/lab/LoadingButton';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import MuiGrid from '@mui/material/Unstable_Grid2';
-import styled from '@mui/system/styled';
 
 export const Grid = styled(MuiGrid)``;
 
@@ -18,6 +18,15 @@ export const Wrapper = styled(Box)`
 
   input {
     color: ${({ theme }) => theme.palette.text.primary};
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
   }
 `;
 
@@ -41,13 +50,40 @@ export const ErrorHelper = styled(Typography)`
   text-align: center;
 `;
 
-export const Title = styled('h1')`
-  margin-bottom: 1.5rem;
+export const Welcome = styled(Typography)`
+  animation: fadeIn 0.5s;
+  text-align: center;
+  @media (min-width: 500px) {
+    font-size: 0.8rem;
+    line-height: 1.8rem;
+    font-weight: 700;
+  }
+`;
+
+export const AnimatedView = styled(Box)<{ loading?: boolean }>`
+  animation: fadeIn 0.5s;
+`;
+
+export const HeaderTitle = styled(Typography)`
+  font-weight: 700;
+  margin-bottom: 1rem;
+  margin-top: 0.2rem;
+  max-width: 400px;
   text-align: center;
 
   @media (min-width: 500px) {
-    font-size: 1.6rem;
-    line-height: 1.8rem;
+    font-size: 2.5rem;
+    line-height: 2.8rem;
+  }
+`;
+
+export const Title = styled(Typography)`
+  margin-bottom: 3rem;
+  text-align: center;
+
+  @media (min-width: 500px) {
+    font-size: 1.2rem;
+    line-height: 1.6rem;
   }
 `;
 

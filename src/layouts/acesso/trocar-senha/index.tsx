@@ -3,28 +3,23 @@ import Box from '@mui/material/Box';
 import { useRouter } from 'next/router';
 import InputField from '~/components/atoms/InputField';
 import { PasswordChange } from '~/services/auth/password-change.service';
-import { AcessoSubPage } from '..';
 import { Text } from '../cadastro/components/styles';
 import TextSuccess from '../cadastro/components/TextSuccess';
 import passwordValidator from '../cadastro/helper/password-validator';
-import { Accent, LoginButton, SubTitle } from '../styles';
+import { Accent, AnimatedView, LoginButton, SubTitle } from '../styles';
+import { userStore } from '~/stores';
 
 type props = {
-  pageChange: (page: AcessoSubPage) => void;
   setInfo: (info: any) => void;
   access_token: string;
   type: 'invite' | 'recovery';
 };
 
-const TrocarSenha: FC<props> = ({
-  pageChange,
-  setInfo,
-  access_token,
-  type,
-}) => {
+const TrocarSenha: FC<props> = ({ setInfo, access_token, type }) => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [rePassword, setRePassword] = useState('');
+  const { setParams, params } = userStore();
   const route = useRouter();
 
   const title = useMemo(() => {
@@ -90,8 +85,8 @@ const TrocarSenha: FC<props> = ({
         <Text>Você já pode acessar usando sua nova senha.</Text>
       </>,
     );
-    pageChange('sucesso');
-  }, [access_token, pageChange, password, route, setInfo]);
+    setParams({ subpage: 'sucesso' });
+  }, [access_token, password, route, setInfo]);
 
   const CadastrarButton = useCallback(() => {
     return (
@@ -115,7 +110,7 @@ const TrocarSenha: FC<props> = ({
   ]);
 
   return (
-    <>
+    <AnimatedView>
       <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
         {title}
       </SubTitle>
@@ -148,7 +143,7 @@ const TrocarSenha: FC<props> = ({
         }}
       />
       {CadastrarButton()}
-    </>
+    </AnimatedView>
   );
 };
 
