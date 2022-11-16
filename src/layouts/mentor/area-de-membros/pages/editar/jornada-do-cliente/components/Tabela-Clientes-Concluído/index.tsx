@@ -42,7 +42,7 @@ const CompletedClientsTable = ({
   return (
     <Datagrid
       columns={columns}
-      completedClientsTable={clients}
+      completedClient={clients}
       selectedTask={selectedTask}
       rows={clients.map((client) => {
         return {

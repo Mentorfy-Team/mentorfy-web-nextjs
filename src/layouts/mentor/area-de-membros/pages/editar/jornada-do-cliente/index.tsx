@@ -66,9 +66,10 @@ const ClientJourney: FC<props> = ({ id }) => {
   const handleClientsTable = (task) => {
     setcompletedClients(() => {
       console.log(task);
-      const maxProgress = task.clients.filter((client) => client.progress === 18.18);
+      const maxProgress = task.clients.filter((client) => client.progress === 81.82);
       return [...maxProgress];
     });
+    console.log(completedClients);
   };
 
   return (

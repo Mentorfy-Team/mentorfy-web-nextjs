@@ -8,14 +8,15 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { AvatarWrapper, ClientName, CustomNavigation, CustomRow, FinishedDate, PaperWrapper, QuestionsText, ResponseText, TitleWrapper } from './styles';
+import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 import ChavronRightSvg from '~/../public/svgs/chavron-right';
 import { useRouter } from 'next/router';
-import ModalComponent from '~/components/modules/Modal';
-import { ModalDialogContent } from '~/components/modules/Modal/styles';
-import Box from '@mui/material/Box';
-import Image from 'next/image';
+import dynamic from 'next/dynamic';
+
+const SwicthClientJouneyModal = dynamic(
+  () => import('~/components/atoms/helpers/SwicthModal'),
+);
 
 export type Column = {
   id: string;
@@ -30,7 +31,7 @@ type TableProps = {
   columns: Column[];
   rows: any[];
   page: number;
-  completedClientsTable?: any[],
+  completedClient?: any[],
   selectedTask?: any[],
   onPageChange?: (page: number) => void;
   onRowsPerPageChange?: (rowsPerPage: number) => void;
@@ -43,13 +44,12 @@ export default function StickyHeadTable({
   onPageChange,
   rows = [],
   columns = [],
-  completedClientsTable = [],
+  completedClient = [],
   selectedTask = [],
   onTitleClick,
 }: TableProps) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [open, setOpen] = useState(false);
-  const [client, setClient] = useState<any>([]);
   const [clientInputs, setClientInputs] = useState<any>([]);
   const [finishedDate, setFinishedDate] = useState<string>('');
   const isMobile = useMediaQuery('(max-width: 490px)');
@@ -95,42 +95,30 @@ export default function StickyHeadTable({
     [route],
   );
 
-  const handleOpenModal = (client) => {
-    setOpen(true);
-    setClient(client);
-    console.log(finishedDate);
-    // console.log(client);
-
+  const handleData = (completedClient) => {
     setClientInputs(() => {
-      const Inputs = client[0].inputs?.filter((input) => input.member_area_tool_id === selectedTask.id);
+      const Inputs = completedClient[0].inputs?.filter((input) => input.member_area_tool_id === selectedTask.id);
       setFinishedDate(Inputs[0].created_at);
       const InputsData = Inputs[0].data;
       return InputsData;
     });
   };
 
-  const ModalTitle = (
-    <TitleWrapper>
-        {client.avatar ? (
-      <AvatarWrapper>
-        <Image
-        alt='avatar'
-        src={client[0] && client[0].avatar}
-        width={40}
-        height={40}
-        />
-      </AvatarWrapper>
-        ) : null}
-      <ClientName>{client[0] && client[0].name}</ClientName>
-      <FinishedDate>{
-        new Date(finishedDate).toLocaleDateString('pt-BR', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })
-      }</FinishedDate>
-    </TitleWrapper>
-  );
+  const handleModal = useCallback(() => {
+    
+    return (
+      <SwicthClientJouneyModal
+        open={open}
+        setOpen={setOpen}
+        type={selectedTask.type}
+        completedClient={completedClient}
+        selectedTask={selectedTask}
+        finishedDate={finishedDate}
+        clientInputs={clientInputs}
+      />
+    );
+  }, [clientInputs, completedClient, finishedDate, open, selectedTask]);
+
   return (
     <PaperWrapper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer>
@@ -167,9 +155,9 @@ export default function StickyHeadTable({
                   return (
                     <CustomRow
                       onClick={() => {
-                        // console.log(client);
-                        if (completedClientsTable) {
-                          handleOpenModal(completedClientsTable);
+                        if (completedClient) {
+                          handleData(completedClient);
+                          setOpen(true);
                         } else {
                           handleGoToProfile(row.id);
                         }
@@ -231,27 +219,7 @@ export default function StickyHeadTable({
           <ChavronRightSvg />
         </Button>
       </CustomNavigation>
-
-      <ModalComponent title={ModalTitle} open={open} setOpen={setOpen}>
-        <ModalDialogContent>
-          <Box sx={{position: 'absolute', display: 'flex', flexDirection: 'column', gap: '3rem'}}>
-            {
-              selectedTask.data?.map((question) => (
-
-                <QuestionsText key={question.id}>{question.data}</QuestionsText>
-              ))
-            }
-          </Box>
-          <Box sx={{marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '3rem'}}>
-            {
-              clientInputs.map((response) => (
-
-                <ResponseText key={response.id}>{'R:' + ' ' + response.value}</ResponseText>
-              ))
-            }
-          </Box>
-        </ModalDialogContent>
-      </ModalComponent>
+      <div>{handleModal()}</div>
     </PaperWrapper>
   );
 }
