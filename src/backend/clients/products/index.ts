@@ -29,7 +29,15 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
         'id',
         clientProducts?.map((relation) => relation.product_id),
       );
-    if (products) listProducts = listProducts.concat(products);
+
+    if (products) {
+      listProducts = listProducts.concat(
+        products.map((p) => ({
+          ...p,
+          relation: clientProducts.find((cp) => cp.product_id === p.id),
+        })),
+      );
+    }
   }
 
   const { data: tools, error: errorTools } = await supabase
