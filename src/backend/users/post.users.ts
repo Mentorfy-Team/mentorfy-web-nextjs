@@ -52,6 +52,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
       user_id: user.id,
       product_id: id,
       subscription: false,
+      approved: false,
     });
   }
 
