@@ -1,8 +1,9 @@
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
-import { AnswersWrapper, AvatarWrapper, ClientName, FinishedDate, QuestionsText, ResponseText, TitleWrapper } from './styles';
+import { AnswersWrapper, AvatarWrapper, ClientName, FinishedDate, QuestionsText, TaskTitle, TaskWrapper, TitleWrapper } from './styles';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
+import { useState } from 'react';
 
 export type ModalProps = {
     open: boolean,
@@ -14,6 +15,7 @@ export type ModalProps = {
 }
     ;
 const CJChecklist = ({ open, setOpen, completedClient, selectedTask, finishedDate, clientInputs }) => {
+    const [textColor, setTextColor] = useState('');
     const ModalTitle = (
         <TitleWrapper>
             {completedClient[0].avatar ? (
@@ -42,22 +44,38 @@ const CJChecklist = ({ open, setOpen, completedClient, selectedTask, finishedDat
         <ModalComponent title={ModalTitle} open={open} setOpen={setOpen}>
             <ModalDialogContent>
                 <AnswersWrapper>
-                    <Box sx={{ position: 'absolute', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-                        {
-                            selectedTask.data?.map((question) => (
+                    {
+                        selectedTask.data?.map((question) => (
+                            <TaskWrapper key={question.id}>
 
-                                <QuestionsText key={question.id}>{question.data}</QuestionsText>
-                            ))
-                        }
-                    </Box>
-                    <Box sx={{ marginTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-                        {
-                            clientInputs.map((response) => (
+                                <TaskTitle>{question.title +' :'}</TaskTitle>
 
-                                <ResponseText key={response.id}>{'R: ' + response.value}</ResponseText>
-                            ))
-                        }
-                    </Box>
+                                {question.rows.map((subTask) => (
+                                    clientInputs.find((input) => subTask.id === input.id && input.value === true) ?
+                                        <Box key={subTask.id} sx={{ display: 'flex', gap: '0.5rem' }}>
+                                            <Image
+                                                alt="imagem"
+                                                width={14}
+                                                height={15}
+                                                src='/svgs/done.svg'
+                                            />
+                                            <QuestionsText sx={{ color: 'green' }}>{subTask.title}</QuestionsText>
+                                        </Box>
+                                        :
+                                        <Box key={subTask.id} sx={{ display: 'flex', gap: '0.5rem' }}>
+                                            <Image
+                                                alt="imagem"
+                                                width={14}
+                                                height={15}
+                                                src='/svgs/done-gray.svg'
+                                            />
+                                            <QuestionsText sx={{ color: 'gray' }}>{subTask.title}</QuestionsText>
+                                        </Box>
+                                ))}
+
+                            </TaskWrapper>
+                        ))
+                    }
                 </AnswersWrapper>
             </ModalDialogContent>
         </ModalComponent>

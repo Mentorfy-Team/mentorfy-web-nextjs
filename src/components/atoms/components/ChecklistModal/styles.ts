@@ -2,9 +2,8 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 export const QuestionsText = styled(Typography)`
-  color: ${({theme}) => theme.palette.secondary.main};
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
   line-height: 1rem;
 `;
 
@@ -42,4 +41,23 @@ export const AvatarWrapper = styled('div')`
 export const AnswersWrapper = styled('div')`
   max-height: 350px;
   overflow-y: auto; 
+`;
+
+export const TaskTitle = styled(Typography)`
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.4rem;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+export const TaskWrapper = styled('div')`
+  border-bottom: 1px solid ${({theme}) => theme.palette.caption.dark};
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  width: 90%;
 `;

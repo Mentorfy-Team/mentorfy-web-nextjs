@@ -94,6 +94,7 @@ export default function StickyHeadTable({
   );
 
   const handleData = (completedClient) => {
+    console.log(clientInputs);
     setClientInputs(() => {
       const Inputs = completedClient[0].inputs?.filter((input) => input.member_area_tool_id === selectedTask.id);
       setFinishedDate(Inputs[0].created_at);

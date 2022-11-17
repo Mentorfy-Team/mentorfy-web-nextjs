@@ -5,6 +5,10 @@ const QuestionsForm = dynamic(() => import('../components/QuestionsFormModal'), 
     loading: () => <LoadingComponent />,
   });
 
+const Checklist = dynamic(() => import('../components/ChecklistModal'), {
+    loading: () => <LoadingComponent />,
+  });
+
 export type ToolsModalProps = {
     open: boolean;
     type: number;
@@ -47,21 +51,17 @@ const SwicthClientJouneyModal: React.FC<ToolsModalProps> = ({
                     clientInputs={clientInputs}
                 />
             );
-    //     case ToolListNames.Checklist.name:
-    //         return (
-    //             <Checklist
-    //                 data={data}
-    //                 userInput={userInput}
-    //                 open={open}
-    //                 setOpen={setOpen}
-    //                 onChange={(props) =>
-    //                     onChange({
-    //                         ...props,
-    //                         refId,
-    //                     })
-    //                 }
-    //             />
-    //         );
+        case ToolListNames.Checklist.id:
+            return (
+                <Checklist
+                    open={open}
+                    setOpen={setOpen}
+                    completedClient={completedClient}
+                    selectedTask={selectedTask}
+                    finishedDate={finishedDate}
+                    clientInputs={clientInputs}
+                />
+            );
     //     case ToolListNames.WheelOfLifeModal.name:
     //         return (
     //             <WheelOfLifeModal
