@@ -8,21 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-<<<<<<< HEAD
 import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
-=======
-import {
-  AvatarWrapper,
-  ClientName,
-  CustomNavigation,
-  CustomRow,
-  FinishedDate,
-  PaperWrapper,
-  QuestionsText,
-  ResponseText,
-  TitleWrapper,
-} from './styles';
->>>>>>> 27a720220b1a2319b99d93c353552819a6e0c432
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 import ChavronRightSvg from '~/../public/svgs/chavron-right';
 import { useRouter } from 'next/router';
@@ -45,13 +31,8 @@ type TableProps = {
   columns: Column[];
   rows: any[];
   page: number;
-<<<<<<< HEAD
   completedClient?: any[],
   selectedTask?: any[],
-=======
-  completedClientsTable?: any[];
-  selectedTask?: any[];
->>>>>>> 27a720220b1a2319b99d93c353552819a6e0c432
   onPageChange?: (page: number) => void;
   onRowsPerPageChange?: (rowsPerPage: number) => void;
   onTitleClick?: (id) => void;
@@ -112,29 +93,17 @@ export default function StickyHeadTable({
     [route],
   );
 
-<<<<<<< HEAD
   const handleData = (completedClient) => {
     setClientInputs(() => {
       const Inputs = completedClient[0].inputs?.filter((input) => input.member_area_tool_id === selectedTask.id);
-=======
-  const handleOpenModal = (client) => {
-    setOpen(true);
-    setClient(client);
-
-    setClientInputs(() => {
-      const Inputs = client[0].inputs?.filter(
-        (input) => input.member_area_tool_id === selectedTask.id,
-      );
->>>>>>> 27a720220b1a2319b99d93c353552819a6e0c432
       setFinishedDate(Inputs[0].created_at);
       const InputsData = Inputs[0].data;
       return InputsData;
     });
   };
 
-<<<<<<< HEAD
   const handleModal = useCallback(() => {
-    
+
     return (
       <SwicthClientJouneyModal
         open={open}
@@ -148,30 +117,6 @@ export default function StickyHeadTable({
     );
   }, [clientInputs, completedClient, finishedDate, open, selectedTask]);
 
-=======
-  const ModalTitle = (
-    <TitleWrapper>
-      {client.avatar ? (
-        <AvatarWrapper>
-          <Image
-            alt="avatar"
-            src={client[0] && client[0].avatar}
-            width={40}
-            height={40}
-          />
-        </AvatarWrapper>
-      ) : null}
-      <ClientName>{client[0] && client[0].name}</ClientName>
-      <FinishedDate>
-        {new Date(finishedDate).toLocaleDateString('pt-BR', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })}
-      </FinishedDate>
-    </TitleWrapper>
-  );
->>>>>>> 27a720220b1a2319b99d93c353552819a6e0c432
   return (
     <PaperWrapper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer>
@@ -208,14 +153,9 @@ export default function StickyHeadTable({
                   return (
                     <CustomRow
                       onClick={() => {
-<<<<<<< HEAD
-                        if (completedClient) {
+                      if (completedClient) {
                           handleData(completedClient);
                           setOpen(true);
-=======
-                        if (completedClientsTable) {
-                          handleOpenModal(completedClientsTable);
->>>>>>> 27a720220b1a2319b99d93c353552819a6e0c432
                         } else {
                           handleGoToProfile(row.id);
                         }
@@ -277,41 +217,8 @@ export default function StickyHeadTable({
           <ChavronRightSvg />
         </Button>
       </CustomNavigation>
-<<<<<<< HEAD
-      <div>{handleModal()}</div>
-=======
 
-      <ModalComponent title={ModalTitle} open={open} setOpen={setOpen}>
-        <ModalDialogContent>
-          <Box
-            sx={{
-              position: 'absolute',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '3rem',
-            }}
-          >
-            {selectedTask.data?.map((question) => (
-              <QuestionsText key={question.id}>{question.data}</QuestionsText>
-            ))}
-          </Box>
-          <Box
-            sx={{
-              marginTop: '1.5rem',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '3rem',
-            }}
-          >
-            {clientInputs.map((response) => (
-              <ResponseText key={response.id}>
-                {'R:' + ' ' + response.value}
-              </ResponseText>
-            ))}
-          </Box>
-        </ModalDialogContent>
-      </ModalComponent>
->>>>>>> 27a720220b1a2319b99d93c353552819a6e0c432
+      <div>{handleModal()}</div>
     </PaperWrapper>
   );
 }
