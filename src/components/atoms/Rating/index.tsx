@@ -7,6 +7,7 @@ type Props = {
   isWheelOLife?: boolean;
   value?: number;
   setValue?: any;
+  readOnly?: boolean
 }
 const labels: { [index: string]: string } = {
   0.5: '1',
@@ -21,7 +22,7 @@ const labels: { [index: string]: string } = {
   5: '10',
 };
 
-const TextRating: React.FC<Props> = ({ value, setValue, isWheelOLife }) => {
+const TextRating: React.FC<Props> = ({ value, setValue, isWheelOLife, readOnly }) => {
   return (
     <Box
       sx={{
@@ -33,6 +34,7 @@ const TextRating: React.FC<Props> = ({ value, setValue, isWheelOLife }) => {
       <RatingBox
         name="text-feedback"
         isWheelOLife={isWheelOLife}
+        readOnly={readOnly}
         value={value / 2}
         onChange={(_, newValue) => {
           setValue(newValue * 2);

@@ -3,7 +3,6 @@ import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import { AnswersWrapper, AvatarWrapper, ClientName, FinishedDate, QuestionsText, TaskTitle, TaskWrapper, TitleWrapper } from './styles';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
-import { useState } from 'react';
 
 export type ModalProps = {
     open: boolean,
@@ -15,7 +14,6 @@ export type ModalProps = {
 }
     ;
 const CJChecklist = ({ open, setOpen, completedClient, selectedTask, finishedDate, clientInputs }) => {
-    const [textColor, setTextColor] = useState('');
     const ModalTitle = (
         <TitleWrapper>
             {completedClient[0].avatar ? (

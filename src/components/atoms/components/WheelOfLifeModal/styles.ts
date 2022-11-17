@@ -1,9 +1,11 @@
+import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 export const QuestionsText = styled(Typography)`
-  font-size: 1rem;
-  font-weight: 600;
+  color: ${({theme}) => theme.palette.secondary.main};
+  font-size: 0.9rem;
+  font-weight: 700;
   line-height: 1rem;
 `;
 
@@ -40,23 +42,20 @@ export const AvatarWrapper = styled('div')`
 
 export const AnswersWrapper = styled('div')`
   max-height: 350px;
-  overflow-y: auto; 
 `;
 
 export const TaskTitle = styled(Typography)`
   font-size: 1.1rem;
   font-weight: 600;
+  left: 15%;
   line-height: 1.4rem;
+  margin-bottom: 2rem;
   position: relative;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
 
-export const TaskWrapper = styled('div')`
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
-  width: 90%;
+export const WheelWrapper = styled(Box)`
+  background-color: ${({ theme }) => theme.palette.primary.main};
+  width: 100%;
 `;

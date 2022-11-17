@@ -3,11 +3,15 @@ import { LoadingComponent } from '~/components/partials/loading/loading.partial'
 
 const QuestionsForm = dynamic(() => import('../components/QuestionsFormModal'), {
     loading: () => <LoadingComponent />,
-  });
+});
 
 const Checklist = dynamic(() => import('../components/ChecklistModal'), {
     loading: () => <LoadingComponent />,
-  });
+});
+
+const WheelOfLifeModal = dynamic(() => import('../components/WheelOfLifeModal'), {
+    loading: () => <LoadingComponent />,
+});
 
 export type ToolsModalProps = {
     open: boolean;
@@ -62,113 +66,109 @@ const SwicthClientJouneyModal: React.FC<ToolsModalProps> = ({
                     clientInputs={clientInputs}
                 />
             );
-    //     case ToolListNames.WheelOfLifeModal.name:
-    //         return (
-    //             <WheelOfLifeModal
-    //                 data={data}
-    //                 userInput={userInput}
-    //                 open={open}
-    //                 setOpen={setOpen}
-    //                 onChange={(props) =>
-    //                     onChange({
-    //                         ...props,
-    //                         refId,
-    //                     })
-    //                 }
-    //             />
-    //         );
-    //     case ToolListNames.Calendar.name:
-    //         return (
-    //             <Schedule
-    //                 data={data}
-    //                 userInput={userInput}
-    //                 open={open}
-    //                 setOpen={setOpen}
-    //                 onChange={(props) =>
-    //                     onChange({
-    //                         ...props,
-    //                         refId,
-    //                     })
-    //                 }
-    //             />
-    //         );
-    //         // From now on the tools don´t need a modal with info
-    //     case ToolListNames.Embed.name:
-    //         return (
-    //             <Embed
-    //                 data={data}
-    //                 userInput={userInput}
-    //                 open={open}
-    //                 setOpen={setOpen}
-    //                 onChange={(props) =>
-    //                     onChange({
-    //                         ...props,
-    //                         refId,
-    //                     })
-    //                 }
-    //             />
-    //         );
-    //     case ToolListNames.UploadFile.name:
-    //         return (
-    //             <UploadFile
-    //                 data={data}
-    //                 userInput={userInput}
-    //                 open={open}
-    //                 setOpen={setOpen}
-    //                 onChange={(props) =>
-    //                     onChange({
-    //                         ...props,
-    //                         refId,
-    //                     })
-    //                 }
-    //             />
-    //         );
-    //     case ToolListNames.OpenText.name:
-    //         return (
-    //             <OpenText
-    //                 data={data}
-    //                 userInput={userInput}
-    //                 open={open}
-    //                 setOpen={setOpen}
-    //                 onChange={(props) =>
-    //                     onChange({
-    //                         ...props,
-    //                         refId,
-    //                     })
-    //                 }
-    //             />
-    //         );
-    //     case ToolListNames.Video.name:
-    //         return (
-    //             <Video
-    //                 data={data}
-    //                 userInput={userInput}
-    //                 open={open}
-    //                 setOpen={setOpen}
-    //                 onChange={(props) =>
-    //                     onChange({
-    //                         ...props,
-    //                         refId,
-    //                     })
-    //                 }
-    //             />
-    //         );
-    //     default:
-    //         return (
-    //             <Schedule
-    //                 data={data}
-    //                 userInput={userInput}
-    //                 open={open}
-    //                 setOpen={setOpen}
-    //                 onChange={(props) =>
-    //                     onChange({
-    //                         ...props,
-    //                         refId,
-    //                     })
-    //                 }
-    //             />
-    //         );
-     }
+        case ToolListNames.WheelOfLifeModal.id:
+            return (
+                <WheelOfLifeModal
+                    open={open}
+                    setOpen={setOpen}
+                    completedClient={completedClient}
+                    selectedTask={selectedTask}
+                    finishedDate={finishedDate}
+                    clientInputs={clientInputs}
+                />
+            );
+        //     case ToolListNames.Calendar.name:
+        //         return (
+        //             <Schedule
+        //                 data={data}
+        //                 userInput={userInput}
+        //                 open={open}
+        //                 setOpen={setOpen}
+        //                 onChange={(props) =>
+        //                     onChange({
+        //                         ...props,
+        //                         refId,
+        //                     })
+        //                 }
+        //             />
+        //         );
+        //         // From now on the tools don´t need a modal with info
+        //     case ToolListNames.Embed.name:
+        //         return (
+        //             <Embed
+        //                 data={data}
+        //                 userInput={userInput}
+        //                 open={open}
+        //                 setOpen={setOpen}
+        //                 onChange={(props) =>
+        //                     onChange({
+        //                         ...props,
+        //                         refId,
+        //                     })
+        //                 }
+        //             />
+        //         );
+        //     case ToolListNames.UploadFile.name:
+        //         return (
+        //             <UploadFile
+        //                 data={data}
+        //                 userInput={userInput}
+        //                 open={open}
+        //                 setOpen={setOpen}
+        //                 onChange={(props) =>
+        //                     onChange({
+        //                         ...props,
+        //                         refId,
+        //                     })
+        //                 }
+        //             />
+        //         );
+        //     case ToolListNames.OpenText.name:
+        //         return (
+        //             <OpenText
+        //                 data={data}
+        //                 userInput={userInput}
+        //                 open={open}
+        //                 setOpen={setOpen}
+        //                 onChange={(props) =>
+        //                     onChange({
+        //                         ...props,
+        //                         refId,
+        //                     })
+        //                 }
+        //             />
+        //         );
+        //     case ToolListNames.Video.name:
+        //         return (
+        //             <Video
+        //                 data={data}
+        //                 userInput={userInput}
+        //                 open={open}
+        //                 setOpen={setOpen}
+        //                 onChange={(props) =>
+        //                     onChange({
+        //                         ...props,
+        //                         refId,
+        //                     })
+        //                 }
+        //             />
+        //         );
+        //     default:
+        //         return (
+        //             <Schedule
+        //                 data={data}
+        //                 userInput={userInput}
+        //                 open={open}
+        //                 setOpen={setOpen}
+        //                 onChange={(props) =>
+        //                     onChange({
+        //                         ...props,
+        //                         refId,
+        //                     })
+        //                 }
+        //             />
+        //         );
+    }
 };
 
 export default SwicthClientJouneyModal;
