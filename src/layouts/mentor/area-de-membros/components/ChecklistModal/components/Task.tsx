@@ -66,7 +66,7 @@ const Task: React.FC<Props> = ({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               label="Título"
-              placeholder="Lorem ipsum in dolor win"
+              placeholder=""
               error={error && !title}
             />
             <SaveButton
