@@ -124,10 +124,10 @@ const MyProfile = ({ profile, user, isViewingMentored }) => {
           </Session>
         </CardDivider>
       </Card>
-      <Card mt={3} mb={6}>
+      <Card mt={3} mb={2}>
         <Spacing>
           <Title pt={2} pb={1} variant="h6">
-            Histórico de Atividades
+            Últimas Atividades
           </Title>
         </Spacing>
         <Grid container spacing={6}>
@@ -148,34 +148,41 @@ const MyProfile = ({ profile, user, isViewingMentored }) => {
           </Grid>
         </Grid>
         <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
-        {history.map((item, index) => (
-          <>
-            <Grid container spacing={6}>
-              <Grid xs={2} pl={8}>
-                <Title sx={{ float: 'left' }} variant="caption">
-                  {new Date(item.created_at).toLocaleDateString('pt-BR', {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric',
-                  })}
-                </Title>
+        {history
+          .slice(0, 6)
+          .sort(
+            (a, b) =>
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime(),
+          )
+          .map((item, index) => (
+            <>
+              <Grid container spacing={6}>
+                <Grid xs={2} pl={8}>
+                  <Title sx={{ float: 'left' }} variant="caption">
+                    {new Date(item.created_at).toLocaleDateString('pt-BR', {
+                      hour: 'numeric',
+                      minute: 'numeric',
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </Title>
+                </Grid>
+                <Grid xs={2}>
+                  <Title sx={{ float: 'left' }} variant="caption">
+                    {item.log_type.title}
+                  </Title>
+                </Grid>
+                <Grid>
+                  <Title sx={{ float: 'left' }} variant="caption">
+                    {'Você ' + item.description?.toLowerCase()}
+                  </Title>
+                </Grid>
               </Grid>
-              <Grid xs={2}>
-                <Title sx={{ float: 'left' }} variant="caption">
-                  {item.log_type.title}
-                </Title>
-              </Grid>
-              <Grid>
-                <Title sx={{ float: 'left' }} variant="caption">
-                  {'Você ' + item.description?.toLowerCase()}
-                </Title>
-              </Grid>
-            </Grid>
-            <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
-          </>
-        ))}
+              <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
+            </>
+          ))}
       </Card>
     </>
   );

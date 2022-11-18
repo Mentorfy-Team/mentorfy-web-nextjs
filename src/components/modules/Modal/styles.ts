@@ -1,7 +1,6 @@
 import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import { css, styled } from '@mui/material/styles';
 
 type Props = {
@@ -66,11 +65,12 @@ export const Header = styled(Box)`
   align-items: center;
   background-color: #1e1e1e;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
-export const ModalDialogTitle = styled(DialogTitle)`
+export const ModalDialogTitle = styled(Box)`
   font-size: 1.5rem;
   font-weight: 500;
   line-height: 1rem;
+  padding: 0.5rem 0;
 `;

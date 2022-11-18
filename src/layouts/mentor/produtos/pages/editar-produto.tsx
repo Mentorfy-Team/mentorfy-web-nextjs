@@ -1,16 +1,15 @@
 import { FC, useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
-import { PublicRoutes } from '~/consts';
 import SsrIsLogged from '~/helpers/SsrIsLogged';
 import { GetProduct } from '~/services/product.service';
 import { GetProfile } from '~/services/profile.service';
 
 import GeralPage from './tabs/geral';
+import { GetAuthSession } from '~/helpers/AuthSession';
 
 const LinksPage = dynamic(() => import('./tabs/links'));
 
@@ -64,23 +63,30 @@ const EditarProduto: FC<props> = ({ product, tab = tabs.Geral.toString() }) => {
 };
 
 // * ServerSideRender (SSR)
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const { profile } = await GetProfile(ctx.req);
-    const product = await GetProduct(ctx.req, ctx.params.id);
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
 
-    SsrIsLogged(profile);
-
+  if (!session)
     return {
-      props: {
-        profile: profile,
-        product: product,
-        tab: ctx.query.tab ? tabs[ctx.query.tab as string] : tabs.Geral,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     };
-  },
-});
+
+  const { profile, user } = await GetProfile(ctx.req);
+  const product = await GetProduct(ctx.req, ctx.params.id);
+
+  SsrIsLogged(profile);
+
+  return {
+    props: {
+      profile: profile,
+      product: product,
+      tab: ctx.query.tab ? tabs[ctx.query.tab as string] : tabs.Geral,
+      user,
+    },
+  };
+};
 
 export default EditarProduto;

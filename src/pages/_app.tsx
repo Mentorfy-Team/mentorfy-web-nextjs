@@ -1,20 +1,21 @@
-import { useCallback, useEffect, useLayoutEffect } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { UserProvider } from '@supabase/auth-helpers-react';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { SupabaseWithouAuth } from '~/backend/supabase';
+import { SupabaseWithoutAuth } from '~/backend/supabase';
 import createEmotionCache from '~/createEmotionCache';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
 const clientSideEmotionCache = createEmotionCache();
 import { Roboto } from '@next/font/google';
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '~/@types/supabase/v2.types';
 
 export const MainFont = Roboto({
   weight: ['300', '400', '500', '700', '900'],
@@ -37,6 +38,9 @@ interface MyAppProps extends AppProps {
 const App = (props: MyAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const router = useRouter();
+  const [supabaseClient] = useState(() =>
+    createBrowserSupabaseClient<Database>(),
+  );
 
   useLayoutEffect(() => {
     if (router.asPath.includes('#')) {
@@ -45,18 +49,18 @@ const App = (props: MyAppProps) => {
   }, [router]);
 
   useEffect(() => {
-    const { data } = SupabaseWithouAuth.auth.onAuthStateChange(
-      (event, session) => {
-        fetch('/api/auth/cookies', {
-          method: 'POST',
-          headers: new Headers({ 'Content-Type': 'application/json' }),
-          credentials: 'same-origin',
-          body: JSON.stringify({ event, session }),
-        });
-      },
-    );
+    const {
+      data: { subscription },
+    } = SupabaseWithoutAuth.auth.onAuthStateChange((event, session) => {
+      fetch('/api/auth/cookies', {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        credentials: 'same-origin',
+        body: JSON.stringify({ event, session }),
+      });
+    });
 
-    return data.unsubscribe();
+    return subscription.unsubscribe();
   }, []);
 
   const Drawer = useCallback(
@@ -84,12 +88,15 @@ const App = (props: MyAppProps) => {
         <ThemeProvider>
           <Wrapper id="WrapperRoot">
             <PageWrapper>
-              <UserProvider supabaseClient={supabaseClient}>
+              <SessionContextProvider
+                supabaseClient={supabaseClient}
+                initialSession={pageProps.initialSession}
+              >
                 {router.asPath.includes('/m') && <HeaderPartial />}
                 <Drawer>
                   <Component {...pageProps} />
                 </Drawer>
-              </UserProvider>
+              </SessionContextProvider>
             </PageWrapper>
             <LoadingPartial />
             <ToastContainer

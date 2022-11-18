@@ -21,18 +21,16 @@ export type DnDObject = {
   description?: string;
   data?: any;
   extra?: any;
-  rows?: DnDRow[];
+  rows?: MentorTools.ToolData[];
   delete?: boolean;
 };
-
-export type DnDRow = MentorTools.ToolData & { type: string };
 
 type Props = {
   model: (element_id, group_id?) => JSX.Element;
   groupModel: (group_id, child) => JSX.Element;
   elements: {
     id: string;
-    rows?: DnDRow[];
+    rows?: MentorTools.ToolData[];
     delete?: boolean;
   }[];
   setElements: (elements: any) => void;

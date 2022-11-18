@@ -9,10 +9,12 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   res,
 ) => {
   const supabase = CreateSupabaseWithAuth(req);
-  const { user, token } = await supabase.auth.api.getUserByCookie(req);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data: tools, error: errorm } = await supabase
-    .from<MentorTools.ToolData>('member_area_tool')
+    .from('member_area_tool')
     .select('*')
     .eq('member_area', req.query.id);
 
@@ -22,7 +24,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   }
   // for each tool, get the user input
   const { data: userInputs, error: erroru } = await supabase
-    .from<MemberAreaTypes.UserInput>('client_input_tool')
+    .from('client_input_tool')
     .select('*')
     .in(
       'member_area_tool_id',
@@ -41,7 +43,9 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
 ) => {
   const supabase = CreateSupabaseWithAuth(req);
 
-  const { user, token } = await supabase.auth.api.getUserByCookie(req);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const tool_id = req.body.tool_id; // tool que está sendo respondida pelo usuário
 
   const client_input = req.body.client_input;

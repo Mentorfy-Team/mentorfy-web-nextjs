@@ -1,14 +1,13 @@
 import { FC, useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
-import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
 
 import GeralPage from './tabs/geral';
+import { GetAuthSession } from '~/helpers/AuthSession';
 
 const DadosPage = dynamic(() => import('./tabs/dados-cadastro'));
 
@@ -62,13 +61,13 @@ const MinhaConta: FC<props> = ({
           />
         );
     }
-  }, [tabindex]);
+  }, [access_token, address, isViewingMentored, profile, tabindex, user]);
 
   return (
     <>
       <Toolbar
         onChange={(value) => setTabindex(value.toString())}
-        tabs={['Geral', 'Links']}
+        tabs={['Perfil', 'Dados de Cadastro']}
       />
       <ContentWidthLimit>
         <Box
@@ -85,16 +84,22 @@ const MinhaConta: FC<props> = ({
 };
 
 // * ServerSideRender (SSR)
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const id = ctx.query.id;
-    const { profile, address } = await GetProfile(ctx.req, true, id);
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
+
+  if (!session)
     return {
-      props: { profile, address, isViewingMentored: !!id },
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
     };
-  },
-});
+
+  const id = ctx.query.id;
+  const { profile, address, user } = await GetProfile(ctx.req, true, id);
+  return {
+    props: { profile, address, isViewingMentored: !!id, user },
+  };
+};
 
 export default MinhaConta;

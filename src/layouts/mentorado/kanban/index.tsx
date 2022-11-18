@@ -1,12 +1,10 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { DnDObject } from '~/components/modules/DragNDrop';
 import Toolbar from '~/components/modules/Toolbar';
-import { PublicRoutes } from '~/consts';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 //import { FilesToDelete } from '~/services/file-upload.service';
@@ -15,6 +13,7 @@ import { InputUserMemberArea } from '~/services/member-area.service';
 import { GetProduct } from '~/services/product.service';
 import { ToolListNames, ToolsModalProps } from '../helpers/SwitchModal';
 import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
+import { GetAuthSession } from '~/helpers/AuthSession';
 
 const SwitchMentoredModal = dynamic<ToolsModalProps>(
   () => import('~/layouts/mentorado/helpers/SwitchModal'),
@@ -168,7 +167,7 @@ export const KanbanView: FC<
                     <Task
                       key={task.id}
                       onClick={() => {
-                        const type = GetTypeName(task.type);
+                        const type = GetTypeName(task.mentor_tool);
                         setOpen(true);
                         setCurrentModal({
                           onChange: GetOnChange,
@@ -229,30 +228,37 @@ export const KanbanView: FC<
 };
 
 // * ServerSideRender (SSR)
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const id = ctx.query.id as string;
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
 
-    // fetch for member area
-    const memberArea = await GetProduct(ctx.req, id);
-
-    if (!memberArea) {
-      return {
-        notFound: true,
-      };
-    }
+  if (!session)
     return {
-      props: {
-        member_area_id: id,
-        memberArea: {
-          id: memberArea.id,
-          title: memberArea.title,
-          description: memberArea.description,
-        },
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     };
-  },
-});
+
+  const id = ctx.query.id as string;
+
+  // fetch for member area
+  const memberArea = await GetProduct(ctx.req, id);
+
+  if (!memberArea) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: {
+      member_area_id: id,
+      memberArea: {
+        id: memberArea.id,
+        title: memberArea.title,
+        description: memberArea.description,
+      },
+    },
+  };
+};
+
 export default KanbanView;

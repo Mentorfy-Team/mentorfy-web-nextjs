@@ -17,7 +17,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const supabaseAdmin = CreateSupabaseWithAdmin();
 
   const { data: existentUser, error: existentError } = await supabaseAdmin
-    .from<ExternalModules.Supabase.User>('profile')
+    .from('profile')
     .select('id')
     .eq('email', email)
     .single();
@@ -25,15 +25,17 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   let errorRes;
   if (!userRef) {
     // * Convida um usuário e cria no banco de autenticação
-    const { data: user, error: ierror } =
-      await supabaseAdmin.auth.api.inviteUserByEmail(email, {
-        data: {
-          name,
-          phone,
-          product,
-        },
-        redirectTo: process.env.NEXT_PUBLIC_APP_URL + '?pid=' + product,
-      });
+    const {
+      data: { user },
+      error: ierror,
+    } = await supabaseAdmin.auth.admin.inviteUserByEmail(email, {
+      data: {
+        name,
+        phone,
+        product,
+      },
+      redirectTo: process.env.NEXT_PUBLIC_APP_URL + '?pid=' + product,
+    });
 
     if (!ierror) {
       // ? Registra que o cliente foi convidado e teve seu cadastro criado
@@ -45,7 +47,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
     }
     // * Depois de convidado, o usuário já existe,
     // * atualizamos com dados extras a autenticação e o perfil
-    const { data, error } = await supabaseAdmin.auth.api.updateUserById(
+    const { data, error } = await supabaseAdmin.auth.admin.updateUserById(
       user.id,
       { phone },
     );
@@ -56,7 +58,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
 
     await supabaseAdmin
       .from('profile')
-      .update({ name, email: email, phone: data?.phone })
+      .update({ name, email: email, phone: data?.user?.phone })
       .eq('id', user.id);
 
     userRef = user;

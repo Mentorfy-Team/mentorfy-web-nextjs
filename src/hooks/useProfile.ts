@@ -1,3 +1,4 @@
+import { deleteCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { ApiRoutes } from '~/consts/routes/api.routes';
@@ -14,6 +15,8 @@ export function useProfile(
       method: 'GET',
     });
     if (res.status === 200) {
+      deleteCookie('sb-access-token');
+      deleteCookie('sb-refresh-token');
       route.push('/');
     }
   };

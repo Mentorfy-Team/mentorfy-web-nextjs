@@ -1,12 +1,11 @@
 import { FC, useCallback, useState } from 'react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
-import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
 import Clients from './meus-clientes';
 import Approvals from './aprovacoes';
+import { GetAuthSession } from '~/helpers/AuthSession';
 
 const tabs = ['Clientes', 'Aprovações', 'Meus Times'];
 
@@ -34,19 +33,25 @@ const ClientsPage: FC<PageTypes.Props> = ({ user, access_token }) => {
 };
 
 // * ServerSideRender (SSR)
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const { profile, user } = await GetProfile(ctx.req);
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
 
+  if (!session)
     return {
-      props: {
-        profile,
-        user,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     };
-  },
-});
+
+  const { profile, user } = await GetProfile(ctx.req);
+
+  return {
+    props: {
+      profile,
+      user,
+    },
+  };
+};
 
 export default ClientsPage;

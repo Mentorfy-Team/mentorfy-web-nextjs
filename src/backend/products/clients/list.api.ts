@@ -7,19 +7,15 @@ export const get = async (req, res) => {
   const supabase = CreateSupabaseWithAuth(req);
 
   const { data: tools, error: errorTools } = await supabase
-    .from<MentorTools.ToolData>('member_area_tool')
+    .from('member_area_tool')
     .select('*')
     .eq('member_area', req.query.id);
-
-  const toolsList = tools?.map((tool) => {
-    tool['type'] = (tool as any).mentor_tool;
-    return tool;
-  });
 
   const { data: relations } = await supabase
     .from('client_product')
     .select('*')
-    .eq('product_id', req.query.id);
+    .eq('product_id', req.query.id)
+    .eq('approved', true);
 
   const { data: clients } = await supabase
     .from('profile')
@@ -30,7 +26,7 @@ export const get = async (req, res) => {
     );
 
   const { data: userInputs, error: erroru } = await supabase
-    .from<MemberAreaTypes.UserInput>('client_input_tool')
+    .from('client_input_tool')
     .select('*')
     .in(
       'profile_id',
@@ -38,7 +34,7 @@ export const get = async (req, res) => {
     )
     .in(
       'member_area_tool_id',
-      toolsList?.map((tool) => tool.id),
+      tools?.map((tool) => tool.id),
     );
 
   const clientWithInputs = clients.map((cl) => {
@@ -49,9 +45,13 @@ export const get = async (req, res) => {
         (
           (userInputs.filter(
             (input) =>
-              !!toolsList.find((tl) => tl.id === input.member_area_tool_id),
+              !!tools.find(
+                (tl) =>
+                  tl.id === input.member_area_tool_id &&
+                  input.profile_id === cl.id,
+              ),
           ).length /
-            toolsList.filter((t) => t.type !== 0).length) *
+            tools.filter((t) => t.mentor_tool !== 0).length) *
           100
         ).toFixed(2),
       ),
@@ -59,7 +59,7 @@ export const get = async (req, res) => {
     };
   });
 
-  let orgSteps = OrganizeTools(toolsList);
+  let orgSteps = OrganizeTools(tools as MentorTools.ToolData[]);
 
   const checkClientStep = [];
   orgSteps = orgSteps.map((step) => {

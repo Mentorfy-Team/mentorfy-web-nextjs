@@ -44,6 +44,7 @@ import {
   VideoHolder,
   VolumeButton,
 } from './style';
+import { GetAuthSession } from '~/helpers/AuthSession';
 
 const BemVindo: FC<PageTypes.Props> = ({ user }) => {
   const sizeLg = useMediaQuery('(min-width: 1200px)');
@@ -203,20 +204,22 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
           </Box>
           <Box display="flex" gap="1rem" mt={3} width="100%">
             <PlayButton
-              onClick={() =>
-                router.push(
-                  types
-                    .find(
-                      (type) => type.id.toString() === featuredProduct.deliver,
-                    )
-                    .name.replace(/\s/g, '-')
-                    .normalize('NFD')
-                    .replace(/[\u0300-\u036f]/g, '')
-                    .toLowerCase() +
-                    '/' +
-                    featuredProduct.id,
-                )
-              }
+              onClick={() =>{
+                if (featuredProduct.relation.) {
+                  router.push(
+                    types
+                      .find(
+                        (type) => type.id.toString() === featuredProduct.deliver,
+                      )
+                      .name.replace(/\s/g, '-')
+                      .normalize('NFD')
+                      .replace(/[\u0300-\u036f]/g, '')
+                      .toLowerCase() +
+                      '/' +
+                      featuredProduct.id,
+                  )
+                }
+              }}
               variant="outlined"
             >
               <PlayArrow />
@@ -480,18 +483,26 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
   );
 };
 
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const { profile } = await GetProfile(ctx.req);
+// * ServerSideRender (SSR)
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
 
+  if (!session)
     return {
-      props: {
-        profile: profile,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     };
-  },
-});
+
+  const { profile, user } = await GetProfile(ctx.req);
+
+  return {
+    props: {
+      profile,
+      user
+    },
+  };
+};
 
 export default BemVindo;

@@ -4,12 +4,13 @@ declare namespace ProductTypes {
   type Product = typeof Database.public.Tables.product.Row & {
     extra: any;
     progress?: number;
+    relation?: typeof Database.public.Tables.client_product.Row;
   };
   type Address = typeof Database.public.Tables.address.Row;
 
   type resultJorney = Omit<DnDObject, 'rows'> & {
     currentClients: ClientJorney[];
-    rows: (DnDRow & {
+    rows: (MentorTools.ToolData & {
       clients: ClientJorney[];
       progress: number;
     })[];

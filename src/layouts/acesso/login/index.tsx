@@ -18,6 +18,7 @@ import {
   LoginButton,
   Title,
 } from '../styles';
+import { setCookie } from 'cookies-next';
 
 type props = {
   urlProps: any[];
@@ -30,7 +31,7 @@ const Login: FC<props> = ({ urlProps }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>();
   const route = useRouter();
-  const { setParams, params } = userStore();
+  const { setAppParams, appParams } = userStore();
   const { register, handleSubmit } = useForm<Auth>();
 
   const {
@@ -56,10 +57,10 @@ const Login: FC<props> = ({ urlProps }) => {
   useEffect(() => {
     if (urlProps?.length > 0) {
       if (urlProps[0].type === 'signup') {
-        setParams({ subpage: 'cadastro' });
+        setAppParams({ subpage: 'cadastro' });
       }
     }
-  }, [urlProps, setParams]);
+  }, [urlProps, setAppParams]);
 
   const onSubmit: SubmitHandler<Auth> = useCallback(async () => {
     if (!email || !password) {
@@ -74,6 +75,8 @@ const Login: FC<props> = ({ urlProps }) => {
       setIsLoading(false);
       return;
     } else {
+      setCookie('sb-refresh-token', registerData.session.refresh_token);
+      setCookie('sb-access-token', registerData.session.access_token);
       await mutate();
     }
   }, [email, mutate, password]);
@@ -107,7 +110,7 @@ const Login: FC<props> = ({ urlProps }) => {
             marginLeft: '0px !important',
           }}
           label="Crie sua conta"
-          onClick={() => setParams({ subpage: 'cadastro' })}
+          onClick={() => setAppParams({ subpage: 'cadastro' })}
         />
       </Tabbar>
       <FormWrapper
@@ -148,7 +151,7 @@ const Login: FC<props> = ({ urlProps }) => {
         </LoginButton>
       </FormWrapper>
       <ForgotPassButton
-        onClick={() => setParams({ subpage: 'esqueci-minha-senha' })}
+        onClick={() => setAppParams({ subpage: 'esqueci-minha-senha' })}
       >
         Esqueci minha senha
       </ForgotPassButton>

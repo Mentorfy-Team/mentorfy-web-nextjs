@@ -9,8 +9,8 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
 ) => {
   const supabase = CreateSupabaseWithAuth(req);
 
-  const { data: tools, error } = await supabase
-    .from<MentorTools.ToolData>('member_area_tool')
+  const { data: tools } = await supabase
+    .from('member_area_tool')
     .select('*')
     .eq('member_area', req.query.id);
   // member_area!member_area_fkey (id), mentor_tool_id!mentor_tool_id_fkey (id)

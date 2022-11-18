@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { DnDObject } from '~/components/modules/DragNDrop';
-import { PublicRoutes } from '~/consts';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import SwitchMentoredModal, { ToolListNames } from '../helpers/SwitchModal';
@@ -18,6 +16,7 @@ import {
   Tips,
   Wrapper,
 } from './styles';
+import { GetAuthSession } from '~/helpers/AuthSession';
 
 export const Playbook = ({ member_area_id }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
@@ -160,16 +159,23 @@ export const Playbook = ({ member_area_id }) => {
 };
 
 // * ServerSideRender (SSR)
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const id = ctx.query.id as string;
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
+
+  if (!session)
     return {
-      props: {
-        member_area_id: id,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     };
-  },
-});
+
+  const id = ctx.query.id as string;
+  return {
+    props: {
+      member_area_id: id,
+    },
+  };
+};
+
 export default Playbook;

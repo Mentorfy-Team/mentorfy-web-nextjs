@@ -6,7 +6,7 @@ export const get = async (req, res) => {
   const supabase = CreateSupabaseWithAuth(req);
 
   const { data: products } = await supabase
-    .from<ProductApi.Product>('product')
+    .from('product')
     .select('id, title')
     .eq('owner', req.query.id);
 

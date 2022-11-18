@@ -1,5 +1,5 @@
+import { setCookie } from 'cookies-next';
 import { NextRouter } from 'next/router';
-import { SupabaseWithouAuth } from '~/backend/supabase';
 import { GetProductLogo } from '~/services/getProductLogo.service';
 
 export type RecoveryProps = {
@@ -22,15 +22,17 @@ const HandlePageWithParams = async (
   //? [ Supabase auth ] [ MENTOR ]
   //* Se tiver o token de acesso, salva no localStorage e redireciona para a página inicial
   if (urlParams.access_token && urlParams.type == 'magiclink') {
-    const { user } = SupabaseWithouAuth.auth.setAuth(urlParams.access_token);
+    setCookie('sb-refresh-token', urlParams.refresh_token);
+    setCookie('sb-access-token', urlParams.access_token);
 
-    if (user && router.pathname === '/') {
+    if (router.pathname === '/') {
       router.push('/mentor/dashboard');
     }
   }
 
   if (urlParams.type == 'invite' || urlParams.type == 'recovery') {
-    SupabaseWithouAuth.auth.setAuth(urlParams.access_token);
+    setCookie('sb-refresh-token', urlParams.refresh_token);
+    setCookie('sb-access-token', urlParams.access_token);
     setAppParams({ subpage: 'trocar-senha' });
   }
 

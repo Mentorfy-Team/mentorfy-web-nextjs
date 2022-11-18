@@ -4,15 +4,14 @@ import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
-import { PublicRoutes } from '~/consts';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import { GetProfile } from '~/services/profile.service';
 import { CreatAreaButton, EmptyBox, ImageButton } from './style';
 import SvgComponent from '~/../public/svgs/graduation-cap';
+import { GetAuthSession } from '~/helpers/AuthSession';
 
 type Props = {
   product_id: string;
@@ -78,20 +77,28 @@ const AreaDeMembros: FC<Props> = ({ product_id }) => {
   );
 };
 
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const { profile } = await GetProfile(ctx.req);
-    const product_id = ctx.query.product_id;
+// * ServerSideRender (SSR)
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
 
+  if (!session)
     return {
-      props: {
-        profile: profile,
-        product_id,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     };
-  },
-});
+
+  const { profile, user } = await GetProfile(ctx.req);
+  const product_id = ctx.query.product_id;
+
+  return {
+    props: {
+      profile: profile,
+      product_id,
+      user,
+    },
+  };
+};
 
 export default AreaDeMembros;

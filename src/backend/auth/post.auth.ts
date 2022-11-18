@@ -1,22 +1,27 @@
-import { CreateSupabaseWithAuth, SupabaseWithouAuth } from '~/backend/supabase';
-type Request = UsersApi.Post.Request;
-type Response = UsersApi.Post.Response;
+import { SupabaseWithoutAuth } from '~/backend/supabase';
+
+type Request = AuthApi.Post.Request;
+type Response = AuthApi.Post.Response;
 
 export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const { email, password } = req.body;
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  const { session, user, error } = await SupabaseWithouAuth.auth.signIn({
+  const {
+    data: { session, user },
+    error,
+  } = await SupabaseWithoutAuth.auth.signInWithPassword({
     email,
     password,
   });
+
   if (error) {
-    res.status(401).json({ error: error.message });
-    return;
+    return res.status(401).json({ error: error.message });
   }
-  Object.assign(req, { body: { session, event: 'SIGNED_IN' } });
-  CreateSupabaseWithAuth(req, session.access_token).auth.api.setAuthCookie(
-    req,
-    res,
-  );
+
+  return res.status(200).json({
+    session,
+    user,
+    error: error?.message,
+  });
 };

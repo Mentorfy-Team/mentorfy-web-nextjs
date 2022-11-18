@@ -41,7 +41,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   }
 
   const { data: tools, error: errorTools } = await supabase
-    .from<MentorTools.ToolData>('member_area_tool')
+    .from('member_area_tool')
     .select('*')
     .in(
       'member_area',
@@ -54,7 +54,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   });
 
   const { data: userInputs, error: erroru } = await supabase
-    .from<MemberAreaTypes.UserInput>('client_input_tool')
+    .from('client_input_tool')
     .select('*')
     .eq('profile_id', req.query.id);
 

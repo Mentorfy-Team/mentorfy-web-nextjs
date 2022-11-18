@@ -4,7 +4,7 @@ import { fixBase64 } from '~/backend/products';
 import {
   CreateSupabaseWithAdmin,
   CreateSupabaseWithAuth,
-  SupabaseWithouAuth,
+  SupabaseWithoutAuth,
 } from '~/backend/supabase';
 type GetRequest = ProfileApi.Get.Request;
 type GetResponse = ProfileApi.Get.Response | any;
@@ -17,7 +17,9 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   res,
 ) => {
   const supabase = CreateSupabaseWithAuth(req);
-  const { user, token } = await supabase.auth.api.getUserByCookie(req);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const result = {};
 
   if (!user) return res.status(401).json({ error: 'Unauthorized' });
@@ -49,9 +51,9 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
   res,
 ) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  const { user, token } = await SupabaseWithouAuth.auth.api.getUserByCookie(
-    req,
-  );
+  const {
+    data: { user },
+  } = await SupabaseWithoutAuth.auth.getUser();
   const supabase = CreateSupabaseWithAuth(req);
 
   const errors = [];
@@ -76,7 +78,7 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
         .remove([req.body.old_avatar.split('images/')[1]]);
     }
     Object.assign(toUpdate, {
-      avatar: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.Key,
+      avatar: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.path,
     });
   }
 
@@ -90,8 +92,7 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
 
   if (req.body.user) {
     const supabaseAdmin = CreateSupabaseWithAdmin(req);
-    const { error } = await supabaseAdmin.auth.api.updateUserById(
-      user.id,
+    const { error } = await supabaseAdmin.auth.updateUser(
       req.body.user as AdminUserAttributes,
     );
     if (error) errors.push(error);

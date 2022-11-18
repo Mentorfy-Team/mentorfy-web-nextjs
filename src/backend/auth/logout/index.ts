@@ -5,7 +5,6 @@ type Response = AuthApi.Post.Response;
 export const get: Handler.Callback<Request, Response> = async (req, res) => {
   const supabase = CreateSupabaseWithAuth(req);
   const { error } = await supabase.auth.signOut();
-  supabase.auth.api.deleteAuthCookie(req, res, {
-    redirectTo: '/',
-  });
+
+  return res.status(200).json({ error: error?.message });
 };

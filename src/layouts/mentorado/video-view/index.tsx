@@ -1,15 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import { DnDObject, DnDRow } from '~/components/modules/DragNDrop';
+import { DnDObject } from '~/components/modules/DragNDrop';
 import ProgressBar from '~/components/modules/ProgressBar';
 import Toolbar from '~/components/modules/Toolbar';
-import { MentoredRoutes, PublicRoutes } from '~/consts';
+import { MentoredRoutes } from '~/consts';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import { useUserInputs } from '~/hooks/useUserInputs';
@@ -27,6 +26,7 @@ import {
   VideoWrapper,
   Wrapper,
 } from './styles';
+import { GetAuthSession } from '~/helpers/AuthSession';
 
 export const VideoView = ({ member_area_id, video_id }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
@@ -34,7 +34,7 @@ export const VideoView = ({ member_area_id, video_id }) => {
   const [nextVideoId, setNextVideoId] = useState<string>(null);
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<DnDObject[]>([]);
-  const [videosOrdem, setVideosOrdem] = useState<DnDRow[]>([]);
+  const [videosOrdem, setVideosOrdem] = useState<MentorTools.ToolData[]>([]);
   const [userInput, setUserInput] = useState<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
@@ -58,7 +58,7 @@ export const VideoView = ({ member_area_id, video_id }) => {
     });
     setVideosOrdem(
       stepsData
-        .filter((step) => step.type === ToolListNames.Video.id)
+        .filter((step) => step.mentor_tool === ToolListNames.Video.id)
         .sort((a, b) => a.order - b.order),
     );
   }, [stepsData]);
@@ -367,18 +367,25 @@ export const VideoView = ({ member_area_id, video_id }) => {
 };
 
 // * ServerSideRender (SSR)
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const id = ctx.query.id as string;
-    const video_id = (ctx.query.v || 0) as string;
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
+
+  if (!session)
     return {
-      props: {
-        member_area_id: id,
-        video_id,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     };
-  },
-});
+
+  const id = ctx.query.id as string;
+  const video_id = (ctx.query.v || 0) as string;
+  return {
+    props: {
+      member_area_id: id,
+      video_id,
+    },
+  };
+};
+
 export default VideoView;

@@ -1,12 +1,12 @@
-import { SupabaseWithouAuth } from '~/backend/supabase';
-type Request = UsersApi.Post.Request;
-type Response = UsersApi.Post.Response;
+import { SupabaseWithoutAuth } from '~/backend/supabase';
+type Request = AuthApi.Post.Request;
+type Response = AuthApi.Post.Response;
 
 export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const { email } = req.body;
   await new Promise((resolve) => setTimeout(resolve, 1000));
   try {
-    await SupabaseWithouAuth.auth.api.resetPasswordForEmail(email);
+    await SupabaseWithoutAuth.auth.resetPasswordForEmail(email);
   } catch {
     // TODO: logar erro de reset de senha
   }

@@ -1,14 +1,13 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
-import { PublicRoutes } from '~/consts';
 import { GetProfile } from '~/services/profile.service';
 import Finances from './components/finance';
 import Indicators from './components/Indicators';
 import { ImagesBox } from './styles';
+import { GetAuthSession } from '~/helpers/AuthSession';
 const Dashboard: FC<PageTypes.Props> = () => {
   const ref = useRef(null);
   const [width, setWidth] = useState(0);
@@ -102,17 +101,24 @@ const Dashboard: FC<PageTypes.Props> = () => {
 };
 
 // * ServerSideRender (SSR)
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const { profile } = await GetProfile(ctx.req);
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
+  if (!session)
     return {
-      props: {
-        profile: profile,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     };
-  },
-});
+
+  const { profile, user } = await GetProfile(ctx.req);
+
+  return {
+    props: {
+      profile,
+      user,
+    },
+  };
+};
 
 export default Dashboard;

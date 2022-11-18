@@ -29,7 +29,7 @@ type props = {
 const ClientJourney: FC<props> = ({ id }) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
   const [background, setBackground] = useState('#7586EC');
-  const [completedClients, setcompletedClients] = useState<any>([]);
+  const [completedClients, setcompletedClients] = useState<any[]>(null);
   const [selectedTask, setSelectedTask] = useState<any>([]);
   const [steps, setSteps] = useState<ProductTypes.resultJorney[]>([]);
   const {
@@ -97,38 +97,39 @@ const ClientJourney: FC<props> = ({ id }) => {
                     flexDirection: 'column',
                   }}
                 >
-                  {steps[index].extra && step?.extra[0]?.sourceUrl && (
-                    <ImageWrapper>
+                  <ImageWrapper>
+                    {steps[index].extra && step?.extra[0]?.sourceUrl && (
                       <Image
                         alt="imagem-principal"
                         width={40}
                         height={40}
                         src={step?.extra[0]?.sourceUrl}
                       />
-                    </ImageWrapper>
-                  )}
-                  <ImageText
+                    )}
+                  </ImageWrapper>
+                  <ImageText>{step.title}</ImageText>
+                </Box>
+                <Box sx={{ textAlign: 'right', position: 'relative' }}>
+                  <Typography
                     sx={{
-                      marginTop: `${
-                        steps[index].extra && step?.extra[0]?.sourceUrl
-                          ? '0'
-                          : '2.5rem'
-                      }`,
-                      fontSize: `${
-                        steps[index].extra && step?.extra[0]?.sourceUrl
-                          ? '0.8rem'
-                          : '0.9rem'
-                      }`,
+                      fontWeight: '600',
+                      position: 'absolute',
+                      right: 0,
+                      whiteSpace: 'nowrap',
                     }}
                   >
-                    {step.title}
-                  </ImageText>
-                </Box>
-                <Box sx={{ textAlign: 'right' }}>
-                  <Typography sx={{ fontWeight: '600' }}>
                     Total de Mentorandos
                   </Typography>
-                  <BundleAmount>{step.currentClients.length}</BundleAmount>
+                  <BundleAmount
+                    sx={{
+                      position: 'absolute',
+                      right: 0,
+                      top: '21px',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {step.currentClients.length}
+                  </BundleAmount>
                 </Box>
               </Box>
             </BundleHeader>
@@ -180,7 +181,11 @@ const ClientJourney: FC<props> = ({ id }) => {
           />
           <CompletedClientsTable
             selectedTask={selectedTask}
-            clients={completedClients !== null ? completedClients : clients}
+            clients={
+              !!completedClients && completedClients.length > 0
+                ? completedClients
+                : clients
+            }
           />
         </>
       )}

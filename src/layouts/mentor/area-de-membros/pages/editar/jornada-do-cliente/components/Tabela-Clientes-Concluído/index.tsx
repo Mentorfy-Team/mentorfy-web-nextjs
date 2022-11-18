@@ -33,12 +33,11 @@ interface Data {
 
 const CompletedClientsTable = ({
   clients = [],
-  selectedTask = [],
+  selectedTask,
 }: {
-  clients: ProductTypes.Client[],
-  selectedTask: any[],
+  clients: ProductTypes.Client[];
+  selectedTask: MentorTools.ToolData;
 }) => {
-  const createData = [];
   return (
     <Datagrid
       columns={columns}

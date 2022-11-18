@@ -31,8 +31,8 @@ type TableProps = {
   columns: Column[];
   rows: any[];
   page: number;
-  completedClient?: any[],
-  selectedTask?: any[],
+  completedClient?: any[];
+  selectedTask?: MentorTools.ToolData;
   onPageChange?: (page: number) => void;
   onRowsPerPageChange?: (rowsPerPage: number) => void;
   onTitleClick?: (id) => void;
@@ -45,7 +45,7 @@ export default function StickyHeadTable({
   rows = [],
   columns = [],
   completedClient = [],
-  selectedTask = [],
+  selectedTask,
   onTitleClick,
 }: TableProps) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -94,22 +94,24 @@ export default function StickyHeadTable({
   );
 
   const handleData = (completedClient) => {
-    console.log(clientInputs);
     setClientInputs(() => {
-      const Inputs = completedClient[0].inputs?.filter((input) => input.member_area_tool_id === selectedTask.id);
-      setFinishedDate(Inputs[0].created_at);
-      const InputsData = Inputs[0].data;
-      return InputsData;
+      const Inputs = completedClient[0].inputs?.filter(
+        (input) => input.member_area_tool_id === selectedTask.id,
+      );
+      if (Inputs?.length > 0) {
+        setFinishedDate(Inputs[0].created_at);
+        const InputsData = Inputs[0].data;
+        return InputsData;
+      }
     });
   };
 
   const handleModal = useCallback(() => {
-
     return (
       <SwicthClientJouneyModal
         open={open}
         setOpen={setOpen}
-        type={selectedTask.type}
+        type={selectedTask.mentor_tool}
         completedClient={completedClient}
         selectedTask={selectedTask}
         finishedDate={finishedDate}
@@ -154,7 +156,7 @@ export default function StickyHeadTable({
                   return (
                     <CustomRow
                       onClick={() => {
-                      if (completedClient) {
+                        if (completedClient) {
                           handleData(completedClient);
                           setOpen(true);
                         } else {

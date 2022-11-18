@@ -7,7 +7,7 @@ export const get = async (req, res) => {
 
   const supabase = CreateSupabaseWithAdmin();
   const { data: product, error } = await supabase
-    .from<ProductApi.Product>('product')
+    .from('product')
     .select('main_image, title, id')
     .eq('refeerer', req.query.refeerer)
     .single();

@@ -108,7 +108,7 @@ export const TipText = styled(Typography)`
   font-weight: 500;
   line-height: 1rem;
 
-  span { 
+  span {
     color: ${({ theme }) => theme.palette.secondary.main};
     margin: 0 0.2rem 0 0.2rem;
   }

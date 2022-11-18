@@ -6,13 +6,12 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import ModalComponent from '~/components/modules/Modal';
-import { MentorRoutes, PublicRoutes } from '~/consts';
+import { MentorRoutes } from '~/consts';
 import { useProducts } from '~/hooks/useProducts';
 import { GetProfile } from '~/services/profile.service';
 import CreateProductDialog from './components/CreateProductDialog';
@@ -30,6 +29,7 @@ import {
   ProductsSelectField,
 } from './styles';
 import PlusSvg from '~/../public/svgs/plus';
+import { GetAuthSession } from '~/helpers/AuthSession';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   const { products, mutate } = useProducts(user.id);
@@ -220,17 +220,25 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
 };
 
 // * ServerSideRender (SSR)
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const { profile } = await GetProfile(ctx.req);
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
+
+  if (!session)
     return {
-      props: {
-        profile: profile,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     };
-  },
-});
+
+  const { profile, user } = await GetProfile(ctx.req);
+  return {
+    props: {
+      profile,
+      user,
+      initialSession: session,
+    },
+  };
+};
 
 export default MembersArea;

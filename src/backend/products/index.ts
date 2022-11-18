@@ -28,7 +28,9 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   }
 
   const supabase = CreateSupabaseWithAuth(req);
-  const { user, token } = await supabase.auth.api.getUserByCookie(req);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const { data: product, error } = await supabase
     .from('product')
     .select('*, member_area(*)')
@@ -97,10 +99,12 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
 ) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   const supabase = CreateSupabaseWithAuth(req);
-  const { user } = await supabase.auth.api.getUserByCookie(req);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { error, data } = await supabase
-    .from<ProductTypes.Product>('product')
+    .from('product')
     .insert({
       ...req.body,
       owner: user.id,
@@ -125,7 +129,9 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
 ) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
   const supabase = CreateSupabaseWithAuth(req);
-  const { user } = await supabase.auth.api.getUserByCookie(req);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const toUpdate = {};
 
@@ -148,7 +154,7 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
         .remove([req.body.old_banner_url.split('images/')[1]]);
     }
     Object.assign(toUpdate, {
-      banner_image: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.Key,
+      banner_image: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.path,
     });
   }
 
@@ -170,7 +176,7 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
         .remove([req.body.old_main_url.split('images/')[1]]);
     }
     Object.assign(toUpdate, {
-      main_image: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.Key,
+      main_image: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.path,
     });
   }
 
