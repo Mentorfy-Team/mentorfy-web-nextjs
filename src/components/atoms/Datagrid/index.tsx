@@ -44,7 +44,7 @@ export default function StickyHeadTable({
   onPageChange,
   rows = [],
   columns = [],
-  completedClient = [],
+  completedClient,
   selectedTask,
   onTitleClick,
 }: TableProps) {
@@ -88,20 +88,23 @@ export default function StickyHeadTable({
 
   const handleGoToProfile = useCallback(
     (id) => {
-      route.push('/mentor/meu-perfil?id=' + id);
+      route.push(route.asPath + '/perfil?id=' + id);
     },
     [route],
   );
 
+  // ! TODO: Remover codigo especifico e deixar genérico por ser um componente global
   const handleData = (completedClient) => {
     setClientInputs(() => {
-      const Inputs = completedClient[0].inputs?.filter(
-        (input) => input.member_area_tool_id === selectedTask.id,
-      );
-      if (Inputs?.length > 0) {
-        setFinishedDate(Inputs[0].created_at);
-        const InputsData = Inputs[0].data;
-        return InputsData;
+      if (completedClient?.length > 0) {
+        const Inputs = completedClient[0].inputs?.filter(
+          (input) => input.member_area_tool_id === selectedTask.id,
+        );
+        if (Inputs?.length > 0) {
+          setFinishedDate(Inputs[0].created_at);
+          const InputsData = Inputs[0].data;
+          return InputsData;
+        }
       }
     });
   };
@@ -160,6 +163,7 @@ export default function StickyHeadTable({
                           handleData(completedClient);
                           setOpen(true);
                         } else {
+                          console.log('id', row);
                           handleGoToProfile(row.id);
                         }
                       }}
