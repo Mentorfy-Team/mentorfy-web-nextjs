@@ -20,6 +20,11 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
     const isUUID = tool.id && tool.id.length > 6 && tool.id.includes('-');
     const tool_id = isUUID ? tool.id : null;
 
+    if (tool['type']) {
+      tool.mentor_tool = tool['type'];
+      delete tool['type'];
+    }
+
     // Se o id for maior que 6, é um id do supabase e devemos remover se o delete for true
     if (tool.delete) {
       if (isUUID) {
