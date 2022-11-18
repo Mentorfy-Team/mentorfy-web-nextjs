@@ -157,31 +157,24 @@ export default function StickyHeadTable({
                 )
                 .map((row, index) => {
                   return (
-                    <CustomRow
-                      onClick={() => {
-                        if (completedClient) {
-                          handleData(completedClient);
-                          setOpen(true);
-                        } else {
-                          console.log('id', row);
-                          handleGoToProfile(row.id);
-                        }
-                      }}
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={index}
-                    >
+                    <CustomRow hover role="checkbox" tabIndex={-1} key={index}>
                       <>
                         {columns.map((column, index) => {
                           const value = row[column.id];
                           return (
                             <TableCell
-                              onClick={() =>
-                                index === 0 &&
-                                onTitleClick &&
-                                onTitleClick(row.id)
-                              }
+                              onClick={() => {
+                                if (index <= columns.length - 2) {
+                                  onTitleClick && onTitleClick(row.id);
+
+                                  if (completedClient) {
+                                    handleData(completedClient);
+                                    setOpen(true);
+                                  } else {
+                                    handleGoToProfile(row.id);
+                                  }
+                                }
+                              }}
                               sx={{
                                 padding: '8px 16px',
                                 height: '45px',
