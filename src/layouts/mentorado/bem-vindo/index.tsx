@@ -217,6 +217,8 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                       '/' +
                       featuredProduct.id,
                   );
+                } else {
+                  handlePopularProductsModal(featuredProduct);
                 }
               }}
               variant="outlined"
