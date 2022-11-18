@@ -31,9 +31,7 @@ import PlusSvg from '~/../public/svgs/plus';
 import { GetAuthSession } from '~/helpers/AuthSession';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
-  const { products, mutate } = useProducts(
-    '54cf99c6-95be-4e97-8878-ab3218c7df1f',
-  );
+  const { products, mutate } = useProducts(user.id);
   const router = useRouter();
   const theme = useTheme();
   const [openCreatePage, setOpenCreatePage] = useState(false);
