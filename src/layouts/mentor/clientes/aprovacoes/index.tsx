@@ -38,6 +38,7 @@ const Approvals: React.FC<{ user }> = ({ user }) => {
         <ApprovalsTable
           rows={clients}
           onApprovalDone={async (id, product_id, approved) => {
+            setLoading(true);
             await ApprovalClient(id, product_id, approved);
             await mutate();
           }}
