@@ -24,9 +24,6 @@ export const CreateSupabaseWithAuth = (req?, _token?) => {
           Authorization: `Bearer ${token}`,
         },
       },
-      auth: {
-        detectSessionInUrl: true,
-      },
     },
   );
 };
