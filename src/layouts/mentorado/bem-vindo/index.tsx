@@ -8,7 +8,6 @@ import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
@@ -18,7 +17,6 @@ import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
-import { PublicRoutes } from '~/consts';
 import { useGetClientProducts } from '~/hooks/useGetClientProducts';
 import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { useProducts } from '~/hooks/useProducts';
@@ -204,12 +202,13 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
           </Box>
           <Box display="flex" gap="1rem" mt={3} width="100%">
             <PlayButton
-              onClick={() =>{
-                if (featuredProduct.relation.) {
+              onClick={() => {
+                if (featuredProduct.relation.approved) {
                   router.push(
                     types
                       .find(
-                        (type) => type.id.toString() === featuredProduct.deliver,
+                        (type) =>
+                          type.id.toString() === featuredProduct.deliver,
                       )
                       .name.replace(/\s/g, '-')
                       .normalize('NFD')
@@ -217,7 +216,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                       .toLowerCase() +
                       '/' +
                       featuredProduct.id,
-                  )
+                  );
                 }
               }}
               variant="outlined"
@@ -274,16 +273,19 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                   height={400}
                   key={index}
                   onClick={() => {
-                    router.push(
-                      types
-                        .find((type) => type.id.toString() === product.deliver)
-                        .name.replace(/\s/g, '-')
-                        .normalize('NFD')
-                        .replace(/[\u0300-\u036f]/g, '')
-                        .toLowerCase() +
-                        '/' +
-                        product.id,
-                    );
+                    if (product.relation.approved)
+                      router.push(
+                        types
+                          .find(
+                            (type) => type.id.toString() === product.deliver,
+                          )
+                          .name.replace(/\s/g, '-')
+                          .normalize('NFD')
+                          .replace(/[\u0300-\u036f]/g, '')
+                          .toLowerCase() +
+                          '/' +
+                          product.id,
+                      );
                   }}
                 >
                   <Image
@@ -500,7 +502,7 @@ export const getProps = async (ctx) => {
   return {
     props: {
       profile,
-      user
+      user,
     },
   };
 };
