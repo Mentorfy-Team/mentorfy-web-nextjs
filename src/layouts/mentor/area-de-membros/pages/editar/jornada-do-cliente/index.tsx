@@ -22,6 +22,7 @@ import {
   TipWrapper,
 } from './styles';
 import SwicthClientJouneyModal from './helpers/SwicthModal';
+import { useRouter } from 'next/router';
 
 type props = {
   id: string;
@@ -40,7 +41,7 @@ const ClientJourney: FC<props> = ({ id }) => {
     isLoading,
   } = useListOfClientsInProduct(id);
   const { setLoading } = userStore();
-
+  const route = useRouter();
   useEffect(() => {
     setSteps(stepsData);
   }, [stepsData]);
@@ -67,28 +68,32 @@ const ClientJourney: FC<props> = ({ id }) => {
   };
 
   const handleSelectedClient = (client: ProductTypes.Client) => {
-    setClientInput(() => {
-      const Inputs = client.inputs?.filter(
-        (input) => input.member_area_tool_id === selectedTask.id,
-      );
-      if (Inputs?.length > 0) {
-        if (selectedTask.mentor_tool === 4) {
-          const InputsData = {
-            input: (Inputs[0].extra as any).comments,
-            date: Inputs[0].created_at,
-            client,
-          };
-          return InputsData;
-        } else {
-          const InputsData = {
-            input: Inputs[0].data,
-            date: Inputs[0].created_at,
-            client,
-          };
-          return InputsData;
+    if (!selectedTask) {
+      route.push(route.asPath + '/perfil?id=' + id);
+    } else {
+      setClientInput(() => {
+        const Inputs = client.inputs?.filter(
+          (input) => input.member_area_tool_id === selectedTask?.id,
+        );
+        if (Inputs?.length > 0) {
+          if (selectedTask.mentor_tool === 4) {
+            const InputsData = {
+              input: (Inputs[0].extra as any).comments,
+              date: Inputs[0].created_at,
+              client,
+            };
+            return InputsData;
+          } else {
+            const InputsData = {
+              input: Inputs[0].data,
+              date: Inputs[0].created_at,
+              client,
+            };
+            return InputsData;
+          }
         }
-      }
-    });
+      });
+    }
 
     setOpen(true);
   };
