@@ -1,7 +1,9 @@
 import React, { useCallback } from 'react';
 import { useClients } from '~/hooks/useClients';
 import ApprovalsTable from '../components/ApprovalsTable';
-
+import { TipText, TipWrapper } from './styles';
+import NextImage from 'next/image';
+import { ApprovalClient } from '~/services/client.service';
 // import { Container } from './styles';
 
 const Approvals: React.FC<{ user }> = ({ user }) => {
@@ -10,17 +12,33 @@ const Approvals: React.FC<{ user }> = ({ user }) => {
     statistics,
     mutate,
     isLoading: isLoadingClient,
-  } = useClients(user.id);
+  } = useClients(user.id, true);
 
   const ProductsTableComponent = useCallback(() => {
     return (
-      <ApprovalsTable
-        rows={clients}
-        clickSeeMore={(id) => {}}
-        clickRemove={(id) => {}}
-      />
+      <>
+        <TipWrapper>
+          <NextImage
+            alt="tip-icon"
+            src="/svgs/tip-icon.svg"
+            width={22}
+            height={22}
+          />
+          <TipText>
+            Os clientes abaixo estão <span>solicitando acesso a mentorias</span>
+            . Aprove ou rejeite as solicitações conforme necessário.
+          </TipText>
+        </TipWrapper>
+        <ApprovalsTable
+          rows={clients}
+          onApprovalDone={async (id, product_id, approved) => {
+            await ApprovalClient(id, product_id, approved);
+            await mutate();
+          }}
+        />
+      </>
     );
-  }, [clients]);
+  }, [clients, mutate]);
 
   return <ProductsTableComponent />;
 };

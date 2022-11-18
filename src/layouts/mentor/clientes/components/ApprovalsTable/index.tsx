@@ -1,26 +1,12 @@
 import { useCallback, useState } from 'react';
-import RemoveIcon from '@mui/icons-material/Block';
-import FindInPage from '@mui/icons-material/FindInPage';
 import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Popover from '@mui/material/Popover';
-import SvgIcon from '@mui/material/SvgIcon';
 import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
 import { Column } from '~/components/atoms/Datagrid';
-import {
-  MarginPopopver,
-  OptionsButton,
-  PopoverBox,
-} from '~/layouts/mentor/area-de-membros/components/MembersAreaTable/styles';
-import {
-  ProductBox,
-  ProductWrapper,
-  Qty,
-  RemoveButton,
-  SeeMoreButton,
-} from './style';
-import DotsSvg from '~/../public/svgs/dots';
+
+import { ProductBox, ProductWrapper, Qty } from './style';
+import Button from '@mui/material/Button';
+import NextImage from 'next/image';
 
 const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
   ssr: false,
@@ -56,12 +42,10 @@ interface Data {
 
 const ApprovalsTable = ({
   rows = [],
-  clickSeeMore,
-  clickRemove,
+  onApprovalDone,
 }: {
   rows: UserClient.ClientRelation[];
-  clickSeeMore: any;
-  clickRemove: any;
+  onApprovalDone: (id, product_id, approved) => void;
 }) => {
   const [page, setPage] = useState(1);
   const [selectedRow, setSelectedRow] = useState<any>({});
@@ -86,11 +70,11 @@ const ApprovalsTable = ({
       name: string,
       email: string,
       product: string,
+      product_id: string,
       qty: number,
       date: string,
       state: string,
-      onSeeMore: (id) => void,
-      onRemove: (id) => void,
+      onApprovalDone: (id, product_id, approved) => void,
     ): Data => {
       return {
         id,
@@ -127,72 +111,27 @@ const ApprovalsTable = ({
         ),
         actions: (
           <div key={`settings-${id}`} style={{ padding: '0px' }}>
-            <MarginPopopver
-              sx={{ width: 35, height: 32 }}
-              onClick={(e) => handleClick(e as any, { id })}
-            >
-              <OptionsButton>
-                <SvgIcon color="info" component={DotsSvg} />
-              </OptionsButton>
-            </MarginPopopver>
-            <Popover
-              id={'popover-' + selectedRow.id}
-              open={open}
-              onClose={handleClose}
-              anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'center',
-                horizontal: 'left',
-              }}
-              transformOrigin={{
-                vertical: 'center',
-                horizontal: 'right',
-              }}
-              transitionDuration={1}
-            >
-              <PopoverBox display="flex" flexDirection="column">
-                <Box
-                  sx={{
-                    backgroundColor: 'primary.dark',
-                  }}
-                  p={0.5}
-                  pl={1}
-                  pr={1}
-                  onClick={() => onSeeMore(id)}
-                >
-                  <SeeMoreButton>
-                    <SvgIcon
-                      sx={{ marginRight: '0.5rem', width: '100%' }}
-                      component={FindInPage}
-                    />
-                    <Box width="100%">Visualizar Perfil</Box>
-                  </SeeMoreButton>
-                </Box>
-                <Divider />
-                <Box
-                  sx={{
-                    backgroundColor: 'primary.dark',
-                  }}
-                  p={0.5}
-                  pl={1}
-                  pr={1}
-                  onClick={() => onRemove(id)}
-                >
-                  <RemoveButton>
-                    <SvgIcon
-                      sx={{ marginRight: '0.5rem', width: '100%' }}
-                      component={RemoveIcon}
-                    />
-                    <Box width="100%">Remover Cliente</Box>
-                  </RemoveButton>
-                </Box>
-              </PopoverBox>
-            </Popover>
+            <Button onClick={() => onApprovalDone(id, product_id, false)}>
+              <NextImage
+                width={30}
+                height={30}
+                src="/svgs/reject.svg"
+                alt="accept"
+              />
+            </Button>
+            <Button onClick={() => onApprovalDone(id, product_id, true)}>
+              <NextImage
+                width={30}
+                height={30}
+                src="/svgs/accept.svg"
+                alt="accept"
+              />
+            </Button>
           </div>
         ),
       };
     },
-    [anchorEl, handleClick, open, selectedRow.id],
+    [],
   );
 
   const getMaxSubscribedAtDate = (array) => {
@@ -220,11 +159,11 @@ const ApprovalsTable = ({
           row.name,
           row.email,
           lastProduct.title,
+          lastProduct.id,
           row.products.length,
           lastProduct.subscribed_at,
           'Ativo',
-          clickSeeMore,
-          clickRemove,
+          onApprovalDone,
         );
       })}
       onPageChange={setPage}

@@ -26,7 +26,7 @@ export type DnDObject = {
 };
 
 type Props = {
-  model: (element_id, group_id?) => JSX.Element;
+  model: (element_id: MentorTools.ToolData, group_id?) => JSX.Element;
   groupModel: (group_id, child) => JSX.Element;
   elements: {
     id: string;

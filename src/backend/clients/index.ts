@@ -39,7 +39,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
 
     if (!ierror) {
       // ? Registra que o cliente foi convidado e teve seu cadastro criado
-      LogHistory.Create(
+      await LogHistory.Create(
         user.id,
         300,
         'Foi convidado para fazer parte da MentorFy',
@@ -80,7 +80,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
     .single();
 
   // ? Registra que o cliente foi adicionado ao produto
-  LogHistory.Create(
+  await LogHistory.Create(
     userRef.id,
     310,
     `Agora faz parte da mentoria ${productData?.title}`,
@@ -137,7 +137,7 @@ export const del = async (req, res) => {
     .single();
 
   // ? Registra que o cliente foi removido das relações com o mentor e as mentorias
-  LogHistory.Create(
+  await LogHistory.Create(
     req.query.client_id,
     312,
     `Agora não faz mais parte da(s) mentoria(s): ${products
@@ -151,7 +151,7 @@ export const del = async (req, res) => {
   );
 
   // ? Registra que o mentor convidou alguem para a mentoria
-  LogHistory.Create(
+  await LogHistory.Create(
     req.query.owner_id,
     222,
     `${clientProfile?.name} não faz mais parte da(s) mentoria(s): ${products

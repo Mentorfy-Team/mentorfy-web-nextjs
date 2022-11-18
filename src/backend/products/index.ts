@@ -38,8 +38,8 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     .single();
 
   // Registra a visualização do produto/mentoria, contanto que o usuário não seja o dono do produto
-  if (user?.id !== product?.owner_id) {
-    LogHistory.Create(
+  if (user?.id !== product?.owner) {
+    await LogHistory.Create(
       user?.id,
       100,
       `Visualizou o produto: ${product?.title}`,
@@ -48,7 +48,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
         product_id: product?.id,
       },
     );
-    LogHistory.Create(
+    await LogHistory.Create(
       req.query.id,
       100,
       `Visualizou a mentoria: ${product?.title}`,
@@ -110,13 +110,14 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
       owner: user.id,
       refeerer: nanoid(6),
     })
+    .select()
     .single();
 
   const { error: errorm } = await supabase
     .from('member_area')
     .insert({
       id: data.id,
-      type_id: data.deliver,
+      type_id: parseInt(data.deliver),
     })
     .single();
 

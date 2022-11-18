@@ -37,7 +37,7 @@ export class LogHistory {
       return;
     }
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('profile_history')
       .insert({
         profile_id: profile_id,
@@ -47,6 +47,6 @@ export class LogHistory {
         extra,
       })
       .single();
-    return { data, error };
+    return { error };
   }
 }

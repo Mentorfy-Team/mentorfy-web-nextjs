@@ -15,16 +15,11 @@ export type ModalProps = {
   finishedDate?: string;
   setOpen?: (value: any) => any;
 };
-const CJQuestionsForm = ({
-  open,
-  setOpen,
-  completedClient,
-  finishedDate,
-}) => {
+const CJQuestionsForm = ({ open, setOpen, completedClient, finishedDate }) => {
   const ModalTitle = (
     <TitleWrapper>
       <AvatarWrapper>
-        {completedClient.avatar ? (
+        {completedClient?.avatar ? (
           <Image
             alt="avatar"
             src={completedClient[0].avatar}
@@ -33,7 +28,9 @@ const CJQuestionsForm = ({
           />
         ) : null}
       </AvatarWrapper>
-      <ClientName>{completedClient[0] && completedClient[0].name}</ClientName>
+      <ClientName>
+        {completedClient && completedClient[0] && completedClient[0].name}
+      </ClientName>
       <FinishedDate>
         {new Date(finishedDate).toLocaleDateString('pt-BR', {
           year: 'numeric',

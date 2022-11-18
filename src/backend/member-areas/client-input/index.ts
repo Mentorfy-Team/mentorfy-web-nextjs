@@ -93,11 +93,12 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
           profile_id: user.id,
           member_area_tool_id: tool_id,
         })
+        .select()
         .single();
 
       if (!error && !errorProduct) {
         // ? Registra que o cliente interagiu com uma mentoria
-        LogHistory.Create(
+        await LogHistory.Create(
           user.id,
           320,
           `Interagiu ou concluiu uma etapa na mentoria: ${product?.title} - ${tool?.title}`,
@@ -120,7 +121,7 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
 
       if (!error && !errorProduct) {
         // ? Registra que o cliente interagiu com uma mentoria
-        LogHistory.Create(
+        await LogHistory.Create(
           user.id,
           320,
           `Interagiu ou concluiu uma etapa na mentoria: ${product?.title} - ${tool?.title}`,

@@ -4,6 +4,7 @@ export const get = async (req, res) => {
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
   const supabase = CreateSupabaseWithAuth(req);
+  const approved = req.query.approved ?? true;
 
   const { data: products } = await supabase
     .from('product')
@@ -16,7 +17,8 @@ export const get = async (req, res) => {
     .in(
       'product_id',
       products.map((product) => product.id),
-    );
+    )
+    .eq('approved', approved);
 
   const { data: users } = await supabase
     .from('profile')

@@ -7,6 +7,8 @@ declare namespace LogTypes {
     added_client_mentory = 220,
     removed_client_mentory = 221,
     removed_client = 222,
+    approved_client = 230,
+    rejected_client = 231,
 
     // ? code 300+
     // Client {

@@ -49,6 +49,29 @@ export const CreateClient = async (client: UserClient.CreateClient) => {
   }
 };
 
+export const ApprovalClient = async (
+  client_id: string,
+  product_id: string,
+  approved,
+) => {
+  try {
+    const response = await HttpClient.post<UsersApi.Post.Response>(
+      ApiRoutes.member_areas_client_approval,
+      { client_id, product_id, approved },
+    );
+    if (response.data.error) {
+      return {
+        error: response.data.error,
+      };
+    }
+    return response.data;
+  } catch (error) {
+    return {
+      error: 'Erro ao cadastrar produto',
+    };
+  }
+};
+
 export const ListClients = async (
   token,
   id,

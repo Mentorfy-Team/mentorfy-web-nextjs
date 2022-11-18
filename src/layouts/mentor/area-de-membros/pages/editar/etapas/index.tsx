@@ -306,10 +306,10 @@ const EditarMentoria: FC<Props> = ({ id }) => {
             return (
               <EditMembersAreaSteps
                 title={stp?.title || 'Nova etapa'}
-                stepType={stp.type}
+                stepType={stp.mentor_tool}
                 image={Image}
                 onEdit={() => {
-                  const type = GetTypeName(stp.type);
+                  const type = GetTypeName(stp.mentor_tool);
                   setCurrentModal({
                     onChange: GetOnChange,
                     type,

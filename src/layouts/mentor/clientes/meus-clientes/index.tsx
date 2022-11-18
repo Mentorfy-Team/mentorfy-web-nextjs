@@ -14,6 +14,7 @@ import ClientsGrid from '../components/ClientsGrid';
 import ClientsTable from '../components/ClientsTable';
 import { ButtonsWrapper, ClientsOptionsButton } from '../style';
 import { User } from '@supabase/supabase-js';
+import RowActions from './components/RowActions';
 
 const CreateClientDialog = dynamic(
   () => import('../components/CreateClientDialog'),
@@ -62,6 +63,13 @@ const Clients: FC<{ user: User }> = ({ user }) => {
         rows={clients}
         clickSeeMore={(id) => handleSeeMore(id)}
         clickRemove={(id) => handleRemove(id)}
+        actions={(id) =>
+          RowActions({
+            id,
+            onSeeMore: (id) => handleSeeMore(id),
+            onRemove: (id) => handleRemove(id),
+          })
+        }
       />
     );
   }, [clients, handleRemove, handleSeeMore]);
