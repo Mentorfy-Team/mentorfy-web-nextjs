@@ -18,7 +18,7 @@ import {
   LoginButton,
   Title,
 } from '../styles';
-import { setCookie } from 'cookies-next';
+import { deleteCookie, setCookie } from 'cookies-next';
 
 type props = {
   urlProps: any[];
@@ -75,6 +75,9 @@ const Login: FC<props> = ({ urlProps }) => {
       setIsLoading(false);
       return;
     } else {
+      deleteCookie('sb-refresh-token');
+      deleteCookie('sb-access-token');
+
       setCookie('sb-refresh-token', registerData.session.refresh_token);
       setCookie('sb-access-token', registerData.session.access_token);
       await mutate();
