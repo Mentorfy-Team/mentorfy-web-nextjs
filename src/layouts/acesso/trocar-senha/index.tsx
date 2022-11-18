@@ -19,7 +19,7 @@ const TrocarSenha: FC<props> = ({ setInfo, access_token, type }) => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [rePassword, setRePassword] = useState('');
-  const { setParams, params } = userStore();
+  const { setAppParams } = userStore();
   const route = useRouter();
 
   const title = useMemo(() => {
@@ -85,7 +85,7 @@ const TrocarSenha: FC<props> = ({ setInfo, access_token, type }) => {
         <Text>Você já pode acessar usando sua nova senha.</Text>
       </>,
     );
-    setParams({ subpage: 'sucesso' });
+    setAppParams({ subpage: 'sucesso' });
   }, [access_token, password, route, setInfo]);
 
   const CadastrarButton = useCallback(() => {

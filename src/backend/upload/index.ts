@@ -40,7 +40,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
           return reject({ success: false });
         }
 
-        resolve(`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.Key);
+        resolve(`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.path);
       });
     });
   };

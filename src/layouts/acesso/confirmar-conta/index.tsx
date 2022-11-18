@@ -3,7 +3,7 @@ import { userStore } from '~/stores';
 import { Accent, AnimatedView, InfoText, LoginButton } from '../styles';
 
 const ConfirmarConta: FC = () => {
-  const { setParams, params } = userStore();
+  const { setAppParams, params } = userStore();
 
   return (
     <AnimatedView>
@@ -21,7 +21,7 @@ const ConfirmarConta: FC = () => {
           <Accent>suporte@mentorfy.io</Accent>
         </b>
       </InfoText>
-      <LoginButton onClick={() => setParams({ subpage: 'login' })}>
+      <LoginButton onClick={() => setAppParams({ subpage: 'login' })}>
         Voltar ao Login
       </LoginButton>
     </AnimatedView>

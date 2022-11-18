@@ -14,13 +14,13 @@ import {
 const EsqueciMinhaSenha: FC = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { setParams, params } = userStore();
+  const { setAppParams, params } = userStore();
 
   const HandleLogin = async () => {
     setIsLoading(true);
     await PasswordRecover(email);
     setIsLoading(false);
-    setParams({ subpage: 'login' });
+    setAppParams({ subpage: 'login' });
   };
 
   return (
@@ -52,7 +52,7 @@ const EsqueciMinhaSenha: FC = () => {
       <InfoText>
         Já possui conta?{' '}
         <Accent>
-          <LinkButton onClick={() => setParams({ subpage: 'login' })}>
+          <LinkButton onClick={() => setAppParams({ subpage: 'login' })}>
             Clique Aqui
           </LinkButton>
         </Accent>
