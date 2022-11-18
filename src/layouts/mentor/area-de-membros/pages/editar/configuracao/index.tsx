@@ -39,9 +39,9 @@ const Geral: FC<props> = ({ id }) => {
   const { product: pData } = useGetProduct(id);
   const [product, setProduct] = useState<typeof pData>(pData);
   const [description, setDescription] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
   const { types } = useMemberAreaTypes();
   const theme = useTheme();
-  const title = watch('title');
   const [displayPicker, setDisplayPicker] = useState<{ one; two; three }>({
     one: false,
     two: false,
@@ -56,7 +56,7 @@ const Geral: FC<props> = ({ id }) => {
   useEffect(() => {
     setProduct(pData);
     setDescription(description);
-    setValue('title', pData?.title);
+    setTitle(pData?.title);
     setProductImage({
       main_image: {
         file: pData?.main_image || '',
@@ -164,7 +164,7 @@ const Geral: FC<props> = ({ id }) => {
         InputLabelProps={{
           shrink: true,
         }}
-        onChange={(e) => setValue('title', e.target.value)}
+        onChange={(e) => setTitle(e.target.value)}
       />
       <InputField
         color="secondary"

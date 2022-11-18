@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 
 type Props = {
-  isNegative?: string;
+  isnegative?: string;
 };
 export const Wrapper = styled(Grid)`
   margin-bottom: 1rem;
@@ -37,8 +37,8 @@ export const IndicatorPercent = styled(Typography)<Props>`
   font-weight: 700;
   line-height: 110.52%;
 
-  ${({ isNegative }) =>
-    !!isNegative &&
+  ${({ isnegative }) =>
+    !!isnegative &&
     css`
       color: #00d75b;
     `}

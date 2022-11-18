@@ -14,7 +14,7 @@ import {
 const EsqueciMinhaSenha: FC = () => {
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { setAppParams, params } = userStore();
+  const { setAppParams, appParams } = userStore();
 
   const HandleLogin = async () => {
     setIsLoading(true);

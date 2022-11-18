@@ -30,7 +30,7 @@ const Indicators = () => {
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <IndicatorValue>R$12.34</IndicatorValue>
-              <IndicatorPercent isNegative>+3.42%</IndicatorPercent>
+              <IndicatorPercent isnegative="true">+3.42%</IndicatorPercent>
             </Box>
             <IndicatorTitle>Faturamento</IndicatorTitle>
           </Box>
@@ -111,7 +111,7 @@ const Indicators = () => {
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <IndicatorValue>R$12.34</IndicatorValue>
-              <IndicatorPercent isNegative>+3.42%</IndicatorPercent>
+              <IndicatorPercent isnegative="true">+3.42%</IndicatorPercent>
             </Box>
             <IndicatorTitle>Conversão checkout</IndicatorTitle>
           </Box>

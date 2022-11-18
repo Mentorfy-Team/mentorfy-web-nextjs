@@ -11,7 +11,6 @@ import {
   BpCheckedIcon,
   BpIcon,
   ButtonsWrapper,
-  CloseButton,
   ForwardButton,
   OptionsBox,
   OptionsText,
@@ -33,7 +32,11 @@ const ChecklistModal = ({
   data: { data: taskData, title: titleData, description: descriptionData },
   onChange,
   userInput,
-}: MentoredComponents.Props<ToolData[], InputProps, ExtraProps>) => {
+}: MentoredComponents.Props<
+  (ToolData & { rows })[],
+  InputProps,
+  ExtraProps
+>) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [input, setInput] = useState(userInput?.data || []);
 
@@ -93,49 +96,59 @@ const ChecklistModal = ({
 
         {taskData && (
           <OptionsWrapper>
-              <TaskTitle >
+            <TaskTitle>
               {!!taskData &&
-                  !!taskData[currentQuestion] &&
-                  taskData[currentQuestion].title}
-                </TaskTitle>
-                {taskData[currentQuestion].rows.map((subTask) => (
-                  <OptionsBox
-                  key={subTask.id}
-                  onClick={() => {
-                    setColor((prev) => !prev);
-                    const index = input.findIndex((item) => item.id === subTask.id);
-                    if (index >= 0) {
-                      setInput((old) => {
-                        const newInput = [...old];
-                        newInput[index] = {
-                          id: subTask.id,
-                          value: !old[index].value,
-                        };
-                        return newInput;
-                      });
-                    } else {
-                      setInput((old) => [...old, { id: subTask.id, value: true }]);
-                    }
-                  }}
-                  sx={{ cursor: 'pointer' }}
-                >
-                  <BpCheckbox
-                    checked={input?.find((i) => i.id === subTask.id)?.value || false} />
-                  <OptionsText
-                    sx={{
-                      color: `${input?.find((i) => i.id === subTask.id)?.value
+                !!taskData[currentQuestion] &&
+                taskData[currentQuestion].title}
+            </TaskTitle>
+            {taskData[currentQuestion].rows.map((subTask) => (
+              <OptionsBox
+                key={subTask.id}
+                onClick={() => {
+                  setColor((prev) => !prev);
+                  const index = input.findIndex(
+                    (item) => item.id === subTask.id,
+                  );
+                  if (index >= 0) {
+                    setInput((old) => {
+                      const newInput = [...old];
+                      newInput[index] = {
+                        id: subTask.id,
+                        value: !old[index].value,
+                      };
+                      return newInput;
+                    });
+                  } else {
+                    setInput((old) => [
+                      ...old,
+                      { id: subTask.id, value: true },
+                    ]);
+                  }
+                }}
+                sx={{ cursor: 'pointer' }}
+              >
+                <BpCheckbox
+                  checked={
+                    input?.find((i) => i.id === subTask.id)?.value || false
+                  }
+                />
+                <OptionsText
+                  sx={{
+                    color: `${
+                      input?.find((i) => i.id === subTask.id)?.value
                         ? '#7DDC51'
-                        : '#E9E7E7'}`,
-                    }}
-                  >
-                    {subTask.title}
-                  </OptionsText>
-                </OptionsBox>
-                ))}
+                        : '#E9E7E7'
+                    }`,
+                  }}
+                >
+                  {subTask.title}
+                </OptionsText>
+              </OptionsBox>
+            ))}
           </OptionsWrapper>
         )}
 
-<ButtonsWrapper>
+        <ButtonsWrapper>
           <BackButton
             disabled={currentQuestion <= 0}
             variant="contained"
@@ -152,10 +165,7 @@ const ChecklistModal = ({
             </ForwardButton>
           )}
           {currentQuestion === taskData?.length - 1 && (
-            <ForwardButton
-              variant="contained"
-              onClick={() => handleFinish()}
-            >
+            <ForwardButton variant="contained" onClick={() => handleFinish()}>
               Concluir
             </ForwardButton>
           )}

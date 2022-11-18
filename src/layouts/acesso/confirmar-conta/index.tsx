@@ -3,7 +3,7 @@ import { userStore } from '~/stores';
 import { Accent, AnimatedView, InfoText, LoginButton } from '../styles';
 
 const ConfirmarConta: FC = () => {
-  const { setAppParams, params } = userStore();
+  const { setAppParams } = userStore();
 
   return (
     <AnimatedView>
