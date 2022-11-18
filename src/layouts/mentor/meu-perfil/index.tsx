@@ -4,10 +4,10 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import dynamic from 'next/dynamic';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
-import { GetProfile } from '~/services/profile.service';
 
 import GeralPage from './tabs/geral';
 import { GetAuthSession } from '~/helpers/AuthSession';
+import { useProfile } from '~/hooks/useProfile';
 
 const DadosPage = dynamic(() => import('./tabs/dados-cadastro'));
 
@@ -25,14 +25,14 @@ type props = PageTypes.Props & {
 
 const MinhaConta: FC<props> = ({
   user,
-  profile,
   tab = tabs.Geral.toString(),
-  address,
-  access_token,
   isViewingMentored,
 }) => {
   const [tabindex, setTabindex] = useState<string>(tab);
   const isMobile = useMediaQuery('(max-width: 400px)');
+  const {
+    data: { profile, address },
+  } = useProfile(true);
 
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
@@ -45,13 +45,7 @@ const MinhaConta: FC<props> = ({
           />
         );
       case tabs.Links.toString():
-        return (
-          <DadosPage
-            profile={profile}
-            address={address}
-            access_token={access_token}
-          />
-        );
+        return <DadosPage profile={profile} address={address} />;
       default:
         return (
           <GeralPage
@@ -61,7 +55,7 @@ const MinhaConta: FC<props> = ({
           />
         );
     }
-  }, [access_token, address, isViewingMentored, profile, tabindex, user]);
+  }, [address, isViewingMentored, profile, tabindex, user]);
 
   return (
     <>
@@ -95,10 +89,8 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const id = ctx.query.id;
-  const { profile, address, user } = await GetProfile(ctx.req, true, id);
   return {
-    props: { profile, address, isViewingMentored: !!id, user },
+    props: { user: session.user },
   };
 };
 

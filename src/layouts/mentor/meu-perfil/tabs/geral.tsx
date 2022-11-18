@@ -31,14 +31,14 @@ const MyProfile = ({ profile, user, isViewingMentored }) => {
     profile,
   });
   const [avatar, setAvatar] = useState({
-    file: data.profile.avatar as string | ArrayBuffer,
+    file: data.profile?.avatar as string | ArrayBuffer,
     type: '',
   });
   const { setLoading } = userStore();
-  const { history, isLoading: isLoadingHistory } = useHistory(profile.id);
+  const { history, isLoading: isLoadingHistory } = useHistory(profile?.id);
   const { product, isLoading: isLoadingProducts } = useGetClientProducts(
-    profile.id,
-    user.id,
+    profile?.id,
+    user?.id,
   );
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const MyProfile = ({ profile, user, isViewingMentored }) => {
             <AvatarWrapper>
               <Avatar
                 alt="foto-perfil"
-                src={profile.avatar as string}
+                src={profile?.avatar as string}
                 sx={{ width: 70, height: 70 }}
               />
               <BOX>
