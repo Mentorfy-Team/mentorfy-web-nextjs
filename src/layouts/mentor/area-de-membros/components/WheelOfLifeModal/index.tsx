@@ -12,11 +12,7 @@ const WheelOfLifeModal = ({
   open,
   setOpen,
   onChange,
-  data: {
-    data: areasData,
-    title: titleData,
-    description: descriptionData,
-  },
+  data: { data: areasData, title: titleData, description: descriptionData },
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
@@ -26,8 +22,8 @@ const WheelOfLifeModal = ({
       {
         id: Math.random() + '',
         title: 'Nova área 1',
-      }
-    ]
+      },
+    ],
   );
 
   const addNewArea = useCallback(() => {
@@ -74,13 +70,13 @@ const WheelOfLifeModal = ({
           label="Título"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+          placeholder=""
         />
         <DescriptionInputField
           label="Descrição"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum facilisis in lobortis orci aliquet. In nisl elit sodales morbi euismod ullamcorper egestas aenean amet. Gravida penatibus massa, duis felis. Vitae, pellentesque eget nunc facilisi in dictumst. Malesuada sed condimentum viverra vel pellentesque magna."
+          placeholder=""
         />
         <ContentBox>
           <>
@@ -104,7 +100,9 @@ const WheelOfLifeModal = ({
                 onDeleteArea={(area_id) => handleDeleteArea(area_id)}
               />
             ))}
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <Box
+              sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+            >
               <AddAreaButton onClick={() => addNewArea()}>
                 + Nova Área
               </AddAreaButton>

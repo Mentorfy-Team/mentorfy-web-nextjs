@@ -69,7 +69,7 @@ const VideoModal = ({
 
   const handleSave = async (del?: boolean) => {
     let convertedFiles;
-    if(thumbnail)
+    if (thumbnail)
       convertedFiles = await UploadToUrlFiles([thumbnail], area_id);
     const filterEmpty = multivideos
       ? videos.filter((task) => task.title)
@@ -78,7 +78,7 @@ const VideoModal = ({
     onChange({
       title,
       description,
-      extra: convertedFiles ? convertedFiles[0]: null,
+      extra: convertedFiles ? convertedFiles[0] : null,
       data: multivideos ? filterEmpty : singleVideo,
       delete: del,
     });
@@ -113,13 +113,13 @@ const VideoModal = ({
           label="Título"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+          placeholder=""
         ></InputField>
         <InputField
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           label="Descrição"
-          placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum facilisis in lobortis orci aliquet. In nisl elit sodales morbi euismod ullamcorper egestas aenean amet. Gravida penatibus massa, duis felis. Vitae, pellentesque eget nunc facilisi in dictumst. Malesuada sed condimentum viverra vel pellentesque magna."
+          placeholder=""
         ></InputField>
         <AddImage
           thumbnail={thumbnail ? thumbnail.data || thumbnail.sourceUrl : null}

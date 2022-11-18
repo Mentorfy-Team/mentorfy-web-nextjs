@@ -44,7 +44,7 @@ export default function StickyHeadTable({
   onPageChange,
   rows = [],
   columns = [],
-  completedClient = [],
+  completedClient,
   selectedTask,
   onTitleClick,
 }: TableProps) {
@@ -88,11 +88,12 @@ export default function StickyHeadTable({
 
   const handleGoToProfile = useCallback(
     (id) => {
-      route.push('/mentor/meu-perfil?id=' + id);
+      route.push(route.asPath + '/perfil?id=' + id);
     },
     [route],
   );
 
+  // ! TODO: Remover codigo especifico e deixar genérico por ser um componente global
   const handleData = (completedClient) => {
     console.log(clientInputs);
     setClientInputs(() => {
@@ -118,7 +119,7 @@ export default function StickyHeadTable({
       <SwicthClientJouneyModal
         open={open}
         setOpen={setOpen}
-        type={selectedTask.mentor_tool}
+        type={selectedTask?.mentor_tool}
         completedClient={completedClient}
         selectedTask={selectedTask}
         finishedDate={finishedDate}
@@ -161,30 +162,24 @@ export default function StickyHeadTable({
                 )
                 .map((row, index) => {
                   return (
-                    <CustomRow
-                      onClick={() => {
-                        if (completedClient) {
-                          handleData(completedClient);
-                          setOpen(true);
-                        } else {
-                          handleGoToProfile(row.id);
-                        }
-                      }}
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={index}
-                    >
+                    <CustomRow hover role="checkbox" tabIndex={-1} key={index}>
                       <>
                         {columns.map((column, index) => {
                           const value = row[column.id];
                           return (
                             <TableCell
-                              onClick={() =>
-                                index === 0 &&
-                                onTitleClick &&
-                                onTitleClick(row.id)
-                              }
+                              onClick={() => {
+                                if (index <= columns.length - 2) {
+                                  onTitleClick && onTitleClick(row.id);
+
+                                  if (completedClient) {
+                                    handleData(completedClient);
+                                    setOpen(true);
+                                  } else {
+                                    handleGoToProfile(row.id);
+                                  }
+                                }
+                              }}
                               sx={{
                                 padding: '8px 16px',
                                 height: '45px',

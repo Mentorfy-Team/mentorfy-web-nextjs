@@ -32,7 +32,8 @@ export const get = async (req, res) => {
     .in(
       'profile_id',
       relations.map((relation) => relation.user_id),
-    );
+    )
+    .eq('code', 100);
 
   const clients = users.map((user) => {
     const relation = relations.filter(

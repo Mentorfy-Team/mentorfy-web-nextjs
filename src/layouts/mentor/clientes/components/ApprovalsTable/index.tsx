@@ -36,15 +36,7 @@ const columns: Column[] = [
   },
   {
     id: 'product',
-    label: 'PRODUTOS',
-  },
-  {
-    id: 'state',
-    label: 'STATUS',
-  },
-  {
-    id: 'date',
-    label: 'ÚLTIMA COMPRA',
+    label: 'ACESSO AO PRODUTO',
   },
   {
     id: 'actions',
@@ -53,16 +45,16 @@ const columns: Column[] = [
 ];
 
 interface Data {
-  id: string;
   name: string;
   email: string;
   product: JSX.Element;
   date: JSX.Element;
   state: JSX.Element;
   actions: JSX.Element;
+  id: string;
 }
 
-const ClientsTable = ({
+const ApprovalsTable = ({
   rows = [],
   clickSeeMore,
   clickRemove,
@@ -240,7 +232,4 @@ const ClientsTable = ({
   );
 };
 
-export default ClientsTable;
-function handleClick(arg0: any, arg1: { id: any }): void {
-  throw new Error('Function not implemented.');
-}
+export default ApprovalsTable;

@@ -107,13 +107,13 @@ const GroupModal = ({
               label="Título"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              placeholder=""
             ></InputField>
             <InputField
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               label="Descrição"
-              placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum facilisis in lobortis orci aliquet. In nisl elit sodales morbi euismod ullamcorper egestas aenean amet. Gravida penatibus massa, duis felis. Vitae, pellentesque eget nunc facilisi in dictumst. Malesuada sed condimentum viverra vel pellentesque magna."
+              placeholder=""
             ></InputField>
             <AddImage
               title="Icone/Imagem do agrupador"

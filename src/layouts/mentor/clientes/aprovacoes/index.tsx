@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { useClients } from '~/hooks/useClients';
+import ApprovalsTable from '../components/ApprovalsTable';
 
 // import { Container } from './styles';
-import ClientsTable from '../components/ClientsTable';
 
 const Approvals: React.FC<{ user }> = ({ user }) => {
   const {
@@ -14,7 +14,7 @@ const Approvals: React.FC<{ user }> = ({ user }) => {
 
   const ProductsTableComponent = useCallback(() => {
     return (
-      <ClientsTable
+      <ApprovalsTable
         rows={clients}
         clickSeeMore={(id) => {}}
         clickRemove={(id) => {}}
