@@ -54,7 +54,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
     await SupabaseWithoutAuth.from('client_product').insert({
       user_id: user.id,
       product_id: id,
-      subscription: false,
+      subscription: true,
       approved: false,
     });
   }

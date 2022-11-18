@@ -11,7 +11,7 @@ export const get = async (req, res) => {
     .select('id, title')
     .eq('owner', req.query.id);
 
-  const { data: relations } = await supabase
+  const { data: relations, error: relErr } = await supabase
     .from('client_product')
     .select('*')
     .in(
