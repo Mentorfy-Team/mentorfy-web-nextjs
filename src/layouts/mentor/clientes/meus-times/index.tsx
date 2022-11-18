@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import { useClients } from '~/hooks/useClients';
-import ApprovalsTable from '../components/ApprovalsTable';
 import { TipText, TipWrapper } from './styles';
 import NextImage from 'next/image';
-import { ApprovalClient } from '~/services/client.service';
 import { userStore } from '~/stores';
 // import { Container } from './styles';
 
@@ -30,21 +28,18 @@ const Approvals: React.FC<{ user }> = ({ user }) => {
             width={22}
             height={22}
           />
-          <TipText>
-            Os clientes abaixo estão <span>solicitando acesso a mentorias</span>
-            . Aprove ou rejeite as solicitações conforme necessário.
-          </TipText>
+          <TipText>Em construção.</TipText>
         </TipWrapper>
-        <ApprovalsTable
+        {/* <ApprovalsTable
           rows={clients}
           onApprovalDone={async (id, product_id, approved) => {
             await ApprovalClient(id, product_id, approved);
             await mutate();
           }}
-        />
+        /> */}
       </>
     );
-  }, [clients, mutate]);
+  }, []);
 
   return <ProductsTableComponent />;
 };

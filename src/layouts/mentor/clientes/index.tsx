@@ -5,6 +5,7 @@ import Toolbar from '~/components/modules/Toolbar';
 import { GetProfile } from '~/services/profile.service';
 import Clients from './meus-clientes';
 import Approvals from './aprovacoes';
+import Teams from './meus-times';
 import { GetAuthSession } from '~/helpers/AuthSession';
 
 const tabs = ['Clientes', 'Aprovações', 'Meus Times'];
@@ -18,6 +19,8 @@ const ClientsPage: FC<PageTypes.Props> = ({ user, access_token }) => {
         return <Clients user={user} />;
       case 1:
         return <Approvals user={user} />;
+      case 2:
+        return <Teams user={user} />;
       default:
         return <Clients user={user} />;
     }
