@@ -51,7 +51,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
 
   const numberOfSlides = sizeLg ? 5 : sizeMd ? 3 : sizeSm ? 2 : 1;
 
-  const [currentProduct, setCurrentProduct] = useState<any>([]);
+  const [currentProduct, setCurrentProduct] = useState<ProductTypes.Product>();
   const [open, setOpen] = useState<boolean>(false);
   const [playVideo, setPlayVideo] = useState<boolean>(false);
   const [playVideoFade, setPlayVideoFade] = useState<boolean>(false);
@@ -273,7 +273,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                   height={400}
                   key={index}
                   onClick={() => {
-                    if (product.relation.approved)
+                    if (product.relation.approved) {
                       router.push(
                         types
                           .find(
@@ -286,6 +286,9 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                           '/' +
                           product.id,
                       );
+                    } else {
+                      handlePopularProductsModal(product);
+                    }
                   }}
                 >
                   <Image
@@ -346,7 +349,25 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                 height={sizeLg ? '190px' : 'unset'}
                 width={sizeLg ? '350px' : 'unset'}
                 key={index}
-                onClick={() => handlePopularProductsModal(product)}
+                onClick={() => {
+                  const rel = clientProducts.find(
+                    (p) => p.id === product.id,
+                  )?.relation;
+                  if (rel && rel.approved) {
+                    router.push(
+                      types
+                        .find((type) => type.id.toString() === product.deliver)
+                        .name.replace(/\s/g, '-')
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '')
+                        .toLowerCase() +
+                        '/' +
+                        product.id,
+                    );
+                  } else {
+                    handlePopularProductsModal(product);
+                  }
+                }}
               >
                 <Image
                   alt=""
@@ -388,7 +409,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         <ModalDialogContent popularProduct>
           <>
             <VideoHolder id="holder">
-              {currentProduct.video ? (
+              {currentProduct?.video ? (
                 <ReactPlayer
                   id="goto"
                   className={
@@ -417,7 +438,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               ) : (
                 <Image
                   alt=""
-                  src={currentProduct.banner_image}
+                  src={currentProduct?.banner_image}
                   width={800}
                   height={300}
                   style={{
@@ -453,7 +474,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                 two={currentProduct?.extra?.titleGradiente?.two || 'white'}
                 three={currentProduct?.extra?.titleGradiente?.three || 'white'}
               >
-                {currentProduct.title}
+                {currentProduct?.title}
               </CollorFullPopular>
               <VolumeButton
                 onClick={() =>
@@ -475,9 +496,46 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               </VolumeButton>
             </Box>
             <PopularProductDescription>
-              {currentProduct.description}
+              {currentProduct?.description}
             </PopularProductDescription>
-            <PopularButton variant="outlined">Comprar</PopularButton>
+            {currentProduct?.relation ? (
+              <>
+                <PopularButton
+                  variant="outlined"
+                  onClick={() => setOpen(false)}
+                >
+                  Fechar
+                </PopularButton>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '1rem',
+                    alignSelf: 'self-end',
+                  }}
+                >
+                  <div
+                    style={{
+                      height: '6px',
+                      width: '6px',
+                      backgroundColor: '#00A3FF',
+                      borderRadius: '50%',
+                    }}
+                  />
+                  <Typography
+                    sx={{
+                      color: '#00A3FF',
+                    }}
+                  >
+                    Aguardando aprovação do acesso.
+                  </Typography>
+                </div>
+              </>
+            ) : (
+              <PopularButton variant="outlined" onClick={() => setOpen(false)}>
+                Comprar
+              </PopularButton>
+            )}
           </Box>
         </ModalDialogContent>
       </ModalComponent>
