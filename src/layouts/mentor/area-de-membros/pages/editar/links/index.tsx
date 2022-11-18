@@ -37,8 +37,8 @@ const Links: FC<props> = ({ id }) => {
       <InputField
         color="secondary"
         id="outlined-required"
-        value={`${route.basePath}?mb=${product.refeerer}`}
-        label="Link para área de membros"
+        value={`${process.env.NEXT_PUBLIC_BASE_URL}?signup=${product.refeerer}`}
+        label="Link de cadastro"
         InputLabelProps={{
           shrink: true,
         }}
@@ -49,8 +49,8 @@ const Links: FC<props> = ({ id }) => {
       <InputField
         color="secondary"
         id="outlined-required"
-        value={`${route.basePath}?signup=${product.refeerer}`}
-        label="Link de cadastro"
+        value={`${process.env.NEXT_PUBLIC_BASE_URL}`}
+        label="Link para área de membros"
         InputLabelProps={{
           shrink: true,
         }}
