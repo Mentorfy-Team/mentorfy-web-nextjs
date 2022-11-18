@@ -15,12 +15,13 @@ import ClientsTable from '../components/ClientsTable';
 import { ButtonsWrapper, ClientsOptionsButton } from '../style';
 import { User } from '@supabase/supabase-js';
 import RowActions from './components/RowActions';
+import { useRouter } from 'next/router';
 
 const CreateClientDialog = dynamic(
   () => import('../components/CreateClientDialog'),
 );
 
-const Clients: FC<{ user: User }> = ({ user }) => {
+const Clients: FC<{ user: User; onClientSelected }> = ({ user }) => {
   const isMobile = useMediaQuery('(max-width: 500px)');
   const [openCreatePage, setOpenCreatePage] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
@@ -35,8 +36,18 @@ const Clients: FC<{ user: User }> = ({ user }) => {
   // userStore
   const { setLoading: setGlobalLoading, isLoading: GlobalLoading } =
     userStore();
+  const route = useRouter();
+  const onClientSelected = useCallback(
+    (id: string) => {
+      route.push(route.asPath + '/perfil?altId=' + id);
+    },
+    [route],
+  );
 
-  const handleSeeMore = useCallback((id) => {}, []);
+  const handleSeeMore = useCallback(
+    (id) => onClientSelected(id),
+    [onClientSelected],
+  );
 
   const handleRemove = useCallback((id) => {
     setShowConfirmDelete(true);
@@ -61,8 +72,9 @@ const Clients: FC<{ user: User }> = ({ user }) => {
     return (
       <ClientsTable
         rows={clients}
-        clickSeeMore={(id) => handleSeeMore(id)}
-        clickRemove={(id) => handleRemove(id)}
+        clickSeeMore={(client) => handleSeeMore(client.id)}
+        clickRemove={(client) => handleRemove(client.id)}
+        onClientSelected={(client) => onClientSelected(client.id)}
         actions={(id) =>
           RowActions({
             id,
@@ -72,7 +84,7 @@ const Clients: FC<{ user: User }> = ({ user }) => {
         }
       />
     );
-  }, [clients, handleRemove, handleSeeMore]);
+  }, [clients, handleRemove, handleSeeMore, onClientSelected]);
 
   // Consts to controll buttons text
   const exportClientsText = isMobile ? '' : 'Exportar Clientes';

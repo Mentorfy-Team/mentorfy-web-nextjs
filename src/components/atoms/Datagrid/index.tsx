@@ -81,7 +81,7 @@ export default function StickyHeadTable<T>({
 
   const handleGoToProfile = useCallback(
     (id) => {
-      route.push(route.asPath + '/perfil?id=' + id);
+      route.push(route.asPath + '/perfil?altId=' + id);
     },
     [route],
   );

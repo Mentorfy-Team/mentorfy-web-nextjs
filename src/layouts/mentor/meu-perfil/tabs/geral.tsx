@@ -64,10 +64,10 @@ const MyProfile = ({ profile, user, isViewingMentored }) => {
               />
               <BOX>
                 <CustomTypography variant="body1">
-                  {profile.name}
+                  {profile?.name}
                 </CustomTypography>
                 <CustomTypography sx={{ opacity: '0.4', fontSize: '0.9rem' }}>
-                  {profile.email}
+                  {profile?.email}
                 </CustomTypography>
                 {/* <ActionButton
                   color="primary"
@@ -115,7 +115,7 @@ const MyProfile = ({ profile, user, isViewingMentored }) => {
           <Session>
             <Title variant="caption">
               Matrícula:{' '}
-              {new Date(profile.created_at).toLocaleDateString('pt-BR', {
+              {new Date(profile?.created_at).toLocaleDateString('pt-BR', {
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric',

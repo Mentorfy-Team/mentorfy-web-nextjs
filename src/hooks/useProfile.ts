@@ -4,11 +4,7 @@ import useSWR from 'swr';
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { fetcher } from '~/hooks/fetcher';
 
-export function useProfile(
-  withAddress = false,
-  defaultProfile?,
-  defaultAddress?,
-) {
+export function useProfile(withAddress = false, altProfileId?: string) {
   const route = useRouter();
   const logout = async () => {
     const res = await fetch(ApiRoutes.auth_logout, {
@@ -23,16 +19,15 @@ export function useProfile(
 
   const { data, error, mutate } = useSWR<
     UserTypes.ProfileWithAddress & { logout?: () => void }
-  >(`${ApiRoutes.users_profile}?withAddress=${withAddress}`, fetcher);
+  >(
+    `${ApiRoutes.users_profile}?withAddress=${withAddress}${
+      altProfileId ? `&id=${altProfileId}` : ''
+    }`,
+    fetcher,
+  );
 
   return {
-    data: data
-      ? { ...data, logout: () => logout() }
-      : {
-          profile: defaultProfile || {},
-          address: defaultAddress || {},
-          logout: () => logout(),
-        },
+    data: { ...data, logout: () => logout() },
     isLoading: !error && !data,
     isError: error,
     mutate,

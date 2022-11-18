@@ -20,6 +20,7 @@ enum tabs {
 type props = PageTypes.Props & {
   product: ProductClient.Product;
   tab: string;
+  mentored_id: string;
   isViewingMentored: boolean;
 };
 
@@ -27,13 +28,14 @@ const MinhaConta: FC<props> = ({
   user,
   tab = tabs.Geral.toString(),
   isViewingMentored,
+  mentored_id,
 }) => {
   const [tabindex, setTabindex] = useState<string>(tab);
   const isMobile = useMediaQuery('(max-width: 400px)');
   const {
     data: { profile, address },
-  } = useProfile(true);
-
+  } = useProfile(true, mentored_id);
+  console.log('mentored_id', mentored_id);
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
       case tabs.Geral.toString():
@@ -90,7 +92,7 @@ export const getProps = async (ctx) => {
     };
 
   return {
-    props: { user: session.user },
+    props: { user: session.user, mentored_id: ctx.query.altId },
   };
 };
 

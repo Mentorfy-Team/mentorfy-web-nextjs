@@ -2,13 +2,16 @@ import { useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
-import { Column } from '~/components/atoms/Datagrid';
+import { Column, DatagridProps } from '~/components/atoms/Datagrid';
 
 import { ProductBox, ProductWrapper, Qty } from './style';
 
-const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
-  ssr: false,
-});
+const Datagrid = dynamic<DatagridProps<any>>(
+  () => import('~/components/atoms/Datagrid'),
+  {
+    ssr: false,
+  },
+);
 const columns: Column[] = [
   {
     id: 'name',
@@ -50,11 +53,13 @@ const ClientsTable = ({
   rows = [],
   clickSeeMore,
   clickRemove,
+  onClientSelected,
   actions,
 }: {
   rows: UserClient.ClientRelation[];
   clickSeeMore: any;
   clickRemove: any;
+  onClientSelected: any;
   actions: (id) => JSX.Element;
 }) => {
   const [page, setPage] = useState(1);
@@ -127,6 +132,7 @@ const ClientsTable = ({
     <Datagrid
       page={page}
       columns={columns}
+      onSelectedRow={onClientSelected}
       rows={rows.map((row) => {
         const lastProduct = findLastProduct(row.products);
         return createData(
