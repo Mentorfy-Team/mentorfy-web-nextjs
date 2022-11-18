@@ -13,7 +13,6 @@ import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import ModalComponent from '~/components/modules/Modal';
 import { MentorRoutes } from '~/consts';
 import { useProducts } from '~/hooks/useProducts';
-import { GetProfile } from '~/services/profile.service';
 import CreateProductDialog from './components/CreateProductDialog';
 import { DeleteText } from './components/GroupModal/styles';
 import {
@@ -231,12 +230,9 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const { profile, user } = await GetProfile(ctx.req);
   return {
     props: {
-      profile,
-      user,
-      initialSession: session,
+      user: session.user,
     },
   };
 };

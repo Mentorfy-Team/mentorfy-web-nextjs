@@ -9,7 +9,6 @@ import SearchInput from '~/components/atoms/SearchInput';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
 import { useProducts } from '~/hooks/useProducts';
-import { GetProfile } from '~/services/profile.service';
 import ProductsTable from './components/ProductsTable';
 import { AddProductButton } from './styles';
 import PlusSvg from '~/../public/svgs/plus';
@@ -19,7 +18,7 @@ const CreateProductDialog = dynamic(
   () => import('./components/CreateProductDialog'),
 );
 
-const Produtos: FC<PageTypes.Props> = ({ profile, user }) => {
+const Produtos: FC<PageTypes.Props> = ({ user }) => {
   const [openCreatePage, setOpenCreatePage] = useState(false);
   const { products } = useProducts(user.id);
 
@@ -79,12 +78,9 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const { profile, user } = await GetProfile(ctx.req);
-
   return {
     props: {
-      profile,
-      user,
+      user: session.user,
     },
   };
 };

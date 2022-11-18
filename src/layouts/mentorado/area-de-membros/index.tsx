@@ -8,7 +8,6 @@ import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
-import { GetProfile } from '~/services/profile.service';
 import { CreatAreaButton, EmptyBox, ImageButton } from './style';
 import SvgComponent from '~/../public/svgs/graduation-cap';
 import { GetAuthSession } from '~/helpers/AuthSession';
@@ -89,14 +88,12 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const { profile, user } = await GetProfile(ctx.req);
   const product_id = ctx.query.product_id;
 
   return {
     props: {
-      profile: profile,
       product_id,
-      user,
+      user: session.user,
     },
   };
 };

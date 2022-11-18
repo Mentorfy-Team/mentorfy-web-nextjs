@@ -20,7 +20,6 @@ import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import { useGetClientProducts } from '~/hooks/useGetClientProducts';
 import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { useProducts } from '~/hooks/useProducts';
-import { GetProfile } from '~/services/profile.service';
 import {
   AbsoluteBottomBox,
   AbsoluteTopBox,
@@ -557,12 +556,9 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const { profile, user } = await GetProfile(ctx.req);
-
   return {
     props: {
-      profile,
-      user,
+      user: session.user,
     },
   };
 };

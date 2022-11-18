@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
-import { GetProfile } from '~/services/profile.service';
 import Finances from './components/finance';
 import Indicators from './components/Indicators';
 import { ImagesBox } from './styles';
@@ -111,12 +110,9 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const { profile, user } = await GetProfile(ctx.req);
-
   return {
     props: {
-      profile,
-      user,
+      user: session.user,
     },
   };
 };

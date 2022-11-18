@@ -8,7 +8,6 @@ type Props = PageTypes.Props & {
 };
 import ConfigPage from '~/layouts/mentor/area-de-membros/pages/editar/configuracao';
 import StepsPage from '~/layouts/mentor/area-de-membros/pages/editar/etapas';
-import { GetProfile } from '~/services/profile.service';
 import ClientJourney from './jornada-do-cliente';
 import Links from './links';
 import { GetAuthSession } from '~/helpers/AuthSession';
@@ -53,12 +52,10 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const { profile, user } = await GetProfile(ctx.req);
   return {
     props: {
-      profile: profile,
       id: ctx.query.id,
-      user,
+      user: session.user,
     },
   };
 };

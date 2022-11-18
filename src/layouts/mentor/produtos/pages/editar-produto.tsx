@@ -4,9 +4,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import dynamic from 'next/dynamic';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
-import SsrIsLogged from '~/helpers/SsrIsLogged';
 import { GetProduct } from '~/services/product.service';
-import { GetProfile } from '~/services/profile.service';
 
 import GeralPage from './tabs/geral';
 import { GetAuthSession } from '~/helpers/AuthSession';
@@ -74,17 +72,13 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const { profile, user } = await GetProfile(ctx.req);
   const product = await GetProduct(ctx.req, ctx.params.id);
-
-  SsrIsLogged(profile);
 
   return {
     props: {
-      profile: profile,
       product: product,
       tab: ctx.query.tab ? tabs[ctx.query.tab as string] : tabs.Geral,
-      user,
+      user: session.user,
     },
   };
 };
