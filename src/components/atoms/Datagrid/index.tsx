@@ -12,11 +12,6 @@ import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 import ChavronRightSvg from '~/../public/svgs/chavron-right';
 import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
-
-const SwicthClientJouneyModal = dynamic(
-  () => import('~/components/atoms/helpers/SwicthModal'),
-);
 
 export type Column = {
   id: string;
@@ -26,28 +21,26 @@ export type Column = {
   format?: (value: number) => string;
 };
 
-type TableProps = {
+export type DatagridProps<T> = {
   actionButtons?: (index) => JSX.Element[];
   columns: Column[];
-  rows: any[];
+  rows: T[];
   page: number;
-  completedClient?: any[];
-  selectedTask?: MentorTools.ToolData;
   onPageChange?: (page: number) => void;
   onRowsPerPageChange?: (rowsPerPage: number) => void;
   onTitleClick?: (id) => void;
+  onSelectedRow?: (value: T) => void;
 };
 
-export default function StickyHeadTable({
+export default function StickyHeadTable<T>({
   actionButtons,
   page = 1,
   onPageChange,
   rows = [],
   columns = [],
-  completedClient,
-  selectedTask,
   onTitleClick,
-}: TableProps) {
+  onSelectedRow,
+}: DatagridProps<T>) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [open, setOpen] = useState(false);
   const [clientInputs, setClientInputs] = useState<any>([]);
@@ -93,41 +86,6 @@ export default function StickyHeadTable({
     [route],
   );
 
-  // ! TODO: Remover codigo especifico e deixar genérico por ser um componente global
-  const handleData = (completedClient) => {
-    console.log(clientInputs);
-    setClientInputs(() => {
-      const Inputs = completedClient[0].inputs?.filter(
-        (input) => input.member_area_tool_id === selectedTask.id,
-      );
-      if (Inputs?.length > 0) {
-        setFinishedDate(Inputs[0].created_at);
-        if(selectedTask.mentor_tool === 4) {
-          const InputsData = Inputs[0].extra.comments;
-          return InputsData;
-        } else {
-          const InputsData = Inputs[0].data;
-          return InputsData;
-        }
-      }
-    });
-  };
-
-  const handleModal = useCallback(() => {
-    console.log(completedClient);
-    return (
-      <SwicthClientJouneyModal
-        open={open}
-        setOpen={setOpen}
-        type={selectedTask?.mentor_tool}
-        completedClient={completedClient}
-        selectedTask={selectedTask}
-        finishedDate={finishedDate}
-        clientInputs={clientInputs}
-      />
-    );
-  }, [clientInputs, completedClient, finishedDate, open, selectedTask]);
-
   return (
     <PaperWrapper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer>
@@ -170,14 +128,9 @@ export default function StickyHeadTable({
                             <TableCell
                               onClick={() => {
                                 if (index <= columns.length - 2) {
-                                  onTitleClick && onTitleClick(row.id);
-
-                                  if (completedClient) {
-                                    handleData(completedClient);
-                                    setOpen(true);
-                                  } else {
-                                    handleGoToProfile(row.id);
-                                  }
+                                  if (onSelectedRow) onSelectedRow(row);
+                                  setOpen(true);
+                                  //   handleGoToProfile(row.id);
                                 }
                               }}
                               sx={{
@@ -222,8 +175,6 @@ export default function StickyHeadTable({
           <ChavronRightSvg />
         </Button>
       </CustomNavigation>
-
-      <div>{handleModal()}</div>
     </PaperWrapper>
   );
 }

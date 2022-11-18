@@ -5,24 +5,25 @@ import {
   AvatarWrapper,
   ClientName,
   FinishedDate,
-  NoInfoText,
-  ResponseText,
-  StudentComments,
+  QuestionsText,
   TaskTitle,
   TitleWrapper,
+  WheelWrapper,
 } from './styles';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
+import TextRating from '~/components/atoms/Rating';
+import WheelOfLifeTemplate from '~/layouts/mentorado/components/wheel-of-Life/template/WheelOfLifeTemplate';
 
 export type ModalProps = {
   open: boolean;
-  completedClient?: any[];
+  completedClient?: ProductTypes.Client;
   selectedTask?: any[];
   finishedDate?: string;
   clientInputs?: any[];
   setOpen?: (value: any) => any;
 };
-const CJVideoModal = ({
+const CJwhellOfLife = ({
   open,
   setOpen,
   completedClient,
@@ -36,13 +37,13 @@ const CJVideoModal = ({
         {completedClient.avatar ? (
           <Image
             alt="avatar"
-            src={completedClient[0].avatar}
+            src={completedClient.avatar}
             width={40}
             height={40}
           />
         ) : null}
       </AvatarWrapper>
-      <ClientName>{completedClient[0] && completedClient[0].name}</ClientName>
+      <ClientName>{completedClient && completedClient.name}</ClientName>
       <FinishedDate>
         {new Date(finishedDate).toLocaleDateString('pt-BR', {
           year: 'numeric',
@@ -55,38 +56,41 @@ const CJVideoModal = ({
 
   return (
     <ModalComponent
-      withX={false}
       title={ModalTitle}
       open={open}
       setOpen={setOpen}
+      withX={false}
       onClose={() => setOpen(false)}
     >
-      <ModalDialogContent id="content">
+      <ModalDialogContent>
         <AnswersWrapper>
-        <TaskTitle>{selectedTask.title}</TaskTitle>
-          <Box
-            sx={{
-              marginTop: '1.5rem',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '3rem',
-              position: 'relative',
-              textAlign: 'left'
-            }}
-          >
-            <StudentComments>Comentários do Aluno :</StudentComments>
-            {clientInputs ? clientInputs?.map((response) => (
-              <ResponseText key={response.id}>
-                {response.comment}
-              </ResponseText>
-            )) :
-            <NoInfoText>Não há comentários nesta etapa!</NoInfoText>
-            }
-          </Box>
+          <TaskTitle sx={{ left: '30%' }}>{selectedTask.title}</TaskTitle>
+          {selectedTask.data?.map((question, index) =>
+            clientInputs.find((input) => question.id === input.id) ? (
+              <Box
+                key={question.id}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1rem',
+                  marginBottom: '2rem',
+                }}
+              >
+                <QuestionsText>{question.title}</QuestionsText>
+                <TextRating readOnly value={clientInputs[index].rating} />
+              </Box>
+            ) : null,
+          )}
+          <WheelWrapper>
+            <WheelOfLifeTemplate
+              taskData={selectedTask.data}
+              input={clientInputs}
+            />
+          </WheelWrapper>
         </AnswersWrapper>
       </ModalDialogContent>
     </ModalComponent>
   );
 };
 
-export default CJVideoModal;
+export default CJwhellOfLife;

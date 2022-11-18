@@ -1,9 +1,20 @@
 import dynamic from 'next/dynamic';
-import { Column } from '~/components/atoms/Datagrid';
+import { Column, DatagridProps } from '~/components/atoms/Datagrid';
 
-const Datagrid = dynamic(() => import('~/components/atoms/Datagrid'), {
-  ssr: false,
-});
+type JorneyTableProps = {
+  id: string;
+  name: string;
+  email: string;
+  since: JSX.Element;
+  progress: JSX.Element;
+};
+
+const Datagrid = dynamic<DatagridProps<JorneyTableProps>>(
+  () => import('~/components/atoms/Datagrid'),
+  {
+    ssr: false,
+  },
+);
 
 const columns: Column[] = [
   {
@@ -33,16 +44,17 @@ interface Data {
 
 const CompletedClientsTable = ({
   clients = [],
-  selectedTask,
+  onSelectedClient,
 }: {
   clients: ProductTypes.Client[];
-  selectedTask: MentorTools.ToolData;
+  onSelectedClient: (client: ProductTypes.Client) => void;
 }) => {
   return (
     <Datagrid
       columns={columns}
-      completedClient={clients}
-      selectedTask={selectedTask}
+      onSelectedRow={(row) =>
+        onSelectedClient(clients.find((c) => c.id === row.id))
+      }
       rows={clients.map((client) => {
         return {
           id: client.id,

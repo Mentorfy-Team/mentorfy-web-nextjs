@@ -30,7 +30,7 @@ const DefaultModal = dynamic(() => import('../components/DefaultModal'), {
 export type ToolsModalProps = {
   open: boolean;
   type: number;
-  completedClient?: any[];
+  selectedClient?: any;
   selectedTask?: any;
   finishedDate?: string;
   clientInputs?: any[];
@@ -51,7 +51,7 @@ export const ToolListNames = {
 const SwicthClientJouneyModal: React.FC<ToolsModalProps> = ({
   open,
   type,
-  completedClient,
+  selectedClient,
   selectedTask,
   finishedDate,
   clientInputs,
@@ -63,7 +63,7 @@ const SwicthClientJouneyModal: React.FC<ToolsModalProps> = ({
         <QuestionsForm
           open={open}
           setOpen={setOpen}
-          completedClient={completedClient}
+          completedClient={selectedClient}
           selectedTask={selectedTask}
           finishedDate={finishedDate}
           clientInputs={clientInputs}
@@ -74,7 +74,7 @@ const SwicthClientJouneyModal: React.FC<ToolsModalProps> = ({
         <Checklist
           open={open}
           setOpen={setOpen}
-          completedClient={completedClient}
+          completedClient={selectedClient}
           selectedTask={selectedTask}
           finishedDate={finishedDate}
           clientInputs={clientInputs}
@@ -85,7 +85,7 @@ const SwicthClientJouneyModal: React.FC<ToolsModalProps> = ({
         <WheelOfLifeModal
           open={open}
           setOpen={setOpen}
-          completedClient={completedClient}
+          completedClient={selectedClient}
           selectedTask={selectedTask}
           finishedDate={finishedDate}
           clientInputs={clientInputs}
@@ -96,7 +96,7 @@ const SwicthClientJouneyModal: React.FC<ToolsModalProps> = ({
         <VideoModal
           open={open}
           setOpen={setOpen}
-          completedClient={completedClient}
+          completedClient={selectedClient}
           selectedTask={selectedTask}
           finishedDate={finishedDate}
           clientInputs={clientInputs}
@@ -118,42 +118,42 @@ const SwicthClientJouneyModal: React.FC<ToolsModalProps> = ({
     //             />
     //         );
     //         // From now on the tools don´t need a modal with info
-        case ToolListNames.Embed.id:
-            return (
-                <DefaultModal
-                open={open}
-                setOpen={setOpen}
-                completedClient={completedClient}
-                finishedDate={finishedDate}
-                />
-            );
-        case ToolListNames.UploadFile.id:
-            return (
-                <DefaultModal
-                open={open}
-                setOpen={setOpen}
-                completedClient={completedClient}
-                finishedDate={finishedDate}
-                />
-            );
-        case ToolListNames.OpenText.id:
-            return (
-                <DefaultModal
-                open={open}
-                setOpen={setOpen}
-                completedClient={completedClient}
-                finishedDate={finishedDate}
-                />
-            );
-        default:
-            return (
-               <DefaultModal
-               open={open}
-               setOpen={setOpen}
-               completedClient={completedClient}
-               finishedDate={finishedDate}
-               />
-            );
+    case ToolListNames.Embed.id:
+      return (
+        <DefaultModal
+          open={open}
+          setOpen={setOpen}
+          completedClient={selectedClient}
+          finishedDate={finishedDate}
+        />
+      );
+    case ToolListNames.UploadFile.id:
+      return (
+        <DefaultModal
+          open={open}
+          setOpen={setOpen}
+          completedClient={selectedClient}
+          finishedDate={finishedDate}
+        />
+      );
+    case ToolListNames.OpenText.id:
+      return (
+        <DefaultModal
+          open={open}
+          setOpen={setOpen}
+          completedClient={selectedClient}
+          finishedDate={finishedDate}
+        />
+      );
+    default:
+      return (
+        <DefaultModal
+          open={open}
+          setOpen={setOpen}
+          completedClient={selectedClient}
+          finishedDate={finishedDate}
+        />
+      );
   }
 };
 

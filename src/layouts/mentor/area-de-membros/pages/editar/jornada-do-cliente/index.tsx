@@ -21,6 +21,7 @@ import {
   TipText,
   TipWrapper,
 } from './styles';
+import SwicthClientJouneyModal from './helpers/SwicthModal';
 
 type props = {
   id: string;
@@ -29,9 +30,11 @@ type props = {
 const ClientJourney: FC<props> = ({ id }) => {
   const isMobile = useMediaQuery('(max-width: 600px)');
   const [background, setBackground] = useState('#7586EC');
-  const [completedClients, setcompletedClients] = useState<any[]>(null);
-  const [selectedTask, setSelectedTask] = useState<any>([]);
-  const [steps, setSteps] = useState<ProductTypes.resultJorney[]>([]);
+  const [completedClients, setcompletedClients] = useState<any[]>();
+  const [selectedTask, setSelectedTask] = useState<any>();
+  const [clientInput, setClientInput] = useState<any>();
+  const [open, setOpen] = useState(false);
+  const [steps, setSteps] = useState<ProductTypes.resultJorney[]>();
   const {
     data: { clients, result: stepsData },
     isLoading,
@@ -49,29 +52,45 @@ const ClientJourney: FC<props> = ({ id }) => {
   const handleSelectedStep = (task) => {
     setSelectedTask(task);
 
-    if (task.id === selectedTask.id && background === '#7586EC') {
+    if (task.id === task.id && background === '#7586EC') {
       setBackground('inherit');
     }
-    if (task.id === selectedTask.id && background === 'inherit') {
+    if (task.id === task.id && background === 'inherit') {
       setBackground('#7586EC');
     }
-    if (task.id !== selectedTask.id && background === 'inherit') {
+    if (task.id !== task.id && background === 'inherit') {
       setBackground('#7586EC');
     }
-    if (background === '#7586EC' && task.id !== selectedTask.id) {
+    if (background === '#7586EC' && task.id !== task.id) {
       setBackground('#7586EC');
     }
   };
 
-  const handleClientsTable = (task) => {
-    setcompletedClients(() => {
-      console.log(task);
-      const maxProgress = task.clients.filter(
-        (client) => client.progress === 81.82,
+  const handleSelectedClient = (client: ProductTypes.Client) => {
+    setClientInput(() => {
+      const Inputs = client.inputs?.filter(
+        (input) => input.member_area_tool_id === selectedTask.id,
       );
-      return [...maxProgress];
+      if (Inputs?.length > 0) {
+        if (selectedTask.mentor_tool === 4) {
+          const InputsData = {
+            input: (Inputs[0].extra as any).comments,
+            date: Inputs[0].created_at,
+            client,
+          };
+          return InputsData;
+        } else {
+          const InputsData = {
+            input: Inputs[0].data,
+            date: Inputs[0].created_at,
+            client,
+          };
+          return InputsData;
+        }
+      }
     });
-    console.log(completedClients);
+
+    setOpen(true);
   };
 
   return (
@@ -141,12 +160,11 @@ const ClientJourney: FC<props> = ({ id }) => {
                   <Class
                     key={task.id}
                     onClick={() => {
-                      handleClientsTable(task);
                       handleSelectedStep(task);
                     }}
                     sx={{
                       backgroundColor: `${
-                        task.id === selectedTask.id && background
+                        task.id === selectedTask?.id && background
                       }`,
                     }}
                   >
@@ -180,14 +198,22 @@ const ClientJourney: FC<props> = ({ id }) => {
             }}
           />
           <CompletedClientsTable
-            selectedTask={selectedTask}
-            clients={
-              !!completedClients && completedClients.length > 0
-                ? completedClients
-                : clients
-            }
+            clients={clients}
+            onSelectedClient={handleSelectedClient}
           />
         </>
+      )}
+
+      {open && clientInput && selectedTask && (
+        <SwicthClientJouneyModal
+          open={open}
+          setOpen={setOpen}
+          type={selectedTask?.mentor_tool}
+          selectedClient={clientInput.client}
+          selectedTask={selectedTask}
+          finishedDate={clientInput.date}
+          clientInputs={clientInput.input}
+        />
       )}
     </ContentWidthLimit>
   );

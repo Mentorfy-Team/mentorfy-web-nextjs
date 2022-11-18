@@ -11,7 +11,7 @@ import Image from 'next/image';
 
 export type ModalProps = {
   open: boolean;
-  completedClient?: any[];
+  completedClient?: ProductTypes.Client;
   finishedDate?: string;
   setOpen?: (value: any) => any;
 };
@@ -22,14 +22,14 @@ const CJQuestionsForm = ({ open, setOpen, completedClient, finishedDate }) => {
         {completedClient?.avatar ? (
           <Image
             alt="avatar"
-            src={completedClient[0].avatar}
+            src={completedClient.avatar}
             width={40}
             height={40}
           />
         ) : null}
       </AvatarWrapper>
       <ClientName>
-        {completedClient && completedClient[0] && completedClient[0].name}
+        {completedClient && completedClient && completedClient.name}
       </ClientName>
       <FinishedDate>
         {new Date(finishedDate).toLocaleDateString('pt-BR', {

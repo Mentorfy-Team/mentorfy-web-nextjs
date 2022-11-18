@@ -5,8 +5,9 @@ import {
   AvatarWrapper,
   ClientName,
   FinishedDate,
-  QuestionsText,
+  NoInfoText,
   ResponseText,
+  StudentComments,
   TaskTitle,
   TitleWrapper,
 } from './styles';
@@ -15,13 +16,13 @@ import Image from 'next/image';
 
 export type ModalProps = {
   open: boolean;
-  completedClient?: any[];
+  completedClient?: ProductTypes.Client;
   selectedTask?: any[];
   finishedDate?: string;
   clientInputs?: any[];
   setOpen?: (value: any) => any;
 };
-const CJQuestionsForm = ({
+const CJVideoModal = ({
   open,
   setOpen,
   completedClient,
@@ -35,13 +36,13 @@ const CJQuestionsForm = ({
         {completedClient.avatar ? (
           <Image
             alt="avatar"
-            src={completedClient[0].avatar}
+            src={completedClient.avatar}
             width={40}
             height={40}
           />
         ) : null}
       </AvatarWrapper>
-      <ClientName>{completedClient[0] && completedClient[0].name}</ClientName>
+      <ClientName>{completedClient && completedClient.name}</ClientName>
       <FinishedDate>
         {new Date(finishedDate).toLocaleDateString('pt-BR', {
           year: 'numeric',
@@ -61,33 +62,28 @@ const CJQuestionsForm = ({
       onClose={() => setOpen(false)}
     >
       <ModalDialogContent id="content">
-        <TaskTitle>{selectedTask.title}</TaskTitle>
         <AnswersWrapper>
-          <Box
-            sx={{
-              position: 'absolute',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '3rem',
-            }}
-          >
-            {selectedTask.data?.map((question) => (
-              <QuestionsText key={question.id}>{question.data}</QuestionsText>
-            ))}
-          </Box>
+          <TaskTitle>{selectedTask.title}</TaskTitle>
           <Box
             sx={{
               marginTop: '1.5rem',
               display: 'flex',
               flexDirection: 'column',
               gap: '3rem',
+              position: 'relative',
+              textAlign: 'left',
             }}
           >
-            {clientInputs.map((response) => (
-              <ResponseText key={response.id}>
-                {'R: ' + response.value}
-              </ResponseText>
-            ))}
+            <StudentComments>Comentários do Aluno :</StudentComments>
+            {clientInputs ? (
+              clientInputs?.map((response) => (
+                <ResponseText key={response.id}>
+                  {response.comment}
+                </ResponseText>
+              ))
+            ) : (
+              <NoInfoText>Não há comentários nesta etapa!</NoInfoText>
+            )}
           </Box>
         </AnswersWrapper>
       </ModalDialogContent>
@@ -95,4 +91,4 @@ const CJQuestionsForm = ({
   );
 };
 
-export default CJQuestionsForm;
+export default CJVideoModal;
