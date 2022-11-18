@@ -111,7 +111,7 @@ export default function StickyHeadTable({
       <SwicthClientJouneyModal
         open={open}
         setOpen={setOpen}
-        type={selectedTask.mentor_tool}
+        type={selectedTask?.mentor_tool}
         completedClient={completedClient}
         selectedTask={selectedTask}
         finishedDate={finishedDate}

@@ -101,7 +101,7 @@ const ModalComponent: FC<props> = ({
               color: theme.palette.accent.main,
             }}
             disabled={isBlocked}
-            onClick={() => onSave()}
+            onClick={onClose}
           >
             Fechar
           </Button>
