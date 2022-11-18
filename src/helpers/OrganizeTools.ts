@@ -47,7 +47,9 @@ export const OrganizeTools = (
             },
           ],
         });
+        countSteps++;
       } else {
+        console.log(steps, countSteps - 1, 'sss');
         steps[countSteps - 1].rows.push({
           id: sortedData[i].id,
           title: sortedData[i].title,
