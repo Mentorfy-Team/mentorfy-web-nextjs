@@ -21,7 +21,7 @@ const CreateClientDialog = dynamic(
   () => import('../components/CreateClientDialog'),
 );
 
-const Clients: FC<{ user: User; onClientSelected }> = ({ user }) => {
+const Clients: FC<{ user: User }> = ({ user }) => {
   const isMobile = useMediaQuery('(max-width: 500px)');
   const [openCreatePage, setOpenCreatePage] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);

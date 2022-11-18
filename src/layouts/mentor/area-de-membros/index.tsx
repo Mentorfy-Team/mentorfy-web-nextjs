@@ -31,7 +31,9 @@ import PlusSvg from '~/../public/svgs/plus';
 import { GetAuthSession } from '~/helpers/AuthSession';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
-  const { products, mutate } = useProducts(user.id);
+  const { products, mutate } = useProducts(
+    '54cf99c6-95be-4e97-8878-ab3218c7df1f',
+  );
   const router = useRouter();
   const theme = useTheme();
   const [openCreatePage, setOpenCreatePage] = useState(false);
@@ -48,10 +50,27 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
     if (!showConfirmDelete) {
       setShowConfirmDelete(true);
     } else {
-      await fetch(`/api/products?id=${productId}`, {
+      const res = await fetch(`/api/products?id=${productId}`, {
         method: 'DELETE',
       });
-      toast.success('Alterações salvas com sucesso');
+      console.log('res', res.status);
+      if (res.status === 200) {
+        toast.success('Alterações salvas com sucesso.');
+      } else if (res.status === 400) {
+        toast.error(
+          'Não foi possível remover a mentoria, ainda há clientes vinculados.',
+          {
+            autoClose: 20000,
+          },
+        );
+      } else {
+        toast.error(
+          'Houve um problema na remoção, contacte o suporte para mais informações.',
+          {
+            autoClose: 10000,
+          },
+        );
+      }
       mutate();
       setOpen(false);
       setShowConfirmDelete(false);
