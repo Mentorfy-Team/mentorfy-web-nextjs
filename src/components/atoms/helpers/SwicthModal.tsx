@@ -19,6 +19,14 @@ const WheelOfLifeModal = dynamic(
   },
 );
 
+const VideoModal = dynamic(() => import('../components/VideoModal'), {
+  loading: () => <LoadingComponent />,
+});
+
+const DefaultModal = dynamic(() => import('../components/DefaultModal'), {
+  loading: () => <LoadingComponent />,
+});
+
 export type ToolsModalProps = {
   open: boolean;
   type: number;
@@ -83,6 +91,17 @@ const SwicthClientJouneyModal: React.FC<ToolsModalProps> = ({
           clientInputs={clientInputs}
         />
       );
+    case ToolListNames.Video.id:
+      return (
+        <VideoModal
+          open={open}
+          setOpen={setOpen}
+          completedClient={completedClient}
+          selectedTask={selectedTask}
+          finishedDate={finishedDate}
+          clientInputs={clientInputs}
+        />
+      );
     //     case ToolListNames.Calendar.name:
     //         return (
     //             <Schedule
@@ -99,81 +118,42 @@ const SwicthClientJouneyModal: React.FC<ToolsModalProps> = ({
     //             />
     //         );
     //         // From now on the tools don´t need a modal with info
-    //     case ToolListNames.Embed.name:
-    //         return (
-    //             <Embed
-    //                 data={data}
-    //                 userInput={userInput}
-    //                 open={open}
-    //                 setOpen={setOpen}
-    //                 onChange={(props) =>
-    //                     onChange({
-    //                         ...props,
-    //                         refId,
-    //                     })
-    //                 }
-    //             />
-    //         );
-    //     case ToolListNames.UploadFile.name:
-    //         return (
-    //             <UploadFile
-    //                 data={data}
-    //                 userInput={userInput}
-    //                 open={open}
-    //                 setOpen={setOpen}
-    //                 onChange={(props) =>
-    //                     onChange({
-    //                         ...props,
-    //                         refId,
-    //                     })
-    //                 }
-    //             />
-    //         );
-    //     case ToolListNames.OpenText.name:
-    //         return (
-    //             <OpenText
-    //                 data={data}
-    //                 userInput={userInput}
-    //                 open={open}
-    //                 setOpen={setOpen}
-    //                 onChange={(props) =>
-    //                     onChange({
-    //                         ...props,
-    //                         refId,
-    //                     })
-    //                 }
-    //             />
-    //         );
-    //     case ToolListNames.Video.name:
-    //         return (
-    //             <Video
-    //                 data={data}
-    //                 userInput={userInput}
-    //                 open={open}
-    //                 setOpen={setOpen}
-    //                 onChange={(props) =>
-    //                     onChange({
-    //                         ...props,
-    //                         refId,
-    //                     })
-    //                 }
-    //             />
-    //         );
-    //     default:
-    //         return (
-    //             <Schedule
-    //                 data={data}
-    //                 userInput={userInput}
-    //                 open={open}
-    //                 setOpen={setOpen}
-    //                 onChange={(props) =>
-    //                     onChange({
-    //                         ...props,
-    //                         refId,
-    //                     })
-    //                 }
-    //             />
-    //         );
+        case ToolListNames.Embed.id:
+            return (
+                <DefaultModal
+                open={open}
+                setOpen={setOpen}
+                completedClient={completedClient}
+                finishedDate={finishedDate}
+                />
+            );
+        case ToolListNames.UploadFile.id:
+            return (
+                <DefaultModal
+                open={open}
+                setOpen={setOpen}
+                completedClient={completedClient}
+                finishedDate={finishedDate}
+                />
+            );
+        case ToolListNames.OpenText.id:
+            return (
+                <DefaultModal
+                open={open}
+                setOpen={setOpen}
+                completedClient={completedClient}
+                finishedDate={finishedDate}
+                />
+            );
+        default:
+            return (
+               <DefaultModal
+               open={open}
+               setOpen={setOpen}
+               completedClient={completedClient}
+               finishedDate={finishedDate}
+               />
+            );
   }
 };
 

@@ -29,8 +29,6 @@ export const TitleWrapper = styled('div')`
  align-items: center;
  display: flex;
  flex-direction: column;
- left: 90%;
- position: relative;
 `;
 export const AvatarWrapper = styled('div')`
   border-radius: 50%;

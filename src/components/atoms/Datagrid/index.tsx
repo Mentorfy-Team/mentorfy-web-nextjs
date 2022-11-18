@@ -94,19 +94,26 @@ export default function StickyHeadTable({
   );
 
   const handleData = (completedClient) => {
+    console.log(clientInputs);
     setClientInputs(() => {
       const Inputs = completedClient[0].inputs?.filter(
         (input) => input.member_area_tool_id === selectedTask.id,
       );
       if (Inputs?.length > 0) {
         setFinishedDate(Inputs[0].created_at);
-        const InputsData = Inputs[0].data;
-        return InputsData;
+        if(selectedTask.mentor_tool === 4) {
+          const InputsData = Inputs[0].extra.comments;
+          return InputsData;
+        } else {
+          const InputsData = Inputs[0].data;
+          return InputsData;
+        }
       }
     });
   };
 
   const handleModal = useCallback(() => {
+    console.log(completedClient);
     return (
       <SwicthClientJouneyModal
         open={open}

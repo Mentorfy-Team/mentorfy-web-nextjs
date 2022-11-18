@@ -8,7 +8,6 @@ import Box from '@mui/material/Box';
 import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
@@ -18,7 +17,6 @@ import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
-import { PublicRoutes } from '~/consts';
 import { useGetClientProducts } from '~/hooks/useGetClientProducts';
 import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { useProducts } from '~/hooks/useProducts';
@@ -205,7 +203,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
           <Box display="flex" gap="1rem" mt={3} width="100%">
             <PlayButton
               onClick={() =>{
-                if (featuredProduct.relation.) {
+                if (featuredProduct.relation) {
                   router.push(
                     types
                       .find(
@@ -217,7 +215,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                       .toLowerCase() +
                       '/' +
                       featuredProduct.id,
-                  )
+                  );
                 }
               }}
               variant="outlined"

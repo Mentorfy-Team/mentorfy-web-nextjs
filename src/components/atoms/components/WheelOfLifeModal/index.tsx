@@ -18,30 +18,35 @@ export type ModalProps = {
 const CJwhellOfLife = ({ open, setOpen, completedClient, selectedTask, finishedDate, clientInputs }) => {
     const ModalTitle = (
         <TitleWrapper>
+          <AvatarWrapper>
             {completedClient.avatar ? (
-                <AvatarWrapper>
-                    <Image
-                        alt='avatar'
-                        src={completedClient[0].avatar}
-                        width={40}
-                        height={40}
-                    />
-                </AvatarWrapper>
+              <Image
+                alt="avatar"
+                src={completedClient[0].avatar}
+                width={40}
+                height={40}
+              />
             ) : null}
-            <ClientName>{completedClient[0] && completedClient[0].name}</ClientName>
-            <FinishedDate>
-                {
-                    new Date(finishedDate).toLocaleDateString('pt-BR', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                    })
-                }</FinishedDate>
+          </AvatarWrapper>
+          <ClientName>{completedClient[0] && completedClient[0].name}</ClientName>
+          <FinishedDate>
+            {new Date(finishedDate).toLocaleDateString('pt-BR', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </FinishedDate>
         </TitleWrapper>
-    );
+      );
 
     return (
-        <ModalComponent title={ModalTitle} open={open} setOpen={setOpen} >
+        <ModalComponent
+        title={ModalTitle}
+        open={open}
+        setOpen={setOpen}
+        withX={false}
+        onClose={() => setOpen(false)}
+        >
             <ModalDialogContent >
                 <AnswersWrapper>
                 <TaskTitle sx={{ left: '30%', }}>{selectedTask.title}</TaskTitle>
