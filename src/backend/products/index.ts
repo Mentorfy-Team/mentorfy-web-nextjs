@@ -78,10 +78,20 @@ export const del: Handler.Callback<GetRequest, GetResponse> = async (
     .eq('product_id', req.query.id);
 
   if (relations.length > 0) {
-    return res.status(400).json({
-      error:
-        'You can not delete this product because it has relations with clients',
-    });
+    if (relations.find((r) => r.approved && r.subscription)) {
+      return res.status(400).json({
+        error:
+          'You can not delete this product because it has relations with clients',
+      });
+    } else {
+      await supabase
+        .from('client_product')
+        .delete()
+        .in(
+          'id',
+          relations.map((r) => r.id),
+        );
+    }
   }
 
   await supabase.from('product').delete().eq('id', req.query.id);
