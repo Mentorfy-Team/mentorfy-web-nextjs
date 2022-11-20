@@ -61,7 +61,7 @@ const HeaderPartial: React.FC = () => {
                 color: '#fff',
               }}
               variant="text"
-              href="https://beta.mentorfy.io/mentor/dashboard"
+              href={`${process.env.NEXT_PUBLIC_BASE_URL}/mentor/dashboard`}
             >
               Visualizar como mentor
             </Button>
@@ -72,7 +72,7 @@ const HeaderPartial: React.FC = () => {
                 color: '#fff',
               }}
               variant="text"
-              href="https://beta.mentorfy.io/mentorado/bem-vindo"
+              href={`${process.env.NEXT_PUBLIC_BASE_URL}/mentorado/bem-vindo`}
             >
               Visualizar como mentorado
             </Button>
