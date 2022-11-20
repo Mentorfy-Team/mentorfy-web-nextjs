@@ -205,6 +205,7 @@ export const VideoHolder = styled(Box)`
   position: relative;
   padding-top: 56.25%;
   z-index: 0 !important;
+  overflow: hidden;
 
   .react-player {
     opacity: 0.4;

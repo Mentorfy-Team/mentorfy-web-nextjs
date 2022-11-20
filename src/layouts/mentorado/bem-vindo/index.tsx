@@ -445,11 +445,14 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
               ) : (
                 <Image
                   alt=""
-                  src={currentProduct?.banner_image}
-                  width={800}
-                  height={300}
+                  src={currentProduct?.banner_image ?? '/images/moonlit.png'}
+                  width={1200}
+                  height={720}
                   style={{
                     objectFit: 'cover',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
                   }}
                   quality={100}
                 />
