@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import type { AppProps } from 'next/app';
@@ -23,6 +23,8 @@ export const MainFont = Roboto({
   subsets: ['latin'],
 });
 
+const beta = process.env.NEXT_PUBLIC_BETA;
+
 const LoadingPartial = dynamic(
   () => import('~/components/partials/loading/loading.partial'),
 );
@@ -43,7 +45,7 @@ const App = (props: MyAppProps) => {
     createBrowserSupabaseClient<Database>(),
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (router.asPath.includes('#')) {
       router.replace(router.asPath.replace('#', '?'));
     }
@@ -100,7 +102,8 @@ const App = (props: MyAppProps) => {
                 initialSession={pageProps.initialSession}
               >
                 {router.asPath.includes('/m') && <HeaderPartial />}
-                {(process.env.NEXT_PUBLIC_BETA === 'false' ||
+                {(!beta ||
+                  beta === 'false' ||
                   router.asPath.includes('beta')) && (
                   <Drawer>
                     <Component {...pageProps} />
