@@ -1,16 +1,18 @@
-import { useCallback, useEffect, useState, useRef } from 'react';
-import IconButton from '@mui/material/IconButton';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import { DnDObject, DnDRow } from '~/components/modules/DragNDrop';
+import { DnDObject } from '~/components/modules/DragNDrop';
 import ProgressBar from '~/components/modules/ProgressBar';
 import Toolbar from '~/components/modules/Toolbar';
-import { MentoredRoutes, PublicRoutes } from '~/consts';
+import { MentoredRoutes } from '~/consts';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
+import { useUserInputs } from '~/hooks/useUserInputs';
+import { InputUserMemberArea } from '~/services/member-area.service';
 import SwitchMentoredModal, { ToolListNames } from '../helpers/SwitchModal';
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 import {
@@ -24,19 +26,16 @@ import {
   VideoWrapper,
   Wrapper,
 } from './styles';
-import { useUserInputs } from '~/hooks/useUserInputs';
-import { InputUserMemberArea } from '~/services/member-area.service';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
-import { RouteTwoTone } from '@mui/icons-material';
+import { GetAuthSession } from '~/helpers/AuthSession';
+import { GetProduct } from '~/services/product.service';
 
-export const VideoView = ({ member_area_id, video_id }) => {
+export const VideoView = ({ member_area_id, video_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const [videoId, setVideoId] = useState<string>(video_id);
   const [nextVideoId, setNextVideoId] = useState<string>(null);
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<DnDObject[]>([]);
-  const [videosOrdem, setVideosOrdem] = useState<DnDRow[]>([]);
+  const [videosOrdem, setVideosOrdem] = useState<MentorTools.ToolData[]>([]);
   const [userInput, setUserInput] = useState<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
@@ -54,18 +53,15 @@ export const VideoView = ({ member_area_id, video_id }) => {
   const route = useRouter();
 
   useEffect(() => {
-    if (inputData !== userInput) {
-      setUserInput(inputData)
-      GetCurrentVideo();
-    };
-  }, [inputData, userInput]);
-
-  useEffect(() => {
     setSteps((oldSteps) => {
       oldSteps = [...OrganizeTools(stepsData, ToolListNames.Video.id)];
       return [...oldSteps];
     });
-    setVideosOrdem(stepsData.filter((step) => step.type === ToolListNames.Video.id).sort((a, b) => a.order - b.order));
+    setVideosOrdem(
+      stepsData
+        .filter((step) => step.mentor_tool === ToolListNames.Video.id)
+        .sort((a, b) => a.order - b.order),
+    );
   }, [stepsData]);
 
   const HandleModal = useCallback(() => {
@@ -95,40 +91,41 @@ export const VideoView = ({ member_area_id, video_id }) => {
     async ({ tool_id, client_input }) => {
       // timout para dar tempo para as imagens se organizarem
       setTimeout(async function () {
-        await InputUserMemberArea(tool_id, client_input);
+        await InputUserMemberArea(tool_id, client_input, member_area_id);
         mutate();
       }, 1000);
     },
-    [mutate],
+    [mutate, member_area_id],
   );
 
   const GetOnChange = useCallback(
-    async ({ refId, finished }) => {
+    async ({ refId, data, extra }) => {
       const index = userInput?.findIndex((i) => i.member_area_tool_id == refId);
       setUserInput((oldInput) => {
         if (!oldInput) oldInput = [];
         if (index > -1) {
-          oldInput[index].extra = finished;
+          if (data) oldInput[index].data = data;
+          if (extra) oldInput[index].extra = extra;
         } else {
           oldInput?.push({
             member_area_tool_id: refId,
-            extra: {
-              ...(index > -1 ? userInput[index].extra:{}),
-              finished
-            },
+            data,
+            extra,
           } as any);
         }
         return [...oldInput];
       });
-
       handleSave({
         tool_id: refId,
         client_input: {
+          data: userInput[index]
+            ? Object.assign(userInput[index].data, data)
+            : data,
+          extra: userInput[index]
+            ? Object.assign(userInput[index].extra, extra)
+            : extra,
           id: index > -1 ? userInput[index].id : '0',
-          extra: {
-            ...(index > -1 ? userInput[index].extra:{}),
-            finished
-          },
+          delete: data.delete,
         },
       });
     },
@@ -139,9 +136,9 @@ export const VideoView = ({ member_area_id, video_id }) => {
   const GetCurrentVideo = useCallback(() => {
     let lastId;
     let nextVideo;
-    steps.forEach(stp => {
+    steps.forEach((stp) => {
       if (!nextVideo)
-        stp.rows.find(row => {
+        stp.rows.find((row) => {
           if (lastId) {
             nextVideo = row.id;
           }
@@ -150,55 +147,75 @@ export const VideoView = ({ member_area_id, video_id }) => {
           }
         });
     });
-    
+
     if (lastId) {
       if (lastId !== videoId) {
-        const id = !video_id ? lastId:video_id
+        const id = !video_id ? lastId : video_id;
         setVideoId(id);
         route.push({
           pathname: MentoredRoutes.video_view + '/' + member_area_id,
-          query: { v: id }
-        })
+          query: { v: id },
+        });
       }
       setNextVideoId(nextVideo);
     } else {
       setVideoId(null);
     }
-  }, [steps, userInput, route, video_id]);
+  }, [steps, route, video_id, member_area_id, videoId]);
+
+  useEffect(() => {
+    if (inputData !== userInput) {
+      setUserInput(inputData);
+      GetCurrentVideo();
+    }
+  }, [GetCurrentVideo, inputData, userInput]);
 
   const onSelectedNext = useCallback(() => {
-      const next = videosOrdem.findIndex((i) => i.id == videoId)+1;
-      
-      if (next !== 0 && next < videosOrdem.length) {
-        setVideoId(videosOrdem[next].id);
-        route.push({
+    const next = videosOrdem.findIndex((i) => i.id == videoId) + 1;
+
+    if (next !== 0 && next < videosOrdem.length) {
+      setVideoId(videosOrdem[next].id);
+      route.push(
+        {
           pathname: MentoredRoutes.video_view + '/' + member_area_id,
-          query: { v: videosOrdem[next].id }
-        }, undefined, { shallow: true })
-      }
-      if (next+1 >= videosOrdem.length){
-        setNextVideoId(null);
-      }
-  }, [videosOrdem, videoId]);
-
-  const onSelectedVideo = useCallback((id) => {
-    if (!id) return;
-    setVideoId(id);
-    route.push({
-      pathname: MentoredRoutes.video_view + '/' + member_area_id,
-      query: { v: id }
-    }, undefined, { shallow: true })
-
-    const next = videosOrdem.findIndex((i) => i.id == id)+1;
-    if (next >= videosOrdem.length){
-      setNextVideoId(null);
-    } else {
-      setNextVideoId(videosOrdem[next].id);
+          query: { v: videosOrdem[next].id },
+        },
+        undefined,
+        { shallow: true },
+      );
     }
-  }, []);
+    if (next + 1 >= videosOrdem.length) {
+      setNextVideoId(null);
+    }
+  }, [videosOrdem, videoId, route, member_area_id]);
+
+  const onSelectedVideo = useCallback(
+    (id) => {
+      if (!id) return;
+      setVideoId(id);
+      route.push(
+        {
+          pathname: MentoredRoutes.video_view + '/' + member_area_id,
+          query: { v: id },
+        },
+        undefined,
+        { shallow: true },
+      );
+
+      const next = videosOrdem.findIndex((i) => i.id == id) + 1;
+      if (next >= videosOrdem.length) {
+        setNextVideoId(null);
+      } else {
+        setNextVideoId(videosOrdem[next].id);
+      }
+    },
+    [member_area_id, route, videosOrdem],
+  );
 
   const getVideo = useCallback(() => {
-    const video = steps.find(stp => stp.rows.find(row => row.id == videoId))?.rows.find(row => row.id == videoId);
+    const video = steps
+      .find((stp) => stp.rows.find((row) => row.id == videoId))
+      ?.rows.find((row) => row.id == videoId);
     return video;
   }, [steps, videoId]);
 
@@ -206,23 +223,29 @@ export const VideoView = ({ member_area_id, video_id }) => {
     if (commentRef.current.value) {
       const index = userInput?.findIndex((i) => i.id.toString() == videoId);
 
-      handleSave({
-        tool_id: videoId,
-        client_input: {
-          id: index > -1 ? userInput[index].id : '0',
-          extra: {
-            ...(index > -1 ? userInput[index].extra:{}),
-            comments: [...(index > -1 ? userInput[index].extra.comments:[]), commentRef.current.value],
-          },
+      GetOnChange({
+        refId: videoId,
+        data: {},
+        extra: {
+          ...(index > -1 ? userInput[index].extra : {}),
+          comments: [
+            ...(index > -1 ? userInput[index].extra.comments : []),
+            commentRef.current.value,
+          ],
         },
       });
+
       commentRef.current.value = '';
     }
+  }, [GetOnChange, userInput, videoId]);
+
+  const handleLike = useCallback(() => {
+    // TODO: implementar like
   }, []);
 
   return (
     <>
-      <Toolbar tabs={['Método 4S']} />
+      <Toolbar tabs={[memberArea.title]} />
       <ContentWidthLimit maxWidth={1900}>
         <Wrapper>
           <VideoWrapper>
@@ -235,7 +258,15 @@ export const VideoView = ({ member_area_id, video_id }) => {
               <ReactPlayer
                 url={(getVideo()?.data as any)?.link}
                 width="100%"
-                onEnded={() => GetOnChange({ refId: videoId, finished: true })}
+                onEnded={() =>
+                  GetOnChange({
+                    refId: videoId,
+                    data: {},
+                    extra: {
+                      finished: true,
+                    },
+                  })
+                }
                 height="100%"
                 controls={true}
                 config={{
@@ -259,7 +290,7 @@ export const VideoView = ({ member_area_id, video_id }) => {
             </IconButton> */}
             <VideoInteractionsBox>
               <Box sx={{ display: 'flex', gap: '0.5rem' }}>
-                <LikeButton>
+                <LikeButton onClick={() => {}}>
                   <Image
                     alt=""
                     width={24}
@@ -267,7 +298,7 @@ export const VideoView = ({ member_area_id, video_id }) => {
                     src="/svgs/like-thumb.svg"
                   />
                 </LikeButton>
-                <LikeButton>
+                <LikeButton onClick={() => {}}>
                   <Image
                     alt=""
                     width={24}
@@ -275,28 +306,35 @@ export const VideoView = ({ member_area_id, video_id }) => {
                     src="/svgs/unlike-thumb.svg"
                   />
                 </LikeButton>
-                {userInput.find(inp => inp.id.toString() === videoId) && <CompleteButton>
-                  Concluído
+                {userInput.find((inp) => inp.id.toString() === videoId) && (
+                  <CompleteButton>
+                    Concluído
+                    <Image
+                      alt=""
+                      width={15}
+                      height={15}
+                      src="/svgs/done-simbol.svg"
+                    />
+                  </CompleteButton>
+                )}
+              </Box>
+              {nextVideoId && (
+                <NextVButton onClick={() => onSelectedNext()}>
+                  Próximo
                   <Image
                     alt=""
                     width={15}
                     height={15}
-                    src="/svgs/done-simbol.svg"
+                    src="/svgs/arrow-right.svg"
                   />
-                </CompleteButton>}
-              </Box>
-              {nextVideoId && <NextVButton onClick={() => onSelectedNext()}>
-                Próximo
-                <Image
-                  alt=""
-                  width={15}
-                  height={15}
-                  src="/svgs/arrow-right.svg"
-                />
-              </NextVButton>}
+                </NextVButton>
+              )}
             </VideoInteractionsBox>
 
-            <Typography variant="body1" sx={{ margin: '1rem 0', maxWidth: 1000, width: '100%' }}>
+            <Typography
+              variant="body1"
+              sx={{ margin: '1rem 0', maxWidth: 1000, width: '100%' }}
+            >
               {getVideo()?.description}
             </Typography>
 
@@ -305,16 +343,23 @@ export const VideoView = ({ member_area_id, video_id }) => {
             </Typography>
 
             <Box sx={{ width: '100%', display: 'flex', gap: '0.5rem' }}>
-              <CommentInput ref={commentRef} placeholder="Deixar mensagem para o mentor" />
-              <SendButton onClick={()=>SendComment()} variant="contained">
+              <CommentInput
+                ref={commentRef}
+                placeholder="Deixar mensagem para o mentor"
+              />
+              <SendButton onClick={() => handleLike()} variant="contained">
                 Enviar
                 <Image alt="" width={15} height={15} src="/svgs/share.svg" />
               </SendButton>
             </Box>
-
           </VideoWrapper>
           <ProgressBarWrapper>
-            <ProgressBar data={steps} input={userInput} activeid={videoId} onGoTo={(id) => onSelectedVideo(id)} />
+            <ProgressBar
+              data={steps}
+              input={userInput}
+              activeid={videoId}
+              onGoTo={(id) => onSelectedVideo(id)}
+            />
           </ProgressBarWrapper>
         </Wrapper>
       </ContentWidthLimit>
@@ -323,18 +368,34 @@ export const VideoView = ({ member_area_id, video_id }) => {
 };
 
 // * ServerSideRender (SSR)
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const id = ctx.query.id as string;
-    const video_id = (ctx.query.v || 0) as string;
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
+
+  if (!session)
     return {
-      props: {
-        member_area_id: id,
-        video_id,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     };
-  },
-});
+
+  const id = ctx.query.id as string;
+  const video_id = (ctx.query.v || 0) as string;
+
+  // fetch for member area
+  const memberArea = await GetProduct(ctx.req, id);
+
+  return {
+    props: {
+      member_area_id: id,
+      video_id,
+      memberArea: {
+        id: memberArea.id,
+        title: memberArea.title,
+        description: memberArea.description,
+      },
+    },
+  };
+};
+
 export default VideoView;

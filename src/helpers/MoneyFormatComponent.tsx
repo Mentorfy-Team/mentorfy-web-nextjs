@@ -1,5 +1,9 @@
 import * as React from 'react';
-import NumberFormat, { InputAttributes } from 'react-number-format';
+import {
+  InputAttributes,
+  NumericFormat,
+  NumericFormatProps,
+} from 'react-number-format';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -7,13 +11,13 @@ interface CustomProps {
 }
 
 export const MoneyFormatComponent = React.forwardRef<
-  NumberFormat<InputAttributes>,
+  NumericFormatProps<InputAttributes>,
   CustomProps
 >(function NumberFormatCustom(props, ref) {
   const { onChange, ...other } = props;
 
   return (
-    <NumberFormat
+    <NumericFormat
       {...other}
       getInputRef={ref}
       onValueChange={(values) => {
@@ -26,7 +30,6 @@ export const MoneyFormatComponent = React.forwardRef<
       }}
       thousandSeparator="."
       decimalSeparator=","
-      isNumericString
       prefix="R$ "
     />
   );

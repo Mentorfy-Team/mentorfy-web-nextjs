@@ -2,17 +2,18 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import SelectField from '~/components/atoms/SelectField';
 
 export const OptionsWrapper = styled(Box)``;
 
 export const AreaWrapper = styled(Box)`
-cursor: pointer;
-position: relative;
-transition: all 0.1s ease-in-out;
- :hover {
-  transform: scale(0.95);
- }
- margin-bottom: 1rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  position: relative;
+  :hover {
+    transform: scale(0.95);
+  }
+  transition: all 0.1s ease-in-out;
 `;
 
 export const HeaderWrapper = styled(Box)`
@@ -51,24 +52,25 @@ export const AbsoluteBottomBox = styled(Box)`
   left: 0;
   margin: 6%;
   position: absolute;
+  width: 270px;
 `;
 
 export const ProductTitle = styled(Typography)`
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
   font-size: 1.5rem;
   font-style: normal;
+
   font-weight: 900;
+  line-clamp: 2;
   line-height: 2rem;
   margin-bottom: 0.5rem;
 
-  overflow: hidden;
-  text-align: start;
   max-width: 23ch;
+  overflow: hidden; /* number of lines to show */
+  text-align: start;
   text-overflow: ellipsis;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2; /* number of lines to show */
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
 `;
 
 export const ImageButton = styled(Box)`
@@ -94,7 +96,7 @@ export const EmptyBox = styled(Box)`
   width: 15rem;
 `;
 
-export const CreatAreaButton = styled(Button)`
+export const CreateAreaButton = styled(Button)`
   gap: 0.5rem;
   margin-bottom: 1.5rem;
   margin-right: 2rem;
@@ -102,5 +104,47 @@ export const CreatAreaButton = styled(Button)`
 
   @media (max-width: 500px) {
     width: 1rem;
+  }
+`;
+
+export const DeleteAreaButton = styled(Button)`
+  margin-bottom: 1.5rem;
+  text-transform: none;
+
+  &:hover { 
+    background-color: ${({theme}) => theme.palette.failure.main};
+    color: #ffff;
+  }
+
+  @media (max-width: 500px) {
+    width: 1rem;
+  }
+`;
+
+export const ProductsSelectField = styled(SelectField)`
+  height: 2.8rem;
+  outline: none;
+  width: 100%;
+  input {
+    font-size: 0.9rem;
+    height: 0.625rem;
+    color: #fff ;
+  }
+  label {
+    color: ${({ theme }) => theme.palette.text.primary} !important;
+  }
+  fieldset {
+    border-color: #fff ;
+    
+    height: 2.8rem;
+    &:focus{ 
+      border-color: #4A538D !important;
+    }
+  }
+  .MuiOutlinedInput-input {
+    padding: 9.5px 14px;
+  } 
+  svg { 
+    fill: #ffffff;
   }
 `;

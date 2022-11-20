@@ -1,66 +1,97 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
 import InputField from '~/components/atoms/InputField';
 import Tabbar from '~/components/modules/Tabbar';
 import { TabItem } from '~/components/modules/Tabbar/styles';
-import { MentorRoutes } from '~/consts/routes/routes.consts';
+import { MentorRoutes, MentoredRoutes } from '~/consts/routes/routes.consts';
+import { useProfile } from '~/hooks/useProfile';
 import { Authenticate } from '~/services/auth/auth.service';
 import { userStore } from '~/stores';
-import { AcessoSubPage } from '..';
 import { FormWrapper } from '../cadastro/styles';
 import {
   Accent,
+  AnimatedView,
   ErrorHelper,
   ForgotPassButton,
   LoginButton,
   Title,
 } from '../styles';
+import { deleteCookie, setCookie } from 'cookies-next';
 
 type props = {
-  pageChange: (page: AcessoSubPage) => void;
+  urlProps: any[];
 };
 
-const Login: FC<props> = ({ pageChange }) => {
+const Login: FC<props> = ({ urlProps }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [index, setIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>();
   const route = useRouter();
-  const { userLogin } = userStore();
+  const { setAppParams, appParams } = userStore();
   const { register, handleSubmit } = useForm<Auth>();
 
-  const onSubmit: SubmitHandler<Auth> = useCallback(
-    async (values) => {
-      if (!email || !password) {
-        setError('*Preencha todos os campos');
-        return;
-      }
-      setIsLoading(true);
-      const registerData = await Authenticate({ email, password });
-      if (!registerData.error) {
-        //userLogin(registerData.user);
-        route.push(MentorRoutes.home);
-      } else {
-        if (registerData.error.includes('email')) {
-          setError('*Email e ou senha incorretos, tente novamente!');
+  const {
+    data: { profile },
+    mutate,
+    isLoading: isProfileLoading,
+  } = useProfile();
+
+  useEffect(() => {
+    if (!isProfileLoading) {
+      if (profile?.id) {
+        if (profile?.access_type === 'mentor') {
+          route.push(MentorRoutes.home);
+        } else {
+          route.push(MentoredRoutes.home);
         }
       }
+    }
+    if (profile?.id) setIsLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isProfileLoading, profile]);
+
+  useEffect(() => {
+    if (urlProps?.length > 0) {
+      if (urlProps[0].type === 'signup') {
+        setAppParams({ subpage: 'cadastro' });
+      }
+    }
+  }, [urlProps, setAppParams]);
+
+  const onSubmit: SubmitHandler<Auth> = useCallback(async () => {
+    if (!email || !password) {
+      setError('*Preencha todos os campos');
+      return;
+    }
+    setIsLoading(true);
+    const registerData = await Authenticate({ email, password });
+
+    if (!registerData || registerData.error) {
+      setError('*Email e ou senha incorretos, tente novamente!');
       setIsLoading(false);
-    },
-    [email, password, route],
-  );
+      return;
+    } else {
+      deleteCookie('sb-refresh-token');
+      deleteCookie('sb-access-token');
+
+      setCookie('sb-refresh-token', registerData.session.refresh_token);
+      setCookie('sb-access-token', registerData.session.access_token);
+      await mutate();
+    }
+  }, [email, mutate, password]);
 
   return (
-    <>
-      <Title>
-        Bem vindo a
+    <AnimatedView>
+      <Title variant="body2" fontWeight="300">
+        Entre com seu email e senha para acessar sua{' '}
         <Accent>
-          <b> área de membros </b>
-        </Accent>
-        da Mentorfy.
+          <b>área de membros</b>
+        </Accent>{' '}
+        exclusiva.
       </Title>
       <Tabbar
         withborder
@@ -82,7 +113,7 @@ const Login: FC<props> = ({ pageChange }) => {
             marginLeft: '0px !important',
           }}
           label="Crie sua conta"
-          onClick={() => pageChange('cadastro')}
+          onClick={() => setAppParams({ subpage: 'cadastro' })}
         />
       </Tabbar>
       <FormWrapper
@@ -98,7 +129,10 @@ const Login: FC<props> = ({ pageChange }) => {
             shrink: true,
           }}
           error={!!error}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            setError(null);
+          }}
         />
         <InputField
           id="outlined-required"
@@ -109,17 +143,22 @@ const Login: FC<props> = ({ pageChange }) => {
             shrink: true,
           }}
           error={!!error}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError(null);
+          }}
         />
         {error && <ErrorHelper>{error}</ErrorHelper>}
         <LoginButton loading={isLoading} disabled={isLoading} type="submit">
           ENTRAR
         </LoginButton>
       </FormWrapper>
-      <ForgotPassButton onClick={() => pageChange('esqueci-minha-senha')}>
+      <ForgotPassButton
+        onClick={() => setAppParams({ subpage: 'esqueci-minha-senha' })}
+      >
         Esqueci minha senha
       </ForgotPassButton>
-    </>
+    </AnimatedView>
   );
 };
 

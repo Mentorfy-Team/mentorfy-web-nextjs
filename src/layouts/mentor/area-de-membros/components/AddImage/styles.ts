@@ -1,4 +1,4 @@
-import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { styled } from '@mui/material/styles';
 
 export const ButtonLabel = styled('label')`
@@ -8,7 +8,7 @@ export const ButtonLabel = styled('label')`
   width: 100%;
 `;
 
-export const AddImgButton = styled(Button)`
+export const AddImgButton = styled(LoadingButton)`
   align-items: center;
   border-radius: 5px;
   display: flex;
@@ -17,11 +17,8 @@ export const AddImgButton = styled(Button)`
   height: 2rem;
   line-height: 0.8rem;
   padding: 0px;
-  position: unset;
+  position: relative;
 
   text-transform: none;
   width: 10.7rem;
-  span {
-    display: none;
-  }
 `;

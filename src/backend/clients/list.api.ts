@@ -4,19 +4,21 @@ export const get = async (req, res) => {
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
   const supabase = CreateSupabaseWithAuth(req);
+  const approved = req.query.approved ?? true;
 
   const { data: products } = await supabase
-    .from<ProductApi.Product>('product')
+    .from('product')
     .select('id, title')
     .eq('owner', req.query.id);
 
-  const { data: relations } = await supabase
+  const { data: relations, error: relErr } = await supabase
     .from('client_product')
     .select('*')
     .in(
       'product_id',
       products.map((product) => product.id),
-    );
+    )
+    .eq('approved', approved);
 
   const { data: users } = await supabase
     .from('profile')
@@ -25,6 +27,16 @@ export const get = async (req, res) => {
       'id',
       relations.map((relation) => relation.user_id),
     );
+
+  const { count: views, error } = await supabase
+    .from('profile_history')
+    .select('*', { count: 'exact' })
+    .in(
+      'profile_id',
+      relations.map((relation) => relation.user_id),
+    )
+    .eq('code', 100);
+
   const clients = users.map((user) => {
     const relation = relations.filter(
       (relation) => relation.user_id === user.id,
@@ -43,5 +55,8 @@ export const get = async (req, res) => {
   });
 
   // TODO: Adicionar log de erros detalhados
-  res.status(200).json(clients);
+  res.status(200).json({
+    clients,
+    statistics: { totalClients: clients.length, totalAccesses: views },
+  });
 };

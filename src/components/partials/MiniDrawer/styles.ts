@@ -8,7 +8,7 @@ interface AppBarProps {
   open?: boolean;
 }
 
-const DrawerWidth = '185px';
+const DrawerWidth = '200px';
 
 const openedMixin = (theme: Theme) => `
   width: ${DrawerWidth};
@@ -106,7 +106,7 @@ export const Kind = styled(Typography)`
   color: ${({ theme }) => theme.palette.caption.main};
 `;
 
-export const AnimatedBox = styled(Box)<{ loading: boolean }>`
+export const AnimatedBox = styled(Box)<{ loading?: boolean }>`
   opacity: ${({ loading }) => (loading ? 0 : 1)};
 
   ${({ theme }) => css`

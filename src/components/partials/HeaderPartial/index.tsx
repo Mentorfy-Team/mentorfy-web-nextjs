@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useProfile } from '~/hooks/useProfile';
 import { AppBar, AvatarWrapper, MenuItem, PopoverBox } from './styles';
@@ -61,7 +61,7 @@ const HeaderPartial: React.FC = () => {
                 color: '#fff',
               }}
               variant="text"
-              href="http://localhost:3000/mentor/dashboard"
+              href="https://beta.mentorfy.io/mentor/dashboard"
             >
               Visualizar como mentor
             </Button>
@@ -72,7 +72,7 @@ const HeaderPartial: React.FC = () => {
                 color: '#fff',
               }}
               variant="text"
-              href="http://localhost:3000/mentorado/bem-vindo"
+              href="https://beta.mentorfy.io/mentorado/bem-vindo"
             >
               Visualizar como mentorado
             </Button>

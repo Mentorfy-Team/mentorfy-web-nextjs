@@ -34,14 +34,8 @@ const TaskBox: FC = () => {
           }}
         >
           <ModalBox>
-            <InputField
-              label="Nome da Etapa"
-              placeholder="Lorem ipsum dolor win"
-            ></InputField>
-            <InputField
-              label="Descrição"
-              placeholder="Lorem ipsum dolor win"
-            ></InputField>
+            <InputField label="Nome da Etapa" placeholder=""></InputField>
+            <InputField label="Descrição" placeholder=""></InputField>
             <Button
               variant="contained"
               onClick={handleClose}

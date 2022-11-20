@@ -3,12 +3,12 @@ import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
 import InputField from '~/components/atoms/InputField';
+import Description from '~/components/atoms/ModalDescription';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import {
   BackButton,
   ButtonsWrapper,
-  Description,
   ForwardButton,
   Question,
 } from './styles';
@@ -27,7 +27,13 @@ const QuestionsForm = ({
   const [input, setInput] = useState(userInput?.data || []);
 
   const handleFinish = () => {
-    onChange({ data: input, finished: taskData.length === input.length });
+    if (taskData)
+      onChange({
+        data: input,
+        extra: {
+          finished: taskData.length === input.length,
+        },
+      });
     setOpen(false);
   };
 
@@ -47,35 +53,39 @@ const QuestionsForm = ({
       <ModalDialogContent isMentorado sx={{ width: '680px' }}>
         <Description>{descriptionData}</Description>
         <Box sx={{ textAlign: 'center', marginTop: '3rem' }}>
-          <Question>
-            <Typography sx={{ fontWeight: 'bold' }}>
-              {taskData[currentQuestion].data}
-            </Typography>
-            <InputField
-              value={
-                input && input[currentQuestion]?.value
-                  ? input[currentQuestion]?.value
-                  : ''
-              }
-              placeholder="Responda aqui..."
-              onChange={(e) =>
-                setInput((old) => {
-                  const input = old.find(
-                    (item) => item.id === currentQuestion.toString(),
-                  );
-                  if (input) {
-                    input.value = e.target.value;
-                    return [...old];
-                  }
-                  return [
-                    ...old,
-                    { id: currentQuestion.toString(), value: e.target.value },
-                  ];
-                })
-              }
-              sx={{ width: '100%' }}
-            />
-          </Question>
+          {taskData && (
+            <Question>
+              <Typography sx={{ fontWeight: 'bold' }}>
+                {!!taskData &&
+                  !!taskData[currentQuestion] &&
+                  taskData[currentQuestion].data}
+              </Typography>
+              <InputField
+                value={
+                  input && input[currentQuestion]?.value
+                    ? input[currentQuestion]?.value
+                    : ''
+                }
+                placeholder="Responda aqui..."
+                onChange={(e) =>
+                  setInput((old) => {
+                    const input = old.find(
+                      (item) => item.id === currentQuestion.toString(),
+                    );
+                    if (input) {
+                      input.value = e.target.value;
+                      return [...old];
+                    }
+                    return [
+                      ...old,
+                      { id: currentQuestion.toString(), value: e.target.value },
+                    ];
+                  })
+                }
+                sx={{ width: '100%' }}
+              />
+            </Question>
+          )}
         </Box>
 
         <ButtonsWrapper>
@@ -86,7 +96,7 @@ const QuestionsForm = ({
           >
             Anterior
           </BackButton>
-          {currentQuestion !== taskData.length - 1 && (
+          {currentQuestion !== taskData?.length - 1 && (
             <ForwardButton
               disabled={
                 !input[currentQuestion] || input[currentQuestion]?.value === ''
@@ -97,10 +107,12 @@ const QuestionsForm = ({
               Próximo
             </ForwardButton>
           )}
-          {currentQuestion === taskData.length - 1 && (
+          {currentQuestion === taskData?.length - 1 && (
             <ForwardButton
               disabled={
-                !input[currentQuestion] || input[currentQuestion]?.value === ''
+                !taskData ||
+                !input[currentQuestion] ||
+                input[currentQuestion]?.value === ''
               }
               variant="contained"
               onClick={() => handleFinish()}

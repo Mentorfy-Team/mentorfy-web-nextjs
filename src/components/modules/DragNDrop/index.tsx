@@ -21,18 +21,17 @@ export type DnDObject = {
   description?: string;
   data?: any;
   extra?: any;
-  rows?: DnDRow[];
+  rows?: MentorTools.ToolData[];
   delete?: boolean;
 };
 
-export type DnDRow = MentorTools.ToolData & { type: string };
-
 type Props = {
-  model: (element_id, group_id?) => JSX.Element;
+  model: (element_id: MentorTools.ToolData, group_id?) => JSX.Element;
   groupModel: (group_id, child) => JSX.Element;
   elements: {
     id: string;
-    rows?: DnDRow[];
+    rows?: MentorTools.ToolData[];
+    delete?: boolean;
   }[];
   setElements: (elements: any) => void;
 };
@@ -80,18 +79,20 @@ export default function DragNDrop({
       onDragEnd={handleDragEnd}
       modifiers={[restrictToParentElement]}
     >
-      {elements.filter((i) => !i.delete).map((group, groupIndex) => {
-        const itens = group.rows.filter((i) => !i.delete);
-        return groupModel(
-          group.id,
-          <SortableContext
-            items={itens.map((item) => item.id)}
-            strategy={verticalListSortingStrategy}
-          >
-            {itens.map((item) => model(item))}
-          </SortableContext>,
-        );
-      })}
+      {elements
+        .filter((i) => !i.delete)
+        .map((group, groupIndex) => {
+          const itens = group.rows.filter((i) => !i.delete);
+          return groupModel(
+            group.id,
+            <SortableContext
+              items={itens.map((item) => item.id)}
+              strategy={verticalListSortingStrategy}
+            >
+              {itens.map((item) => model(item))}
+            </SortableContext>,
+          );
+        })}
       {/* <DragOverlay modifiers={[restrictToParentElement]}>
         {activeId ? (
           <Box

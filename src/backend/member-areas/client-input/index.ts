@@ -1,3 +1,4 @@
+import { LogHistory } from '~/backend/helpers/LogHistory';
 import { CreateSupabaseWithAuth } from '../../supabase';
 
 type GetRequest = MemberAreaTypes.Post.Request;
@@ -8,20 +9,22 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   res,
 ) => {
   const supabase = CreateSupabaseWithAuth(req);
-  const { user, token } = await supabase.auth.api.getUserByCookie(req);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   const { data: tools, error: errorm } = await supabase
-    .from<MentorTools.ToolData>('member_area_tool')
+    .from('member_area_tool')
     .select('*')
     .eq('member_area', req.query.id);
 
   // if tool is not found, return 404
   if (errorm || !tools || tools.length === 0) {
-    return res.status(404).json({ error: 'Tool not found' });
+    return res.status(200).json({ error: 'Empty Area' });
   }
   // for each tool, get the user input
   const { data: userInputs, error: erroru } = await supabase
-    .from<MemberAreaTypes.UserInput>('client_input_tool')
+    .from('client_input_tool')
     .select('*')
     .in(
       'member_area_tool_id',
@@ -40,7 +43,9 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
 ) => {
   const supabase = CreateSupabaseWithAuth(req);
 
-  const { user, token } = await supabase.auth.api.getUserByCookie(req);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   const tool_id = req.body.tool_id; // tool que está sendo respondida pelo usuário
 
   const client_input = req.body.client_input;
@@ -52,6 +57,18 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
     (client_input.id + '').length > 6 &&
     (client_input.id + '').includes('-');
   const client_input_id = isUUID ? client_input.id : null;
+
+  const { data: product, error: errorProduct } = await supabase
+    .from('product')
+    .select('id, title')
+    .eq('id', req.body.member_area_id)
+    .single();
+
+  const { data: tool, error: errorTool } = await supabase
+    .from('member_area_tool')
+    .select('id, title')
+    .eq('id', tool_id)
+    .single();
 
   if (client_input.delete) {
     if (isUUID) {
@@ -75,7 +92,20 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
           ...client_input,
           profile_id: user.id,
           member_area_tool_id: tool_id,
-        });
+        })
+        .select()
+        .single();
+
+      if (!error && !errorProduct) {
+        // ? Registra que o cliente interagiu com uma mentoria
+        await LogHistory.Create(
+          user.id,
+          320,
+          `Interagiu ou concluiu uma etapa na mentoria: ${product?.title} - ${tool?.title}`,
+          0,
+          { id: product?.id },
+        );
+      }
 
       return res.status(200).json(memberAreaUserInput);
     } else {
@@ -88,6 +118,20 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
         .from('client_input_tool')
         .update(client_input)
         .match({ id: client_input_id });
+
+      if (!error && !errorProduct) {
+        // ? Registra que o cliente interagiu com uma mentoria
+        await LogHistory.Create(
+          user.id,
+          320,
+          `Interagiu ou concluiu uma etapa na mentoria: ${product?.title} - ${tool?.title}`,
+          0,
+          {
+            id: product?.id,
+            tool_id: tool?.id,
+          },
+        );
+      }
 
       return res.status(200).json(memberAreaUserInput);
     }

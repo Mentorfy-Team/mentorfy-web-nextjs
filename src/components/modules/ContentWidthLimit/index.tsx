@@ -13,7 +13,7 @@ type props = {
 const ContentWidthLimit: React.FC<props> = ({
   children,
   sx,
-  maxWidth = 1280,
+  maxWidth = 4096,
   withToolBar = true,
   withoutScroll = false,
 }) => {

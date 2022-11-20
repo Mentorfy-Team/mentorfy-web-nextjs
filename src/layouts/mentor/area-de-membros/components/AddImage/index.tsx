@@ -9,9 +9,15 @@ type Props = {
   onUploadImage: (file: any) => void;
   thumbnail: string;
   title?: string;
+  isBlocked?: boolean;
 };
 
-const AddImage: FC<Props> = ({ onUploadImage, thumbnail, title }) => {
+const AddImage: FC<Props> = ({
+  onUploadImage,
+  thumbnail,
+  title,
+  isBlocked,
+}) => {
   const theme = useTheme();
   return (
     <Box sx={{ display: 'flex', marginBottom: '1rem' }}>
@@ -20,7 +26,9 @@ const AddImage: FC<Props> = ({ onUploadImage, thumbnail, title }) => {
         src={thumbnail || '/svgs/step-image.svg'}
         width={100}
         height={70}
-        objectFit="contain"
+        style={{
+          objectFit: 'contain',
+        }}
       ></Image>
       <Box
         sx={{
@@ -38,10 +46,14 @@ const AddImage: FC<Props> = ({ onUploadImage, thumbnail, title }) => {
         <AddImgButton
           onChange={(e) => onUploadImage(e.target)}
           variant="outlined"
+          disabled={isBlocked}
+          loading={isBlocked}
         >
-          <ButtonLabel htmlFor={'upload-image' + title}>
-            Adicionar Imagem
-          </ButtonLabel>
+          {!isBlocked && (
+            <ButtonLabel htmlFor={'upload-image' + title}>
+              Adicionar Imagem
+            </ButtonLabel>
+          )}
           <input
             hidden
             accept="image/*"

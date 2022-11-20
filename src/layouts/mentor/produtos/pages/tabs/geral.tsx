@@ -53,7 +53,7 @@ const Geral: FC<props> = ({ product }) => {
   const { title, price, deliver, description } = watch();
 
   const handleChange = (e, name) => {
-    setValue(name, e.target.value);
+    //setValue(name, e.target.value);
   };
 
   const handleCapture = (target, imageType: 'main_image' | 'banner_image') => {

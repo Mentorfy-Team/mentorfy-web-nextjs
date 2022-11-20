@@ -1,27 +1,27 @@
 import { FC, useCallback, useState } from 'react';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import { DnDRow } from '~/components/modules/DragNDrop';
 import Toolbar from '~/components/modules/Toolbar';
-import { PublicRoutes } from '~/consts';
 
 type Props = PageTypes.Props & {
-  data: DnDRow[];
+  data: MentorTools.ToolData[];
   id: string;
 };
 import ConfigPage from '~/layouts/mentor/area-de-membros/pages/editar/configuracao';
 import StepsPage from '~/layouts/mentor/area-de-membros/pages/editar/etapas';
-import { GetProfile } from '~/services/profile.service';
 import ClientJourney from './jornada-do-cliente';
+import Links from './links';
+import { GetAuthSession } from '~/helpers/AuthSession';
 
-const tabs = ['Etapas', 'Jornada do Cliente', 'Configuração'];
+const tabs = ['Etapas', 'Jornada do Cliente', 'Configuração', 'Links'];
 const EditarMentoria: FC<Props> = ({ id }) => {
   const [tabindex, setTabindex] = useState(0);
 
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
+      case 3:
+        return <Links id={id} />;
       case 2:
-        return <ConfigPage id={id}/>;
+        return <ConfigPage id={id} />;
       case 1:
         return <ClientJourney id={id} />;
       case 0:
@@ -41,18 +41,23 @@ const EditarMentoria: FC<Props> = ({ id }) => {
 };
 
 // * ServerSideRender (SSR)
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const { profile } = await GetProfile(ctx.req);
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
+
+  if (!session)
     return {
-      props: {
-        profile: profile,
-        id: ctx.query.id,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     };
-  },
-});
+
+  return {
+    props: {
+      id: ctx.query.id,
+      user: session.user,
+    },
+  };
+};
 
 export default EditarMentoria;

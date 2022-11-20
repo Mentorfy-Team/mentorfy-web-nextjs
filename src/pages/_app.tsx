@@ -1,17 +1,27 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
-import { supabaseClient } from '@supabase/auth-helpers-nextjs';
-import { UserProvider } from '@supabase/auth-helpers-react';
 import type { AppProps } from 'next/app';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { SupabaseWithouAuth } from '~/backend/supabase';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { SupabaseWithoutAuth } from '~/backend/supabase';
 import createEmotionCache from '~/createEmotionCache';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
 const clientSideEmotionCache = createEmotionCache();
+import { Roboto } from '@next/font/google';
+import { SessionContextProvider } from '@supabase/auth-helpers-react';
+import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import { Database } from '~/@types/supabase/v2.types';
+
+export const MainFont = Roboto({
+  weight: ['300', '400', '500', '700', '900'],
+  variable: '--main-font',
+  subsets: ['latin'],
+});
 
 const LoadingPartial = dynamic(
   () => import('~/components/partials/loading/loading.partial'),
@@ -25,62 +35,32 @@ interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
-const URLSearchParams2JSON_1 = (str: string) => {
-  const searchParams = new URLSearchParams(str);
-  return Object.fromEntries([...searchParams]);
-};
-
-export type RecoveryProps = {
-  access_token: string;
-  token_type: string;
-  expires_in: string;
-  refresh_token: string;
-  type: string;
-};
-
 const App = (props: MyAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const router = useRouter();
-  const [params, setParams] = useState({});
+  const [supabaseClient] = useState(() =>
+    createBrowserSupabaseClient<Database>(),
+  );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (router.asPath.includes('#')) {
-      const recoveryData = URLSearchParams2JSON_1(
-        router.asPath.split('#')[1],
-      ) as RecoveryProps;
-
-      if (recoveryData.access_token && recoveryData.type == 'magiclink') {
-        const { user } = SupabaseWithouAuth.auth.setAuth(
-          recoveryData.access_token,
-        );
-        if (user && router.pathname === '/') {
-          router.push('/mentor/dashboard');
-        }
-      }
-
-      if (recoveryData.type == 'invite') {
-        SupabaseWithouAuth.auth.setAuth(recoveryData.access_token);
-      }
-
-      if (recoveryData) {
-        setParams(recoveryData);
-      }
+      router.replace(router.asPath.replace('#', '?'));
     }
   }, [router]);
 
   useEffect(() => {
-    const { data } = SupabaseWithouAuth.auth.onAuthStateChange(
-      (event, session) => {
-        fetch('/api/auth/cookies', {
-          method: 'POST',
-          headers: new Headers({ 'Content-Type': 'application/json' }),
-          credentials: 'same-origin',
-          body: JSON.stringify({ event, session }),
-        });
-      },
-    );
+    const {
+      data: { subscription },
+    } = SupabaseWithoutAuth.auth.onAuthStateChange((event, session) => {
+      fetch('/api/auth/cookies', {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        credentials: 'same-origin',
+        body: JSON.stringify({ event, session }),
+      });
+    });
 
-    return data.unsubscribe();
+    return subscription.unsubscribe();
   }, []);
 
   const Drawer = useCallback(
@@ -96,28 +76,44 @@ const App = (props: MyAppProps) => {
     [router.pathname],
   );
 
+  useLayoutEffect(() => {
+    if (process.env.NEXT_PUBLIC_BETA) {
+      router.push('/beta');
+    }
+  }, [router]);
+
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>Mentorfy</title>
-        <meta content="width=device-width, initial-scale=1" />
-      </Head>
-      <GlobalStyles />
-      <CssBaseline />
-      <ThemeProvider>
-        <Wrapper id="WrapperRoot">
-          <PageWrapper>
-            <UserProvider supabaseClient={supabaseClient}>
-              {router.asPath.includes('/m') && <HeaderPartial />}
-              <Drawer>
-                <Component {...pageProps} {...{ urlParams: params }} />
-              </Drawer>
-            </UserProvider>
-          </PageWrapper>
-          <LoadingPartial />
-        </Wrapper>
-      </ThemeProvider>
-    </CacheProvider>
+    <main className={MainFont.className}>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>Mentorfy</title>
+          <meta content="width=device-width, initial-scale=1" />
+        </Head>
+        <GlobalStyles />
+        <CssBaseline />
+        <ThemeProvider>
+          <Wrapper id="WrapperRoot">
+            <PageWrapper>
+              <SessionContextProvider
+                supabaseClient={supabaseClient}
+                initialSession={pageProps.initialSession}
+              >
+                {router.asPath.includes('/m') && <HeaderPartial />}
+                <Drawer>
+                  <Component {...pageProps} />
+                </Drawer>
+              </SessionContextProvider>
+            </PageWrapper>
+            <LoadingPartial />
+            <ToastContainer
+              theme="dark"
+              autoClose={2000}
+              hideProgressBar={false}
+            />
+          </Wrapper>
+        </ThemeProvider>
+      </CacheProvider>
+    </main>
   );
 };
 

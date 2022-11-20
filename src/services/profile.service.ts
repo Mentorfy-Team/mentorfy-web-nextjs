@@ -4,11 +4,12 @@ import { HttpClient } from './HttpClient';
 export const GetProfile = async (
   req?,
   withAddress = false,
+  id?,
 ): Promise<ProfileApi.Get.Response> => {
   try {
     const headers = req ? { headers: req.headers } : {};
     const response = await HttpClient.get<ProfileApi.Get.Response>(
-      ApiRoutes.users_profile,
+      ApiRoutes.users_profile + `${id ? `?id=${id}` : ''}`,
       {
         // * Passa a autenticação para frente
         ...headers,

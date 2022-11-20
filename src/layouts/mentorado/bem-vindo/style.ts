@@ -15,6 +15,17 @@ export const Overlay = styled('div')`
   background: linear-gradient(0deg, rgba(8, 8, 8, 1) 0%, rgba(0, 0, 0, 0) 35%);
 `;
 
+export const OverlayPopular = styled('div')`
+  height: 100%;
+
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+
+  background: linear-gradient(0deg, rgba(8, 8, 8, 1) 5%, rgba(0, 0, 0, 0) 50%);
+`;
+
 export const Background = styled(Box)`
   background: #080808;
   > div > video,
@@ -194,9 +205,17 @@ export const VideoHolder = styled(Box)`
   position: relative;
   padding-top: 56.25%;
   z-index: 0 !important;
+  overflow: hidden;
 
   .react-player {
     opacity: 0.4;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+  .react-player-popular {
+    opacity: 0.8;
     position: absolute;
     top: 0;
     left: 0;
@@ -276,13 +295,30 @@ export const ProductTitle = styled(Typography)`
   -webkit-box-orient: vertical;
 `;
 
-export const CollorFullTypography = styled(Typography)`
+export const CollorFullTypography = styled(Typography)<{ one; two; three }>`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  background: linear-gradient(40.22deg, #c02425 22.52%, #f0cb35 76.9%);
+  background: ${({ one, two, three }) =>
+    `linear-gradient(90deg, ${one} 0%, ${two} 50%, ${three} 100%)`};
   background-clip: text;
 
-  font-size: 2.5rem;
+  font-size: 2.8rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 3rem;
+
+  text-align: start;
+  text-shadow: 0px 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
+`;
+
+export const CollorFullPopular = styled(Typography)<{ one; two; three }>`
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background: ${({ one, two, three }) =>
+    `linear-gradient(90deg, ${one} 0%, ${two} 50%, ${three} 100%)`};
+  background-clip: text;
+
+  font-size: 2rem;
   font-style: normal;
   font-weight: 900;
   line-height: 3rem;
@@ -299,5 +335,42 @@ export const CollorFullMentorfy = styled(Typography)`
   text-shadow: 0px 0.15rem 0.25rem rgba(0, 0, 0, 1);
   span {
     color: #fe7d22;
+  }
+`;
+
+export const VolumeButton = styled(Box)`
+  width: 35px;
+  height: 35px;
+  border: 1px solid #93898a;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  :hover {
+    background-color: transparent;
+    opacity: 0.5;
+  }
+`;
+
+export const PopularProductDescription = styled(Typography)`
+  font-size: 1.1rem;
+  font-weight: 300;
+  line-height: 1.4rem;
+  text-align: start;
+  opacity: 0.8;
+`;
+
+export const PopularButton = styled(Button)`
+  background-color: white;
+  color: black;
+  position: relative;
+  width: 15%;
+  margin-left: auto;
+
+  :hover {
+    background-color: gray;
+    color: black;
   }
 `;

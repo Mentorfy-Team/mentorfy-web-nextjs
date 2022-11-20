@@ -2,13 +2,12 @@ import { FC, useCallback, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import Link from 'next/link';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import InputField from '~/components/atoms/InputField';
 import { RegisterNewUser } from '~/services/user.service';
 import { userStore } from '~/stores';
-import { AcessoSubPage } from '..';
 import {
   Accent,
+  AnimatedView,
   LoginButton as CadastroButton,
   InfoText,
   LinkButton,
@@ -20,27 +19,33 @@ import passwordValidator from './helper/password-validator';
 import { FormWrapper, Policies, PoliciesWrapper } from './styles';
 
 type props = {
-  pageChange: (page: AcessoSubPage) => void;
   setInfo: (info: any) => void;
+  urlProps: any;
 };
 
-const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
-  const [password, setPassword] = useState('');
+const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
+  const [inputs, setInputs] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    policies: false,
+  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>();
-  const [rePassword, setRePassword] = useState('');
-  const [acceptPolices, setAcceptPolices] = useState(false);
-  const { register, handleSubmit } = useForm<UserClient.SignUp>();
-  const { userLogin } = userStore();
-  const [index, setIndex] = useState(1);
+  const { userLogin, setAppParams } = userStore();
   const RePasswordCheck = useMemo(() => {
-    return rePassword === password && rePassword.length > 0;
-  }, [password, rePassword]);
+    return (
+      inputs.confirmPassword === inputs.password &&
+      inputs.confirmPassword.length > 0
+    );
+  }, [inputs.password, inputs.confirmPassword]);
 
   const { minChars, hasNumber, hasSpecial, hasUpper, passed } = useMemo(
-    () => passwordValidator(password),
-    [password],
+    () => passwordValidator(inputs.password),
+    [inputs],
   );
+  const { appParams } = userStore();
 
   const PasswordChecker = useCallback(() => {
     return (
@@ -56,37 +61,71 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
   }, [hasNumber, hasSpecial, hasUpper, minChars]);
 
   const CheckComplete = useMemo(() => {
-    if (passed && RePasswordCheck && acceptPolices) return true;
+    if (passed && RePasswordCheck && inputs.policies) return true;
     return false;
-  }, [RePasswordCheck, acceptPolices, passed]);
+  }, [RePasswordCheck, inputs.policies, passed]);
 
-  const onSubmit: SubmitHandler<UserClient.SignUp> = useCallback(
-    async (values) => {
-      setIsLoading(true);
-      if (values.password.length <= 0) values.password = password;
-      const registerData = await RegisterNewUser(values);
+  const onSubmit = useCallback(async () => {
+    const values = inputs;
+    setIsLoading(true);
 
-      if (!registerData.error) {
-        userLogin(registerData.user);
+    const registerData = await RegisterNewUser(values, urlProps.signup);
+
+    if (!registerData.error) {
+      userLogin(registerData.user);
+      if (!urlProps.signup) {
         setInfo(
           <>
-            <Text>Seu cadastro foi concluido com sucesso!</Text>
+            <Text>Seu cadastro foi concluído com sucesso!</Text>
             <Text>Você já pode acessar clicando em continuar.</Text>
           </>,
         );
-        pageChange('sucesso');
       } else {
-        if (registerData.error.includes('email')) {
-          setError('Email já cadastrado');
-        }
+        setInfo(
+          <>
+            <Text
+              sx={{
+                textAlign: 'center',
+                marginBottom: '1rem',
+                color: 'green',
+              }}
+            >
+              Seu cadastro foi concluído com sucesso!
+            </Text>
+            <Text
+              sx={{
+                opacity: 0.2,
+                fontWeight: 300,
+                textAlign: 'justify',
+                lineHeight: '1.2rem',
+              }}
+            >
+              Ainda é necessário que um administrador da área aprove seu acesso,
+              porém você já pode acessar sua conta e acompanhar o status da
+              aprovação lá.
+            </Text>
+          </>,
+        );
       }
-      setIsLoading(false);
+      setAppParams({ subpage: 'sucesso' });
+    } else {
+      setError(registerData.error);
+    }
+    setIsLoading(false);
+  }, [inputs, urlProps.signup, userLogin, setAppParams, setInfo]);
+
+  const handleChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setInputs((prev) => ({
+        ...prev,
+        [event.target.name]: event.target.value || event.target.checked,
+      }));
     },
-    [pageChange, password, setInfo, userLogin],
+    [],
   );
 
   return (
-    <div>
+    <AnimatedView>
       <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
         Para se{' '}
         <Accent>
@@ -94,65 +133,66 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
         </Accent>
         , preencha os campos abaixo corretamente.
       </SubTitle>
-      <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+      <FormWrapper onSubmit={onSubmit}>
         <InputField
           label="Nome completo"
+          name="name"
           type={'text'}
           placeholder="Digite seu nome completo"
           InputLabelProps={{
             shrink: true,
           }}
+          onChange={handleChange}
           required
-          register={register('name')}
         />
         <InputField
           required
           label="E-mail"
           type={'email'}
+          name="email"
           placeholder="Digite seu email"
           InputLabelProps={{
             shrink: true,
           }}
-          register={register('email')}
-          onChange={(e) => setError('')}
+          onChange={handleChange}
           error={!!error}
           helperText={error}
         />
         <InputField
           required
           label="Senha"
+          name="password"
           type={'password'}
           placeholder="Digite sua senha"
           InputLabelProps={{
             shrink: true,
           }}
-          register={register('password')}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handleChange}
         />
         {PasswordChecker()}
         <InputField
           required
-          error={!RePasswordCheck && rePassword.length > 0}
+          error={!RePasswordCheck && inputs.confirmPassword.length > 0}
           label="Confirme sua senha"
           type={'password'}
+          name="confirmPassword"
           placeholder="Confirme sua senha"
           helperText={
-            !RePasswordCheck && rePassword.length > 0
+            !RePasswordCheck && inputs.confirmPassword.length > 0
               ? 'As senhas não conferem'
               : ''
           }
           InputLabelProps={{
             shrink: true,
           }}
-          register={register('confirmPassword')}
-          onChange={(e) => setRePassword(e.target.value)}
+          onChange={handleChange}
         />
         <PoliciesWrapper>
           <Checkbox
             sx={{ alignSelf: 'flex-start', marginLeft: '0rem' }}
-            {...register('policies')}
-            checked={acceptPolices}
-            onChange={(e) => setAcceptPolices(e.target.checked)}
+            checked={inputs.policies}
+            name="policies"
+            onChange={handleChange}
           />
           <Policies variant="caption">
             Eu li e aceito os <Link href="/">Termos de Uso</Link> e os{' '}
@@ -162,7 +202,7 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
         <CadastroButton
           loading={isLoading}
           disabled={!CheckComplete || isLoading}
-          type="submit"
+          onClick={onSubmit}
         >
           {!isLoading && 'Cadastrar'}
         </CadastroButton>
@@ -170,13 +210,13 @@ const Cadastro: FC<props> = ({ pageChange, setInfo }) => {
       <InfoText>
         Já possui conta?{' '}
         <Accent>
-          <LinkButton onClick={() => pageChange('login')}>
+          <LinkButton onClick={() => setAppParams({ subpage: 'login' })}>
             Clique Aqui
           </LinkButton>
         </Accent>
       </InfoText>
       <Box height="64px" />
-    </div>
+    </AnimatedView>
   );
 };
 

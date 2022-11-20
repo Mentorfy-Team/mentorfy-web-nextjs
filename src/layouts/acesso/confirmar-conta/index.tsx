@@ -1,17 +1,12 @@
-import { FC, useState } from 'react';
-import { AcessoSubPage } from '..';
-import { Accent, InfoText, LoginButton } from '../styles';
+import { FC } from 'react';
+import { userStore } from '~/stores';
+import { Accent, AnimatedView, InfoText, LoginButton } from '../styles';
 
-type props = {
-  pageChange: (page: AcessoSubPage) => void;
-};
-
-const ConfirmarConta: FC<props> = ({ pageChange }) => {
-  const [email, setEmail] = useState('');
-  const HandleLogin = (name: string, email: string): void => {};
+const ConfirmarConta: FC = () => {
+  const { setAppParams } = userStore();
 
   return (
-    <>
+    <AnimatedView>
       <InfoText>
         * Caso seu endereço de email esteja correto, enviaremos um email de{' '}
         recuperação de senha para o endereço informado com o titulo{' '}
@@ -26,10 +21,10 @@ const ConfirmarConta: FC<props> = ({ pageChange }) => {
           <Accent>suporte@mentorfy.io</Accent>
         </b>
       </InfoText>
-      <LoginButton onClick={() => pageChange('login')}>
+      <LoginButton onClick={() => setAppParams({ subpage: 'login' })}>
         Voltar ao Login
       </LoginButton>
-    </>
+    </AnimatedView>
   );
 };
 

@@ -3,13 +3,11 @@ import { default as cookieHelper } from 'cookie';
 export class CookieUtil {
   public static fromReq(req: any) {
     if (!req?.headers?.cookie) {
-      throw new Error('Não foi possível encontrar os cookies.');
+      return {};
     }
     const cookie = this.toJson(req?.headers?.cookie)['sb-access-token'];
     if (!cookie) {
-      throw new Error(
-        'Não foi possível encontrar os cookies. Verifique seu serviço.',
-      );
+      return {};
     }
     return this.toJson(req.headers.cookie)['sb-access-token'];
   }

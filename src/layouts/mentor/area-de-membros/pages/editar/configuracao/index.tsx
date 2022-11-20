@@ -5,26 +5,28 @@ import Divider from '@mui/material/Divider';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { SketchPicker } from 'react-color';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import InputField from '~/components/atoms/InputField';
 import { useGetProduct } from '~/hooks/useGetProduct';
 import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { UpdateProduct } from '~/services/product.service';
 import {
+  AbsolutePosition,
   ActionButton,
   CustomTypograpy,
+  PickerWrapper,
   ReturnButton,
   SaveButton,
   SvgWrapper,
 } from './styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
-
 type props = {
   id: string;
 };
-
 const Geral: FC<props> = ({ id }) => {
   const route = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -36,11 +38,25 @@ const Geral: FC<props> = ({ id }) => {
   const { handleSubmit, watch, setValue } = useForm<ProductClient.Product>();
   const { product: pData } = useGetProduct(id);
   const [product, setProduct] = useState<typeof pData>(pData);
+  const [description, setDescription] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
   const { types } = useMemberAreaTypes();
   const theme = useTheme();
+  const [displayPicker, setDisplayPicker] = useState<{ one; two; three }>({
+    one: false,
+    two: false,
+    three: false,
+  });
+  const [colorPick, setColorPick] = useState<{ one; two; three }>({
+    one: '#fff',
+    two: '#fff',
+    three: '#fff',
+  });
 
   useEffect(() => {
     setProduct(pData);
+    setDescription(description);
+    setTitle(pData?.title);
     setProductImage({
       main_image: {
         file: pData?.main_image || '',
@@ -52,7 +68,7 @@ const Geral: FC<props> = ({ id }) => {
       },
     });
     setVideo(pData?.video || '');
-  }, [pData]);
+  }, [pData, setValue, description]);
 
   const onSubmit: SubmitHandler<ProductClient.CreateProduct> = useCallback(
     async (values) => {
@@ -73,10 +89,17 @@ const Geral: FC<props> = ({ id }) => {
           old_banner_url: product.banner_image,
         });
       }
-      await UpdateProduct({ ...values, video, id: product.id });
+      await UpdateProduct({
+        ...values,
+        video,
+        id: product.id,
+        description,
+        extra: { titleGradiente: colorPick },
+      });
+      toast.success('Alterações salvas com sucesso', { autoClose: 2000 });
       setIsLoading(false);
     },
-    [product, productImage, video],
+    [product, productImage, video, colorPick, description],
   );
 
   const handleCapture = (target, imageType: 'main_image' | 'banner_image') => {
@@ -136,33 +159,22 @@ const Geral: FC<props> = ({ id }) => {
       />
       <InputField
         color="secondary"
-        value={product?.title}
+        value={title}
         label="Produto Relacionado"
         InputLabelProps={{
           shrink: true,
         }}
-        InputProps={{
-          readOnly: true,
-        }}
+        onChange={(e) => setTitle(e.target.value)}
       />
-
       <InputField
         color="secondary"
-        value={
-          types.find((type) =>
-            type.id === product?.member_area
-              ? (product?.member_area as any).type_id
-              : 5,
-          )?.name
-        }
-        label="Tipo de Área de Membros"
+        value={description}
+        label="Descrição"
+        placeholder="Escreva a descrição do seu produto aqui"
         InputLabelProps={{
           shrink: true,
         }}
-        InputProps={{
-          readOnly: true,
-        }}
-        style={{ marginBottom: '1.0rem' }}
+        onChange={(e) => setDescription(e.target.value)}
       />
       <InputField
         color="secondary"
@@ -173,9 +185,187 @@ const Geral: FC<props> = ({ id }) => {
         }}
         placeholder="Cole o link do vídeo aqui"
         onChange={(e) => setVideo(e.target.value)}
-        style={{ marginBottom: '1.8rem' }}
       />
-      <Grid container>
+      <InputField
+        color="secondary"
+        value={
+          types.find((type) =>
+            type.id === product?.member_area
+              ? (product?.member_area as any).type_id
+              : 5,
+          )?.name
+        }
+        disabled
+        label="Tipo de Área de Membros"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        InputProps={{
+          readOnly: true,
+        }}
+        style={{ marginBottom: '1.0rem' }}
+      />
+      <PickerWrapper>
+        <Typography>
+          Cor gradiente do título da mentoria ( opcional )
+        </Typography>
+        <Box display="flex" gap={4}>
+          <Box id="ColorOne" sx={{ position: 'relative' }}>
+            <Box
+              width="1.5rem"
+              height="1.5rem"
+              mt={1}
+              sx={{
+                border: '2px solid #ffffff',
+                borderRadius: '10%',
+                padding: '5px',
+                background: colorPick?.one || '#d4d4d4',
+                boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+                display: 'inline-block',
+                cursor: 'pointer',
+              }}
+              onClick={() =>
+                setDisplayPicker({
+                  ...displayPicker,
+                  one: !displayPicker.one,
+                })
+              }
+            ></Box>
+            {displayPicker.one && (
+              <>
+                <div
+                  style={{
+                    position: 'fixed',
+                    top: '0px',
+                    right: '0px',
+                    bottom: '0px',
+                    left: '0px',
+                  }}
+                  onClick={() =>
+                    setDisplayPicker({
+                      ...displayPicker,
+                      one: !displayPicker.one,
+                    })
+                  }
+                />
+                <AbsolutePosition>
+                  <SketchPicker
+                    color={colorPick?.one || '#d4d4d4'}
+                    onChange={(color) =>
+                      setColorPick((old) => {
+                        return { ...old, one: color.hex };
+                      })
+                    }
+                  />
+                </AbsolutePosition>
+              </>
+            )}
+          </Box>
+          <Box id="ColorTwo" sx={{ position: 'relative' }}>
+            <Box
+              width="1.5rem"
+              height="1.5rem"
+              mt={1}
+              sx={{
+                border: '2px solid #ffffff',
+                borderRadius: '10%',
+                padding: '5px',
+                background: colorPick?.two || '#d4d4d4',
+                boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+                display: 'inline-block',
+                cursor: 'pointer',
+              }}
+              onClick={() =>
+                setDisplayPicker({
+                  ...displayPicker,
+                  two: !displayPicker.two,
+                })
+              }
+            ></Box>
+            {displayPicker.two && (
+              <>
+                <div
+                  style={{
+                    position: 'fixed',
+                    top: '0px',
+                    right: '0px',
+                    bottom: '0px',
+                    left: '0px',
+                  }}
+                  onClick={() =>
+                    setDisplayPicker({
+                      ...displayPicker,
+                      two: !displayPicker.two,
+                    })
+                  }
+                />
+                <AbsolutePosition>
+                  <SketchPicker
+                    color={colorPick?.two || '#d4d4d4'}
+                    onChange={(color) =>
+                      setColorPick((old) => {
+                        return { ...old, two: color.hex };
+                      })
+                    }
+                  />
+                </AbsolutePosition>
+              </>
+            )}
+          </Box>
+          <Box id="ColorThree" sx={{ position: 'relative' }}>
+            <Box
+              width="1.5rem"
+              height="1.5rem"
+              mt={1}
+              sx={{
+                border: '2px solid #ffffff',
+                borderRadius: '10%',
+                padding: '5px',
+                background: colorPick?.three || '#d4d4d4',
+                boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+                display: 'inline-block',
+                cursor: 'pointer',
+              }}
+              onClick={() =>
+                setDisplayPicker({
+                  ...displayPicker,
+                  three: !displayPicker.three,
+                })
+              }
+            ></Box>
+            {displayPicker.three && (
+              <>
+                <div
+                  style={{
+                    position: 'fixed',
+                    top: '0px',
+                    right: '0px',
+                    bottom: '0px',
+                    left: '0px',
+                  }}
+                  onClick={() =>
+                    setDisplayPicker({
+                      ...displayPicker,
+                      three: !displayPicker.three,
+                    })
+                  }
+                />
+                <AbsolutePosition>
+                  <SketchPicker
+                    color={colorPick?.three || '#d4d4d4'}
+                    onChange={(color) =>
+                      setColorPick((old) => {
+                        return { ...old, three: color.hex };
+                      })
+                    }
+                  />
+                </AbsolutePosition>
+              </>
+            )}
+          </Box>
+        </Box>
+      </PickerWrapper>
+      <Grid mt={3} container>
         <Grid md={5} xs={12} pb={2} sx={{ float: 'left' }}>
           <Typography
             variant="body1"

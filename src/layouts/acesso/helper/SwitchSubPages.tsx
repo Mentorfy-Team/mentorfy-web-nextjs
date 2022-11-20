@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import { userStore } from '~/stores';
 
 const Login = dynamic(() => import('../login'));
 const Cadastro = dynamic(() => import('../cadastro'));
@@ -7,32 +8,31 @@ const Sucesso = dynamic(() => import('../sucesso'));
 const TrocarSenha = dynamic(() => import('../trocar-senha'));
 const ConfirmarConta = dynamic(() => import('../confirmar-conta'));
 
-export default (AcessosubPage, setAcessoSubPage, info, setInfo, urlProps) => {
-  if (
-    (urlProps?.type === 'recovery' || urlProps?.type === 'invite') &&
-    AcessosubPage !== 'sucesso'
-  ) {
-    AcessosubPage = 'trocar-senha';
-  }
-  switch (AcessosubPage) {
+export default (info, setInfo, urlProps) => {
+  const {
+    appParams: { subpage },
+  } = userStore();
+
+  switch (subpage) {
     case 'login':
-      return <Login pageChange={setAcessoSubPage} />;
+      return <Login urlProps={urlProps} />;
     case 'cadastro':
-      return <Cadastro setInfo={setInfo} pageChange={setAcessoSubPage} />;
+      return <Cadastro setInfo={setInfo} urlProps={urlProps} />;
     case 'trocar-senha':
       return (
         <TrocarSenha
           type={urlProps?.type}
           setInfo={setInfo}
-          pageChange={setAcessoSubPage}
           access_token={urlProps?.access_token}
         />
       );
     case 'esqueci-minha-senha':
-      return <EsqueciMinhaSenha pageChange={setAcessoSubPage} />;
+      return <EsqueciMinhaSenha />;
     case 'confirmar-conta':
-      return <ConfirmarConta pageChange={setAcessoSubPage} />;
+      return <ConfirmarConta />;
     case 'sucesso':
-      return <Sucesso info={info} pageChange={setAcessoSubPage} />;
+      return <Sucesso info={info} />;
+    default:
+      <div></div>;
   }
 };

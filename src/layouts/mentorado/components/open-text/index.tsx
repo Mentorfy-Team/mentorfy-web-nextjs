@@ -1,8 +1,9 @@
 import Box from '@mui/material/Box';
 import Image from 'next/image';
+import Description from '~/components/atoms/ModalDescription';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
-import { CloseButton, Description } from './styles';
+import { CloseButton} from './styles';
 
 type InputProps = { id: string; value: boolean }[];
 type ExtraProps = boolean;
@@ -20,7 +21,9 @@ const OpenText = ({
   userInput,
 }: MentoredComponents.Props<ToolData[], InputProps, ExtraProps>) => {
   const handleFinish = () => {
-    onChange({ data: {}, finished: true });
+    onChange({ data: {}, extra: {
+      finished: true
+    } });
     setOpen(false);
   };
 

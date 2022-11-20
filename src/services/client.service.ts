@@ -49,12 +49,37 @@ export const CreateClient = async (client: UserClient.CreateClient) => {
   }
 };
 
+export const ApprovalClient = async (
+  client_id: string,
+  product_id: string,
+  approved,
+) => {
+  try {
+    const response = await HttpClient.post<UsersApi.Post.Response>(
+      ApiRoutes.member_areas_client_approval,
+      { client_id, product_id, approved },
+    );
+    if (response.data.error) {
+      return {
+        error: response.data.error,
+      };
+    }
+    return response.data;
+  } catch (error) {
+    return {
+      error: 'Erro ao cadastrar produto',
+    };
+  }
+};
+
 export const ListClients = async (
   token,
   id,
 ): Promise<UserClient.Post.ClientsResponse> => {
   try {
-    const response = await HttpClient.get<UserClient.Post.ClientsResponse>(
+    const {
+      data: { error, result },
+    } = await HttpClient.get<UserClient.Post.ClientsResponse>(
       ApiRoutes.clients_list,
       {
         // * Passa a autenticação para frente
@@ -67,13 +92,13 @@ export const ListClients = async (
       },
     );
 
-    if (response.data.error) {
+    if (error) {
       return {
-        error: response.data.error,
+        error,
       };
     }
     return {
-      clients: response.data.clients,
+      result,
       error: null,
     };
   } catch (error: any) {

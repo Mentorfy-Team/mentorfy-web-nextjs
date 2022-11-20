@@ -19,11 +19,11 @@ const Tabbar: React.FC<props> = ({
 }) => {
   return (
     <TabWrapper
-      forpage={forpage}
-      withborder={withborder}
+      forpage={forpage ? `${forpage}` : undefined}
+      withborder={withborder ? `${withborder}` : undefined}
       value={selected}
       onChange={onChange}
-      hasmargintop={hasmargintop}
+      hasmargintop={hasmargintop ? `${hasmargintop}` : undefined}
     >
       {children}
     </TabWrapper>

@@ -7,12 +7,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Image from 'next/future/image';
 import { useRouter } from 'next/router';
 import { MentorMenu } from '~/consts/routes/routes.consts';
 import { userStore } from '~/stores';
 import { AnimatedBox, Drawer, DrawerHeader } from './styles';
-import menu from '~/../public/images/menu.png';
 
 type props = {
   children?: JSX.Element;
@@ -136,29 +134,12 @@ const MiniDrawer: React.FC<props> = ({ children }) => {
         }}
       >
         <AnimatedBox
-          loading={isLoading}
+          loading={false}
           sx={{
             height: '0vh',
           }}
         >
           {children}
-          <Image
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpen(!open);
-            }}
-            style={{
-              position: 'absolute',
-              top: '4rem',
-              left: open ? '174px' : '38px',
-              zIndex: 2000,
-              cursor: 'pointer',
-              transform: open ? 'rotate(0deg)' : 'rotate(180deg)',
-            }}
-            alt="menu"
-            src={menu}
-            height={20}
-          />
         </AnimatedBox>
       </Box>
     </Box>

@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import { ToolListNames } from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
 import { BoxHeader, Step } from './styles';
 type props = {
@@ -77,7 +77,7 @@ const EditMembersAreaSteps: FC<props> = ({
                 {...listeners}
               />
             )}
-            {isHeader && (
+            {isHeader && image && (
               <Image
                 alt=""
                 src={image}

@@ -21,7 +21,7 @@ export const PasswordChange = async (
     return response.data;
   } catch (error) {
     return {
-      error: 'Erro ao cadastrar usuário',
+      error: 'Erro ao tentar mudar a senha',
     };
   }
 };

@@ -1,4 +1,4 @@
-import { Heatmap } from '@ant-design/plots';
+import { Heatmap, HeatmapConfig } from '@ant-design/plots';
 
 export default ({ data }) => {
   const config = {
@@ -58,9 +58,8 @@ export default ({ data }) => {
       showTitle: false,
       showContent: false,
       showNil: false,
-      container: () => <div />,
     },
-  };
+  } as Partial<HeatmapConfig>;
 
   return <Heatmap {...(config as any)} />;
 };

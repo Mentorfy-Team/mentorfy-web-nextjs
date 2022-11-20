@@ -1,41 +1,28 @@
 /* eslint-disable no-restricted-imports */
-import { FC, useCallback, useState } from 'react';
-import Divider from '@mui/material/Divider';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Unstable_Grid2';
+import { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import Grid from '@mui/material/Unstable_Grid2';
 
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/router';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import Toolbar from '~/components/modules/Toolbar';
-import { PublicRoutes } from '~/consts';
-import { GetProfile, UpdateProfile } from '~/services/profile.service';
-import { ActionButton } from '../../produtos/pages/styles';
-import GearSVG from '~/../public/svgs/gear';
+import LinearProgressWithLabel from '~/components/modules/LinearProgress';
 import {
   AvatarWrapper,
   BOX,
-  Buttons,
   Card,
   CardDivider,
-  CustomSelectField,
   CustomTypography,
-  Form,
-  Header,
-  InputField,
   Session,
   Spacing,
   Title,
 } from '../style';
-import LinearProgressWithLabel from '~/components/modules/LinearProgress';
+import GearSVG from '~/../public/svgs/gear';
+import { useHistory } from '~/hooks/useHistory';
+import { userStore } from '~/stores';
+import { useGetClientProducts } from '~/hooks/useGetClientProducts';
 
-const MyProfile = ({profile}) => {
-  const [isLoading, setIsLoading] = useState(false);
+const MyProfile = ({ profile, user, isViewingMentored }) => {
   const [tab, setTab] = useState(0);
   const [error, setError] = useState<string | null>();
   const router = useRouter();
@@ -44,31 +31,45 @@ const MyProfile = ({profile}) => {
     profile,
   });
   const [avatar, setAvatar] = useState({
-    file: data.profile.avatar as string | ArrayBuffer,
+    file: data.profile?.avatar as string | ArrayBuffer,
     type: '',
   });
+  const { setLoading } = userStore();
+  const { history, isLoading: isLoadingHistory } = useHistory(profile?.id);
+  const { product, isLoading: isLoadingProducts } = useGetClientProducts(
+    profile?.id,
+    user?.id,
+  );
+
+  useEffect(() => {
+    setLoading(isLoadingHistory || isLoadingProducts);
+  }, [isLoadingHistory, setLoading, isLoadingProducts]);
 
   return (
     <>
-          <Card>
-            <Spacing>
-              <Title pt={2} variant='h6'>Perfil do Aluno</Title></Spacing>
-            <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
-            <Spacing><Session>
-              <AvatarWrapper>
-                <Avatar
-                  alt="foto-perfil"
-                  src={avatar.file as string}
-                  sx={{ width: 70, height: 70 }}
-                />
-                <BOX>
-                  <CustomTypography variant="body1">
-                    {profile.name}
-                  </CustomTypography>
-                  <CustomTypography sx={{ opacity: '0.4', fontSize: '0.9rem' }}>
-                    {profile.email}
-                  </CustomTypography>
-                  {/* <ActionButton
+      <Card>
+        <Spacing>
+          <Title pt={2} variant="h6">
+            Perfil do Aluno
+          </Title>
+        </Spacing>
+        <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
+        <Spacing>
+          <Session>
+            <AvatarWrapper>
+              <Avatar
+                alt="foto-perfil"
+                src={profile?.avatar as string}
+                sx={{ width: 70, height: 70 }}
+              />
+              <BOX>
+                <CustomTypography variant="body1">
+                  {profile?.name}
+                </CustomTypography>
+                <CustomTypography sx={{ opacity: '0.4', fontSize: '0.9rem' }}>
+                  {profile?.email}
+                </CustomTypography>
+                {/* <ActionButton
                   color="primary"
                   as="label"
                   sx={{ padding: '0px', height: '30px' }}
@@ -76,65 +77,113 @@ const MyProfile = ({profile}) => {
                 >
                   Trocar <input hidden accept="image/*" type="file" />
                 </ActionButton> */}
-                </BOX>
-              </AvatarWrapper>
-              <GearSVG />
-            </Session></Spacing>
-            <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
-            <Spacing><Title pb={2} variant='body1'>Conteúdos</Title>
-              <Session>
+              </BOX>
+            </AvatarWrapper>
+            {isViewingMentored && <GearSVG />}
+          </Session>
+        </Spacing>
+        <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
+        {product && product.length > 0 && (
+          <Spacing>
+            <Title pb={0} variant="body1">
+              Conteúdos
+            </Title>
+            {product?.map((p) => (
+              <Session
+                sx={{
+                  marginBottom: 2,
+                  marginTop: 2,
+                }}
+                key={p.id}
+              >
                 <AvatarWrapper>
                   <Avatar
                     alt="foto-perfil"
-                    src={avatar.file as string}
-                    sx={{ width: 30, height: 35 }}
+                    src={p.main_image as string}
+                    sx={{ width: 30, height: 30 }}
                   />
-                  <Title variant="body2">
-                    Mentoria M4
-                  </Title>
+                  <Title variant="body2">{p.title}</Title>
                 </AvatarWrapper>
                 <Box sx={{ width: '200px' }}>
-                  <LinearProgressWithLabel value={50} />
+                  <LinearProgressWithLabel value={p.progress} />
                 </Box>
-              </Session></Spacing>
-            <CardDivider>
-                <Session>
-                  <Title variant="caption">Matrícula: {'18-09-2022 15:31'}</Title>
-                  <Title pl={6} variant="caption">{'Mentoria M4'}</Title>
-                </Session>
-                <Title onClick={()=>{}} sx={{
-                  cursor: 'pointer',
-                  width: '30px',
-                  textAlign: 'end',
-                }} pb={1} variant="h6">...</Title>
-            </CardDivider>
-          </Card>
-          <Card mt={3} mb={6}>
-            <Spacing>
-              <Title pt={2} pb={1} variant='h6'>Histórico de Atividades</Title>
-            </Spacing>
-            <Grid container spacing={6}>
-              <Grid xs={4} pl={8}>
-                <Title sx={{float: 'left'}} variant='caption' color='gray'>Realizado em</Title>
-              </Grid>
-              <Grid  xs={6}>
-                <Title sx={{float: 'left'}} variant='caption' color='gray'>Atividade</Title>
-              </Grid>
-            </Grid>
-            <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
-            {[1,2,3,4].map((item, index) => (
-              <>
-              <Grid container spacing={6}>
-              <Grid xs={4} pl={8}>
-              <Title sx={{float: 'left'}} variant='caption'>05-07-2022</Title>
-              </Grid>
-              <Grid  xs={6}>
-              <Title sx={{float: 'left'}} variant='caption' >Visualizou o curso Whatsapp Lucrativo</Title>
-              </Grid>
-            </Grid>
-            <Divider sx={{ borderColor: '#272727', marginY: 2 }} /></>
+              </Session>
             ))}
-          </Card>
+          </Spacing>
+        )}
+        <CardDivider>
+          <Session>
+            <Title variant="caption">
+              Matrícula:{' '}
+              {new Date(profile?.created_at).toLocaleDateString('pt-BR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </Title>
+          </Session>
+        </CardDivider>
+      </Card>
+      <Card mt={3} mb={2}>
+        <Spacing>
+          <Title pt={2} pb={1} variant="h6">
+            Últimas Atividades
+          </Title>
+        </Spacing>
+        <Grid container spacing={6}>
+          <Grid xs={2} pl={8}>
+            <Title sx={{ float: 'left' }} variant="caption" color="gray">
+              Realizado em
+            </Title>
+          </Grid>
+          <Grid xs={2}>
+            <Title sx={{ float: 'left' }} variant="caption" color="gray">
+              Atividade
+            </Title>
+          </Grid>
+          <Grid>
+            <Title sx={{ float: 'left' }} variant="caption" color="gray">
+              Descrição
+            </Title>
+          </Grid>
+        </Grid>
+        <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
+        {history
+          .slice(0, 6)
+          .sort(
+            (a, b) =>
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime(),
+          )
+          .map((item, index) => (
+            <>
+              <Grid container spacing={6}>
+                <Grid xs={2} pl={8}>
+                  <Title sx={{ float: 'left' }} variant="caption">
+                    {new Date(item.created_at).toLocaleDateString('pt-BR', {
+                      hour: 'numeric',
+                      minute: 'numeric',
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                  </Title>
+                </Grid>
+                <Grid xs={2}>
+                  <Title sx={{ float: 'left' }} variant="caption">
+                    {item.log_type.title}
+                  </Title>
+                </Grid>
+                <Grid>
+                  <Title sx={{ float: 'left' }} variant="caption">
+                    {'Você ' + item.description?.toLowerCase()}
+                  </Title>
+                </Grid>
+              </Grid>
+              <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
+            </>
+          ))}
+      </Card>
     </>
   );
 };

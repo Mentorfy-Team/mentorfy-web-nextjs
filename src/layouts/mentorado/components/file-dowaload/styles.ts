@@ -4,14 +4,14 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 export const FileWrapper = styled(Box)`
-  align-items: end;
+
   background-color: ${({ theme }) => theme.palette.caption.main};
   border-radius: 4px;
   display: flex;
   height: 450px;
   justify-content: center;
   max-height: 450px;
-  max-width: 600px;
+  max-width: 100%;
 `;
 
 export const Description = styled(Typography)`

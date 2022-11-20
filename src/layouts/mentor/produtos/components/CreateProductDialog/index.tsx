@@ -42,7 +42,7 @@ export default function CreateProductDialog({ open, setOpen }) {
       route.push(
         MentorRoutes.members_area +
           '/' +
-          types.find((t) => t.id === product.deliver) +
+          types.find((t) => t.id.toString() === product.deliver) +
           product.id,
       );
       setOpen(false);

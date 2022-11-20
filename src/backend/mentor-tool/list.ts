@@ -5,9 +5,7 @@ export const get = async (req, res) => {
 
   const supabase = CreateSupabaseWithAuth(req);
 
-  const { data: tools } = await supabase
-    .from<ProductApi.Product>('mentor_tool')
-    .select('*');
+  const { data: tools } = await supabase.from('mentor_tool').select('*');
   // TODO: Adicionar log de erros detalhados
 
   res.status(200).json(tools);

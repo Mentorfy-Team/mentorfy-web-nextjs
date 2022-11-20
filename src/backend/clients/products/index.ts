@@ -18,18 +18,72 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     .select('*, member_area(*)')
     .eq('owner', req.query.id);
 
-  if (productsOwned) listProducts = listProducts.concat(productsOwned);
+  if (productsOwned && productsOwned.length > 0)
+    listProducts = listProducts.concat(productsOwned);
 
   if (clientProducts && clientProducts.length > 0) {
     const { data: products, error } = await supabase
       .from('product')
-      .select('*, member_area!member_area_id_fkey(*)')
+      .select('*, member_area(*)')
       .in(
         'id',
         clientProducts?.map((relation) => relation.product_id),
       );
-    listProducts = listProducts.concat(products);
+
+    if (products) {
+      listProducts = listProducts.concat(
+        products.map((p) => ({
+          ...p,
+          relation: clientProducts.find((cp) => cp.product_id === p.id),
+        })),
+      );
+    }
   }
 
-  return res.status(200).json(listProducts);
+  const { data: tools, error: errorTools } = await supabase
+    .from('member_area_tool')
+    .select('*')
+    .in(
+      'member_area',
+      listProducts.map((p) => p.id),
+    );
+
+  const toolsList = tools?.map((tool) => {
+    tool['type'] = (tool as any).mentor_tool;
+    return tool;
+  });
+
+  const { data: userInputs, error: erroru } = await supabase
+    .from('client_input_tool')
+    .select('*')
+    .eq('profile_id', req.query.id);
+
+  const productsWithProgress = listProducts.map((p) => {
+    return {
+      ...p,
+      progress: parseFloat(
+        (
+          (userInputs.filter(
+            (input) =>
+              !!toolsList.find((tl) => tl.id === input.member_area_tool_id),
+          ).length /
+            toolsList.filter((t) => t.mentor_tool !== 0).length) *
+          100
+        ).toFixed(2),
+      ),
+    };
+  });
+
+  // make productsWithProgress should return unique products based on id
+  const uniqueProducts = productsWithProgress.filter(
+    (v, i, a) => a.findIndex((t) => t.id === v.id) === i,
+  );
+
+  return res
+    .status(200)
+    .json(
+      uniqueProducts.filter(
+        (p) => !req.query.related_id || p.owner === req.query.related_id,
+      ),
+    );
 };

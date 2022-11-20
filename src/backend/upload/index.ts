@@ -1,6 +1,7 @@
 import fs from 'fs';
 import formidable from 'formidable';
 import { CreateSupabaseWithAdmin } from '~/backend/supabase';
+import { LogHistory } from '../helpers/LogHistory';
 type Request = UploadApi.Post.Request;
 type Response = UploadApi.Post.Response;
 
@@ -18,10 +19,12 @@ type file = {
 export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const form = new formidable.IncomingForm();
   const supabase = CreateSupabaseWithAdmin(req);
+  let file_name = '';
   const uploadFile = async () => {
     // eslint-disable-next-line
     return new Promise<{ success: boolean } | string>((resolve, reject) => {
       form.parse(req, async function (err, fields, files) {
+        file_name = (files.file as any).originalFilename;
         let filepath = `${req.query.id}/${(files.file as any).newFilename}${
           (files.file as any).originalFilename
         }`;
@@ -37,13 +40,25 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
           return reject({ success: false });
         }
 
-        resolve(`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.Key);
+        resolve(`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.path);
       });
     });
   };
 
   try {
     const result = await uploadFile();
+    if (result) {
+      // Registra que o usuário fez upload de um arquivo
+      LogHistory.Create(
+        req.query.id as string,
+        110,
+        `Fez uma upload de arquivo: ${file_name}`,
+        0,
+        {
+          file_link: result,
+        },
+      );
+    }
     res.status(200).send(result);
   } catch (err) {
     res.status(400).send({ success: false });

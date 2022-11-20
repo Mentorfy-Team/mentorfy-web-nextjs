@@ -19,7 +19,7 @@ export const CustomRow = styled(TableRow)`
   td {
     background-color: ${({ theme }) => theme.palette.primary.light};
     border-bottom: none;
-
+    cursor: pointer !important;
     button {
       float: right;
       right: 20%;

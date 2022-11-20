@@ -1,8 +1,8 @@
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import MuiGrid from '@mui/material/Unstable_Grid2';
 
 export const Description = styled(Typography)`
   color: ${({ theme }) => theme.palette.caption.main};
@@ -20,11 +20,27 @@ export const CompleteButton = styled(Button)`
   margin-top: 1rem;
 `;
 
-export const Question = styled(MuiGrid)``;
-
 export const ButtonsWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
+  margin-top: 2rem;
+
+  a {
+    text-decoration: none;
+  }
+`;
+
+export const WheelWrapper = styled(Box)`
+  background-color: ${({ theme }) => theme.palette.primary.main};
+  width: 100%;
+`;
+
+export const ContentWrapper = styled('div')`
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
   margin-top: 2rem;
 `;
 
@@ -37,4 +53,12 @@ export const ForwardButton = styled(Button)`
 export const BackButton = styled(Button)`
   background: none;
   width: 200px;
+`;
+
+export const TextQuestion = styled(Typography)`
+  font-size: 1.2rem;
+  span {
+    font-weight: bold;
+    margin-left: 0.2rem;
+  }
 `;

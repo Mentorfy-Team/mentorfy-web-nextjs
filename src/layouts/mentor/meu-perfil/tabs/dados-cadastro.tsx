@@ -7,6 +7,7 @@ import Select from '@mui/material/Select';
 
 import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { UpdateProfile } from '~/services/profile.service';
 import { ActionButton } from '../../produtos/pages/styles';
 import {
@@ -24,7 +25,7 @@ type UpdateForm = Partial<UserClient.User> &
   Partial<UserClient.Profile> &
   Partial<UserClient.Address>;
 
-const MyProfile = ({ profile, address, access_token }) => {
+const MyProfile = ({ profile, address }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>();
   const router = useRouter();
@@ -99,6 +100,7 @@ const MyProfile = ({ profile, address, access_token }) => {
       if (registerData.error) {
         setError('Ocorreu um erro na hora de salvar os seus dados.');
       }
+      toast.success('Informações salvas com sucesso');
       setIsLoading(false);
       router.reload();
     },
@@ -119,202 +121,196 @@ const MyProfile = ({ profile, address, access_token }) => {
 
   return (
     <>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <AvatarWrapper>
-              <Avatar
-                alt="foto-perfil"
-                src={avatar.file as string}
-                sx={{ width: 70, height: 70 }}
-              />
-              <BOX>
-                <CustomTypography fontWeight="bold" variant="body1">
-                  Foto de perfil
-                </CustomTypography>
-                <CustomTypography sx={{ opacity: '0.7', fontSize: '0.9rem' }}>
-                  Máximo: 1 mb
-                </CustomTypography>
-                <ActionButton
-                  color="primary"
-                  as="label"
-                  sx={{ padding: '0px', height: '30px' }}
-                  onChange={(e) => handleCapture(e.target)}
-                >
-                  Trocar <input hidden accept="image/*" type="file" />
-                </ActionButton>
-              </BOX>
-            </AvatarWrapper>
-            <InputField
-              label="Nome"
-              type="text"
-              color="secondary"
-              autoComplete="off"
-              defaultValue={data?.profile?.name}
-              placeholder="Digite seu nome"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              {...register('name')}
-            />
-            <InputField
-              label="E-mail"
-              type="e-mail"
-              color="secondary"
-              autoComplete="off"
-              defaultValue={data?.profile?.email}
-              placeholder="Digite seu e-mail"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              {...register('email')}
-            />
-            <InputField
-              label="Telefone"
-              type="tel"
-              color="secondary"
-              autoComplete="off"
-              defaultValue={data?.profile?.phone}
-              placeholder="Digite seu telefone"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              {...register('phone')}
-            />
-            <InputField
-              label="Senha"
-              type="password"
-              color="secondary"
-              autoComplete="off"
-              placeholder="********"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <Buttons
-              variant="contained"
-              type="submit"
-              className="submit-button"
-            >
-              Salvar alterações
-            </Buttons>
-          </Form>
-          {/* Addreess page  */}
-          <Header sx={{ marginTop: '1.3rem' }}>
-            <CustomTypography variant="h6">Endereço</CustomTypography>
-            <CustomTypography
-              sx={{ fontWeight: 'lighter', fontSize: '0.95rem' }}
-            >
-              Para entrega das suas premiações
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <AvatarWrapper>
+          <Avatar
+            alt="foto-perfil"
+            src={avatar.file as string}
+            sx={{ width: 70, height: 70 }}
+          />
+          <BOX>
+            <CustomTypography fontWeight="bold" variant="body1">
+              Foto de perfil
             </CustomTypography>
-          </Header>
-          <Form onSubmit={handleSubmit(onSubmit)}>
-            <InputField
-              defaultValue={data?.address?.zipcode}
-              label="CEP"
-              type="tel"
-              color="secondary"
-              autoComplete="off"
-              placeholder="Digite seu CEP"
-              {...register('zipcode')}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <InputField
-              defaultValue={data?.address?.street}
-              label="Endereço"
-              type="text"
-              color="secondary"
-              autoComplete="off"
-              placeholder="Ex: Rua João Neves"
-              {...register('street')}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <InputField
-              defaultValue={data?.address?.number}
-              label="Número"
-              type="tel"
-              color="secondary"
-              autoComplete="off"
-              placeholder="Digite o número"
-              {...register('number')}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <InputField
-              defaultValue={data?.address?.neighborhood}
-              type="text"
-              color="secondary"
-              autoComplete="off"
-              placeholder="Ex: Vila Maria"
-              {...register('neighborhood')}
-              label="Bairro"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <InputField
-              defaultValue={data?.address?.complement}
-              label="Complemento"
-              type="text"
-              color="secondary"
-              autoComplete="off"
-              placeholder="Ex: Casa/Trabalho"
-              {...register('complement')}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <InputField
-              defaultValue={data?.address?.city}
-              label="Cidade"
-              type="text"
-              color="secondary"
-              autoComplete="off"
-              placeholder="Ex: São Paulo"
-              {...register('city')}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <CustomSelectField
-              required={false}
-              sx={{ width: '100%', margin: '0px' }}
+            <CustomTypography sx={{ opacity: '0.7', fontSize: '0.9rem' }}>
+              Máximo: 1 mb
+            </CustomTypography>
+            <ActionButton
+              color="primary"
+              as="label"
+              sx={{ padding: '0px', height: '30px' }}
+              onChange={(e) => handleCapture(e.target)}
             >
-              <InputLabel shrink={true}>Estado</InputLabel>
-              <Select
-                placeholder="Ex: SP"
-                label="Estado"
-                color="secondary"
-                defaultValue={data?.address?.state}
-                onChange={(e, child) => {
-                  setData((old) => ({
-                    ...old,
-                    address: { ...data.address, state: e.target.value as any },
-                  }));
-                }}
-                notched={true}
-                {...register('state')}
-              >
-                {States.map((state) => (
-                  <MenuItem key={state} value={state}>
-                    {state}
-                  </MenuItem>
-                ))}
-              </Select>
-            </CustomSelectField>
-            <Buttons
-              variant="contained"
-              type="submit"
-              className="submit-button"
-              loading={isLoading}
-              disabled={isLoading}
-            >
-              Salvar alterações
-            </Buttons>
-          </Form>
+              Trocar <input hidden accept="image/*" type="file" />
+            </ActionButton>
+          </BOX>
+        </AvatarWrapper>
+        <InputField
+          label="Nome"
+          type="text"
+          color="secondary"
+          autoComplete="off"
+          defaultValue={data?.profile?.name}
+          placeholder="Digite seu nome"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          {...register('name')}
+        />
+        <InputField
+          label="E-mail"
+          type="e-mail"
+          color="secondary"
+          autoComplete="off"
+          defaultValue={data?.profile?.email}
+          placeholder="Digite seu e-mail"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          {...register('email')}
+        />
+        <InputField
+          label="Telefone"
+          type="tel"
+          color="secondary"
+          autoComplete="off"
+          defaultValue={data?.profile?.phone}
+          placeholder="Digite seu telefone"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          {...register('phone')}
+        />
+        <InputField
+          label="Senha"
+          type="password"
+          color="secondary"
+          autoComplete="off"
+          placeholder="********"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <Buttons variant="contained" type="submit" className="submit-button">
+          Salvar alterações
+        </Buttons>
+      </Form>
+      {/* Addreess page  */}
+      <Header sx={{ marginTop: '1.3rem' }}>
+        <CustomTypography variant="h6">Endereço</CustomTypography>
+        <CustomTypography sx={{ fontWeight: 'lighter', fontSize: '0.95rem' }}>
+          Para entrega das suas premiações
+        </CustomTypography>
+      </Header>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <InputField
+          defaultValue={data?.address?.zipcode}
+          label="CEP"
+          type="tel"
+          color="secondary"
+          autoComplete="off"
+          placeholder="Digite seu CEP"
+          {...register('zipcode')}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <InputField
+          defaultValue={data?.address?.street}
+          label="Endereço"
+          type="text"
+          color="secondary"
+          autoComplete="off"
+          placeholder="Ex: Rua João Neves"
+          {...register('street')}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <InputField
+          defaultValue={data?.address?.number}
+          label="Número"
+          type="tel"
+          color="secondary"
+          autoComplete="off"
+          placeholder="Digite o número"
+          {...register('number')}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <InputField
+          defaultValue={data?.address?.neighborhood}
+          type="text"
+          color="secondary"
+          autoComplete="off"
+          placeholder="Ex: Vila Maria"
+          {...register('neighborhood')}
+          label="Bairro"
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <InputField
+          defaultValue={data?.address?.complement}
+          label="Complemento"
+          type="text"
+          color="secondary"
+          autoComplete="off"
+          placeholder="Ex: Casa/Trabalho"
+          {...register('complement')}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <InputField
+          defaultValue={data?.address?.city}
+          label="Cidade"
+          type="text"
+          color="secondary"
+          autoComplete="off"
+          placeholder="Ex: São Paulo"
+          {...register('city')}
+          InputLabelProps={{
+            shrink: true,
+          }}
+        />
+        <CustomSelectField
+          required={false}
+          sx={{ width: '100%', margin: '0px' }}
+        >
+          <InputLabel shrink={true}>Estado</InputLabel>
+          <Select
+            placeholder="Ex: SP"
+            label="Estado"
+            color="secondary"
+            defaultValue={data?.address?.state}
+            onChange={(e, child) => {
+              setData((old) => ({
+                ...old,
+                address: { ...data.address, state: e.target.value as any },
+              }));
+            }}
+            notched={true}
+            {...register('state')}
+          >
+            {States.map((state) => (
+              <MenuItem key={state} value={state}>
+                {state}
+              </MenuItem>
+            ))}
+          </Select>
+        </CustomSelectField>
+        <Buttons
+          variant="contained"
+          type="submit"
+          className="submit-button"
+          loading={isLoading}
+          disabled={isLoading}
+        >
+          Salvar alterações
+        </Buttons>
+      </Form>
     </>
   );
 };

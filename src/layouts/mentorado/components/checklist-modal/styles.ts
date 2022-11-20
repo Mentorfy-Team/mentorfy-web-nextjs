@@ -27,6 +27,7 @@ export const OptionsWrapper = styled(Box)`
     height: 200px;
     margin-top: 3rem;
     overflow-y: auto;
+    text-align: center;
 `;
 
 export const OptionsBox = styled(Box)`
@@ -57,5 +58,31 @@ export const BpCheckedIcon = styled('div')`
     height: 18px;
     justify-content: center;
     width: 18px;
+`;
+
+export const TaskTitle = styled(Typography)`
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.4rem;
+  margin-bottom: 1rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+export const ButtonsWrapper = styled('div')`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+`;
+
+export const ForwardButton = styled(Button)`
+    background-color: ${({theme}) => theme.palette.primary.light};
+    color: ${({theme}) => theme.palette.accent.main};
+    width: 200px;
+`;
+
+export const BackButton = styled(Button)`
+    background: none;
+    width: 200px;
 `;
 

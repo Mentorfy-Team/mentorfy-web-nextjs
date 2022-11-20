@@ -31,9 +31,7 @@ const Video = dynamic(() => import('../components/VideoModal'), {
 const GroupModal = dynamic(() => import('../components/GroupModal'), {
   loading: () => <LoadingComponent />,
 });
-const ToolList = dynamic(() => import('../components/ToolListModal'), {
-  loading: () => <LoadingComponent />,
-});
+import ToolList from '../components/ToolListModal';
 
 export const ToolListNames = {
   StepGroup: { name: 'Agrupador de Etapas', id: 0 },
@@ -67,7 +65,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
   setOpen,
   refId,
   area_id,
-  rows
+  rows,
 }) => {
   switch (type) {
     case ToolListNames.WheelOfLifeModal.name:
@@ -175,7 +173,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
       return (
         <GroupModal
           area_id={area_id}
-          data={{...data, rows: rows || []}}
+          data={{ ...data, rows: rows || [] }}
           open={open}
           setOpen={setOpen}
           onChange={(props) =>

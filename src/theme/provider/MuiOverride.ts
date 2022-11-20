@@ -1,4 +1,5 @@
 import { Components, ComponentsProps, Theme } from '@mui/material';
+import { MainFont } from '~/pages/_app';
 
 const ButtonStyle = {
   defaultProps: {
@@ -33,6 +34,9 @@ const ButtonStyle = {
           },
         },
       }),
+      '&:hover': {
+        backgroundColor: theme.palette.primary.dark + 'aa',
+      },
     }),
   },
 };
@@ -43,6 +47,15 @@ const TextFieldStyle = {
   } as ComponentsProps['MuiTextField'],
   styleOverrides: {
     root: {
+      '.Mui-disabled': {
+        fieldset: {
+          border: '1px solid #333333 !important',
+        },
+        input: {
+          '-webkit-text-fill-color': '#666666 ',
+          'fill-color': '#666666 ',
+        },
+      },
       input: {
         height: '1.8rem',
       },
@@ -66,4 +79,12 @@ export const MuiOverride: Components<Theme> = {
   MuiButton: ButtonStyle,
   MuiTextField: TextFieldStyle,
   MuiFormControl: FormControlStyle,
+  MuiTypography: {
+    styleOverrides: {
+      root: {
+        ...MainFont.style,
+        letterSpacing: '0.02rem',
+      },
+    },
+  },
 };

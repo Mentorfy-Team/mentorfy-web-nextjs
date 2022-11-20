@@ -16,7 +16,7 @@ export const Card = styled(Box)`
 `;
 
 export const Spacing = styled(Box)`
-  padding: 0 1.5rem;
+  padding: 0rem 1.5rem;
 `;
 
 export const Title = styled(Typography)`
@@ -76,11 +76,11 @@ export const UploadButton = styled(Button)`
 
 export const AvatarWrapper = styled('div')`
   align-items: center;
+  align-self: flex-start;
   display: flex;
   gap: 1rem;
-  align-self: flex-start;
   justify-content: center;
-  
+
   svg {
   }
 `;
@@ -92,15 +92,15 @@ export const Session = styled('div')`
 `;
 
 export const CardDivider = styled('div')`
-  margin: 1.5rem 0;
-  padding: 0 1.5rem;
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  height: 50px;
   background-color: ${({ theme }) => theme.palette.primary.dark};
   border-left: 4px solid ${({ theme }) => theme.palette.secondary.main};
+  display: flex;
+  height: 50px;
+  justify-content: space-between;
+  margin: 0rem 0;
+  padding: 0 1.5rem;
+  width: 100%;
 `;
 
 export const Buttons = styled(LoadingButton)`

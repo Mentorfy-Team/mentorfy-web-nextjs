@@ -52,6 +52,32 @@ export interface Database {
           interval?: string | null;
         };
       };
+      client_input_tool: {
+        Row: {
+          id: string;
+          created_at: string | null;
+          profile_id: string | null;
+          member_area_tool_id: string | null;
+          data: Json | null;
+          extra: Json | null;
+        };
+        Insert: {
+          id?: string;
+          created_at?: string | null;
+          profile_id?: string | null;
+          member_area_tool_id?: string | null;
+          data?: Json | null;
+          extra?: Json | null;
+        };
+        Update: {
+          id?: string;
+          created_at?: string | null;
+          profile_id?: string | null;
+          member_area_tool_id?: string | null;
+          data?: Json | null;
+          extra?: Json | null;
+        };
+      };
       member_area_tool: {
         Row: {
           id: string;
@@ -105,79 +131,6 @@ export interface Database {
           id?: string;
           created_at?: string | null;
           type_id?: number | null;
-        };
-      };
-      client_input_tool: {
-        Row: {
-          id: number;
-          created_at: string | null;
-          profile_id: string;
-          member_area_tool_id: string;
-          data: Json;
-          extra: Json | null;
-        };
-        Insert: {
-          id?: number;
-          created_at?: string | null;
-          profile_id: string;
-          member_area_tool_id: string;
-          data: Json;
-          extra?: Json | null;
-        };
-        Update: {
-          id?: number;
-          created_at?: string | null;
-          profile_id?: string;
-          member_area_tool_id?: string;
-          data?: Json;
-          extra?: Json | null;
-        };
-      };
-      product: {
-        Row: {
-          owner: string;
-          created_at: string | null;
-          title: string;
-          description: string | null;
-          main_image: string | null;
-          banner_image: string | null;
-          price: number;
-          deliver: string | null;
-          status: boolean | null;
-          access_link: string | null;
-          id: string;
-          refeerer: string | null;
-          member_area: string | null;
-        };
-        Insert: {
-          owner: string;
-          created_at?: string | null;
-          title: string;
-          description?: string | null;
-          main_image?: string | null;
-          banner_image?: string | null;
-          price?: number;
-          deliver?: string | null;
-          status?: boolean | null;
-          access_link?: string | null;
-          id?: string;
-          refeerer?: string | null;
-          member_area?: string | null;
-        };
-        Update: {
-          owner?: string;
-          created_at?: string | null;
-          title?: string;
-          description?: string | null;
-          main_image?: string | null;
-          banner_image?: string | null;
-          price?: number;
-          deliver?: string | null;
-          status?: boolean | null;
-          access_link?: string | null;
-          id?: string;
-          refeerer?: string | null;
-          member_area?: string | null;
         };
       };
       profile: {
@@ -236,6 +189,56 @@ export interface Database {
           created_at?: string | null;
           name?: string;
           description?: string | null;
+        };
+      };
+      product: {
+        Row: {
+          owner: string;
+          created_at: string | null;
+          title: string;
+          description: string | null;
+          main_image: string | null;
+          banner_image: string | null;
+          price: number;
+          deliver: string | null;
+          status: boolean | null;
+          access_link: string | null;
+          id: string;
+          refeerer: string | null;
+          member_area: string | null;
+          video: string | null;
+        };
+        Insert: {
+          owner: string;
+          created_at?: string | null;
+          title: string;
+          description?: string | null;
+          main_image?: string | null;
+          banner_image?: string | null;
+          price?: number;
+          deliver?: string | null;
+          status?: boolean | null;
+          access_link?: string | null;
+          id?: string;
+          refeerer?: string | null;
+          member_area?: string | null;
+          video?: string | null;
+        };
+        Update: {
+          owner?: string;
+          created_at?: string | null;
+          title?: string;
+          description?: string | null;
+          main_image?: string | null;
+          banner_image?: string | null;
+          price?: number;
+          deliver?: string | null;
+          status?: boolean | null;
+          access_link?: string | null;
+          id?: string;
+          refeerer?: string | null;
+          member_area?: string | null;
+          video?: string | null;
         };
       };
       address: {

@@ -1,19 +1,19 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
-import Image from 'next/future/image';
+import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { DnDObject } from '~/components/modules/DragNDrop';
 import Toolbar from '~/components/modules/Toolbar';
-import { PublicRoutes } from '~/consts';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 //import { FilesToDelete } from '~/services/file-upload.service';
 import { useUserInputs } from '~/hooks/useUserInputs';
 import { InputUserMemberArea } from '~/services/member-area.service';
+import { GetProduct } from '~/services/product.service';
 import { ToolListNames, ToolsModalProps } from '../helpers/SwitchModal';
 import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
+import { GetAuthSession } from '~/helpers/AuthSession';
 
 const SwitchMentoredModal = dynamic<ToolsModalProps>(
   () => import('~/layouts/mentorado/helpers/SwitchModal'),
@@ -26,10 +26,9 @@ export type UserInput = {
   extra?: any;
 };
 
-export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
-  user,
-  member_area_id,
-}) => {
+export const KanbanView: FC<
+  PageTypes.Props & { member_area_id: string; memberArea: any }
+> = ({ user, member_area_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<DnDObject[]>([]);
@@ -47,8 +46,8 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
   }>();
 
   useEffect(() => {
-    if (inputData !== userInput) setUserInput(inputData);
-  }, [inputData, userInput]);
+    setUserInput(inputData);
+  }, [inputData]);
 
   useEffect(() => {
     setSteps((oldSteps) => {
@@ -84,67 +83,75 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
     async ({ tool_id, client_input }) => {
       // timout para dar tempo para as imagens se organizarem
       setTimeout(async function () {
-        await InputUserMemberArea(tool_id, client_input);
+        await InputUserMemberArea(tool_id, client_input, member_area_id);
         mutate();
       }, 1000);
     },
-    [mutate],
+    [member_area_id, mutate],
   );
 
-  const GetOnChange = useCallback(
-    async ({ refId, data, finished }) => {
-      const index = userInput?.findIndex((i) => i.member_area_tool_id == refId);
+  const saveUserInput = useCallback(
+    ({ refId, data, extra, index, inputs }) => {
       setUserInput((oldInput) => {
         if (!oldInput) oldInput = [];
         if (index > -1) {
-          oldInput[index].data = data;
-          oldInput[index].extra = finished;
+          if (data) oldInput[index].data = data;
+          if (extra) oldInput[index].extra = extra;
         } else {
           oldInput?.push({
             member_area_tool_id: refId,
             data,
-            extra: finished,
+            extra,
           } as any);
         }
         return [...oldInput];
       });
-
       handleSave({
         tool_id: refId,
         client_input: {
-          data,
-          id: index > -1 ? userInput[index].id : '0',
-          extra: finished,
+          data: inputs[index] ? Object.assign(inputs[index].data, data) : data,
+          extra: inputs[index]
+            ? Object.assign(inputs[index].extra, extra)
+            : extra,
+          id: index > -1 ? inputs[index].id : '0',
           delete: data.delete,
         },
       });
     },
-    [handleSave, userInput],
+    [handleSave],
+  );
+
+  const GetOnChange = useCallback(
+    async ({ refId, data, extra }) => {
+      const index = userInput?.findIndex((i) => i.member_area_tool_id == refId);
+      saveUserInput({ refId, data, extra, index, inputs: userInput });
+    },
+    [saveUserInput, userInput],
   );
 
   return (
     <>
-      <Toolbar breadcrumbs={['Minhas mentorias', 'Método 4S']} />
+      <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
       <ContentWidthLimit>
         <Wrapper>
           {steps &&
             steps.map((step) => (
               <Step key={step.id}>
-                <Image
-                  alt="imagem"
-                  width={50}
-                  height={50}
-                  src={
-                    step?.extra
-                      ? step?.extra[0]?.sourceUrl
-                      : '/svgs/step-image.svg'
-                  }
-                  style={{
-                    objectFit: 'contain',
-                    marginBottom: '0.5rem',
-                  }}
-                />
-                <Title>{step.title}</Title>
+                {step?.extra && step?.extra[0]?.sourceUrl && (
+                  <Image
+                    alt="imagem"
+                    width={50}
+                    height={50}
+                    src={step?.extra[0]?.sourceUrl}
+                    style={{
+                      objectFit: 'contain',
+                      marginBottom: '0.5rem',
+                    }}
+                  />
+                )}
+                <Title mt={step?.extra && step?.extra[0]?.sourceUrl ? 0 : 4}>
+                  {step.title}
+                </Title>
                 <Box
                   sx={{
                     height: '100%',
@@ -160,7 +167,7 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
                     <Task
                       key={task.id}
                       onClick={() => {
-                        const type = GetTypeName(task.type);
+                        const type = GetTypeName(task.mentor_tool);
                         setOpen(true);
                         setCurrentModal({
                           onChange: GetOnChange,
@@ -221,16 +228,37 @@ export const KanbanView: FC<PageTypes.Props & { member_area_id: string }> = ({
 };
 
 // * ServerSideRender (SSR)
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const id = ctx.query.id as string;
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
+
+  if (!session)
     return {
-      props: {
-        member_area_id: id,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     };
-  },
-});
+
+  const id = ctx.query.id as string;
+
+  // fetch for member area
+  const memberArea = await GetProduct(ctx.req, id);
+
+  if (!memberArea) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: {
+      member_area_id: id,
+      memberArea: {
+        id: memberArea.id,
+        title: memberArea.title,
+        description: memberArea.description,
+      },
+    },
+  };
+};
+
 export default KanbanView;

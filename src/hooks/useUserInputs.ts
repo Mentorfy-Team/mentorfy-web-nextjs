@@ -6,13 +6,10 @@ export function useUserInputs(member_area_id) {
   const { data, error } = useSWR<MemberAreaTypes.UserInput[]>(
     `${ApiRoutes.member_areas_client_input}?id=${member_area_id}`,
     fetcher,
-    {
-      fallbackData: [],
-    },
   );
 
   return {
-    inputs: data,
+    inputs: data || [],
     isLoading: !error && !data,
     isError: error,
   };

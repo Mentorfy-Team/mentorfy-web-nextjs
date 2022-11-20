@@ -3,6 +3,9 @@ export enum ApiRoutes {
   users = '/api/users',
   users_profile = '/api/users/profile',
 
+  // * History
+  history = '/api/history',
+
   //* Rotas para api de clientes
   clients = '/api/clients',
   client_products = '/api/clients/products',
@@ -10,8 +13,10 @@ export enum ApiRoutes {
 
   //* Rotas para api de usuários
   products = '/api/products',
+  products_image = '/api/products/image',
   products_list = '/api/products/list',
   products_update = '/api/products/update',
+  products_clients_list = '/api/products/clients/list',
 
   //* Rotas para api de area de membros
   member_areas = '/api/member-areas',
@@ -20,6 +25,7 @@ export enum ApiRoutes {
   member_areas_tool_list = '/api/member-areas/tool/list',
   member_areas_type_list = '/api/member-areas/type/list',
   member_areas_client_input = '/api/member-areas/client-input',
+  member_areas_client_approval = '/api/member-areas/client-approval',
 
   //* Rotas para api de autenticação
   auth = '/api/auth',

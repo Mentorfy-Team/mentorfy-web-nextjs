@@ -53,3 +53,10 @@ export const AddTaskButton = styled(Button)`
   line-height: 0.9rem;
   text-transform: none;
 `;
+
+export const DeleteText = styled(Typography)`
+  font-size: 1.1rem;
+  font-weight: 300;
+  line-height: 1.6rem;
+  padding: 0.6rem 0;
+`;

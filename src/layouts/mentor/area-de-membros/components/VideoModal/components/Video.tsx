@@ -42,7 +42,7 @@ const Task: React.FC<Props> = ({ data: task, onSaveTask, onDeleteTask }) => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               label="Título"
-              placeholder="Lorem ipsum in dolor win"
+              placeholder=""
               error={error && !title}
               sx={{
                 marginLeft: '0.7rem',

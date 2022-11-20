@@ -10,7 +10,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   const supabase = CreateSupabaseWithAuth(req);
 
   const { data: type, error } = await supabase
-    .from<MentorTools.ToolData>('member_area_type')
+    .from('member_area_type')
     .select('*');
 
   return res.status(200).json(type);

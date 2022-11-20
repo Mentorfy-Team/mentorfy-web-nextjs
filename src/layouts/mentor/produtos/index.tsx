@@ -4,23 +4,21 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { withPageAuth } from '@supabase/auth-helpers-nextjs';
 import dynamic from 'next/dynamic';
 import SearchInput from '~/components/atoms/SearchInput';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
-import { PublicRoutes } from '~/consts';
 import { useProducts } from '~/hooks/useProducts';
-import { GetProfile } from '~/services/profile.service';
 import ProductsTable from './components/ProductsTable';
 import { AddProductButton } from './styles';
 import PlusSvg from '~/../public/svgs/plus';
+import { GetAuthSession } from '~/helpers/AuthSession';
 
 const CreateProductDialog = dynamic(
   () => import('./components/CreateProductDialog'),
 );
 
-const Produtos: FC<PageTypes.Props> = ({ profile, user }) => {
+const Produtos: FC<PageTypes.Props> = ({ user }) => {
   const [openCreatePage, setOpenCreatePage] = useState(false);
   const { products } = useProducts(user.id);
 
@@ -69,18 +67,22 @@ const Produtos: FC<PageTypes.Props> = ({ profile, user }) => {
 };
 
 // * ServerSideRender (SSR)
-export const getProps = withPageAuth({
-  authRequired: true,
-  redirectTo: PublicRoutes.login,
-  async getServerSideProps(ctx) {
-    const { profile } = await GetProfile(ctx.req);
+export const getProps = async (ctx) => {
+  const { session } = await GetAuthSession(ctx);
 
+  if (!session)
     return {
-      props: {
-        profile: profile,
+      redirect: {
+        destination: '/',
+        permanent: false,
       },
     };
-  },
-});
+
+  return {
+    props: {
+      user: session.user,
+    },
+  };
+};
 
 export default Produtos;

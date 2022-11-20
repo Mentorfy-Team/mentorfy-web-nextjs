@@ -1,19 +1,25 @@
 import { FC, useState } from 'react';
 import { useRouter } from 'next/router';
-import { AcessoSubPage } from '..';
-import { LoginButton, SubTitle } from '../styles';
+import { AnimatedView, LoginButton, SubTitle } from '../styles';
+import { userStore } from '~/stores';
 
 type props = {
-  pageChange: (page: AcessoSubPage) => void;
   info: any;
 };
 
-const Sucesso: FC<props> = ({ pageChange, info }) => {
+const Sucesso: FC<props> = ({ info }) => {
   const route = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { setAppParams } = userStore();
 
   return (
-    <>
+    <AnimatedView
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        textAlign: '-webkit-center',
+      }}
+    >
       <SubTitle pb={3} color={(theme) => theme.palette.accent.main}>
         {info || 'Sucesso! Você já pode continuar.'}
       </SubTitle>
@@ -23,13 +29,14 @@ const Sucesso: FC<props> = ({ pageChange, info }) => {
         disabled={isLoading}
         onClick={() => {
           setIsLoading(true);
+          setAppParams({ subpage: 'login', signup: null });
           route.reload();
           setIsLoading(false);
         }}
       >
         CONTINUAR
       </LoginButton>
-    </>
+    </AnimatedView>
   );
 };
 

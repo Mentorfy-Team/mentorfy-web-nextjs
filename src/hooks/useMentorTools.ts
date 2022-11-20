@@ -6,13 +6,10 @@ export function useMentorTools() {
   const { data, error } = useSWR<MentorTools.ToolType[]>(
     `${ApiRoutes.mentor_tools_type}`,
     fetcher,
-    {
-      fallbackData: [],
-    },
   );
 
   return {
-    tools: data,
+    tools: data || [],
     isLoading: !error && !data,
     isError: error,
   };

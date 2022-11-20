@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Button from '@mui/material/Button';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -11,6 +11,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { CustomNavigation, CustomRow, PaperWrapper } from './styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 import ChavronRightSvg from '~/../public/svgs/chavron-right';
+import { useRouter } from 'next/router';
 
 export type Column = {
   id: string;
@@ -20,36 +21,42 @@ export type Column = {
   format?: (value: number) => string;
 };
 
-type TableProps = {
+export type DatagridProps<T> = {
   actionButtons?: (index) => JSX.Element[];
   columns: Column[];
-  rows: any[];
+  rows: T[];
   page: number;
   onPageChange?: (page: number) => void;
   onRowsPerPageChange?: (rowsPerPage: number) => void;
   onTitleClick?: (id) => void;
+  onSelectedRow?: (value: T) => void;
 };
 
-export default function StickyHeadTable({
+export default function StickyHeadTable<T>({
   actionButtons,
   page = 1,
   onPageChange,
   rows = [],
   columns = [],
   onTitleClick,
-}: TableProps) {
+  onSelectedRow,
+}: DatagridProps<T>) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [open, setOpen] = useState(false);
+  const [clientInputs, setClientInputs] = useState<any>([]);
+  const [finishedDate, setFinishedDate] = useState<string>('');
   const isMobile = useMediaQuery('(max-width: 490px)');
   const handleChangePage = (event: unknown, newPage: number) => {
     if (newPage >= 1) onPageChange(newPage);
   };
-
+  const route = useRouter();
   const CreateButtons = (row) => {
     const ac = actionButtons;
 
     return ac(row);
   };
 
+  useEffect(() => {});
   //? TODO: Implementar rows per page se necessário
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -71,6 +78,13 @@ export default function StickyHeadTable({
       </Typography>
     );
   }, [rows]);
+
+  const handleGoToProfile = useCallback(
+    (id) => {
+      route.push(route.asPath + '/perfil?altId=' + id);
+    },
+    [route],
+  );
 
   return (
     <PaperWrapper sx={{ width: '100%', overflow: 'hidden' }}>
@@ -112,11 +126,13 @@ export default function StickyHeadTable({
                           const value = row[column.id];
                           return (
                             <TableCell
-                              onClick={() =>
-                                index === 0 &&
-                                onTitleClick &&
-                                onTitleClick(row.id)
-                              }
+                              onClick={() => {
+                                if (index <= columns.length - 2) {
+                                  if (onSelectedRow) onSelectedRow(row);
+                                  setOpen(true);
+                                  //   handleGoToProfile(row.id);
+                                }
+                              }}
                               sx={{
                                 padding: '8px 16px',
                                 height: '45px',

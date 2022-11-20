@@ -6,6 +6,7 @@ declare namespace ProductApi {
     interface Request {
       query: {
         id: string;
+        related_id?: string;
       };
     }
     interface Response {
@@ -20,7 +21,9 @@ declare namespace ProductApi {
       };
     }
     interface Response {
-      products?: Product[];
+      products?: (Product & {
+        relations: typeof Database.public.Tables.client_product.Row[];
+      })[];
       error?: string;
     }
   }
@@ -34,6 +37,7 @@ declare namespace ProductApi {
         main_type: string;
         old_main_url: string;
         video: string;
+        extra: any;
       };
     }
 

@@ -15,12 +15,15 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
 
   for (let i = 0; i < data.length; i++) {
     const tool = data[i];
-    tool['mentor_tool'] = tool.type;
-    delete tool.type;
     delete (tool as any).toRemove;
 
     const isUUID = tool.id && tool.id.length > 6 && tool.id.includes('-');
     const tool_id = isUUID ? tool.id : null;
+
+    if (tool['type']) {
+      tool.mentor_tool = tool['type'];
+      delete tool['type'];
+    }
 
     // Se o id for maior que 6, é um id do supabase e devemos remover se o delete for true
     if (tool.delete) {
@@ -44,7 +47,8 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
       delete tool.id;
       const { data: memberAreaTool, error } = await supabase
         .from('member_area_tool')
-        .insert({ ...tool, member_area: id });
+        .insert({ ...tool, member_area: id })
+        .select();
 
       createdTools.push(memberAreaTool);
     } else {

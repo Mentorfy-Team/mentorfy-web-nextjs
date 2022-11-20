@@ -1,9 +1,12 @@
-import { SupabaseWithouAuth } from '~/backend/supabase';
+import { SupabaseWithoutAuth } from '~/backend/supabase';
 type Request = UsersApi.Post.Request;
 type Response = UsersApi.Post.Response;
 
 export const post: Handler.Callback<Request, Response> = async (req, res) => {
-  const { email, password, name } = req.body;
+  const {
+    user: { email, password, name },
+    refeerer,
+  } = req.body;
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
@@ -12,15 +15,24 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   }
 
   // * Cria a autenticação do usuário no banco de dados
-  const { user, error } = await SupabaseWithouAuth.auth.signUp({
+  const {
+    data: { user },
+    error,
+  } = await SupabaseWithoutAuth.auth.signUp({
     email,
     password,
   });
 
   // * Se tudo estiver certo, atualiza o perfil do usuário
   if (!error) {
-    await SupabaseWithouAuth.from('profile')
-      .update({ name, plan: 'pro', email: user.email, phone: user.phone })
+    await SupabaseWithoutAuth.from('profile')
+      .update({
+        name,
+        plan: 'pro',
+        email: user.email,
+        phone: user.phone,
+        access_type: refeerer ? 'mentorado' : 'mentor',
+      })
       .eq('id', user.id);
   }
 
@@ -29,6 +41,22 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
     return res
       .status(200)
       .json({ error: 'Esse email já está sendo utilizado.' });
+  }
+
+  if (refeerer) {
+    const {
+      data: { id },
+    } = await SupabaseWithoutAuth.from('product')
+      .select('id')
+      .eq('refeerer', refeerer)
+      .single();
+
+    await SupabaseWithoutAuth.from('client_product').insert({
+      user_id: user.id,
+      product_id: id,
+      subscription: true,
+      approved: false,
+    });
   }
 
   res.status(200).json({

@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { Task, Workspaces } from '@mui/icons-material';
 import Save from '@mui/icons-material/Save';
 import Box from '@mui/material/Box';
@@ -7,16 +7,17 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 import { DnDObject } from '~/components/modules/DragNDrop';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
-import {
-  ToolListNames,
-  ToolsModalProps,
-} from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
+import { useMentorTools } from '~/hooks/useMentorTools';
+import { ToolListNames } from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
+import SwitchModal from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
 import { FilesToDelete } from '~/services/file-upload.service';
 import { UpdateMemberAreaTools } from '~/services/member-area.service';
+import { userStore } from '~/stores';
 import {
   AddGroup,
   AddTool,
@@ -34,10 +35,6 @@ const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
   ssr: false,
 });
 
-const SwitchModal = dynamic<ToolsModalProps>(
-  () => import('~/layouts/mentor/area-de-membros/helpers/SwitchModal'),
-);
-
 type Props = {
   id: string;
 };
@@ -53,13 +50,13 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   }>();
   const [open, setOpen] = useState(false);
   const [steps, setSteps] = useState<DnDObject[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
+  const { isLoading, setLoading } = userStore();
   const theme = useTheme();
   const Image = '/svgs/step-image.svg';
 
   const route = useRouter();
   const { steps: stepsData, mutate } = useMemberAreaTools(id);
+  const { tools } = useMentorTools();
 
   useEffect(() => {
     setSteps((oldSteps) => {
@@ -137,12 +134,17 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   }, [currentModal, open, id]);
 
   const handleSave = useCallback(async () => {
+    setLoading(true);
     // timout para dar tempo para as imagens se organizarem
-    setTimeout(async function () {
+    setTimeout(async () => {
       await UpdateMemberAreaTools(id, steps);
-      mutate();
+      await mutate();
+      toast.success('Alterações salvas com sucesso', { autoClose: 2000 });
+      setTimeout(() => {
+        setLoading(false);
+      }, 250);
     }, 1000);
-  }, [id, mutate, steps]);
+  }, [id, mutate, setLoading, steps]);
 
   // refId é enviado automaticamente antes de chegar aqui.
   const GetOnChange = useCallback(
@@ -164,12 +166,21 @@ const EditarMentoria: FC<Props> = ({ id }) => {
         });
       } else {
         stepIndex = steps.findIndex((row) => row.id === refId + '');
-
-        setSteps((oldSteps) => {
-          Object.assign(oldSteps[stepIndex], data);
-          
-          return [...oldSteps];
-        });
+        if (data.delete) {
+          setSteps((oldSteps) => {
+            Object.assign(oldSteps[stepIndex], data);
+            oldSteps[stepIndex].rows = oldSteps[stepIndex].rows.map((tasks) => {
+              tasks.delete = true;
+              return { ...tasks };
+            });
+            return [...oldSteps];
+          });
+        } else {
+          setSteps((oldSteps) => {
+            Object.assign(oldSteps[stepIndex], data);
+            return [...oldSteps];
+          });
+        }
       }
       handleSave();
     },
@@ -182,7 +193,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
     }).name;
   }, []);
 
-  const hasChanges = useCallback(() => {
+  const hasChanges = useMemo(() => {
     // verifica se todos os elementos do array são iguais
     if (!steps || steps.length === 0) return false;
     const haschanges =
@@ -217,10 +228,14 @@ const EditarMentoria: FC<Props> = ({ id }) => {
           color="primary"
           onClick={() => handleSave()}
           loading={isLoading}
-          disabled={!hasChanges() || isLoading}
+          disabled={!hasChanges || isLoading}
         >
           <Save />
-          <Typography variant="body2" ml={1}>
+          <Typography
+            sx={{ color: isLoading ? 'transparent' : null }}
+            variant="body2"
+            ml={1}
+          >
             Salvar alterações
           </Typography>
         </SaveButton>
@@ -259,7 +274,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
                   isHeader
                   title={step.title || 'Nova etapa'}
                   stepType={0}
-                  image={step?.extra ? step?.extra[0]?.sourceUrl : Image}
+                  image={step?.extra ? step?.extra[0]?.sourceUrl : null}
                   onEdit={() => {
                     const type = GetTypeName(0);
                     setCurrentModal({
@@ -291,10 +306,10 @@ const EditarMentoria: FC<Props> = ({ id }) => {
             return (
               <EditMembersAreaSteps
                 title={stp?.title || 'Nova etapa'}
-                stepType={stp.type}
+                stepType={stp.mentor_tool}
                 image={Image}
                 onEdit={() => {
-                  const type = GetTypeName(stp.type);
+                  const type = GetTypeName(stp.mentor_tool);
                   setCurrentModal({
                     onChange: GetOnChange,
                     type,

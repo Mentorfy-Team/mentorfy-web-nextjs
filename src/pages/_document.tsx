@@ -11,10 +11,6 @@ export default class MyDocument extends Document {
         <Head>
           <meta name="theme-color" content="#1C1B20" />
           <link rel="shortcut icon" href="/favicon.png" />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css?family=Inter:300,500,700&display=swap"
-          />
         </Head>
         <body>
           <Main />
