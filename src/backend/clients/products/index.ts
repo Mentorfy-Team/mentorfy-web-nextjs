@@ -74,10 +74,15 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     };
   });
 
+  // make productsWithProgress should return unique products based on id
+  const uniqueProducts = productsWithProgress.filter(
+    (v, i, a) => a.findIndex((t) => t.id === v.id) === i,
+  );
+
   return res
     .status(200)
     .json(
-      productsWithProgress.filter(
+      uniqueProducts.filter(
         (p) => !req.query.related_id || p.owner === req.query.related_id,
       ),
     );
