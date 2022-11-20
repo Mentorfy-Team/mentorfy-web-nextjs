@@ -38,6 +38,7 @@ interface MyAppProps extends AppProps {
 const App = (props: MyAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const router = useRouter();
+
   const [supabaseClient] = useState(() =>
     createBrowserSupabaseClient<Database>(),
   );
@@ -76,8 +77,8 @@ const App = (props: MyAppProps) => {
     [router.pathname],
   );
 
-  useLayoutEffect(() => {
-    if (process.env.NEXT_PUBLIC_BETA) {
+  useEffect(() => {
+    if (process.env.NEXT_PUBLIC_BETA === 'true') {
       router.push('/beta');
     }
   }, [router]);
@@ -99,9 +100,12 @@ const App = (props: MyAppProps) => {
                 initialSession={pageProps.initialSession}
               >
                 {router.asPath.includes('/m') && <HeaderPartial />}
-                <Drawer>
-                  <Component {...pageProps} />
-                </Drawer>
+                {(process.env.NEXT_PUBLIC_BETA === 'false' ||
+                  router.asPath.includes('beta')) && (
+                  <Drawer>
+                    <Component {...pageProps} />
+                  </Drawer>
+                )}
               </SessionContextProvider>
             </PageWrapper>
             <LoadingPartial />
