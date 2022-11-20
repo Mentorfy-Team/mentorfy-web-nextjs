@@ -131,7 +131,7 @@ export const KanbanView: FC<
 
   return (
     <>
-      <Toolbar breadcrumbs={['Minhas mentorias', 'Método 4S']} />
+      <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
       <ContentWidthLimit>
         <Wrapper>
           {steps &&

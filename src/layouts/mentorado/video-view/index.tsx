@@ -27,8 +27,9 @@ import {
   Wrapper,
 } from './styles';
 import { GetAuthSession } from '~/helpers/AuthSession';
+import { GetProduct } from '~/services/product.service';
 
-export const VideoView = ({ member_area_id, video_id }) => {
+export const VideoView = ({ member_area_id, video_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const [videoId, setVideoId] = useState<string>(video_id);
   const [nextVideoId, setNextVideoId] = useState<string>(null);
@@ -244,7 +245,7 @@ export const VideoView = ({ member_area_id, video_id }) => {
 
   return (
     <>
-      <Toolbar tabs={['Método 4S']} />
+      <Toolbar tabs={[memberArea.title]} />
       <ContentWidthLimit maxWidth={1900}>
         <Wrapper>
           <VideoWrapper>
@@ -380,10 +381,19 @@ export const getProps = async (ctx) => {
 
   const id = ctx.query.id as string;
   const video_id = (ctx.query.v || 0) as string;
+
+  // fetch for member area
+  const memberArea = await GetProduct(ctx.req, id);
+
   return {
     props: {
       member_area_id: id,
       video_id,
+      memberArea: {
+        id: memberArea.id,
+        title: memberArea.title,
+        description: memberArea.description,
+      },
     },
   };
 };

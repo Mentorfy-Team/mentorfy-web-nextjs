@@ -2,6 +2,7 @@ import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
 import { GetAuthSession } from '~/helpers/AuthSession';
+import { GetProduct } from '~/services/product.service';
 import {
   Bundle,
   BundleDescription,
@@ -13,10 +14,10 @@ import {
   TasktTitle,
 } from './styles';
 
-const VerticalKanban = ({ id }) => {
+const VerticalKanban = ({ id, memberArea }) => {
   return (
     <>
-      <Toolbar breadcrumbs={['Minhas mentorias', 'Método 4S']} />
+      <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
       <ContentWidthLimit maxWidth={650}>
         <ScrollArea>
           <Bundle>
@@ -102,9 +103,23 @@ export const getProps = async (ctx) => {
     };
 
   const id = ctx.query.id as string;
+
+  // fetch for member area
+  const memberArea = await GetProduct(ctx.req, id);
+
+  if (!memberArea) {
+    return {
+      notFound: true,
+    };
+  }
   return {
     props: {
       member_area_id: id,
+      memberArea: {
+        id: memberArea.id,
+        title: memberArea.title,
+        description: memberArea.description,
+      },
     },
   };
 };
