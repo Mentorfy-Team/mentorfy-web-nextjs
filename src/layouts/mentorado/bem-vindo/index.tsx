@@ -202,7 +202,10 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
           <Box display="flex" gap="1rem" mt={3} width="100%">
             <PlayButton
               onClick={() => {
-                if (featuredProduct.relation.approved) {
+                if (
+                  featuredProduct.relation.approved ||
+                  featuredProduct.owner === user.id
+                ) {
                   router.push(
                     types
                       .find(
@@ -274,7 +277,10 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                   height={400}
                   key={index}
                   onClick={() => {
-                    if (product.relation.approved) {
+                    if (
+                      product?.relation?.approved ||
+                      featuredProduct.owner === user.id
+                    ) {
                       router.push(
                         types
                           .find(
@@ -354,7 +360,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                   const rel = clientProducts.find(
                     (p) => p.id === product.id,
                   )?.relation;
-                  if (rel && rel.approved) {
+                  if ((rel && rel.approved) || product.owner === user.id) {
                     router.push(
                       types
                         .find((type) => type.id.toString() === product.deliver)
