@@ -207,15 +207,9 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                   featuredProduct.owner === user.id
                 ) {
                   router.push(
-                    types
-                      .find(
-                        (type) =>
-                          type.id.toString() === featuredProduct.deliver,
-                      )
-                      .name.replace(/\s/g, '-')
-                      .normalize('NFD')
-                      .replace(/[\u0300-\u036f]/g, '')
-                      .toLowerCase() +
+                    types.find(
+                      (type) => type.id.toString() === featuredProduct.deliver,
+                    ).path +
                       '/' +
                       featuredProduct.id,
                   );
@@ -282,14 +276,9 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                       featuredProduct.owner === user.id
                     ) {
                       router.push(
-                        types
-                          .find(
-                            (type) => type.id.toString() === product.deliver,
-                          )
-                          .name.replace(/\s/g, '-')
-                          .normalize('NFD')
-                          .replace(/[\u0300-\u036f]/g, '')
-                          .toLowerCase() +
+                        types.find(
+                          (type) => type.id.toString() === product.deliver,
+                        ).path +
                           '/' +
                           product.id,
                       );
@@ -362,12 +351,9 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                   )?.relation;
                   if ((rel && rel.approved) || product.owner === user.id) {
                     router.push(
-                      types
-                        .find((type) => type.id.toString() === product.deliver)
-                        .name.replace(/\s/g, '-')
-                        .normalize('NFD')
-                        .replace(/[\u0300-\u036f]/g, '')
-                        .toLowerCase() +
+                      types.find(
+                        (type) => type.id.toString() === product.deliver,
+                      ).path +
                         '/' +
                         product.id,
                     );

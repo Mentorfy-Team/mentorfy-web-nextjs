@@ -16,6 +16,7 @@ declare namespace MemberAreaTypes {
   type Type = {
     id: string;
     name: string;
+    path: string;
   };
 
   type Tool = typeof Database.public.Tables.mentor_tool.Row;

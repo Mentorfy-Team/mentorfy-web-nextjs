@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import type { AppProps } from 'next/app';
@@ -45,7 +45,7 @@ const App = (props: MyAppProps) => {
     createBrowserSupabaseClient<Database>(),
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (router.asPath.includes('#')) {
       router.replace(router.asPath.replace('#', '?'));
     }
