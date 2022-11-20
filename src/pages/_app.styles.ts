@@ -11,3 +11,13 @@ export const PageWrapper = styled('div')`
   color: white;
   min-height: inherit;
 `;
+
+export const Container = styled('div')`
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+`;

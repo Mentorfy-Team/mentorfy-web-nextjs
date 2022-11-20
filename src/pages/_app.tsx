@@ -76,6 +76,12 @@ const App = (props: MyAppProps) => {
     [router.pathname],
   );
 
+  useLayoutEffect(() => {
+    if (process.env.NEXT_PUBLIC_BETA) {
+      router.push('/beta');
+    }
+  }, [router]);
+
   return (
     <main className={MainFont.className}>
       <CacheProvider value={emotionCache}>
