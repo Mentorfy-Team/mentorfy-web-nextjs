@@ -20,7 +20,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
 
   // if tool is not found, return 404
   if (errorm || !tools || tools.length === 0) {
-    return res.status(404).json({ error: 'Tool not found' });
+    return res.status(200).json({ error: 'Empty Area' });
   }
   // for each tool, get the user input
   const { data: userInputs, error: erroru } = await supabase
