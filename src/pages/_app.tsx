@@ -23,6 +23,8 @@ export const MainFont = Roboto({
   subsets: ['latin'],
 });
 
+const beta = process.env.NEXT_PUBLIC_BETA;
+
 const LoadingPartial = dynamic(
   () => import('~/components/partials/loading/loading.partial'),
 );
@@ -100,7 +102,8 @@ const App = (props: MyAppProps) => {
                 initialSession={pageProps.initialSession}
               >
                 {router.asPath.includes('/m') && <HeaderPartial />}
-                {(process.env.NEXT_PUBLIC_BETA === 'false' ||
+                {(!beta ||
+                  beta === 'false' ||
                   router.asPath.includes('beta')) && (
                   <Drawer>
                     <Component {...pageProps} />
