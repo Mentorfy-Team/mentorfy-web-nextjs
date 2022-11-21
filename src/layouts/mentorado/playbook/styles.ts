@@ -19,7 +19,7 @@ export const SideBar = styled(Box)`
 export const SideBarTitle = styled(Box)`
   align-items: center;
   border: 1px solid ${({ theme }) => theme.palette.success.main};
-  border-radius: 10px;
+  border-radius: 6px;
   display: flex;
   height: 34.62px;
   justify-content: center;

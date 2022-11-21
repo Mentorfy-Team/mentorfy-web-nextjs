@@ -130,6 +130,10 @@ const VerticalKanban: FC<
                         alt="imagem"
                         width={14}
                         height={15}
+                        style={{
+                          marginLeft: '0.4rem',
+                          alignSelf: 'center',
+                        }}
                         src={`/svgs/${
                           userInput?.find(
                             (inp) => inp.member_area_tool_id === task.id,

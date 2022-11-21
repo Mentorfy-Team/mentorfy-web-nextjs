@@ -11,7 +11,7 @@ export const ScrollArea = styled(Box)`
 
 export const Bundle = styled(Box)`
   background-color: ${({ theme }) => theme.palette.primary.light};
-  border-radius: 10px;
+  border-radius: 6px;
   overflow: auto;
   padding: 2.5rem;
 `;
@@ -49,12 +49,12 @@ export const TasksWrapper = styled(Box)`
 export const Task = styled(Box)`
   align-items: center;
   background-color: ${({ theme }) => theme.palette.primary.main};
-  border-radius: 10px;
+  border-radius: 6px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.6rem;
-  padding: 0.6rem;
+  padding: 0.6rem 1rem;
   width: 100%;
 `;
 

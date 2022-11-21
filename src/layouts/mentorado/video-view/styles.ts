@@ -47,7 +47,7 @@ export const LikeButton = styled('button')`
 export const CompleteButton = styled(Button)`
   align-items: center;
   background-color: #20361f;
-  border-radius: 4px;
+  border-radius: 6px;
   color: ${({ theme }) => theme.palette.success.main};
   display: flex;
   gap: 0.5rem;
@@ -58,7 +58,7 @@ export const CompleteButton = styled(Button)`
 export const NextVButton = styled(Button)`
   align-items: center;
   background-color: #424242;
-  border-radius: 4px;
+  border-radius: 6px;
   color: ${({ theme }) => theme.palette.text.primary};
   display: flex;
   gap: 0.5rem;
@@ -68,7 +68,7 @@ export const NextVButton = styled(Button)`
 export const CommentInput = styled('textarea')`
   background-color: #252525;
   border: 1px solid ${({ theme }) => theme.palette.caption.dark};
-  border-radius: 4px;
+  border-radius: 6px;
   color: ${({ theme }) => theme.palette.text.primary};
   flex-grow: 1;
   font-size: 0.9rem;
@@ -82,7 +82,7 @@ export const CommentInput = styled('textarea')`
 
 export const SendButton = styled(Button)`
   align-items: center;
-  border-radius: 4px;
+  border-radius: 6px;
   display: flex;
   gap: 0.5rem;
   width: 12%;
