@@ -165,7 +165,8 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
         .remove([req.body.old_banner_url.split('images/')[1]]);
     }
     Object.assign(toUpdate, {
-      banner_image: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.path,
+      banner_image:
+        `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/images/` + data.path,
     });
   }
 
@@ -187,7 +188,8 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
         .remove([req.body.old_main_url.split('images/')[1]]);
     }
     Object.assign(toUpdate, {
-      main_image: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.path,
+      main_image:
+        `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/images/` + data.path,
     });
   }
 

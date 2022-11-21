@@ -78,7 +78,7 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
         .remove([req.body.old_avatar.split('images/')[1]]);
     }
     Object.assign(toUpdate, {
-      avatar: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.path,
+      avatar: `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/images/` + data.path,
     });
   }
 
