@@ -271,9 +271,11 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                   height={400}
                   key={index}
                   onClick={() => {
+                    console.log(product?.relation);
+                    console.log(user.id);
                     if (
                       product?.relation?.approved ||
-                      featuredProduct.owner === user.id
+                      product.owner === user.id
                     ) {
                       router.push(
                         types.find(
