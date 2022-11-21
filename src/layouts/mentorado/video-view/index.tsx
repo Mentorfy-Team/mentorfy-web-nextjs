@@ -333,7 +333,7 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
 
             <Typography
               variant="body1"
-              sx={{ margin: '1rem 0', maxWidth: 1000, width: '100%' }}
+              sx={{ margin: '1rem 0', maxWidth: 980, width: '100%' }}
             >
               {getVideo()?.description}
             </Typography>
@@ -353,7 +353,11 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
               </SendButton>
             </Box>
           </VideoWrapper>
-          <ProgressBarWrapper>
+          <ProgressBarWrapper
+            sx={{
+              padding: '1rem 0 0 2rem',
+            }}
+          >
             <ProgressBar
               data={steps}
               input={userInput}

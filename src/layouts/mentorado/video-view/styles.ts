@@ -13,7 +13,7 @@ export const VideoWrapper = styled(Box)`
 `;
 
 export const ProgressBarWrapper = styled(Box)`
-  padding: 1rem 0 0 2rem;
+  padding: 1rem 0 0 0;
 `;
 
 export const VideoInteractionsBox = styled(Box)`

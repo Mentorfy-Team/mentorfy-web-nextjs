@@ -6,6 +6,7 @@ export const ScrollArea = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 1.7rem;
+  padding-bottom: 1.7rem;
 `;
 
 export const Bundle = styled(Box)`

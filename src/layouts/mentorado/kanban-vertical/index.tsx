@@ -59,7 +59,7 @@ const VerticalKanban: FC<
     });
   }, [stepsData]);
 
-  const HandleModal = useCallback(() => {
+  const ModalComponent = useCallback(() => {
     return HandleToolModal({
       open,
       setOpen,
@@ -167,7 +167,7 @@ const VerticalKanban: FC<
             ))}
         </ScrollArea>
       </ContentWidthLimit>
-      {open && HandleModal()}
+      {open && ModalComponent()}
     </>
   );
 };
