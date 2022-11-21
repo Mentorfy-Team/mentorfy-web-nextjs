@@ -106,6 +106,7 @@ const Clients: FC<{ user: User }> = ({ user }) => {
                 src="/svgs/export-clients.svg"
                 height={16}
                 width={16}
+                color="inherit"
               />
               {exportClientsText}
             </ClientsOptionsButton>

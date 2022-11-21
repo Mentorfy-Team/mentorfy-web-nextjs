@@ -1,47 +1,112 @@
-import React, { useCallback, useEffect } from 'react';
-import { useClients } from '~/hooks/useClients';
-import { TipText, TipWrapper } from './styles';
-import NextImage from 'next/image';
-import { userStore } from '~/stores';
-// import { Container } from './styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import Image from 'next/image';
+import { FC, useState } from 'react';
+import Plus from '~/../public/svgs/plus';
+import NewMentorModal from './components/AddMentorModal';
+import AssignClientsModal from './components/AssignClientsModal';
+import {
+  ActiveClients,
+  ButtonsWrapper,
+  ClientsNumber,
+  DeleteMentorButtons,
+  Mentor,
+  MentorButtons,
+  MentorEmail,
+  MentorInfo,
+  MentorName,
+  MentorsWrapper,
+  NewTeamButton,
+  TeamTitle,
+  TeamWrapper,
+} from './styles';
 
-const Approvals: React.FC<{ user }> = ({ user }) => {
-  const {
-    clients,
-    statistics,
-    mutate,
-    isLoading: isLoadingClient,
-  } = useClients(user.id, true);
-  const { setLoading } = userStore();
+const Teams: FC<{ user }> = ({ user }) => {
+  const isMobile = useMediaQuery('(max-width: 500px)');
+  const [openAddMentor, setOpenAddMentor] = useState(false);
+  const [openAssingClients, setOpenAssingClients] = useState(false);
 
-  useEffect(() => {
-    setLoading(isLoadingClient);
-  }, [isLoadingClient, setLoading]);
+  // Consts to controll buttons text
+  const deleteMentorText = isMobile ? '' : 'Excluir Mentor';
+  const addMentorText = isMobile ? '' : 'Cadastrar Mentor';
+  const assignClientsText = isMobile ? '' : 'Atribuir Clientes';
+  return (
+    <>
+      <ButtonsWrapper>
+        <DeleteMentorButtons variant="text">
+          {deleteMentorText}
+        </DeleteMentorButtons>
+        <MentorButtons
+          variant="outlined"
+          onClick={() => setOpenAddMentor(true)}
+        >
+          <Plus height={16} width={16} fill="#FE7D22" />
+          {addMentorText}
+        </MentorButtons>
+        <MentorButtons
+          variant="outlined"
+          onClick={() => setOpenAssingClients(true)}
+        >
+          <Plus height={16} width={16} fill="#FE7D22" />
+          {assignClientsText}
+        </MentorButtons>
+      </ButtonsWrapper>
 
-  const ProductsTableComponent = useCallback(() => {
-    return (
-      <>
-        <TipWrapper>
-          <NextImage
-            alt="tip-icon"
-            src="/svgs/tip-icon.svg"
-            width={22}
-            height={22}
-          />
-          <TipText>Em construção.</TipText>
-        </TipWrapper>
-        {/* <ApprovalsTable
-          rows={clients}
-          onApprovalDone={async (id, product_id, approved) => {
-            await ApprovalClient(id, product_id, approved);
-            await mutate();
-          }}
-        /> */}
-      </>
-    );
-  }, []);
+      <TeamWrapper>
+        <TeamTitle>Mentorfy Team</TeamTitle>
 
-  return <ProductsTableComponent />;
+        <MentorsWrapper>
+          <Mentor>
+            <Image
+              alt="imagem-do-mentor"
+              src="/images/area-de-membros.png"
+              width={130}
+              height={115}
+            />
+            <MentorInfo>
+              <MentorName>Antônio Salvior</MentorName>
+              <MentorEmail>antonio_salvior@gmail.com</MentorEmail>
+              <ActiveClients>Clientes Ativos</ActiveClients>
+              <ClientsNumber>259</ClientsNumber>
+            </MentorInfo>
+          </Mentor>
+          <Mentor>
+            <Image
+              alt="imagem-do-mentor"
+              src="/images/area-de-membros.png"
+              width={130}
+              height={115}
+            />
+            <MentorInfo>
+              <MentorName>Antônio Salvior</MentorName>
+              <MentorEmail>antonio_salvior@gmail.com</MentorEmail>
+              <ActiveClients>Clientes Ativos</ActiveClients>
+              <ClientsNumber>259</ClientsNumber>
+            </MentorInfo>
+          </Mentor>
+          <Mentor>
+            <Image
+              alt="imagem-do-mentor"
+              src="/images/area-de-membros.png"
+              width={130}
+              height={115}
+            />
+            <MentorInfo>
+              <MentorName>Antônio Salvior</MentorName>
+              <MentorEmail>antonio_salvior@gmail.com</MentorEmail>
+              <ActiveClients>Clientes Ativos</ActiveClients>
+              <ClientsNumber>259</ClientsNumber>
+            </MentorInfo>
+          </Mentor>
+        </MentorsWrapper>
+      </TeamWrapper>
+      <NewTeamButton variant="outlined">
+        <Plus height={16} width={16} fill="#7586EC" />
+        Criar Novo Time
+      </NewTeamButton>
+      <NewMentorModal open={openAddMentor} setOpen={openAddMentor} />
+      <AssignClientsModal open={openAssingClients} setOpen={openAddMentor} />
+    </>
+  );
 };
 
-export default Approvals;
+export default Teams;

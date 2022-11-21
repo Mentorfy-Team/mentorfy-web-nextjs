@@ -1,4 +1,3 @@
-import { SVGProps } from 'react';
 import { DefaultProps } from './type';
 
 const SvgComponent = ({
