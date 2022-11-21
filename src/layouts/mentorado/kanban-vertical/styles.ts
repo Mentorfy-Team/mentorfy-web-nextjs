@@ -6,13 +6,11 @@ export const ScrollArea = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 1.7rem;
-  
 `;
 
 export const Bundle = styled(Box)`
   background-color: ${({ theme }) => theme.palette.primary.light};
-  border-radius:10px;
-  height: 550px;
+  border-radius: 10px;
   overflow: auto;
   padding: 2.5rem;
 `;
@@ -22,7 +20,7 @@ export const ImageWrapper = styled(Box)`
   flex-direction: column;
 `;
 
-export const BundleTitle= styled(Typography)`
+export const BundleTitle = styled(Typography)`
   font-size: 1.2rem;
   font-weight: 700;
   line-height: 1.6rem;
@@ -31,11 +29,11 @@ export const BundleTitle= styled(Typography)`
 `;
 
 export const BundleDescription = styled(Typography)`
-    color: ${({ theme }) => theme.palette.caption.main};
-    font-size: 1.2rem;
-    font-weight: 300;
-    line-height: 1.3rem;
-    margin-bottom: 1rem;
+  color: ${({ theme }) => theme.palette.caption.main};
+  font-size: 1.2rem;
+  font-weight: 300;
+  line-height: 1.3rem;
+  margin-bottom: 1rem;
 `;
 
 export const TasksWrapper = styled(Box)`
@@ -60,7 +58,7 @@ export const Task = styled(Box)`
 `;
 
 export const TasktTitle = styled(Typography)`
-    font-size: 1.1rem;
-    font-weight: 700;
-    line-height: 1.3rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.3rem;
 `;

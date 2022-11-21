@@ -14,7 +14,7 @@ export const Modal = styled(Dialog)<Props>`
     css`
       .MuiPaper-root {
         height: fit-content;
-        max-height: 100%;
+        max-height: 90%;
         max-width: 1000px;
         overflow: unset;
         @media (max-width: 600px) {
@@ -66,11 +66,12 @@ export const Header = styled(Box)`
   background-color: #1e1e1e;
   display: flex;
   justify-content: center;
+  padding: 0 0.5rem;
 `;
 
 export const ModalDialogTitle = styled(Box)`
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 500;
   line-height: 1rem;
-  padding: 0.5rem 0;
+  padding: 1rem 0.8rem;
 `;

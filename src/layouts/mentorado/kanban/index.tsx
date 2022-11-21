@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
-import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { DnDObject } from '~/components/modules/DragNDrop';
@@ -9,15 +8,11 @@ import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 //import { FilesToDelete } from '~/services/file-upload.service';
 import { useUserInputs } from '~/hooks/useUserInputs';
-import { InputUserMemberArea } from '~/services/member-area.service';
 import { GetProduct } from '~/services/product.service';
-import { ToolListNames, ToolsModalProps } from '../helpers/SwitchModal';
 import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
 import { GetAuthSession } from '~/helpers/AuthSession';
-
-const SwitchMentoredModal = dynamic<ToolsModalProps>(
-  () => import('~/layouts/mentorado/helpers/SwitchModal'),
-);
+import SaveClientInput, { GetTypeName } from '../helpers/SaveClientInput';
+import HandleToolModal from '../helpers/HandleToolModal';
 
 export type UserInput = {
   id?: string;
@@ -28,7 +23,7 @@ export type UserInput = {
 
 export const KanbanView: FC<
   PageTypes.Props & { member_area_id: string; memberArea: any }
-> = ({ user, member_area_id, memberArea }) => {
+> = ({ member_area_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<DnDObject[]>([]);
@@ -56,77 +51,29 @@ export const KanbanView: FC<
     });
   }, [stepsData]);
 
-  const HandleModal = useCallback(() => {
-    return (
-      <SwitchMentoredModal
-        open={open}
-        setOpen={setOpen}
-        onChange={currentModal.onChange}
-        type={currentModal.type}
-        refId={currentModal.refId}
-        area_id={member_area_id}
-        data={currentModal.data}
-        userInput={userInput?.find(
-          (inp) => inp.member_area_tool_id.toString() === currentModal.refId,
-        )}
-      />
-    );
-  }, [currentModal, open, member_area_id, userInput]);
-
-  const GetTypeName = useCallback((type) => {
-    return Object.values(ToolListNames).find((i) => {
-      return i.id == parseInt(type);
-    }).name;
-  }, []);
-
-  const handleSave = useCallback(
-    async ({ tool_id, client_input }) => {
-      // timout para dar tempo para as imagens se organizarem
-      setTimeout(async function () {
-        await InputUserMemberArea(tool_id, client_input, member_area_id);
-        mutate();
-      }, 1000);
-    },
-    [member_area_id, mutate],
-  );
-
-  const saveUserInput = useCallback(
-    ({ refId, data, extra, index, inputs }) => {
-      setUserInput((oldInput) => {
-        if (!oldInput) oldInput = [];
-        if (index > -1) {
-          if (data) oldInput[index].data = data;
-          if (extra) oldInput[index].extra = extra;
-        } else {
-          oldInput?.push({
-            member_area_tool_id: refId,
-            data,
-            extra,
-          } as any);
-        }
-        return [...oldInput];
-      });
-      handleSave({
-        tool_id: refId,
-        client_input: {
-          data: inputs[index] ? Object.assign(inputs[index].data, data) : data,
-          extra: inputs[index]
-            ? Object.assign(inputs[index].extra, extra)
-            : extra,
-          id: index > -1 ? inputs[index].id : '0',
-          delete: data.delete,
-        },
-      });
-    },
-    [handleSave],
-  );
+  const ModalComponent = useCallback(() => {
+    return HandleToolModal({
+      open,
+      setOpen,
+      currentModal,
+      area_id: member_area_id,
+      inputs: inputData,
+    });
+  }, [open, currentModal, member_area_id, inputData]);
 
   const GetOnChange = useCallback(
     async ({ refId, data, extra }) => {
       const index = userInput?.findIndex((i) => i.member_area_tool_id == refId);
-      saveUserInput({ refId, data, extra, index, inputs: userInput });
+      SaveClientInput({
+        data: { refId, data, extra, index, inputs: userInput },
+        callbacks: {
+          result: setUserInput,
+          mutate,
+        },
+        member_area_id,
+      });
     },
-    [saveUserInput, userInput],
+    [member_area_id, mutate, userInput],
   );
 
   return (
@@ -222,7 +169,7 @@ export const KanbanView: FC<
             ))}
         </Wrapper>
       </ContentWidthLimit>
-      {open && HandleModal()}
+      {open && ModalComponent()}
     </>
   );
 };
