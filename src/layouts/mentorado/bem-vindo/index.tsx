@@ -271,8 +271,6 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
                   height={400}
                   key={index}
                   onClick={() => {
-                    console.log(product?.relation);
-                    console.log(user.id);
                     if (
                       product?.relation?.approved ||
                       product.owner === user.id
