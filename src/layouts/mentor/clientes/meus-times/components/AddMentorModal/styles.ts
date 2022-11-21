@@ -13,9 +13,9 @@ export const AcessLevelSelectField = styled(SelectField)`
   label {
     color: ${({ theme }) => theme.palette.text.primary} !important;
   }
-  .MuiInputBase-root {
+  fieldset {
     border-color: #fff;
-    height: 2.8rem;
+
     &:focus {
       border-color: #4a538d !important;
     }

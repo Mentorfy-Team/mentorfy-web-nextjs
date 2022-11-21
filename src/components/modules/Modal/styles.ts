@@ -35,7 +35,10 @@ export const Modal = styled(Dialog)<Props>`
 `;
 
 export const ModalDialogContent = styled(DialogContent)<Props>`
+  align-items: center;
   background-color: ${({ theme }) => theme.palette.primary.main};
+  display: flex;
+  flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
   ${({ isMentorado }) =>

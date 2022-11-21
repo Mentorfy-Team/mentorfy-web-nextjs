@@ -4,6 +4,8 @@ import { FC, useState } from 'react';
 import Plus from '~/../public/svgs/plus';
 import NewMentorModal from './components/AddMentorModal';
 import AssignClientsModal from './components/AssignClientsModal';
+import DeleteMentorModal from './components/DeleteMentorModal';
+import NewTeamModal from './components/NewTeamModal';
 import {
   ActiveClients,
   ButtonsWrapper,
@@ -24,6 +26,8 @@ const Teams: FC<{ user }> = ({ user }) => {
   const isMobile = useMediaQuery('(max-width: 500px)');
   const [openAddMentor, setOpenAddMentor] = useState(false);
   const [openAssingClients, setOpenAssingClients] = useState(false);
+  const [openNewTeam, setOpenNewTeam] = useState(false);
+  const [openDeleteMentor, setDeleteMentor] = useState(false);
 
   // Consts to controll buttons text
   const deleteMentorText = isMobile ? '' : 'Excluir Mentor';
@@ -32,7 +36,10 @@ const Teams: FC<{ user }> = ({ user }) => {
   return (
     <>
       <ButtonsWrapper>
-        <DeleteMentorButtons variant="text">
+        <DeleteMentorButtons
+          variant="text"
+          onClick={() => setDeleteMentor(true)}
+        >
           {deleteMentorText}
         </DeleteMentorButtons>
         <MentorButtons
@@ -99,12 +106,17 @@ const Teams: FC<{ user }> = ({ user }) => {
           </Mentor>
         </MentorsWrapper>
       </TeamWrapper>
-      <NewTeamButton variant="outlined">
+      <NewTeamButton variant="outlined" onClick={() => setOpenNewTeam(true)}>
         <Plus height={16} width={16} fill="#7586EC" />
         Criar Novo Time
       </NewTeamButton>
-      <NewMentorModal open={openAddMentor} setOpen={openAddMentor} />
-      <AssignClientsModal open={openAssingClients} setOpen={openAddMentor} />
+      <NewMentorModal open={openAddMentor} setOpen={setOpenAddMentor} />
+      <AssignClientsModal
+        open={openAssingClients}
+        setOpen={setOpenAssingClients}
+      />
+      <NewTeamModal open={openNewTeam} setOpen={setOpenNewTeam} />
+      <DeleteMentorModal open={openDeleteMentor} setOpen={setDeleteMentor} />
     </>
   );
 };
