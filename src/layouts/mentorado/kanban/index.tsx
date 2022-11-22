@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import { DnDObject } from '~/components/modules/DragNDrop';
+import { GroupTools } from '~/components/modules/DragNDrop';
 import Toolbar from '~/components/modules/Toolbar';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
@@ -26,7 +26,7 @@ export const KanbanView: FC<
 > = ({ member_area_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
-  const [steps, setSteps] = useState<DnDObject[]>([]);
+  const [steps, setSteps] = useState<GroupTools[]>([]);
   const [userInput, setUserInput] = useState<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);

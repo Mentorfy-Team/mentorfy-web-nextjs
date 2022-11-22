@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { DnDObject } from '~/components/modules/DragNDrop';
+import { GroupTools } from '~/components/modules/DragNDrop';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 //import { FilesToDelete } from '~/services/file-upload.service';
@@ -34,7 +34,7 @@ const VerticalKanban: FC<
 > = ({ member_area_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
-  const [steps, setSteps] = useState<DnDObject[]>([]);
+  const [steps, setSteps] = useState<GroupTools[]>([]);
   const [userInput, setUserInput] = useState<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);

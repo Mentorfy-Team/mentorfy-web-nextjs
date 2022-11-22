@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import { DnDObject } from '~/components/modules/DragNDrop';
+import { GroupTools } from '~/components/modules/DragNDrop';
 import ProgressBar from '~/components/modules/ProgressBar';
 import Toolbar from '~/components/modules/Toolbar';
 import { MentoredRoutes } from '~/consts';
@@ -34,7 +34,7 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
   const [videoId, setVideoId] = useState<string>(video_id);
   const [nextVideoId, setNextVideoId] = useState<string>(null);
   const { inputs: inputData } = useUserInputs(member_area_id);
-  const [steps, setSteps] = useState<DnDObject[]>([]);
+  const [steps, setSteps] = useState<GroupTools[]>([]);
   const [videosOrdem, setVideosOrdem] = useState<MentorTools.ToolData[]>([]);
   const [userInput, setUserInput] = useState<
     Partial<MemberAreaTypes.UserInput[]>

@@ -131,6 +131,13 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
     })
     .single();
 
+  await supabase
+    .from('product')
+    .update({
+      member_area: data.id,
+    })
+    .eq('id', data.id);
+
   res.status(200).json({ product: data, error: error?.message });
 };
 

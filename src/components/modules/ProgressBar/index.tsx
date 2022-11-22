@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import { DnDObject } from '../DragNDrop';
+import { GroupTools } from '../DragNDrop';
 import {
   BundleWrapper,
   CircleProgressBar,
@@ -41,7 +41,7 @@ const ProgressBar = ({
   activeid,
   onGoTo,
 }: {
-  data: DnDObject[];
+  data: GroupTools[];
   input: MemberAreaTypes.UserInput[];
   activeid: string;
   onGoTo: (id) => void;
@@ -63,12 +63,12 @@ const ProgressBar = ({
     return ids.length > 0 ? (progress / ids.length) * 100 : 0;
   };
 
-  const getProgressByStep = (step: DnDObject) => {
+  const getProgressByStep = (step: GroupTools) => {
     const ids = step.rows.map((r) => r.id);
     return getProgress(ids);
   };
 
-  const getDoneByStep = (step: DnDObject) => {
+  const getDoneByStep = (step: GroupTools) => {
     const ids = step.rows.map((r) => r.id);
     let done = 0;
     ids.forEach((id) => {

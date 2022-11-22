@@ -1,10 +1,13 @@
-import { DnDObject } from '~/components/modules/DragNDrop';
+import { GroupTools } from '~/components/modules/DragNDrop';
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { UserInput } from '~/layouts/mentorado/kanban';
 import { DataUtil } from '~/shared/utils';
 import { HttpClient } from './HttpClient';
 
-export const UpdateMemberAreaTools = async (id: string, steps: DnDObject[]) => {
+export const UpdateMemberAreaTools = async (
+  id: string,
+  steps: GroupTools[],
+) => {
   // para cada tool salva a ordem na propriedade order
   const tools: MentorTools.ToolData[] = [];
 

@@ -189,11 +189,16 @@ const Geral: FC<props> = ({ id }) => {
       <InputField
         color="secondary"
         value={
-          types.find((type) =>
-            type.id === product?.member_area
-              ? (product?.member_area as any).type_id
-              : 5,
-          )?.name
+          types.find((type) => {
+            console.log(
+              'TEPS ',
+              types,
+              type.id,
+              type.name,
+              (product?.member_area as any)?.type_id,
+            );
+            return type.id === (product?.member_area as any)?.type_id;
+          })?.name
         }
         disabled
         label="Tipo de Área de Membros"

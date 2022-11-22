@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
-import { DnDObject } from '~/components/modules/DragNDrop';
+import { GroupTools } from '~/components/modules/DragNDrop';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
@@ -38,17 +38,19 @@ type Props = {
   id: string;
 };
 
+type ModalType = {
+  onChange: any;
+  type: string;
+  refId?: string;
+  area_id?: string;
+  data?: any;
+  rows?: any[];
+};
+
 const EditarMentoria: FC<Props> = ({ id }) => {
-  const [currentModal, setCurrentModal] = useState<{
-    onChange: any;
-    type: string;
-    refId?: string;
-    area_id?: string;
-    data?: any;
-    rows?: any[];
-  }>();
+  const [currentModal, setCurrentModal] = useState<ModalType>();
   const [open, setOpen] = useState(false);
-  const [steps, setSteps] = useState<DnDObject[]>([]);
+  const [steps, setSteps] = useState<GroupTools[]>([]);
   const { isLoading, setLoading } = userStore();
   const theme = useTheme();
   const Image = '/svgs/step-image.svg';
@@ -59,7 +61,6 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   useEffect(() => {
     setSteps((oldSteps) => {
       oldSteps = [...OrganizeTools(stepsData)];
-      console.log('oldSteps', oldSteps);
       return [...oldSteps];
     });
   }, [stepsData]);
@@ -190,7 +191,6 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   );
 
   const GetTypeName = useCallback((type) => {
-    console.log('type', type);
     return Object.values(ToolListNames).find((i) => {
       return i.id == parseInt(type);
     }).name;
@@ -305,7 +305,6 @@ const EditarMentoria: FC<Props> = ({ id }) => {
           }}
           model={(stp) => {
             if (!stp) return null;
-            console.log('stp', stp);
             return (
               <EditMembersAreaSteps
                 title={stp?.title || 'Nova etapa'}
