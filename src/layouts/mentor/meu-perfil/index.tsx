@@ -20,7 +20,7 @@ enum tabs {
 type props = PageTypes.Props & {
   product: ProductClient.Product;
   tab: string;
-  mentored_id: string;
+  mentored_id?: string;
   isViewingMentored: boolean;
 };
 
@@ -92,7 +92,7 @@ export const getProps = async (ctx) => {
     };
 
   return {
-    props: { user: session.user, mentored_id: ctx.query.altId },
+    props: { user: session.user, mentored_id: ctx.query.altId ?? null },
   };
 };
 
