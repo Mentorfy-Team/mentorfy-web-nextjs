@@ -156,7 +156,7 @@ const VerticalKanban: FC<
                       width={200}
                       height={120}
                       src={
-                        step.extra.length > 1
+                        step.extra?.length > 1
                           ? step.extra[1].sourceUrl
                           : '/svgs/finished.svg'
                       }

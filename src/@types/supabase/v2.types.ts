@@ -260,6 +260,7 @@ export interface Database {
           member_area: string | null
           video: string | null
           extra: Json | null
+          extra_image: string | null
         }
         Insert: {
           owner: string
@@ -277,6 +278,7 @@ export interface Database {
           member_area?: string | null
           video?: string | null
           extra?: Json | null
+          extra_image?: string | null
         }
         Update: {
           owner?: string
@@ -294,6 +296,7 @@ export interface Database {
           member_area?: string | null
           video?: string | null
           extra?: Json | null
+          extra_image?: string | null
         }
       }
       profile: {

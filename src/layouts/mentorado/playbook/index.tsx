@@ -23,6 +23,7 @@ import { GetProduct } from '~/services/product.service';
 import { ProgressBarWrapper } from '../video-view/styles';
 import ProgressBar from '~/components/modules/ProgressBar';
 import TipBar from '~/components/modules/TipBar';
+import NextImage from 'next/image';
 
 export const Playbook: FC<
   PageTypes.Props & { member_area_id: string; memberArea: any }
@@ -108,7 +109,19 @@ export const Playbook: FC<
             </ProgressBarWrapper>
           </SideBar>
           <Box>
-            <Banner>Olá</Banner>
+            {memberArea.extra_image ? (
+              <NextImage
+                alt="banner"
+                src={memberArea.extra_image}
+                width={1000}
+                height={200}
+                style={{
+                  objectFit: 'cover',
+                }}
+              />
+            ) : (
+              <Banner />
+            )}
 
             <Tips>
               {steps &&
@@ -170,6 +183,7 @@ export const getProps = async (ctx) => {
         id: memberArea.id,
         title: memberArea.title,
         description: memberArea.description,
+        extra_image: memberArea.extra_image,
       },
     },
   };

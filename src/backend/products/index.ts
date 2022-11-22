@@ -200,6 +200,29 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
     });
   }
 
+  if (req.body.extra_image) {
+    const { data, error } = await supabase.storage
+      .from('images')
+      .upload(
+        `${req.body.id}/${nanoid(6)}.${req.body.extra_type}`,
+        fixBase64(req.body.extra_image),
+        {
+          cacheControl: '3600',
+          upsert: true,
+          contentType: `image/${req.body.extra_type}`,
+        },
+      );
+    if (!error && req.body.old_banner_url) {
+      const { data, error } = await supabase.storage
+        .from('images')
+        .remove([req.body.old_extra_url.split('images/')[1]]);
+    }
+    Object.assign(toUpdate, {
+      extra_image:
+        `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/images/` + data.path,
+    });
+  }
+
   if (req.body.title) {
     Object.assign(toUpdate, { title: req.body.title });
   }

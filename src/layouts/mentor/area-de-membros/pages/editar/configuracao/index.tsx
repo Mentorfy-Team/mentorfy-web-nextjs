@@ -34,6 +34,7 @@ const Geral: FC<props> = ({ id }) => {
   const [productImage, setProductImage] = useState({
     main_image: { file: '', type: '' },
     banner_image: { file: '', type: '' },
+    extra_image: { file: '', type: '' },
   });
   const { handleSubmit, watch, setValue } = useForm<ProductClient.Product>();
   const { product: pData } = useGetProduct(id);
@@ -41,6 +42,7 @@ const Geral: FC<props> = ({ id }) => {
   const [description, setDescription] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const { types } = useMemberAreaTypes();
+  const [currentType, setCurrentType] = useState<MemberAreaTypes.Type>();
   const theme = useTheme();
   const [displayPicker, setDisplayPicker] = useState<{ one; two; three }>({
     one: false,
@@ -66,9 +68,19 @@ const Geral: FC<props> = ({ id }) => {
         file: pData?.banner_image || '',
         type: '',
       },
+      extra_image: {
+        file: pData?.extra_image || '',
+        type: '',
+      },
     });
     setVideo(pData?.video || '');
-  }, [pData, setValue, description]);
+
+    setCurrentType(
+      types.find((type) => {
+        return type.id === (product?.member_area as any)?.type_id;
+      }),
+    );
+  }, [pData, setValue, description, types, product?.member_area]);
 
   const onSubmit: SubmitHandler<ProductClient.CreateProduct> = useCallback(
     async (values) => {
@@ -87,6 +99,14 @@ const Geral: FC<props> = ({ id }) => {
           banner_type: productImage.banner_image.type,
           banner_owner: product.owner,
           old_banner_url: product.banner_image,
+        });
+      }
+      if (productImage.extra_image.file !== product.extra_image) {
+        Object.assign(values, {
+          extra_image: productImage.extra_image.file,
+          extra_type: productImage.extra_image.type,
+          extra_owner: product.owner,
+          old_extra_url: product.extra_image,
         });
       }
       await UpdateProduct({
@@ -188,18 +208,7 @@ const Geral: FC<props> = ({ id }) => {
       />
       <InputField
         color="secondary"
-        value={
-          types.find((type) => {
-            console.log(
-              'TEPS ',
-              types,
-              type.id,
-              type.name,
-              (product?.member_area as any)?.type_id,
-            );
-            return type.id === (product?.member_area as any)?.type_id;
-          })?.name
-        }
+        value={currentType?.name}
         disabled
         label="Tipo de Área de Membros"
         InputLabelProps={{
@@ -493,6 +502,69 @@ const Geral: FC<props> = ({ id }) => {
             </Box>
           </Box>
         </Grid>
+        {currentType?.id === 3 && (
+          <Grid xs={12} pb={2} sx={{ float: 'left' }}>
+            <Typography
+              variant="body1"
+              sx={{ marginBottom: '0.6rem', textAlign: 'start' }}
+            >
+              Banner Central na Área de Membros
+            </Typography>
+            <Box display="flex">
+              {productImage.extra_image.file ? (
+                <Image
+                  alt="imagem do produto"
+                  src={productImage.banner_image.file}
+                  width={180}
+                  height={90}
+                  style={{
+                    borderRadius: '10px',
+                    objectFit: 'cover',
+                  }}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    bgcolor: (theme) => theme.palette.secondary.main,
+                    minWidth: 180,
+                    height: 90,
+                    borderRadius: 1,
+                    display: 'flex',
+                    placeItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                />
+              )}
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="flex-start"
+                sx={{
+                  float: 'right',
+                  marginLeft: '1rem',
+                }}
+              >
+                <ActionButton
+                  sx={{ padding: '0px', height: '20px' }}
+                  color="primary"
+                  as="label"
+                  onChange={(e) => handleCapture(e.target, 'banner_image')}
+                >
+                  Trocar banner
+                  <input hidden accept="image/*" type="file" />
+                </ActionButton>
+                <Typography
+                  variant="caption"
+                  color="gray"
+                  sx={{ textAlign: 'initial' }}
+                >
+                  Recomendação: <br />
+                  1000x200 pixels
+                </Typography>
+              </Box>
+            </Box>
+          </Grid>
+        )}
       </Grid>
     </form>
   );
