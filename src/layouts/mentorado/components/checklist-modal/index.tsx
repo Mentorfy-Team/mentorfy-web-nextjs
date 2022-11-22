@@ -86,7 +86,7 @@ const ChecklistModal = ({
 
   return (
     <ModalComponent title={HeadText} isMentorado open={open} setOpen={setOpen}>
-      <ModalDialogContent isMentorado sx={{ width: '400px' }}>
+      <ModalDialogContent isMentorado>
         <Description>{descriptionData}</Description>
 
         {taskData && (
