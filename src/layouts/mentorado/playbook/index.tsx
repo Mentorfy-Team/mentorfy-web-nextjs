@@ -89,13 +89,15 @@ export const Playbook: FC<
     <>
       <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
       <ContentWidthLimit maxWidth={1900}>
-        {(!steps || steps.length == 0) && (
-          <TipBar>
-            Ainda não há <span>nenhuma etapa disponível</span> para essa
-            mentoria. Em caso de dúvidas, entre em contato com o suporte da
-            mentoria.
-          </TipBar>
-        )}
+        {!steps ||
+          steps.length == 0 ||
+          (steps && steps.every((stp) => stp.rows.length == 0) && (
+            <TipBar>
+              Ainda não há <span>nenhuma etapa ou atividades disponíveis</span>{' '}
+              para essa mentoria. Em caso de dúvidas, entre em contato com o
+              suporte da mentoria.
+            </TipBar>
+          ))}
         <Wrapper>
           <SideBar>
             <SideBarTitle>{memberArea.title}</SideBarTitle>

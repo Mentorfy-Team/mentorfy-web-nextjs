@@ -133,6 +133,12 @@ const ContinuosMentoring: FC<
                 </ImageWrapper>
 
                 <TasksWrapper>
+                  {(!step.rows || step.rows.length == 0) && (
+                    <TipBar>
+                      Ainda não há <span>nenhuma atividade disponível</span>{' '}
+                      para essa etapa. Aguarde novas atualizações.
+                    </TipBar>
+                  )}
                   {step.rows.map((task) => (
                     <Task
                       key={task.id}

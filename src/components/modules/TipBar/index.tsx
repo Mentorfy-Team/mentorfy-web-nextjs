@@ -2,9 +2,17 @@ import React from 'react';
 import NextImage from 'next/image';
 import { TipText, TipWrapper } from './styles';
 
-const TipBar: React.FC<{ children }> = ({ children }) => {
+const TipBar: React.FC<{ children; left? }> = ({ children, left = true }) => {
   return (
-    <TipWrapper>
+    <TipWrapper
+      sx={
+        left
+          ? {
+              textAlign: 'left',
+            }
+          : {}
+      }
+    >
       <NextImage
         alt="tip-icon"
         src="/svgs/tip-icon.svg"

@@ -28,6 +28,7 @@ import {
 } from './styles';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import { GetProduct } from '~/services/product.service';
+import TipBar from '~/components/modules/TipBar';
 
 export const VideoView = ({ member_area_id, video_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
@@ -247,6 +248,13 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
     <>
       <Toolbar tabs={[memberArea.title]} />
       <ContentWidthLimit maxWidth={1900}>
+        {(!steps || steps.length == 0) && (
+          <TipBar>
+            Ainda não há <span>nenhuma etapa disponível</span> para essa
+            mentoria. Em caso de dúvidas, entre em contato com o suporte da
+            mentoria.
+          </TipBar>
+        )}
         <Wrapper>
           <VideoWrapper>
             <Typography variant="h6" sx={{ margin: '1rem 0' }}>
