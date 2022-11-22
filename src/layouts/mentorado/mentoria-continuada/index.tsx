@@ -113,7 +113,7 @@ const ContinuosMentoring: FC<
         )}
         <ScrollArea>
           {steps &&
-            [...steps, ...steps, ...steps].map((step) => (
+            steps.map((step) => (
               <Bundle key={step.id}>
                 <ImageWrapper>
                   {step?.extra && step?.extra[0]?.sourceUrl && (
