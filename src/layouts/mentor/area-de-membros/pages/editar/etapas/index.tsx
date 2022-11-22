@@ -12,7 +12,6 @@ import { DnDObject } from '~/components/modules/DragNDrop';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
-import { useMentorTools } from '~/hooks/useMentorTools';
 import { ToolListNames } from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
 import SwitchModal from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
 import { FilesToDelete } from '~/services/file-upload.service';
@@ -56,37 +55,40 @@ const EditarMentoria: FC<Props> = ({ id }) => {
 
   const route = useRouter();
   const { steps: stepsData, mutate } = useMemberAreaTools(id);
-  const { tools } = useMentorTools();
 
   useEffect(() => {
     setSteps((oldSteps) => {
       oldSteps = [...OrganizeTools(stepsData)];
+      console.log('oldSteps', oldSteps);
       return [...oldSteps];
     });
   }, [stepsData]);
 
-  const addNewTool = useCallback((title, description, type, group_id) => {
-    const newTool = {
-      id: Math.random() + '',
-      title: title,
-      description: description,
-      type,
-    };
+  const addNewTool = useCallback(
+    (title, description, mentor_tool, group_id) => {
+      const newTool = {
+        id: Math.random() + '',
+        title: title,
+        description: description,
+        mentor_tool,
+      };
 
-    setSteps((oldSteps) => {
-      const index = oldSteps.findIndex((stp) => stp.id === group_id);
-      if (!oldSteps[index].rows) oldSteps[index].rows = [];
-      oldSteps[index].rows.push(newTool);
+      setSteps((oldSteps) => {
+        const index = oldSteps.findIndex((stp) => stp.id === group_id);
+        if (!oldSteps[index].rows) oldSteps[index].rows = [];
+        oldSteps[index].rows.push(newTool);
 
-      return [...oldSteps];
-    });
-  }, []);
+        return [...oldSteps];
+      });
+    },
+    [],
+  );
 
   const addNewGroup = useCallback(() => {
     const newStep = {
       id: Math.random() + '',
       title: 'Novo Agrupador de Etapas ' + (steps.length + 1),
-      type: '0',
+      mentor_tool: '0',
       rows: [],
     };
 
@@ -188,6 +190,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   );
 
   const GetTypeName = useCallback((type) => {
+    console.log('type', type);
     return Object.values(ToolListNames).find((i) => {
       return i.id == parseInt(type);
     }).name;
@@ -302,7 +305,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
           }}
           model={(stp) => {
             if (!stp) return null;
-
+            console.log('stp', stp);
             return (
               <EditMembersAreaSteps
                 title={stp?.title || 'Nova etapa'}
