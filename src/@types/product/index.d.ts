@@ -8,7 +8,7 @@ declare namespace ProductTypes {
   };
   type Address = typeof Database.public.Tables.address.Row;
 
-  type resultJorney = Omit<DnDObject, 'rows'> & {
+  type resultJorney = Omit<GroupTools, 'rows'> & {
     currentClients: ClientJorney[];
     rows: (MentorTools.ToolData & {
       clients: ClientJorney[];

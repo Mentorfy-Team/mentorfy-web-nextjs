@@ -51,7 +51,6 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
       const res = await fetch(`/api/products?id=${productId}`, {
         method: 'DELETE',
       });
-      console.log('res', res.status);
       if (res.status === 200) {
         toast.success('Alterações salvas com sucesso.');
       } else if (res.status === 400) {

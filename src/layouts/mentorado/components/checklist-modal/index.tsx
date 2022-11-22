@@ -44,7 +44,6 @@ const ChecklistModal = ({
   const [color, setColor] = useState(false);
 
   const handleFinish = () => {
-    console.log(taskData);
     if (taskData)
       onChange({
         data: input,

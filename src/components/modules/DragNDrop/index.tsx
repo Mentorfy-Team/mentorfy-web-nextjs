@@ -15,7 +15,7 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 
-export type DnDObject = {
+export type GroupTools = {
   id: string;
   title: string;
   description?: string;

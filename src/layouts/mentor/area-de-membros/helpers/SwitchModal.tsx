@@ -185,9 +185,23 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
         />
       );
     case ToolListNames.ToolList.name:
-      return <ToolList open={open} setOpen={setOpen} onChange={onChange} />;
+      return (
+        <ToolList
+          open={open}
+          setOpen={setOpen}
+          onChange={onChange}
+          area_id={area_id}
+        />
+      );
     default:
-      return <ToolList open={open} setOpen={setOpen} onChange={onChange} />;
+      return (
+        <ToolList
+          open={open}
+          setOpen={setOpen}
+          onChange={onChange}
+          area_id={area_id}
+        />
+      );
   }
 };
 

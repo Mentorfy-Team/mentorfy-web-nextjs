@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import { DnDObject } from '~/components/modules/DragNDrop';
+import { GroupTools } from '~/components/modules/DragNDrop';
+import TipBar from '~/components/modules/TipBar';
 import Toolbar from '~/components/modules/Toolbar';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
@@ -26,7 +27,7 @@ const ContinuosMentoring: FC<
 > = ({ member_area_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
-  const [steps, setSteps] = useState<DnDObject[]>([]);
+  const [steps, setSteps] = useState<GroupTools[]>([]);
   const [userInput, setUserInput] = useState<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
@@ -103,6 +104,13 @@ const ContinuosMentoring: FC<
     <>
       <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
       <ContentWidthLimit maxWidth={1900}>
+        {(!steps || steps.length == 0) && (
+          <TipBar>
+            Ainda não há <span>nenhuma etapa disponível</span> para essa
+            mentoria. Em caso de dúvidas, entre em contato com o suporte da
+            mentoria.
+          </TipBar>
+        )}
         <ScrollArea>
           {steps &&
             [...steps, ...steps, ...steps].map((step) => (
@@ -125,6 +133,12 @@ const ContinuosMentoring: FC<
                 </ImageWrapper>
 
                 <TasksWrapper>
+                  {(!step.rows || step.rows.length == 0) && (
+                    <TipBar>
+                      Ainda não há <span>nenhuma atividade disponível</span>{' '}
+                      para essa etapa. Aguarde novas atualizações.
+                    </TipBar>
+                  )}
                   {step.rows.map((task) => (
                     <Task
                       key={task.id}

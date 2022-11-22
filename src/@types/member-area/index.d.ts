@@ -14,7 +14,7 @@ declare namespace MemberAreaTypes {
   };
 
   type Type = {
-    id: string;
+    id: string | number;
     name: string;
     path: string;
   };

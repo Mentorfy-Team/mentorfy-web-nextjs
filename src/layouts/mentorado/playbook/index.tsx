@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import { DnDObject } from '~/components/modules/DragNDrop';
+import { GroupTools } from '~/components/modules/DragNDrop';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import {
@@ -22,13 +22,15 @@ import Toolbar from '~/components/modules/Toolbar';
 import { GetProduct } from '~/services/product.service';
 import { ProgressBarWrapper } from '../video-view/styles';
 import ProgressBar from '~/components/modules/ProgressBar';
+import TipBar from '~/components/modules/TipBar';
+import NextImage from 'next/image';
 
 export const Playbook: FC<
   PageTypes.Props & { member_area_id: string; memberArea: any }
 > = ({ member_area_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
-  const [steps, setSteps] = useState<DnDObject[]>([]);
+  const [steps, setSteps] = useState<GroupTools[]>([]);
   const [userInput, setUserInput] = useState<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
@@ -87,6 +89,15 @@ export const Playbook: FC<
     <>
       <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
       <ContentWidthLimit maxWidth={1900}>
+        {!steps ||
+          steps.length == 0 ||
+          (steps && steps.every((stp) => stp.rows.length == 0) && (
+            <TipBar>
+              Ainda não há <span>nenhuma etapa ou atividades disponíveis</span>{' '}
+              para essa mentoria. Em caso de dúvidas, entre em contato com o
+              suporte da mentoria.
+            </TipBar>
+          ))}
         <Wrapper>
           <SideBar>
             <SideBarTitle>{memberArea.title}</SideBarTitle>
@@ -100,7 +111,19 @@ export const Playbook: FC<
             </ProgressBarWrapper>
           </SideBar>
           <Box>
-            <Banner>Olá</Banner>
+            {memberArea.extra_image ? (
+              <NextImage
+                alt="banner"
+                src={memberArea.extra_image}
+                width={1000}
+                height={200}
+                style={{
+                  objectFit: 'cover',
+                }}
+              />
+            ) : (
+              <Banner />
+            )}
 
             <Tips>
               {steps &&
@@ -162,6 +185,7 @@ export const getProps = async (ctx) => {
         id: memberArea.id,
         title: memberArea.title,
         description: memberArea.description,
+        extra_image: memberArea.extra_image,
       },
     },
   };

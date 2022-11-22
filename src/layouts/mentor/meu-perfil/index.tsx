@@ -35,7 +35,7 @@ const MinhaConta: FC<props> = ({
   const {
     data: { profile, address },
   } = useProfile(true, mentored_id);
-  console.log('mentored_id', mentored_id);
+
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
       case tabs.Geral.toString():

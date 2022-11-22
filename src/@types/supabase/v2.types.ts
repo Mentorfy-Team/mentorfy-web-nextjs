@@ -73,6 +73,29 @@ export interface Database {
           extra?: Json | null
         }
       }
+      client_mentor: {
+        Row: {
+          id: string
+          mentor_id: string
+          client_id: string
+          access_level: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          mentor_id: string
+          client_id: string
+          access_level: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          mentor_id?: string
+          client_id?: string
+          access_level?: string
+          created_at?: string | null
+        }
+      }
       client_product: {
         Row: {
           user_id: string
@@ -182,16 +205,22 @@ export interface Database {
           id: number
           created_at: string | null
           name: string
+          path: string | null
+          tooltypes: number[] | null
         }
         Insert: {
           id?: number
           created_at?: string | null
           name: string
+          path?: string | null
+          tooltypes?: number[] | null
         }
         Update: {
           id?: number
           created_at?: string | null
           name?: string
+          path?: string | null
+          tooltypes?: number[] | null
         }
       }
       mentor_tool: {
@@ -231,6 +260,7 @@ export interface Database {
           member_area: string | null
           video: string | null
           extra: Json | null
+          extra_image: string | null
         }
         Insert: {
           owner: string
@@ -248,6 +278,7 @@ export interface Database {
           member_area?: string | null
           video?: string | null
           extra?: Json | null
+          extra_image?: string | null
         }
         Update: {
           owner?: string
@@ -265,6 +296,7 @@ export interface Database {
           member_area?: string | null
           video?: string | null
           extra?: Json | null
+          extra_image?: string | null
         }
       }
       profile: {
@@ -332,6 +364,72 @@ export interface Database {
           created_at?: string | null
           code?: number | null
           profile_id?: string | null
+        }
+      }
+      team: {
+        Row: {
+          id: string
+          title: string | null
+          owner_id: string
+          created_at: string | null
+          produtos: string[] | null
+        }
+        Insert: {
+          id: string
+          title?: string | null
+          owner_id: string
+          created_at?: string | null
+          produtos?: string[] | null
+        }
+        Update: {
+          id?: string
+          title?: string | null
+          owner_id?: string
+          created_at?: string | null
+          produtos?: string[] | null
+        }
+      }
+      team_member: {
+        Row: {
+          id: string
+          team_id: string
+          profile_id: string
+          created_at: string | null
+        }
+        Insert: {
+          id: string
+          team_id: string
+          profile_id: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          team_id?: string
+          profile_id?: string
+          created_at?: string | null
+        }
+      }
+      team_member_cliente: {
+        Row: {
+          id: number
+          mentor_id: string
+          profile_id: string
+          role: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: number
+          mentor_id: string
+          profile_id: string
+          role: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: number
+          mentor_id?: string
+          profile_id?: string
+          role?: string
+          created_at?: string | null
         }
       }
     }

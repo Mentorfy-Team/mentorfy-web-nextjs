@@ -2,7 +2,7 @@ import { FC, useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import { DnDObject } from '~/components/modules/DragNDrop';
+import { GroupTools } from '~/components/modules/DragNDrop';
 import Toolbar from '~/components/modules/Toolbar';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
@@ -13,6 +13,7 @@ import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import SaveClientInput, { GetTypeName } from '../helpers/SaveClientInput';
 import HandleToolModal from '../helpers/HandleToolModal';
+import TipBar from '~/components/modules/TipBar';
 
 export type UserInput = {
   id?: string;
@@ -26,7 +27,7 @@ export const KanbanView: FC<
 > = ({ member_area_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
-  const [steps, setSteps] = useState<DnDObject[]>([]);
+  const [steps, setSteps] = useState<GroupTools[]>([]);
   const [userInput, setUserInput] = useState<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
@@ -80,6 +81,13 @@ export const KanbanView: FC<
     <>
       <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
       <ContentWidthLimit>
+        {(!steps || steps.length == 0) && (
+          <TipBar>
+            Ainda não há <span>nenhuma etapa disponível</span> para essa
+            mentoria. Em caso de dúvidas, entre em contato com o suporte da
+            mentoria.
+          </TipBar>
+        )}
         <Wrapper>
           {steps &&
             steps.map((step) => (
@@ -110,6 +118,12 @@ export const KanbanView: FC<
                   }}
                 >
                   <Description>{step.description}</Description>
+                  {(!step.rows || step.rows.length == 0) && (
+                    <TipBar>
+                      Ainda não há <span>nenhuma atividade disponível</span>{' '}
+                      para essa etapa. Aguarde novas atualizações.
+                    </TipBar>
+                  )}
                   {step.rows.map((task) => (
                     <Task
                       key={task.id}
@@ -152,22 +166,23 @@ export const KanbanView: FC<
                       userInput.findIndex(
                         (inp) => inp.member_area_tool_id.toString() === task.id,
                       ) !== -1,
-                  ).length === step.rows.length && (
-                    <Image
-                      alt="imagem"
-                      width={200}
-                      height={120}
-                      src={
-                        step.extra.length > 1
-                          ? step.extra[1].sourceUrl
-                          : '/svgs/finished.svg'
-                      }
-                      style={{
-                        marginTop: '1.2rem',
-                        objectFit: 'contain',
-                      }}
-                    />
-                  )}
+                  ).length === step.rows.length &&
+                    step.rows.length > 0 && (
+                      <Image
+                        alt="imagem"
+                        width={200}
+                        height={120}
+                        src={
+                          step.extra?.length > 1
+                            ? step.extra[1].sourceUrl
+                            : '/svgs/finished.svg'
+                        }
+                        style={{
+                          marginTop: '1.2rem',
+                          objectFit: 'contain',
+                        }}
+                      />
+                    )}
                 </Box>
               </Step>
             ))}

@@ -27,8 +27,8 @@ export const SideBarTitle = styled(Box)`
 `;
 
 export const Banner = styled(Box)`
-  background-color: black;
-  height: 12rem;
+  background-color: ${({ theme }) => theme.palette.primary.dark};
+  height: 200px;
 `;
 
 export const Tips = styled(Box)`
