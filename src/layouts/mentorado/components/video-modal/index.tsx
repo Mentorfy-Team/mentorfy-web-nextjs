@@ -12,6 +12,7 @@ import {
   CommentInput,
   CompleteButton,
   SendButton,
+  VideoWrapper,
 } from './styles';
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
@@ -112,7 +113,7 @@ const VideoViewModal = ({
     <ModalComponent title={HeadText} setOpen={setOpen} open={open} isMentorado>
       <ModalDialogContent isMentorado>
         <Description>{descriptionData}</Description>
-        <Box sx={{ width: '100%', height: '463px'}}>
+        <VideoWrapper>
           {taskData?.link && (
             <ReactPlayer
               id="goto"
@@ -132,7 +133,7 @@ const VideoViewModal = ({
               }}
             />
           )}
-        </Box>
+        </VideoWrapper>
         <CompleteButton variant="contained" onClick={handleFinish}>
           Concluír
         </CompleteButton>

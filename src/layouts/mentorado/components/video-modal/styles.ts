@@ -16,8 +16,7 @@ export const CompleteButton = styled(Button)`
   background-color: ${({ theme }) => theme.palette.primary.light};
   color: ${({ theme }) => theme.palette.accent.main};
   float: right;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
+  margin: 1rem 0 1rem auto;
   width: 10rem;
 `;
 
@@ -43,4 +42,8 @@ export const SendButton = styled(Button)`
   display: flex;
   gap: 0.5rem;
   width: 12%;
+`;
+export const VideoWrapper = styled('div')`
+  min-height: 600px;
+  width: 100%;
 `;

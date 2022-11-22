@@ -63,8 +63,8 @@ const CJwhellOfLife = ({
       onClose={() => setOpen(false)}
     >
       <ModalDialogContent>
+        <TaskTitle>{selectedTask.title}</TaskTitle>
         <AnswersWrapper>
-          <TaskTitle sx={{ left: '30%' }}>{selectedTask.title}</TaskTitle>
           {selectedTask.data?.map((question, index) =>
             clientInputs.find((input) => question.id === input.id) ? (
               <Box

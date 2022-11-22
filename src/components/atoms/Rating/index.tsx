@@ -7,8 +7,8 @@ type Props = {
   isWheelOLife?: boolean;
   value?: number;
   setValue?: any;
-  readOnly?: boolean
-}
+  readOnly?: boolean;
+};
 const labels: { [index: string]: string } = {
   0.5: '1',
   1: '2',
@@ -22,7 +22,12 @@ const labels: { [index: string]: string } = {
   5: '10',
 };
 
-const TextRating: React.FC<Props> = ({ value, setValue, isWheelOLife, readOnly }) => {
+const TextRating: React.FC<Props> = ({
+  value,
+  setValue,
+  isWheelOLife,
+  readOnly,
+}) => {
   return (
     <Box
       sx={{
@@ -43,11 +48,18 @@ const TextRating: React.FC<Props> = ({ value, setValue, isWheelOLife, readOnly }
         emptyIcon={
           <StarIcon
             style={{ color: 'white', opacity: 0.1 }}
-            fontSize={`${isWheelOLife ? 'large' : 'inherit'}`}
+            fontSize="inherit"
           />
         }
       />
-      <Box sx={{ ml: 2, mt: 0.6, color: 'gray', fontSize: `${isWheelOLife ? '1.2rem' : '0.9rem'}` }}>
+      <Box
+        sx={{
+          ml: 2,
+          mt: 0.6,
+          color: 'gray',
+          fontSize: `${isWheelOLife ? '1.2rem' : '0.9rem'}`,
+        }}
+      >
         {labels[value / 2]}
       </Box>
     </Box>

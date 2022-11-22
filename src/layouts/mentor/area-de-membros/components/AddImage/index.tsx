@@ -20,7 +20,7 @@ const AddImage: FC<Props> = ({
 }) => {
   const theme = useTheme();
   return (
-    <Box sx={{ display: 'flex', marginBottom: '1rem' }}>
+    <Box sx={{ display: 'flex', marginBottom: '1rem', width: '100%' }}>
       <Image
         alt=""
         src={thumbnail || '/svgs/step-image.svg'}

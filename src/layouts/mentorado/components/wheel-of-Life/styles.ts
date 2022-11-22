@@ -24,6 +24,7 @@ export const ButtonsWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   margin-top: 2rem;
+  width: 100%;
 
   a {
     text-decoration: none;
@@ -39,9 +40,9 @@ export const ContentWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
   justify-content: center;
-  margin-top: 2rem;
+  margin-top: 3rem;
 `;
 
 export const ForwardButton = styled(Button)`
@@ -56,7 +57,7 @@ export const BackButton = styled(Button)`
 `;
 
 export const TextQuestion = styled(Typography)`
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   span {
     font-weight: bold;
     margin-left: 0.2rem;

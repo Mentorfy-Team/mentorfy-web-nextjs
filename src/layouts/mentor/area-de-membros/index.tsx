@@ -204,7 +204,7 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
             </DeleteText>
           </Box>
         ) : (
-          <Box>
+          <Box sx={{ width: '100%' }}>
             <DeleteText>Escolha qual produto deseja excluir</DeleteText>
             <ProductsSelectField
               required

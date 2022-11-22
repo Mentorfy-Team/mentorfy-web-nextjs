@@ -4,6 +4,7 @@ import txtFiled from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 export const PasteCodeField = styled(txtFiled)`
+  height: 200px;
   margin: 1rem 0;
   position: relative;
   width: 100%;
@@ -26,10 +27,12 @@ export const PasteCodeField = styled(txtFiled)`
   }
 
   .MuiInputBase-root {
+    height: 200px;
     fieldset {
       border: 1px solid white;
       border-color: grey;
       overflow: hidden;
+      height: 200px;
     }
 
     fieldset:focus {

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
 import InputField from '~/components/atoms/InputField';
@@ -11,6 +10,7 @@ import {
   ButtonsWrapper,
   ForwardButton,
   Question,
+  TaskTitle,
 } from './styles';
 
 type DataProps = { id: string; value: string }[];
@@ -52,41 +52,39 @@ const QuestionsForm = ({
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado sx={{ width: '680px' }}>
         <Description>{descriptionData}</Description>
-        <Box sx={{ textAlign: 'center', marginTop: '3rem' }}>
-          {taskData && (
-            <Question>
-              <Typography sx={{ fontWeight: 'bold' }}>
-                {!!taskData &&
-                  !!taskData[currentQuestion] &&
-                  taskData[currentQuestion].data}
-              </Typography>
-              <InputField
-                value={
-                  input && input[currentQuestion]?.value
-                    ? input[currentQuestion]?.value
-                    : ''
-                }
-                placeholder="Responda aqui..."
-                onChange={(e) =>
-                  setInput((old) => {
-                    const input = old.find(
-                      (item) => item.id === currentQuestion.toString(),
-                    );
-                    if (input) {
-                      input.value = e.target.value;
-                      return [...old];
-                    }
-                    return [
-                      ...old,
-                      { id: currentQuestion.toString(), value: e.target.value },
-                    ];
-                  })
-                }
-                sx={{ width: '100%' }}
-              />
-            </Question>
-          )}
-        </Box>
+        {taskData && (
+          <Question>
+            <TaskTitle>
+              {!!taskData &&
+                !!taskData[currentQuestion] &&
+                taskData[currentQuestion].data}
+            </TaskTitle>
+            <InputField
+              value={
+                input && input[currentQuestion]?.value
+                  ? input[currentQuestion]?.value
+                  : ''
+              }
+              placeholder="Responda aqui..."
+              onChange={(e) =>
+                setInput((old) => {
+                  const input = old.find(
+                    (item) => item.id === currentQuestion.toString(),
+                  );
+                  if (input) {
+                    input.value = e.target.value;
+                    return [...old];
+                  }
+                  return [
+                    ...old,
+                    { id: currentQuestion.toString(), value: e.target.value },
+                  ];
+                })
+              }
+              sx={{ width: '100%' }}
+            />
+          </Question>
+        )}
 
         <ButtonsWrapper>
           <BackButton

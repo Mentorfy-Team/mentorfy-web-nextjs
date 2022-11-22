@@ -11,7 +11,6 @@ import {
   TaskTitle,
   TitleWrapper,
 } from './styles';
-import Box from '@mui/material/Box';
 import Image from 'next/image';
 
 export type ModalProps = {
@@ -62,29 +61,16 @@ const CJVideoModal = ({
       onClose={() => setOpen(false)}
     >
       <ModalDialogContent id="content">
+        <TaskTitle>{selectedTask.title}</TaskTitle>
         <AnswersWrapper>
-          <TaskTitle>{selectedTask.title}</TaskTitle>
-          <Box
-            sx={{
-              marginTop: '1.5rem',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '3rem',
-              position: 'relative',
-              textAlign: 'left',
-            }}
-          >
-            <StudentComments>Comentários do Aluno :</StudentComments>
-            {clientInputs ? (
-              clientInputs?.map((response) => (
-                <ResponseText key={response.id}>
-                  {response.comment}
-                </ResponseText>
-              ))
-            ) : (
-              <NoInfoText>Não há comentários nesta etapa!</NoInfoText>
-            )}
-          </Box>
+          <StudentComments>Comentários do Aluno :</StudentComments>
+          {clientInputs ? (
+            clientInputs?.map((response) => (
+              <ResponseText key={response.id}>{response.comment}</ResponseText>
+            ))
+          ) : (
+            <NoInfoText>Não há comentários nesta etapa!</NoInfoText>
+          )}
         </AnswersWrapper>
       </ModalDialogContent>
     </ModalComponent>

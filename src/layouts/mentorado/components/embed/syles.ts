@@ -7,7 +7,7 @@ export const CloseButton = styled(Button)`
   background-color: ${({ theme }) => theme.palette.primary.light};
   color: ${({ theme }) => theme.palette.accent.main};
   float: right;
-  margin-top: 3.8rem;
+  margin: 3rem 0 0 auto;
   width: 200px;
 `;
 

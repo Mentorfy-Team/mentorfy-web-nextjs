@@ -73,7 +73,6 @@ const ChecklistModal = ({
         sx={{
           padding: '0',
           color: `${theme.palette.text.primary}`,
-          '& .MuiSvgIcon-root': { fontSize: 20 },
         }}
         disableRipple
         icon={<BpIcon />}
@@ -88,10 +87,7 @@ const ChecklistModal = ({
 
   return (
     <ModalComponent title={HeadText} isMentorado open={open} setOpen={setOpen}>
-      <ModalDialogContent
-        isMentorado
-        sx={{ width: '700px', maxHeight: '500px' }}
-      >
+      <ModalDialogContent isMentorado sx={{ width: '400px' }}>
         <Description>{descriptionData}</Description>
 
         {taskData && (

@@ -30,6 +30,7 @@ const DeleteMentorModal = ({ open, setOpen }) => {
         setOpen(false);
         setSelectedProduct([]);
       }}
+      deleteMessage
     >
       <ModalDialogContent>
         <InputField label="Email" placeholder="Ex: joaojose@mentorfy.com" />

@@ -115,26 +115,28 @@ const GroupModal = ({
               label="Descrição"
               placeholder=""
             ></InputField>
-            <AddImage
-              title="Icone/Imagem do agrupador"
-              thumbnail={
-                thumbnail ? thumbnail.data || thumbnail.sourceUrl : null
-              }
-              isBlocked={isSavingImage}
-              onUploadImage={(target) => handleCapture(target.files)}
-            />
-            <AddImage
-              title="Imagem de conclusão"
-              thumbnail={
-                thumbnailConclusion
-                  ? thumbnailConclusion.data || thumbnailConclusion.sourceUrl
-                  : null
-              }
-              isBlocked={isSavingImage}
-              onUploadImage={(target) => {
-                handleCaptureConclusion(target.files);
-              }}
-            />
+            <Box sx={{ width: '100%' }}>
+              <AddImage
+                title="Icone/Imagem do agrupador"
+                thumbnail={
+                  thumbnail ? thumbnail.data || thumbnail.sourceUrl : null
+                }
+                isBlocked={isSavingImage}
+                onUploadImage={(target) => handleCapture(target.files)}
+              />
+              <AddImage
+                title="Imagem de conclusão"
+                thumbnail={
+                  thumbnailConclusion
+                    ? thumbnailConclusion.data || thumbnailConclusion.sourceUrl
+                    : null
+                }
+                isBlocked={isSavingImage}
+                onUploadImage={(target) => {
+                  handleCaptureConclusion(target.files);
+                }}
+              />
+            </Box>
           </>
         )}
       </>

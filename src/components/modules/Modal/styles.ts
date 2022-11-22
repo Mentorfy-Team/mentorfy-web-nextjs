@@ -46,6 +46,7 @@ export const ModalDialogContent = styled(DialogContent)<Props>`
       ? css`
           .MuiDialogContent-root {
             overflow: hidden;
+            overflow-y: auto;
             padding: 0.5rem 1rem;
             width: 900px;
           }
@@ -77,4 +78,10 @@ export const ModalDialogTitle = styled(Box)`
   font-weight: 500;
   line-height: 1rem;
   padding: 1rem 0.8rem;
+`;
+
+export const ButtonsWrapper = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 `;

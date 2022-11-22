@@ -117,26 +117,28 @@ const FilesUploadModal = ({
         ></DescriptionInputField>
 
         {files?.length === 0 && (
-          <DropzoneComponent onDrop={(_files) => handleUpload(_files)}>
-            <UploadField sx={{ marginBottom: '1.3rem' }}>
-              <Label>
-                <Image
-                  alt="upload"
-                  width={58}
-                  height={39}
-                  src="/svgs/upload.svg"
-                />
-                <UploadTypography>
-                  Solte o arquivo para fazer upload
-                </UploadTypography>
-                <P>Tamanho máximo de 40mb (No momento, apenas PDF) </P>
-                {/* // TODO: Adicionar feature de google drive */}
-                {/* <DriveButton>
+          <Box sx={{ width: '100%' }}>
+            <DropzoneComponent onDrop={(_files) => handleUpload(_files)}>
+              <UploadField>
+                <Label>
+                  <Image
+                    alt="upload"
+                    width={58}
+                    height={39}
+                    src="/svgs/upload.svg"
+                  />
+                  <UploadTypography>
+                    Solte o arquivo para fazer upload
+                  </UploadTypography>
+                  <P>Tamanho máximo de 40mb (No momento, apenas PDF) </P>
+                  {/* // TODO: Adicionar feature de google drive */}
+                  {/* <DriveButton>
               <GoogleDrive>Google Drive</GoogleDrive>
             </DriveButton> */}
-              </Label>
-            </UploadField>
-          </DropzoneComponent>
+                </Label>
+              </UploadField>
+            </DropzoneComponent>
+          </Box>
         )}
         {files?.length !== 0 && (
           <CustomTypography>Arquivo Anexado</CustomTypography>
