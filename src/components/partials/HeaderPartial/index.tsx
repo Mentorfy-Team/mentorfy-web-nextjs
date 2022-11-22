@@ -35,6 +35,10 @@ const HeaderPartial: React.FC = () => {
     await logout();
   };
 
+  const handleGoToProfile = () => {
+    router.push(process.env.NEXT_PUBLIC_BASE_URL + 'meu-perfil');
+  };
+
   return (
     <>
       <AppBar id="Header" position="fixed">
@@ -121,7 +125,9 @@ const HeaderPartial: React.FC = () => {
         transitionDuration={1}
       >
         <PopoverBox display="flex" flexDirection="column">
-          <MenuItem variant="caption">Perfil</MenuItem>
+          <MenuItem variant="caption" onClick={() => handleGoToProfile()}>
+            Perfil
+          </MenuItem>
           <MenuItem variant="caption">Certificados</MenuItem>
           <MenuItem variant="caption">FAQ</MenuItem>
           <Divider
