@@ -22,6 +22,7 @@ import Toolbar from '~/components/modules/Toolbar';
 import { GetProduct } from '~/services/product.service';
 import { ProgressBarWrapper } from '../video-view/styles';
 import ProgressBar from '~/components/modules/ProgressBar';
+import TipBar from '~/components/modules/TipBar';
 
 export const Playbook: FC<
   PageTypes.Props & { member_area_id: string; memberArea: any }
@@ -87,6 +88,13 @@ export const Playbook: FC<
     <>
       <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
       <ContentWidthLimit maxWidth={1900}>
+        {(!steps || steps.length == 0) && (
+          <TipBar>
+            Ainda não há <span>nenhuma etapa disponível</span> para essa
+            mentoria. Em caso de dúvidas, entre em contato com o suporte da
+            mentoria.
+          </TipBar>
+        )}
         <Wrapper>
           <SideBar>
             <SideBarTitle>{memberArea.title}</SideBarTitle>
