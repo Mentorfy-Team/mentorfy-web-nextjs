@@ -85,7 +85,7 @@ const ModalComponent: FC<props> = ({
                 textTransform: 'none',
                 float: 'right',
                 width: '40%',
-                margin: '1rem 0 0 0',
+                margin: '1rem 0px 0px 0px',
                 height: '2.5rem',
                 backgroundColor: `${deleteMessage ? '' : 'green'}`,
                 color: 'white',
@@ -102,7 +102,7 @@ const ModalComponent: FC<props> = ({
               sx={{
                 textTransform: 'none',
                 width: '40%',
-                margin: '1rem 0 0 0',
+                margin: '1rem 0px 0px 0px',
                 height: '2.5rem',
                 color: theme.palette.accent.main,
               }}
@@ -119,7 +119,7 @@ const ModalComponent: FC<props> = ({
                 textTransform: 'none',
                 float: 'left',
                 width: '40%',
-                margin: '1rem 0 0 0',
+                margin: '1rem 0px 0px 0px',
                 color: `${deleteMessage ? 'white' : 'gray'}`,
                 backgroundColor: `${deleteMessage && 'red'}`,
                 fontWeight: '300',
