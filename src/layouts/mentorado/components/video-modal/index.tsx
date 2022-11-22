@@ -138,7 +138,10 @@ const VideoViewModal = ({
           Concluír
         </CompleteButton>
 
-        <Typography variant="body1" sx={{ margin: '2.8rem 0 0.8rem 0' }}>
+        <Typography
+          variant="body1"
+          sx={{ margin: '2.8rem 0 0.8rem 0', alignSelf: 'self-start' }}
+        >
           Enviar mensagem ao Mentor
         </Typography>
         <Box

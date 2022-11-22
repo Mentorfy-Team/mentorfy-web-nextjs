@@ -22,6 +22,7 @@ type UserStateType = {
   setAppParams: (appParams: Partial<Params>) => void;
   user?: ExternalModules.Supabase.User | null;
   appParams?: Partial<Params>;
+  llc?: string;
 } & typeof initialUserStore;
 
 const initialUserStore = {
@@ -44,6 +45,7 @@ const userStore = create(
         set(
           produce((draft: UserStateType) => {
             draft.isLoading = value;
+            draft.llc = new Date().toString();
           }),
         );
       },

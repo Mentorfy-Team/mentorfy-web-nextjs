@@ -44,6 +44,5 @@ export const SendButton = styled(Button)`
   width: 12%;
 `;
 export const VideoWrapper = styled('div')`
-  min-height: 600px;
   width: 100%;
 `;

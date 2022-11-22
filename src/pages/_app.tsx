@@ -16,6 +16,7 @@ import { Roboto } from '@next/font/google';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from '~/@types/supabase/v2.types';
+import { userStore } from '~/stores';
 
 export const MainFont = Roboto({
   weight: ['300', '400', '500', '700', '900'],
@@ -40,7 +41,7 @@ interface MyAppProps extends AppProps {
 const App = (props: MyAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const router = useRouter();
-
+  const { setLoading, isLoading, llc } = userStore();
   const [supabaseClient] = useState(() =>
     createBrowserSupabaseClient<Database>(),
   );
@@ -49,7 +50,17 @@ const App = (props: MyAppProps) => {
     if (router.asPath.includes('#')) {
       router.replace(router.asPath.replace('#', '?'));
     }
-  }, [router]);
+    // find if llc has more than 30 seconds pass
+    if (llc && isLoading) {
+      console.log('llc', typeof llc);
+      const now = new Date();
+      const diff = Math.abs(now.getTime() - Date.parse(llc));
+      const diffSeconds = Math.ceil(diff / 1000);
+      if (diffSeconds > 30) {
+        setLoading(false);
+      }
+    }
+  }, [isLoading, llc, router, setLoading]);
 
   useEffect(() => {
     const {

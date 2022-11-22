@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
-import ModalComponent from '~/components/modules/Modal';
+import dynamic from 'next/dynamic';
 import { useMentorTools } from '~/hooks/useMentorTools';
 import { Description, Title, WrapperTool } from './styles';
 import { useGetProduct } from '~/hooks/useGetProduct';
 import { userStore } from '~/stores';
 
+const ModalComponent = dynamic(() => import('~/components/modules/Modal'), {
+  ssr: false,
+});
 type Props = {
   onChange: (tool: MentorTools.ToolType) => void;
   setOpen: (value: boolean) => void;
@@ -15,22 +18,22 @@ type Props = {
 
 const ToolList: React.FC<Props> = ({ onChange, setOpen, open, area_id }) => {
   const { product, isLoading } = useGetProduct(area_id);
-  const { tools, mutate } = useMentorTools(product.id);
-  const { setLoading } = userStore();
+  const { tools, mutate, isError } = useMentorTools(product?.id);
+  const { setLoading, isLoading: GlobalLoading } = userStore();
 
   useEffect(() => {
-    setLoading(isLoading);
+    setLoading(!isError && !tools);
     if (product?.id) mutate();
-  }, [isLoading, mutate, product?.id, setLoading]);
+  }, [isError, isLoading, mutate, product?.id, setLoading, tools]);
 
   return (
     <ModalComponent
-      open={open}
+      open={open && (!GlobalLoading || tools?.length > 0)}
       setOpen={setOpen}
       withoutSave
       title="Lista de Ferramentas"
     >
-      {tools.map((item) => (
+      {tools?.map((item) => (
         <WrapperTool
           onClick={() => {
             onChange(item);

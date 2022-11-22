@@ -261,7 +261,7 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
               {getVideo()?.title}
             </Typography>
             <Box
-              sx={{ width: '985px', height: '509px', backgroundColor: 'black' }}
+              sx={{ width: '985px', height: '554px', backgroundColor: 'black' }}
             >
               <ReactPlayer
                 url={(getVideo()?.data as any)?.link}

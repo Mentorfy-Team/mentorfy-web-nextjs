@@ -9,7 +9,7 @@ export function useMentorTools(area_id?: string) {
   );
 
   return {
-    tools: data || [],
+    tools: data,
     isLoading: !error && !data,
     isError: error,
     mutate,
