@@ -10,6 +10,7 @@ import {
   StepsWrapper,
   TextWrapper,
   Title,
+  TitleWrapper,
   Wrapper,
 } from './styles';
 
@@ -35,7 +36,7 @@ const mock = {
   ],
 };
 
-const ProgressBar = ({
+const HorizontalProgressBar = ({
   data = [],
   input = [],
   activeid,
@@ -81,7 +82,7 @@ const ProgressBar = ({
   return (
     <Wrapper>
       {data.map((step, i) => (
-        <div key={step.id}>
+        <div key={step.id} style={{ display: 'flex' }}>
           <BundleWrapper>
             <CircleWrapper>
               <CircleProgressBar
@@ -91,18 +92,18 @@ const ProgressBar = ({
                 thickness={5}
               />
               {step.rows.length > 0 && (
-                <>
+                <Box sx={{ display: 'flex' }}>
                   <Line />
                   <Line />
-                </>
+                </Box>
               )}
             </CircleWrapper>
-            <TextWrapper>
+            <TitleWrapper>
               <Title>{step.title}</Title>
               <ClassesNumber>{`${getDoneByStep(step)} de ${
                 step.rows.length
               } aula${step.rows.length > 1 ? 's' : ''}`}</ClassesNumber>
-            </TextWrapper>
+            </TitleWrapper>
           </BundleWrapper>
           {step.rows.map((task, j) => {
             count++;
@@ -116,7 +117,7 @@ const ProgressBar = ({
                       backgroundColor: getIsDone(task.id) ? '#38c284' : 'unset',
                     }}
                   />
-                  {j + 1 !== step.rows.length ? <Line /> : <Box height={16} />}
+                  {j + 1 !== step.rows.length ? <Line /> : <Box height={10} />}
                 </CircleWrapper>
                 <TextWrapper>
                   <ClassesNumber
@@ -135,4 +136,4 @@ const ProgressBar = ({
   );
 };
 
-export default ProgressBar;
+export default HorizontalProgressBar;

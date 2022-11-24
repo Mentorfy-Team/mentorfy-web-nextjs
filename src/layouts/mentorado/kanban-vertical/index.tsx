@@ -29,10 +29,11 @@ import {
   TasktTitle,
 } from './styles';
 import TipBar from '~/components/modules/TipBar';
+import HorizontalProgressBar from '~/components/modules/HorizontalProgressBar';
 
 const VerticalKanban: FC<
-  PageTypes.Props & { member_area_id: string; memberArea: any }
-> = ({ member_area_id, memberArea }) => {
+  PageTypes.Props & { member_area_id: string; memberArea: any; task_id: string }
+> = ({ member_area_id, memberArea, task_id }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<GroupTools[]>([]);
@@ -88,6 +89,12 @@ const VerticalKanban: FC<
   return (
     <>
       <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
+      <HorizontalProgressBar
+        data={steps}
+        input={userInput}
+        activeid={task_id}
+        onGoTo={() => {}}
+      />
       <ContentWidthLimit maxWidth={700}>
         {(!steps || steps.length == 0) && (
           <TipBar>
@@ -204,6 +211,7 @@ export const getProps = async (ctx) => {
     };
 
   const id = ctx.query.id as string;
+  const task_id = (ctx.query.task_id || 0) as string;
 
   // fetch for member area
   const memberArea = await GetProduct(ctx.req, id);
@@ -216,6 +224,7 @@ export const getProps = async (ctx) => {
   return {
     props: {
       member_area_id: id,
+      task_id,
       memberArea: {
         id: memberArea.id,
         title: memberArea.title,

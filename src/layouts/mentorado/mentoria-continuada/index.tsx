@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { FC, useCallback, useEffect, useState } from 'react';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { GroupTools } from '~/components/modules/DragNDrop';
+import HorizontalProgressBar from '~/components/modules/HorizontalProgressBar';
 import TipBar from '~/components/modules/TipBar';
 import Toolbar from '~/components/modules/Toolbar';
 import { GetAuthSession } from '~/helpers/AuthSession';
@@ -23,8 +24,8 @@ import {
 } from './styles';
 
 const ContinuosMentoring: FC<
-  PageTypes.Props & { member_area_id: string; memberArea: any }
-> = ({ member_area_id, memberArea }) => {
+  PageTypes.Props & { member_area_id: string; memberArea: any; task_id: string }
+> = ({ member_area_id, memberArea, task_id }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<GroupTools[]>([]);
@@ -111,6 +112,12 @@ const ContinuosMentoring: FC<
             mentoria.
           </TipBar>
         )}
+        <HorizontalProgressBar
+          data={steps}
+          input={userInput}
+          activeid={task_id}
+          onGoTo={() => {}}
+        />
         <ScrollArea>
           {steps &&
             steps.map((step) => (
@@ -185,6 +192,7 @@ export const getProps = async (ctx) => {
     };
 
   const id = ctx.query.id as string;
+  const task_id = (ctx.query.task_id || 0) as string;
 
   // fetch for member area
   const memberArea = await GetProduct(ctx.req, id);
@@ -197,6 +205,7 @@ export const getProps = async (ctx) => {
   return {
     props: {
       member_area_id: id,
+      task_id,
       memberArea: {
         id: memberArea.id,
         title: memberArea.title,
