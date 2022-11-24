@@ -21,6 +21,7 @@ const PDFDownload = dynamic(() => import('~/components/atoms/PDFDownload'), {
 });
 
 import WheelOfLifeTemplate from './template/WheelOfLifeTemplate';
+import TipBar from '~/components/modules/TipBar';
 
 type InputProps = { id: string; rating: number }[];
 type ExtraProps = boolean;
@@ -79,57 +80,65 @@ const WheelOfLifeModal = ({
   return (
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado sx={{ maxWidth: '680px' }}>
-        <div
-          style={{
-            backgroundColor: '#121212',
-          }}
-          id="wheel-id"
-        >
-          <Description>{descriptionData}</Description>
-          <ContentWrapper>
-            {currentArea !== taskData?.length && taskData && (
-              <>
-                <TextQuestion>
-                  De 0 a 10, como está o(a)
-                  <span>
-                    {' ' + !!taskData &&
-                      !!taskData[currentArea] &&
-                      taskData[currentArea].title + ' '}
-                  </span>
-                  na sua vida ?
-                </TextQuestion>
-                <TextRating
-                  isWheelOLife
-                  setValue={(value) => {
-                    const index = input.findIndex(
-                      (item) => item.id === taskData[currentArea].id,
-                    );
-                    setInput((prev) => {
-                      if (index === -1) {
-                        return [
-                          ...prev,
-                          { id: taskData[currentArea].id, rating: value },
-                        ];
-                      } else {
-                        prev[index].rating = value;
-                        return [...prev];
-                      }
-                    });
-                  }}
-                  value={
-                    input.find((inp) => inp.id === taskData[currentArea].id)
-                      ?.rating || 0
-                  }
-                />
-              </>
-            )}
-            {currentArea === taskData?.length && (
-              <WheelWrapper>
-                <WheelOfLifeTemplate taskData={taskData} input={input} />
-              </WheelWrapper>
-            )}
-          </ContentWrapper>
-        </div>
+        {!taskData && (
+          <TipBar>
+            Ainda não há <span>nenhum conteúdo disponível</span> nossa etapa. Em
+            caso de dúvidas, entre em contato com o suporte da mentoria.
+          </TipBar>
+        )}
+        {!taskData && (
+          <div
+            style={{
+              backgroundColor: '#121212',
+            }}
+            id="wheel-id"
+          >
+            <Description>{descriptionData}</Description>
+            <ContentWrapper>
+              {currentArea !== taskData?.length && taskData && (
+                <>
+                  <TextQuestion>
+                    De 0 a 10, como está o(a)
+                    <span>
+                      {' ' + !!taskData &&
+                        !!taskData[currentArea] &&
+                        taskData[currentArea].title + ' '}
+                    </span>
+                    na sua vida ?
+                  </TextQuestion>
+                  <TextRating
+                    isWheelOLife
+                    setValue={(value) => {
+                      const index = input.findIndex(
+                        (item) => item.id === taskData[currentArea].id,
+                      );
+                      setInput((prev) => {
+                        if (index === -1) {
+                          return [
+                            ...prev,
+                            { id: taskData[currentArea].id, rating: value },
+                          ];
+                        } else {
+                          prev[index].rating = value;
+                          return [...prev];
+                        }
+                      });
+                    }}
+                    value={
+                      input.find((inp) => inp.id === taskData[currentArea].id)
+                        ?.rating || 0
+                    }
+                  />
+                </>
+              )}
+              {currentArea === taskData?.length && (
+                <WheelWrapper>
+                  <WheelOfLifeTemplate taskData={taskData} input={input} />
+                </WheelWrapper>
+              )}
+            </ContentWrapper>
+          </div>
+        )}
         {/* <Heatmap
           data={generateData(
             taskData.map((task) => task.title),
@@ -137,38 +146,42 @@ const WheelOfLifeModal = ({
           )}
         /> */}
 
-        <ButtonsWrapper>
-          <BackButton
-            disabled={currentArea <= 0}
-            variant="contained"
-            onClick={() => setCurrentArea((q) => q - 1)}
-          >
-            Anterior
-          </BackButton>
-          {currentArea !== taskData?.length && (
-            <ForwardButton
-              disabled={!input[currentArea] || input[currentArea]?.rating === 0}
+        {!taskData && (
+          <ButtonsWrapper>
+            <BackButton
+              disabled={currentArea <= 0}
               variant="contained"
-              onClick={() => setCurrentArea((q) => q + 1)}
+              onClick={() => setCurrentArea((q) => q - 1)}
             >
-              Próximo
-            </ForwardButton>
-          )}
-          {currentArea === taskData?.length && (
-            <PDFDownload
-              fileName="wheel-of-life.pdf"
-              pageStyles={{}}
-              template_id="wheel-id"
-            >
-              <ForwardButton variant="contained">Download</ForwardButton>
-            </PDFDownload>
-          )}
-          {currentArea === taskData?.length && (
-            <ForwardButton variant="contained" onClick={() => handleFinish()}>
-              Concluir
-            </ForwardButton>
-          )}
-        </ButtonsWrapper>
+              Anterior
+            </BackButton>
+            {currentArea !== taskData?.length && (
+              <ForwardButton
+                disabled={
+                  !input[currentArea] || input[currentArea]?.rating === 0
+                }
+                variant="contained"
+                onClick={() => setCurrentArea((q) => q + 1)}
+              >
+                Próximo
+              </ForwardButton>
+            )}
+            {currentArea === taskData?.length && (
+              <PDFDownload
+                fileName="wheel-of-life.pdf"
+                pageStyles={{}}
+                template_id="wheel-id"
+              >
+                <ForwardButton variant="contained">Download</ForwardButton>
+              </PDFDownload>
+            )}
+            {currentArea === taskData?.length && (
+              <ForwardButton variant="contained" onClick={() => handleFinish()}>
+                Concluir
+              </ForwardButton>
+            )}
+          </ButtonsWrapper>
+        )}
       </ModalDialogContent>
     </ModalComponent>
   );

@@ -7,6 +7,7 @@ import Description from '~/components/atoms/ModalDescription';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import { DownloadText, DownloaddButton, FileWrapper } from './styles';
+import TipBar from '~/components/modules/TipBar';
 
 const PDFReader = dynamic(
   () => import('~/components/atoms/PDFReader/PDFReader'),
@@ -58,24 +59,34 @@ const FilesDownloadModal = ({
   return (
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado sx={{ textAlign: 'center' }}>
-        <Box sx={{ width: '90%' }}>
-          <Description>{descriptionData}</Description>
-          <FileWrapper>
-            <PDFReader file={taskData[0].sourceUrl} />
-          </FileWrapper>
-        </Box>
+        {!taskData && (
+          <TipBar>
+            Ainda não há <span>nenhum conteúdo disponível</span> nossa etapa. Em
+            caso de dúvidas, entre em contato com o suporte da mentoria.
+          </TipBar>
+        )}
+        {taskData && (
+          <Box sx={{ width: '90%' }}>
+            <Description>{descriptionData}</Description>
+            <FileWrapper>
+              <PDFReader file={taskData[0].sourceUrl} />
+            </FileWrapper>
+          </Box>
+        )}
 
-        <DownloadText>Faça o download abaixo</DownloadText>
-        <DownloaddButton
-          as="a"
-          href={taskData[0].sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          download
-          onClick={handleFinish}
-        >
-          DOWNLOAD
-        </DownloaddButton>
+        {taskData && <DownloadText>Faça o download abaixo</DownloadText>}
+        {taskData && (
+          <DownloaddButton
+            as="a"
+            href={taskData[0].sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            download
+            onClick={handleFinish}
+          >
+            DOWNLOAD
+          </DownloaddButton>
+        )}
       </ModalDialogContent>
     </ModalComponent>
   );

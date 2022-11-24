@@ -52,7 +52,6 @@ const App = (props: MyAppProps) => {
     }
     // find if llc has more than 30 seconds pass
     if (llc && isLoading) {
-      console.log('llc', typeof llc);
       const now = new Date();
       const diff = Math.abs(now.getTime() - Date.parse(llc));
       const diffSeconds = Math.ceil(diff / 1000);

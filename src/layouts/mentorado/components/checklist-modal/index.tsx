@@ -17,6 +17,7 @@ import {
   OptionsWrapper,
   TaskTitle,
 } from './styles';
+import TipBar from '~/components/modules/TipBar';
 
 type InputProps = { id: string; value: boolean }[];
 type ExtraProps = boolean;
@@ -87,7 +88,13 @@ const ChecklistModal = ({
   return (
     <ModalComponent title={HeadText} isMentorado open={open} setOpen={setOpen}>
       <ModalDialogContent isMentorado>
-        <Description>{descriptionData}</Description>
+        {!taskData && (
+          <TipBar>
+            Ainda não há <span>nenhum conteúdo disponível</span> nossa etapa. Em
+            caso de dúvidas, entre em contato com o suporte da mentoria.
+          </TipBar>
+        )}
+        {taskData && <Description>{descriptionData}</Description>}
 
         {taskData && (
           <OptionsWrapper>
@@ -143,28 +150,30 @@ const ChecklistModal = ({
           </OptionsWrapper>
         )}
 
-        <ButtonsWrapper>
-          <BackButton
-            disabled={currentQuestion <= 0}
-            variant="contained"
-            onClick={() => setCurrentQuestion((q) => q - 1)}
-          >
-            Anterior
-          </BackButton>
-          {currentQuestion !== taskData?.length - 1 && (
-            <ForwardButton
+        {taskData && (
+          <ButtonsWrapper>
+            <BackButton
+              disabled={currentQuestion <= 0}
               variant="contained"
-              onClick={() => setCurrentQuestion((q) => q + 1)}
+              onClick={() => setCurrentQuestion((q) => q - 1)}
             >
-              Próximo
-            </ForwardButton>
-          )}
-          {currentQuestion === taskData?.length - 1 && (
-            <ForwardButton variant="contained" onClick={() => handleFinish()}>
-              Concluir
-            </ForwardButton>
-          )}
-        </ButtonsWrapper>
+              Anterior
+            </BackButton>
+            {currentQuestion !== taskData?.length - 1 && (
+              <ForwardButton
+                variant="contained"
+                onClick={() => setCurrentQuestion((q) => q + 1)}
+              >
+                Próximo
+              </ForwardButton>
+            )}
+            {currentQuestion === taskData?.length - 1 && (
+              <ForwardButton variant="contained" onClick={() => handleFinish()}>
+                Concluir
+              </ForwardButton>
+            )}
+          </ButtonsWrapper>
+        )}
       </ModalDialogContent>
     </ModalComponent>
   );

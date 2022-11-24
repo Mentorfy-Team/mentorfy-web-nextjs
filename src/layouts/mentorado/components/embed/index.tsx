@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Description from '~/components/atoms/ModalDescription';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
+import TipBar from '~/components/modules/TipBar';
 import { CloseButton, EmbedHolder } from './syles';
 
 type InputProps = { id: string; value: boolean }[];
@@ -41,9 +42,19 @@ const Embed = ({
   return (
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado>
-        <Description>{descriptionData}</Description>
-        <EmbedHolder dangerouslySetInnerHTML={{ __html: taskData }} />
-        <CloseButton onClick={handleFinish}>Concluir</CloseButton>
+        {!taskData && (
+          <TipBar>
+            Ainda não há <span>nenhum conteúdo disponível</span> nossa etapa. Em
+            caso de dúvidas, entre em contato com o suporte da mentoria.
+          </TipBar>
+        )}
+        {taskData && <Description>{descriptionData}</Description>}
+        {taskData && (
+          <EmbedHolder dangerouslySetInnerHTML={{ __html: taskData }} />
+        )}
+        {!taskData && (
+          <CloseButton onClick={handleFinish}>Concluir</CloseButton>
+        )}
       </ModalDialogContent>
     </ModalComponent>
   );

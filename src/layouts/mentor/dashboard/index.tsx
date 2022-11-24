@@ -2,7 +2,6 @@ import { FC, useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import Toolbar from '~/components/modules/Toolbar';
 import Finances from './components/finance';
 import Indicators from './components/Indicators';
 import { ImagesBox } from './styles';
@@ -16,14 +15,18 @@ const Dashboard: FC<PageTypes.Props> = () => {
     setWidth(ref.current.offsetWidth);
     setHeight(ref.current.offsetHeight);
   }, []);
+
   return (
     <>
-      <Toolbar tabs={['Visão Geral']} />
-      <ContentWidthLimit maxWidth={1900}>
+      <ContentWidthLimit
+        withToolBar={false}
+        withoutScroll={true}
+        maxWidth={1900}
+      >
         <Box
           sx={{
             width: '100%',
-            minHeight: '300px',
+            minHeight: '25vh',
             overflow: 'hidden',
             position: 'relative',
           }}
@@ -32,7 +35,7 @@ const Dashboard: FC<PageTypes.Props> = () => {
           <Image
             alt="banner"
             width={width}
-            height={300 * 2}
+            height={height}
             src="/images/banner.png"
             style={{
               objectFit: 'cover',

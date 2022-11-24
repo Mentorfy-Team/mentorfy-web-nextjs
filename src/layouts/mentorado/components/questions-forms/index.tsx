@@ -12,6 +12,7 @@ import {
   Question,
   TaskTitle,
 } from './styles';
+import TipBar from '~/components/modules/TipBar';
 
 type DataProps = { id: string; value: string }[];
 type ExtraProps = boolean;
@@ -51,7 +52,13 @@ const QuestionsForm = ({
   return (
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado sx={{ width: '680px' }}>
-        <Description>{descriptionData}</Description>
+        {!taskData && (
+          <TipBar>
+            Ainda não há <span>nenhum conteúdo disponível</span> nossa etapa. Em
+            caso de dúvidas, entre em contato com o suporte da mentoria.
+          </TipBar>
+        )}
+        {taskData && <Description>{descriptionData}</Description>}
         {taskData && (
           <Question>
             <TaskTitle>
@@ -85,40 +92,42 @@ const QuestionsForm = ({
             />
           </Question>
         )}
-
-        <ButtonsWrapper>
-          <BackButton
-            disabled={currentQuestion <= 0}
-            variant="contained"
-            onClick={() => setCurrentQuestion((q) => q - 1)}
-          >
-            Anterior
-          </BackButton>
-          {currentQuestion !== taskData?.length - 1 && (
-            <ForwardButton
-              disabled={
-                !input[currentQuestion] || input[currentQuestion]?.value === ''
-              }
+        {taskData && (
+          <ButtonsWrapper>
+            <BackButton
+              disabled={currentQuestion <= 0}
               variant="contained"
-              onClick={() => setCurrentQuestion((q) => q + 1)}
+              onClick={() => setCurrentQuestion((q) => q - 1)}
             >
-              Próximo
-            </ForwardButton>
-          )}
-          {currentQuestion === taskData?.length - 1 && (
-            <ForwardButton
-              disabled={
-                !taskData ||
-                !input[currentQuestion] ||
-                input[currentQuestion]?.value === ''
-              }
-              variant="contained"
-              onClick={() => handleFinish()}
-            >
-              Concluir
-            </ForwardButton>
-          )}
-        </ButtonsWrapper>
+              Anterior
+            </BackButton>
+            {currentQuestion !== taskData?.length - 1 && (
+              <ForwardButton
+                disabled={
+                  !input[currentQuestion] ||
+                  input[currentQuestion]?.value === ''
+                }
+                variant="contained"
+                onClick={() => setCurrentQuestion((q) => q + 1)}
+              >
+                Próximo
+              </ForwardButton>
+            )}
+            {currentQuestion === taskData?.length - 1 && (
+              <ForwardButton
+                disabled={
+                  !taskData ||
+                  !input[currentQuestion] ||
+                  input[currentQuestion]?.value === ''
+                }
+                variant="contained"
+                onClick={() => handleFinish()}
+              >
+                Concluir
+              </ForwardButton>
+            )}
+          </ButtonsWrapper>
+        )}
       </ModalDialogContent>
     </ModalComponent>
   );
