@@ -9,7 +9,11 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
 ) => {
   const supabase = CreateSupabaseWithAuth(req);
 
-  if (req.query.id !== 'undefined') {
+  if (
+    !!req.query.id &&
+    req.query.id !== 'undefined' &&
+    req.query.id !== 'null'
+  ) {
     const { data: products } = await supabase
       .from('product')
       .select('*')
@@ -37,5 +41,5 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   // TODO: Adicionar log de erros detalhados
 
   const { data: products, error } = await supabase.from('product').select('*');
-  return res.status(200).json(products);
+  return res.status(200).json(products || []);
 };

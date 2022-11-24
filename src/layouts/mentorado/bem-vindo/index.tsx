@@ -5,14 +5,16 @@ import { FC, useEffect, useState } from 'react';
 import InfoRounded from '@mui/icons-material/InfoRounded';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import Box from '@mui/material/Box';
-import Rating from '@mui/material/Rating';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
+import { ListProducts } from '~/services/product.service';
+const Rating = dynamic(() => import('@mui/material/Rating'), { ssr: false });
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 const Slider: any = dynamic(() => import('react-slick'), { ssr: false });
+
 import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import ModalComponent from '~/components/modules/Modal';
@@ -43,7 +45,16 @@ import {
 } from './style';
 import { GetAuthSession } from '~/helpers/AuthSession';
 
-const BemVindo: FC<PageTypes.Props> = ({ user }) => {
+type Props = {
+  initProducts: any;
+  initClientProducts: any;
+};
+
+const BemVindo: FC<PageTypes.Props & Props> = ({
+  user,
+  initProducts,
+  initClientProducts,
+}) => {
   const sizeLg = useMediaQuery('(min-width: 1200px)');
   const sizeMd = useMediaQuery('(min-width: 1024px)');
   const sizeSm = useMediaQuery('(min-width: 426px)');
@@ -62,8 +73,13 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
   const router = useRouter();
 
   const { types } = useMemberAreaTypes();
-  const { products } = useProducts();
-  const { product: clientProducts } = useGetClientProducts(user.id);
+
+  const { products } = useProducts(null, initProducts);
+  const { product: clientProducts } = useGetClientProducts(
+    user.id,
+    null,
+    initClientProducts,
+  );
 
   const TextBanner = (
     <Box
@@ -253,6 +269,7 @@ const BemVindo: FC<PageTypes.Props> = ({ user }) => {
         }}
         maxWidth="100%"
         withoutScroll
+        withToolBar={false}
       >
         {clientProducts?.length > 0 && (
           <>
@@ -551,9 +568,19 @@ export const getProps = async (ctx) => {
       },
     };
 
+  const { products } = (await ListProducts(session.access_token)) ?? {
+    products: [],
+  };
+  const { products: ClientProducts } = (await ListProducts(
+    session.access_token,
+    session.user.id,
+  )) ?? { products: [] };
+
   return {
     props: {
       user: session.user,
+      initProducts: products,
+      initClientProducts: ClientProducts,
     },
   };
 };

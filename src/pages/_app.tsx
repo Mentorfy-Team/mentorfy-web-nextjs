@@ -103,8 +103,8 @@ const App = (props: MyAppProps) => {
           <meta content="width=device-width, initial-scale=1" />
         </Head>
         <GlobalStyles />
-        <CssBaseline />
         <ThemeProvider>
+          <CssBaseline />
           <Wrapper id="WrapperRoot">
             <PageWrapper>
               <SessionContextProvider

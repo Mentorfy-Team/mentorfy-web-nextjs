@@ -13,6 +13,12 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     data: { user },
   } = await supabase.auth.getUser();
 
+  if (!user?.id) {
+    return res.status(401).json({
+      error: 'Unauthorized',
+    });
+  }
+
   const { data: tools, error: errorm } = await supabase
     .from('member_area_tool')
     .select('*')

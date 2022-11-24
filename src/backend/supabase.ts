@@ -13,16 +13,18 @@ export const SupabaseWithoutAuth = createClient<Database>(
 );
 
 export const CreateSupabaseWithAuth = (req?, _token?) => {
-  const token = _token ? _token : CookieUtil.fromReq(req);
-
+  const token = _token ? `Bearer ${_token}` : req?.headers?.authorization;
   return createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       global: {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
         },
+      },
+      auth: {
+        persistSession: true,
       },
     },
   );

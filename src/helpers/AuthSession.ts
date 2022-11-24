@@ -1,6 +1,9 @@
-import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
+import {
+  Session,
+  createServerSupabaseClient,
+} from '@supabase/auth-helpers-nextjs';
 
-export const GetAuthSession = async (ctx) => {
+export const GetAuthSession = async (ctx): Promise<{ session: Session }> => {
   const supabase = createServerSupabaseClient(ctx);
 
   try {
