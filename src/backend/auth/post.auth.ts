@@ -10,7 +10,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const {
     data: { session, user },
     error,
-  } = await SupabaseServer().auth.signInWithPassword({
+  } = await SupabaseServer(req, res).auth.signInWithPassword({
     email,
     password,
   });

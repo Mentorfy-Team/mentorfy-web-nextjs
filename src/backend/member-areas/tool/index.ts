@@ -7,7 +7,7 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
   req,
   res,
 ) => {
-  const supabase = SupabaseServer(req);
+  const supabase = SupabaseServer(req, res);
   const data = req.body.data;
   const id = req.body.id.length > 6 ? req.body.id : null;
   const updatedTools = [];

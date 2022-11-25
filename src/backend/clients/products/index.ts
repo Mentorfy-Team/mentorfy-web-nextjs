@@ -6,7 +6,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   req,
   res,
 ) => {
-  const supabase = SupabaseServer(req);
+  const supabase = SupabaseServer(req, res);
   let listProducts = [];
   const { data: clientProducts } = await supabase
     .from('client_product')

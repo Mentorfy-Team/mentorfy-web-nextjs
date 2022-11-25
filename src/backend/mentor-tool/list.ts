@@ -3,7 +3,7 @@ import { SupabaseServer } from '~/backend/supabase';
 export const get = async (req, res) => {
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  const supabase = SupabaseServer(req);
+  const supabase = SupabaseServer(req, res);
 
   if (req.query.id) {
     const { data: member_area, error: mbError } = await supabase

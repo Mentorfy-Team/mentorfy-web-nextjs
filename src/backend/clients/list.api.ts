@@ -3,7 +3,7 @@ import { SupabaseServer } from '~/backend/supabase';
 export const get = async (req, res) => {
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  const supabase = SupabaseServer(req);
+  const supabase = SupabaseServer(req, res);
   const approved = req.query.approved ?? true;
 
   const { data: products } = await supabase

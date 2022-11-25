@@ -4,9 +4,8 @@ import {
 } from '@supabase/auth-helpers-nextjs';
 
 export const GetAuthSession = async (ctx): Promise<{ session: Session }> => {
-  const supabase = createServerSupabaseClient(ctx);
-
   try {
+    const supabase = createServerSupabaseClient(ctx);
     const {
       data: { session },
     } = await supabase.auth.getSession();

@@ -1,7 +1,7 @@
 import { SupabaseServer } from '../supabase';
 
 export const get = async (req, res) => {
-  const supabase = SupabaseServer(req);
+  const supabase = SupabaseServer(req, res);
 
   const { data: history, error: error } = await supabase
     .from('profile_history')

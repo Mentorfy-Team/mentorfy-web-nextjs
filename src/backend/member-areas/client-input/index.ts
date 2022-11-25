@@ -8,7 +8,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   req,
   res,
 ) => {
-  const supabase = SupabaseServer(req);
+  const supabase = SupabaseServer(req, res);
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -47,7 +47,7 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
   req,
   res,
 ) => {
-  const supabase = SupabaseServer(req);
+  const supabase = SupabaseServer(req, res);
 
   const {
     data: { user },

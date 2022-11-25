@@ -99,7 +99,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
 };
 
 export const del = async (req, res) => {
-  const supabase = SupabaseServer(req);
+  const supabase = SupabaseServer(req, res);
   // find relations
 
   const { data: products } = await supabase

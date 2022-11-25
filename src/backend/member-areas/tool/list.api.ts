@@ -7,7 +7,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   req,
   res,
 ) => {
-  const supabase = SupabaseServer(req);
+  const supabase = SupabaseServer(req, res);
 
   const { data: tools } = await supabase
     .from('member_area_tool')

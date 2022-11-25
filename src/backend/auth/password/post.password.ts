@@ -6,7 +6,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const { password, access_token } = req.body;
   await new Promise((resolve) => setTimeout(resolve, 1000));
   try {
-    await SupabaseServer(req).auth.updateUser({
+    await SupabaseServer(req, res).auth.updateUser({
       password,
     });
     res.status(200).json({

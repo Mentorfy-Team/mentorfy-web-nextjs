@@ -18,14 +18,14 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const {
     data: { user },
     error,
-  } = await SupabaseServer().auth.signUp({
+  } = await SupabaseServer(req, res).auth.signUp({
     email,
     password,
   });
 
   // * Se tudo estiver certo, atualiza o perfil do usuário
   if (!error) {
-    await SupabaseServer()
+    await SupabaseServer(req, res)
       .from('profile')
       .update({
         name,
@@ -47,13 +47,13 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   if (refeerer) {
     const {
       data: { id },
-    } = await SupabaseServer()
+    } = await SupabaseServer(req, res)
       .from('product')
       .select('id')
       .eq('refeerer', refeerer)
       .single();
 
-    await SupabaseServer().from('client_product').insert({
+    await SupabaseServer(req, res).from('client_product').insert({
       user_id: user.id,
       product_id: id,
       subscription: true,
