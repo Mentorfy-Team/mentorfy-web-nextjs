@@ -11,15 +11,24 @@ import StepsPage from '~/layouts/mentor/area-de-membros/pages/editar/etapas';
 import ClientJourney from './jornada-do-cliente';
 import Links from './links';
 import { GetAuthSession } from '~/helpers/AuthSession';
+import Certificate from './certificado';
 
-const tabs = ['Etapas', 'Jornada do Cliente', 'Configuração', 'Links'];
+const tabs = [
+  'Etapas',
+  'Jornada do Cliente',
+  'Configuração',
+  'Certificado',
+  'Links',
+];
 const EditarMentoria: FC<Props> = ({ id }) => {
   const [tabindex, setTabindex] = useState(0);
 
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
-      case 3:
+      case 4:
         return <Links id={id} />;
+      case 3:
+        return <Certificate id={id} />;
       case 2:
         return <ConfigPage id={id} />;
       case 1:
