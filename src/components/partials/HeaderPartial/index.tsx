@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
 import Image from 'next/image';
@@ -10,6 +9,9 @@ import Tipografia from '~/../public/images/tipografia.png';
 import MenuAvatar from '~/../public/svgs/menu-avatar';
 import Notification from '~/../public/svgs/notification';
 import Search from '~/../public/svgs/search';
+
+import Link from 'next/link';
+
 const HeaderPartial: React.FC = () => {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -60,26 +62,16 @@ const HeaderPartial: React.FC = () => {
             placeholder="blur"
           />
           {router.pathname.includes('mentorado') && (
-            <Button
-              sx={{
-                color: '#fff',
-              }}
-              variant="text"
-              href={`${process.env.NEXT_PUBLIC_BASE_URL}/mentor/dashboard`}
-            >
+            <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/mentor/dashboard`}>
               Visualizar como mentor
-            </Button>
+            </Link>
           )}
           {!router.pathname.includes('mentorado') && (
-            <Button
-              sx={{
-                color: '#fff',
-              }}
-              variant="text"
+            <Link
               href={`${process.env.NEXT_PUBLIC_BASE_URL}/mentorado/bem-vindo`}
             >
               Visualizar como mentorado
-            </Button>
+            </Link>
           )}
         </div>
         <Search />

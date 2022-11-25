@@ -94,6 +94,28 @@ const App = (props: MyAppProps) => {
     }
   }, [router]);
 
+  useEffect(() => {
+    const handleLoadingOn = (url, { shallow }) => {
+      setLoading(true);
+      console.log('Loading on', url, shallow);
+    };
+    const handleLoadingOff = (url, { shallow }) => {
+      setLoading(false);
+      console.log('Loading off', url, shallow);
+    };
+
+    router.events.on('routeChangeStart', handleLoadingOn);
+    router.events.on('routeChangeComplete', handleLoadingOff);
+
+    // If the component is unmounted, unsubscribe
+    // from the event with the `off` method:
+    return () => {
+      router.events.off('routeChangeStart', handleLoadingOn);
+      router.events.off('routeChangeComplete', handleLoadingOff);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <main className={MainFont.className}>
       <CacheProvider value={emotionCache}>

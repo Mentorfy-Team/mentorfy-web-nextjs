@@ -7,7 +7,10 @@ import SupabaseClient from '~/services/SupabaseClient';
 export function useProfile(withAddress = false, altProfileId?: string) {
   const route = useRouter();
   const logout = async () => {
-    SupabaseClient().auth.signOut();
+    await SupabaseClient().auth.signOut();
+    // remove the cookie
+    document.cookie =
+      'supabase-auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     route.push('/');
   };
 

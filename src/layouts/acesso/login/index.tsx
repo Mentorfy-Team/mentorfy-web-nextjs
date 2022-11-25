@@ -46,8 +46,11 @@ const Login: FC<props> = ({ urlProps }) => {
     } = SupabaseClient().auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN') {
         if (session) {
-          SupabaseClient().auth.setSession(session);
-          mutate();
+          SupabaseClient()
+            .auth.setSession(session)
+            .then(() => {
+              mutate();
+            });
         }
       }
     });
@@ -148,6 +151,7 @@ const Login: FC<props> = ({ urlProps }) => {
             setEmail(e.target.value);
             setError(null);
           }}
+          disabled={isLoading}
         />
         <InputField
           id="outlined-required"
@@ -162,6 +166,7 @@ const Login: FC<props> = ({ urlProps }) => {
             setPassword(e.target.value);
             setError(null);
           }}
+          disabled={isLoading}
         />
         {error && <ErrorHelper>{error}</ErrorHelper>}
         <LoginButton loading={isLoading} disabled={isLoading} type="submit">
