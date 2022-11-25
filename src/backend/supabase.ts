@@ -1,37 +1,20 @@
-import { createClient } from '@supabase/supabase-js';
-import { CookieUtil } from '~/shared/utils';
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from '~/@types/supabase/v2.types';
 
-export const SupabaseWithoutAuth = createClient<Database>(
-  process.env.NEXT_PUBLIC_SUPABASE_URL,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-  {
-    auth: {
-      persistSession: true,
-    },
-  },
-);
+import { default as cookieHelper } from 'cookie';
+import { createClient } from '@supabase/supabase-js';
 
-export const CreateSupabaseWithAuth = (req?, _token?) => {
-  const token = _token ? `Bearer ${_token}` : req?.headers?.authorization;
-  return createClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    {
-      global: {
-        headers: {
-          Authorization: token,
-        },
-      },
-      auth: {
-        persistSession: true,
-      },
-    },
-  );
+export const SupabaseServer = (req, res) => {
+  const supabase = createServerSupabaseClient<Database>({
+    req,
+    res,
+  });
+
+  return supabase;
 };
 
-export const CreateSupabaseWithAdmin = (req?) => {
-  const token = req ? CookieUtil.fromReq(req) : '';
+export const SupabaseAdmin = (req?) => {
+  const token = getToken(req);
   return createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE,
@@ -43,4 +26,21 @@ export const CreateSupabaseWithAdmin = (req?) => {
       },
     },
   );
+};
+
+const getToken = (req, _token?) => {
+  const headerCookies = req?.headers?.cookie
+    ? JSON.parse(cookieHelper.parse(req?.headers?.cookie)['sb-storage'])
+    : '';
+  const fromHeader = headerCookies
+    ? headerCookies['access_token']
+    : req?.headers?.authorization;
+
+  let token = _token ? _token : fromHeader;
+
+  if (!token?.includes('Bearer ')) {
+    token = 'Bearer ' + token;
+  }
+
+  return token;
 };

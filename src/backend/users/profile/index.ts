@@ -1,11 +1,8 @@
 import { AdminUserAttributes } from '@supabase/supabase-js';
 import { nanoid } from 'nanoid';
+import UpdateCookies from '~/backend/helpers/UpdateCookies';
 import { fixBase64 } from '~/backend/products';
-import {
-  CreateSupabaseWithAdmin,
-  CreateSupabaseWithAuth,
-  SupabaseWithoutAuth,
-} from '~/backend/supabase';
+import { SupabaseAdmin, SupabaseServer } from '~/backend/supabase';
 type GetRequest = ProfileApi.Get.Request;
 type GetResponse = ProfileApi.Get.Response | any;
 
@@ -16,13 +13,19 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   req,
   res,
 ) => {
-  const supabase = CreateSupabaseWithAuth(req);
+  const supabase = SupabaseServer(req, res);
+  await UpdateCookies(supabase, req);
+
   const {
-    data: { user },
-  } = await supabase.auth.getUser();
+    data: { session },
+    error: sessionError,
+  } = await supabase.auth.getSession();
   const result = {};
 
-  if (!user) return res.status(401).json({ error: 'Unauthorized' });
+  const user = session?.user;
+
+  if (!user && !req.query.id)
+    return res.status(401).json({ error: 'Unauthorized' });
 
   const id = req.query.id || user.id;
 
@@ -51,10 +54,10 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
   res,
 ) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
+  const supabase = SupabaseServer(req, res);
   const {
     data: { user },
-  } = await SupabaseWithoutAuth.auth.getUser();
-  const supabase = CreateSupabaseWithAuth(req);
+  } = await supabase.auth.getUser();
 
   const errors = [];
   const toUpdate = {};
@@ -91,7 +94,7 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
   }
 
   if (req.body.user) {
-    const supabaseAdmin = CreateSupabaseWithAdmin(req);
+    const supabaseAdmin = SupabaseAdmin(req);
     const { error } = await supabaseAdmin.auth.updateUser(
       req.body.user as AdminUserAttributes,
     );

@@ -18,7 +18,7 @@ import {
   LoginButton,
   Title,
 } from '../styles';
-import { deleteCookie, setCookie } from 'cookies-next';
+import SupabaseClient from '~/services/SupabaseClient';
 
 type props = {
   urlProps: any[];
@@ -41,9 +41,31 @@ const Login: FC<props> = ({ urlProps }) => {
   } = useProfile();
 
   useEffect(() => {
+    const {
+      data: { subscription },
+    } = SupabaseClient().auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN') {
+        if (session) {
+          SupabaseClient().auth.setSession(session);
+          mutate();
+        }
+      }
+    });
+
+    return subscription.unsubscribe();
+  }, [mutate]);
+
+  useEffect(() => {
+    console.log(
+      'profile',
+      !isProfileLoading,
+      profile?.id,
+      profile?.access_type === 'mentor',
+    );
     if (!isProfileLoading) {
       if (profile?.id) {
         if (profile?.access_type === 'mentor') {
+          console.log('go to mentor');
           route.push(MentorRoutes.home);
         } else {
           route.push(MentoredRoutes.home);
@@ -74,15 +96,8 @@ const Login: FC<props> = ({ urlProps }) => {
       setError('*Email e ou senha incorretos, tente novamente!');
       setIsLoading(false);
       return;
-    } else {
-      deleteCookie('sb-refresh-token');
-      deleteCookie('sb-access-token');
-
-      setCookie('sb-refresh-token', registerData.session.refresh_token);
-      setCookie('sb-access-token', registerData.session.access_token);
-      await mutate();
     }
-  }, [email, mutate, password]);
+  }, [email, password]);
 
   return (
     <AnimatedView>

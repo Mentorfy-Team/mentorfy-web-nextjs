@@ -1,7 +1,4 @@
-import {
-  CreateSupabaseWithAdmin,
-  CreateSupabaseWithAuth,
-} from '~/backend/supabase';
+import { SupabaseAdmin, SupabaseServer } from '~/backend/supabase';
 import { LogHistory } from '../helpers/LogHistory';
 type Request = UserClient.Post.Request;
 type Response = UserClient.Post.Response;
@@ -14,7 +11,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
     });
   }
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  const supabaseAdmin = CreateSupabaseWithAdmin();
+  const supabaseAdmin = SupabaseAdmin();
 
   const { data: existentUser, error: existentError } = await supabaseAdmin
     .from('profile')
@@ -102,7 +99,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
 };
 
 export const del = async (req, res) => {
-  const supabase = CreateSupabaseWithAuth(req);
+  const supabase = SupabaseServer(req);
   // find relations
 
   const { data: products } = await supabase

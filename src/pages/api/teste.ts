@@ -1,8 +1,8 @@
 import { handler } from '~/backend/handler';
-import { CreateSupabaseWithAdmin } from '~/backend/supabase';
+import { SupabaseAdmin } from '~/backend/supabase';
 
 const get = async (req, res) => {
-  const supabase = CreateSupabaseWithAdmin();
+  const supabase = SupabaseAdmin();
 
   const { data, error } = await supabase.storage
     .from('images')

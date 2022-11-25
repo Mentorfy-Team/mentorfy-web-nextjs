@@ -7,7 +7,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { SupabaseWithoutAuth } from '~/backend/supabase';
 import createEmotionCache from '~/createEmotionCache';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
@@ -17,6 +16,7 @@ import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from '~/@types/supabase/v2.types';
 import { userStore } from '~/stores';
+import SupabaseClient from '~/services/SupabaseClient';
 
 export const MainFont = Roboto({
   weight: ['300', '400', '500', '700', '900'],
@@ -64,13 +64,12 @@ const App = (props: MyAppProps) => {
   useEffect(() => {
     const {
       data: { subscription },
-    } = SupabaseWithoutAuth.auth.onAuthStateChange((event, session) => {
-      fetch('/api/auth/cookies', {
-        method: 'POST',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        credentials: 'same-origin',
-        body: JSON.stringify({ event, session }),
-      });
+    } = SupabaseClient().auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN') {
+        if (session) {
+          SupabaseClient().auth.setSession(session);
+        }
+      }
     });
 
     return subscription.unsubscribe();

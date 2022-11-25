@@ -6,7 +6,7 @@ type PostResponse = ProductApi.Post.Response | any;
 
 import { decode } from 'base64-arraybuffer';
 import { nanoid } from 'nanoid';
-import { CreateSupabaseWithAuth } from '~/backend/supabase';
+import { SupabaseServer } from '~/backend/supabase';
 import { LogHistory } from '../helpers/LogHistory';
 
 export function fixBase64(data) {
@@ -27,7 +27,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     return res.status(200).send('Done');
   }
 
-  const supabase = CreateSupabaseWithAuth(req);
+  const supabase = SupabaseServer(req);
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -69,7 +69,7 @@ export const del: Handler.Callback<GetRequest, GetResponse> = async (
   req,
   res,
 ) => {
-  const supabase = CreateSupabaseWithAuth(req);
+  const supabase = SupabaseServer(req);
   // find relations
 
   const { data: relations } = await supabase
@@ -108,7 +108,7 @@ export const post: Handler.Callback<PostRequest, PostResponse> = async (
   res,
 ) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  const supabase = CreateSupabaseWithAuth(req);
+  const supabase = SupabaseServer(req);
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -146,7 +146,7 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
   res,
 ) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  const supabase = CreateSupabaseWithAuth(req);
+  const supabase = SupabaseServer(req);
   const {
     data: { user },
   } = await supabase.auth.getUser();

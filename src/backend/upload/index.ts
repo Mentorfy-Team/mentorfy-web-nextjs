@@ -1,6 +1,6 @@
 import fs from 'fs';
 import formidable from 'formidable';
-import { CreateSupabaseWithAdmin } from '~/backend/supabase';
+import { SupabaseAdmin } from '~/backend/supabase';
 import { LogHistory } from '../helpers/LogHistory';
 type Request = UploadApi.Post.Request;
 type Response = UploadApi.Post.Response;
@@ -18,7 +18,7 @@ type file = {
 
 export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const form = new formidable.IncomingForm();
-  const supabase = CreateSupabaseWithAdmin(req);
+  const supabase = SupabaseAdmin(req);
   let file_name = '';
   const uploadFile = async () => {
     // eslint-disable-next-line
@@ -66,7 +66,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
 };
 
 export const del: Handler.Callback<Request, Response> = async (req, res) => {
-  const supabase = CreateSupabaseWithAdmin(req);
+  const supabase = SupabaseAdmin(req);
   if (req.body.length <= 0) return res.status(200).send({ success: true });
   const fixUrls = req.body.map((item) => {
     const url = item.replace(

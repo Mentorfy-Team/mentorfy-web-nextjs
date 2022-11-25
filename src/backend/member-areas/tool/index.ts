@@ -1,4 +1,4 @@
-import { CreateSupabaseWithAuth } from '../../supabase';
+import { SupabaseServer } from '../../supabase';
 
 type GetRequest = MentorTools.Post.Request;
 type GetResponse = MentorTools.Post.Response | any;
@@ -7,7 +7,7 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
   req,
   res,
 ) => {
-  const supabase = CreateSupabaseWithAuth(req);
+  const supabase = SupabaseServer(req);
   const data = req.body.data;
   const id = req.body.id.length > 6 ? req.body.id : null;
   const updatedTools = [];

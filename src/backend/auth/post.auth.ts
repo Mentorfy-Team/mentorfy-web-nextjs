@@ -1,4 +1,4 @@
-import { SupabaseWithoutAuth } from '~/backend/supabase';
+import { SupabaseServer } from '~/backend/supabase';
 
 type Request = AuthApi.Post.Request;
 type Response = AuthApi.Post.Response;
@@ -10,7 +10,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const {
     data: { session, user },
     error,
-  } = await SupabaseWithoutAuth.auth.signInWithPassword({
+  } = await SupabaseServer().auth.signInWithPassword({
     email,
     password,
   });

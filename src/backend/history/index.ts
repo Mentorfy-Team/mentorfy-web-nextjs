@@ -1,7 +1,7 @@
-import { CreateSupabaseWithAuth } from '../supabase';
+import { SupabaseServer } from '../supabase';
 
 export const get = async (req, res) => {
-  const supabase = CreateSupabaseWithAuth(req);
+  const supabase = SupabaseServer(req);
 
   const { data: history, error: error } = await supabase
     .from('profile_history')

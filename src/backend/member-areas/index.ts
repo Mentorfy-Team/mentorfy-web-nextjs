@@ -1,4 +1,4 @@
-import { CreateSupabaseWithAuth } from '../supabase';
+import { SupabaseServer } from '../supabase';
 
 type GetRequest = ProductApi.List.Request;
 type GetResponse = ProductApi.List.Response | any;
@@ -7,7 +7,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   req,
   res,
 ) => {
-  const supabase = CreateSupabaseWithAuth(req);
+  const supabase = SupabaseServer(req);
 
   const { data: products } = await supabase
     .from('member_area')

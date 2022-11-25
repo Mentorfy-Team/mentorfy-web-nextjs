@@ -1,11 +1,11 @@
-import { CreateSupabaseWithAdmin } from '~/backend/supabase';
+import { SupabaseAdmin } from '~/backend/supabase';
 
 export const get = async (req, res) => {
   if (!req.query.refeerer) {
     return res.status(200).send('Done');
   }
 
-  const supabase = CreateSupabaseWithAdmin();
+  const supabase = SupabaseAdmin();
   const { data: product, error } = await supabase
     .from('product')
     .select('main_image, title, id')

@@ -1,10 +1,10 @@
-import { CreateSupabaseWithAuth } from '~/backend/supabase';
+import { SupabaseServer } from '~/backend/supabase';
 import { OrganizeTools } from '~/helpers/OrganizeTools';
 
 export const get = async (req, res) => {
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
-  const supabase = CreateSupabaseWithAuth(req);
+  const supabase = SupabaseServer(req);
 
   const { data: tools, error: errorTools } = await supabase
     .from('member_area_tool')

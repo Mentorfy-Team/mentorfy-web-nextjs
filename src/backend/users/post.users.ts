@@ -1,4 +1,4 @@
-import { SupabaseWithoutAuth } from '~/backend/supabase';
+import { SupabaseServer } from '~/backend/supabase';
 type Request = UsersApi.Post.Request;
 type Response = UsersApi.Post.Response;
 
@@ -18,14 +18,15 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const {
     data: { user },
     error,
-  } = await SupabaseWithoutAuth.auth.signUp({
+  } = await SupabaseServer().auth.signUp({
     email,
     password,
   });
 
   // * Se tudo estiver certo, atualiza o perfil do usuário
   if (!error) {
-    await SupabaseWithoutAuth.from('profile')
+    await SupabaseServer()
+      .from('profile')
       .update({
         name,
         plan: 'pro',
@@ -46,12 +47,13 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   if (refeerer) {
     const {
       data: { id },
-    } = await SupabaseWithoutAuth.from('product')
+    } = await SupabaseServer()
+      .from('product')
       .select('id')
       .eq('refeerer', refeerer)
       .single();
 
-    await SupabaseWithoutAuth.from('client_product').insert({
+    await SupabaseServer().from('client_product').insert({
       user_id: user.id,
       product_id: id,
       subscription: true,
