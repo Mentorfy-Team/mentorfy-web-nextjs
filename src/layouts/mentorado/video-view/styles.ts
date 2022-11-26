@@ -38,10 +38,6 @@ export const LikeButton = styled('button')`
   justify-content: center;
   transition: 0.1s;
   width: 2.4rem;
-
-  &:hover {
-    background-color: ${({ theme }) => theme.palette.primary.light};
-  }
 `;
 
 export const CompleteButton = styled(Button)`

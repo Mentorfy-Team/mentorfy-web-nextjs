@@ -26,11 +26,11 @@ import {
   VideoWrapper,
   Wrapper,
 } from './styles';
+import TipBar from '~/components/modules/TipBar';
+import Comments from './components/comments';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import { GetProduct } from '~/services/product.service';
-import TipBar from '~/components/modules/TipBar';
 import { GetProfile } from '~/services/profile.service';
-import Comments from './components/comments';
 
 export const VideoView = ({
   profile,
@@ -253,11 +253,22 @@ export const VideoView = ({
 
       commentRef.current.value = '';
     }
-  }, [GetOnChange, profile.id, userInput, videoId]);
+  }, [GetOnChange, profile, userInput, videoId]);
 
-  const handleLike = useCallback((value) => {
-    // TODO: implementar like
-  }, []);
+  const handleLike = useCallback(
+    (value) => {
+      const index = userInput?.findIndex((i) => i.id.toString() == videoId);
+      GetOnChange({
+        refId: videoId,
+        data: {},
+        extra: {
+          ...(index > -1 ? userInput[index].extra : {}),
+          like: value,
+        },
+      });
+    },
+    [GetOnChange, userInput, videoId],
+  );
 
   const CommentsSession = useCallback(() => {
     return (
@@ -272,7 +283,7 @@ export const VideoView = ({
 
   return (
     <>
-      <Toolbar tabs={[memberArea.title]} />
+      <Toolbar tabs={[memberArea?.title]} />
       <ContentWidthLimit maxWidth={1900}>
         {(!steps || steps.length == 0) && (
           <TipBar>
@@ -324,7 +335,19 @@ export const VideoView = ({
             </IconButton> */}
             <VideoInteractionsBox>
               <Box sx={{ display: 'flex', gap: '0.5rem' }}>
-                <LikeButton onClick={() => handleLike(true)}>
+                <LikeButton
+                  sx={{
+                    opacity: 0.8,
+                    backgroundColor:
+                      userInput &&
+                      userInput.find(
+                        (inp) => inp.member_area_tool_id === videoId,
+                      )?.extra?.like
+                        ? '#36c059'
+                        : 'transparent',
+                  }}
+                  onClick={() => handleLike(true)}
+                >
                   <Image
                     alt=""
                     width={24}
@@ -332,7 +355,19 @@ export const VideoView = ({
                     src="/svgs/like-thumb.svg"
                   />
                 </LikeButton>
-                <LikeButton onClick={() => handleLike(false)}>
+                <LikeButton
+                  sx={{
+                    opacity: 0.8,
+                    backgroundColor:
+                      userInput &&
+                      !userInput.find(
+                        (inp) => inp.member_area_tool_id === videoId,
+                      )?.extra?.like
+                        ? '#c03636'
+                        : 'transparent',
+                  }}
+                  onClick={() => handleLike(false)}
+                >
                   <Image
                     alt=""
                     width={24}

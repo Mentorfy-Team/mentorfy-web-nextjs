@@ -9,7 +9,7 @@ export function useUserInputs(member_area_id) {
   );
 
   return {
-    inputs: data || [],
+    inputs: !(data as any)?.error ? data || [] : [],
     isLoading: !error && !data,
     isError: error,
   };
