@@ -153,16 +153,20 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
       if (lastId !== videoId) {
         const id = !video_id ? lastId : video_id;
         setVideoId(id);
-        route.push({
-          pathname: MentoredRoutes.video_view + '/' + member_area_id,
-          query: { v: id },
-        });
+        // route.push(
+        //   {
+        //     pathname: MentoredRoutes.video_view + '/' + member_area_id,
+        //     query: { v: id },
+        //   },
+        //   undefined,
+        //   { shallow: true },
+        // );
       }
       setNextVideoId(nextVideo);
     } else {
       setVideoId(null);
     }
-  }, [steps, route, video_id, member_area_id, videoId]);
+  }, [steps, video_id, videoId]);
 
   useEffect(() => {
     if (inputData !== userInput) {
