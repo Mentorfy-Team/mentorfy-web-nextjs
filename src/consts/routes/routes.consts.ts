@@ -2,7 +2,6 @@ import clients_svg from '~/../public/svgs/clients';
 import graduationcap_svg from '~/../public/svgs/graduation-cap';
 import home_svg from '~/../public/svgs/home';
 import invoice_svg from '~/../public/svgs/invoice';
-import my_products_svg from '~/../public/svgs/my-products';
 import rocket_svg from '~/../public/svgs/rocket';
 import settings_svg from '~/../public/svgs/settings';
 
@@ -40,7 +39,7 @@ export enum MentoredRoutes {
 
   kanban = '/mentorado/kanban',
 
-  video_view = '/mentorado/video-aula',
+  video_view = '/mentorado/curso-online',
 
   //* Rota de Perfil/Configurações do usuário
   settings = '/mentorado/meu-perfil',

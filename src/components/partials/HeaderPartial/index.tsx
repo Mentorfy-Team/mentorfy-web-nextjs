@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
 import Image from 'next/image';
@@ -40,6 +40,14 @@ const HeaderPartial: React.FC = () => {
   const handleGoToProfile = () => {
     router.push(process.env.NEXT_PUBLIC_BASE_URL + 'meu-perfil');
   };
+
+  useEffect(() => {
+    if (router.pathname.includes('mentorado'))
+      router.prefetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/mentorado/bem-vindo`,
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
