@@ -29,8 +29,15 @@ import {
 import { GetAuthSession } from '~/helpers/AuthSession';
 import { GetProduct } from '~/services/product.service';
 import TipBar from '~/components/modules/TipBar';
+import { GetProfile } from '~/services/profile.service';
+import Comments from './components/comments';
 
-export const VideoView = ({ member_area_id, video_id, memberArea }) => {
+export const VideoView = ({
+  profile,
+  member_area_id,
+  video_id,
+  memberArea,
+}) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const [videoId, setVideoId] = useState<string>(video_id);
   const [nextVideoId, setNextVideoId] = useState<string>(null);
@@ -235,18 +242,33 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
           ...(index > -1 ? userInput[index].extra : {}),
           comments: [
             ...(index > -1 ? userInput[index].extra.comments : []),
-            commentRef.current.value,
+            {
+              comment: commentRef.current.value,
+              user_id: profile.id,
+              created_at: new Date().toString(),
+            },
           ],
         },
       });
 
       commentRef.current.value = '';
     }
-  }, [GetOnChange, userInput, videoId]);
+  }, [GetOnChange, profile.id, userInput, videoId]);
 
-  const handleLike = useCallback(() => {
+  const handleLike = useCallback((value) => {
     // TODO: implementar like
   }, []);
+
+  const CommentsSession = useCallback(() => {
+    return (
+      <Comments
+        comments={
+          userInput.find((i) => i.member_area_tool_id.toString() == videoId)
+            ?.extra?.comments
+        }
+      />
+    );
+  }, [userInput, videoId]);
 
   return (
     <>
@@ -302,7 +324,7 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
             </IconButton> */}
             <VideoInteractionsBox>
               <Box sx={{ display: 'flex', gap: '0.5rem' }}>
-                <LikeButton onClick={() => {}}>
+                <LikeButton onClick={() => handleLike(true)}>
                   <Image
                     alt=""
                     width={24}
@@ -310,7 +332,7 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
                     src="/svgs/like-thumb.svg"
                   />
                 </LikeButton>
-                <LikeButton onClick={() => {}}>
+                <LikeButton onClick={() => handleLike(false)}>
                   <Image
                     alt=""
                     width={24}
@@ -318,7 +340,7 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
                     src="/svgs/unlike-thumb.svg"
                   />
                 </LikeButton>
-                {userInput.find((inp) => inp.id.toString() === videoId) && (
+                {userInput.find((inp) => inp.id?.toString() === videoId) && (
                   <CompleteButton>
                     Concluído
                     <Image
@@ -359,11 +381,12 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
                 ref={commentRef}
                 placeholder="Deixar mensagem para o mentor"
               />
-              <SendButton onClick={() => handleLike()} variant="contained">
+              <SendButton onClick={() => SendComment()} variant="contained">
                 Enviar
                 <Image alt="" width={15} height={15} src="/svgs/share.svg" />
               </SendButton>
             </Box>
+            <CommentsSession />
           </VideoWrapper>
           <ProgressBarWrapper
             sx={{
@@ -400,6 +423,7 @@ export const getProps = async (ctx) => {
 
   // fetch for member area
   const memberArea = await GetProduct(ctx.req, id);
+  const profile = await GetProfile(ctx.req);
 
   return {
     props: {
@@ -410,6 +434,7 @@ export const getProps = async (ctx) => {
         title: memberArea.title,
         description: memberArea.description,
       },
+      profile,
     },
   };
 };
