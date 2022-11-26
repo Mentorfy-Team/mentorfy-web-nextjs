@@ -1,4 +1,4 @@
-import { handler } from '~/backend/handler';
-import { get } from '~/backend/products/image';
+import { handler } from '~/backend/http/handler';
+import { get } from '~/backend/http/products/image';
 
 export default handler({ get });

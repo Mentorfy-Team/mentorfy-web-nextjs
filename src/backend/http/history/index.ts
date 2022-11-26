@@ -1,4 +1,4 @@
-import { SupabaseServer } from '../supabase';
+import { SupabaseServer } from '../../supabase';
 
 export const get = async (req, res) => {
   const supabase = SupabaseServer(req, res);

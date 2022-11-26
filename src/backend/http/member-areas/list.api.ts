@@ -1,4 +1,4 @@
-import { SupabaseServer } from '../supabase';
+import { SupabaseServer } from '../../supabase';
 
 type GetRequest = ProductApi.List.Request;
 type GetResponse = ProductApi.List.Response | any;

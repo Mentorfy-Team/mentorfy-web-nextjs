@@ -1,7 +1,7 @@
 import { AdminUserAttributes } from '@supabase/supabase-js';
 import { nanoid } from 'nanoid';
 import UpdateCookies from '~/backend/helpers/UpdateCookies';
-import { fixBase64 } from '~/backend/products';
+import { fixBase64 } from '~/backend/http/products';
 import { SupabaseAdmin, SupabaseServer } from '~/backend/supabase';
 type GetRequest = ProfileApi.Get.Request;
 type GetResponse = ProfileApi.Get.Response | any;

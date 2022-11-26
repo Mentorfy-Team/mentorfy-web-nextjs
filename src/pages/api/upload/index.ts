@@ -1,5 +1,5 @@
-import { handler } from '~/backend/handler';
-import { del, post } from '~/backend/upload';
+import { handler } from '~/backend/http/handler';
+import { del, post } from '~/backend/http/upload';
 
 export default handler({ post, del });
 

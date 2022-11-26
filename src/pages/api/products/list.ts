@@ -1,4 +1,4 @@
-import { handler } from '~/backend/handler';
-import { get } from '~/backend/products/list.api';
+import { handler } from '~/backend/http/handler';
+import { get } from '~/backend/http/products/list.api';
 
 export default handler({ get });

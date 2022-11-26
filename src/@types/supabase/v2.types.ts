@@ -73,29 +73,6 @@ export interface Database {
           extra?: Json | null
         }
       }
-      client_mentor: {
-        Row: {
-          id: string
-          mentor_id: string
-          client_id: string
-          access_level: string
-          created_at: string | null
-        }
-        Insert: {
-          id?: string
-          mentor_id: string
-          client_id: string
-          access_level: string
-          created_at?: string | null
-        }
-        Update: {
-          id?: string
-          mentor_id?: string
-          client_id?: string
-          access_level?: string
-          created_at?: string | null
-        }
-      }
       client_product: {
         Row: {
           user_id: string
@@ -369,21 +346,21 @@ export interface Database {
       team: {
         Row: {
           id: string
-          title: string | null
+          title: string
           owner_id: string
           created_at: string | null
           produtos: string[] | null
         }
         Insert: {
-          id: string
-          title?: string | null
+          id?: string
+          title: string
           owner_id: string
           created_at?: string | null
           produtos?: string[] | null
         }
         Update: {
           id?: string
-          title?: string | null
+          title?: string
           owner_id?: string
           created_at?: string | null
           produtos?: string[] | null
@@ -397,7 +374,7 @@ export interface Database {
           created_at: string | null
         }
         Insert: {
-          id: string
+          id?: string
           team_id: string
           profile_id: string
           created_at?: string | null
@@ -412,22 +389,22 @@ export interface Database {
       team_member_cliente: {
         Row: {
           id: number
-          mentor_id: string
           profile_id: string
+          team_member_id: string
           role: string
           created_at: string | null
         }
         Insert: {
           id?: number
-          mentor_id: string
           profile_id: string
+          team_member_id: string
           role: string
           created_at?: string | null
         }
         Update: {
           id?: number
-          mentor_id?: string
           profile_id?: string
+          team_member_id?: string
           role?: string
           created_at?: string | null
         }

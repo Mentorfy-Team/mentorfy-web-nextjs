@@ -1,5 +1,5 @@
-import { handler } from '~/backend/handler';
-import { get, post } from '~/backend/users/profile';
+import { handler } from '~/backend/http/handler';
+import { get, post } from '~/backend/http/users/profile';
 
 export const config = {
   api: {

@@ -1,5 +1,5 @@
 import { SupabaseAdmin, SupabaseServer } from '~/backend/supabase';
-import { LogHistory } from '../helpers/LogHistory';
+import { LogHistory } from '~/backend/helpers/LogHistory';
 type Request = UserClient.Post.Request;
 type Response = UserClient.Post.Response;
 

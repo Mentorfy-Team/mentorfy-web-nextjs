@@ -1,4 +1,4 @@
-import { handler } from '~/backend/handler';
+import { handler } from '~/backend/http/handler';
 import { SupabaseAdmin } from '~/backend/supabase';
 
 const get = async (req, res) => {

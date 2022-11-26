@@ -7,7 +7,7 @@ type PostResponse = ProductApi.Post.Response | any;
 import { decode } from 'base64-arraybuffer';
 import { nanoid } from 'nanoid';
 import { SupabaseServer } from '~/backend/supabase';
-import { LogHistory } from '../helpers/LogHistory';
+import { LogHistory } from '~/backend/helpers/LogHistory';
 
 export function fixBase64(data) {
   return decode(

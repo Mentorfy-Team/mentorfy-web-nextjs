@@ -1,7 +1,7 @@
 import fs from 'fs';
 import formidable from 'formidable';
 import { SupabaseAdmin } from '~/backend/supabase';
-import { LogHistory } from '../helpers/LogHistory';
+import { LogHistory } from '~/backend/helpers/LogHistory';
 type Request = UploadApi.Post.Request;
 type Response = UploadApi.Post.Response;
 

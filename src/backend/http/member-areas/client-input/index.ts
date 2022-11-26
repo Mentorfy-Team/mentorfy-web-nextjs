@@ -1,5 +1,5 @@
 import { LogHistory } from '~/backend/helpers/LogHistory';
-import { SupabaseServer } from '../../supabase';
+import { SupabaseServer } from '../../../supabase';
 
 type GetRequest = MemberAreaTypes.Post.Request;
 type GetResponse = MemberAreaTypes.Post.Response | any;

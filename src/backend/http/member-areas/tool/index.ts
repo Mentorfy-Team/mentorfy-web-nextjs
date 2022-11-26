@@ -1,4 +1,4 @@
-import { SupabaseServer } from '../../supabase';
+import { SupabaseServer } from '../../../supabase';
 
 type GetRequest = MentorTools.Post.Request;
 type GetResponse = MentorTools.Post.Response | any;

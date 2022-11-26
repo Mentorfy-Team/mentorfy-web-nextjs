@@ -1,4 +1,4 @@
-import { handler } from '~/backend/handler';
-import { get } from '~/backend/mentor-tool/list';
+import { handler } from '~/backend/http/handler';
+import { get } from '~/backend/http/mentor-tool/list';
 
 export default handler({ get });
