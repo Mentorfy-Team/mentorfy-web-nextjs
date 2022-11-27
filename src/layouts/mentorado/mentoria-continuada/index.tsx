@@ -103,7 +103,10 @@ const ContinuosMentoring: FC<
   ];
   return (
     <>
-      <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
+      <Toolbar
+        initialTab={1}
+        breadcrumbs={['Minhas mentorias', memberArea.title]}
+      />
       <ContentWidthLimit maxWidth={1900}>
         {(!steps || steps.length == 0) && (
           <TipBar>

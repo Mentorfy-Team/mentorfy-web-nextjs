@@ -88,7 +88,10 @@ const VerticalKanban: FC<
 
   return (
     <>
-      <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
+      <Toolbar
+        initialTab={1}
+        breadcrumbs={['Minhas mentorias', memberArea.title]}
+      />
       <HorizontalProgressBar
         data={steps}
         input={userInput}

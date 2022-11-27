@@ -315,7 +315,10 @@ export const VideoView = ({
 
   return (
     <>
-      <Toolbar tabs={[memberArea?.title]} />
+      <Toolbar
+        initialTab={1}
+        breadcrumbs={['Minhas mentorias', memberArea.title]}
+      />
       <ContentWidthLimit maxWidth={1900}>
         {(!steps || steps.length == 0) && (
           <TipBar>

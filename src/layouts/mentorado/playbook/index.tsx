@@ -16,8 +16,7 @@ import {
 } from './styles';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import HandleToolModal from '../helpers/HandleToolModal';
-import SaveClientInput, { GetTypeName } from '../helpers/SaveClientInput';
-import { useUserInputs } from '~/hooks/useUserInputs';
+import { GetTypeName } from '../helpers/SaveClientInput';
 import Toolbar from '~/components/modules/Toolbar';
 import { GetProduct } from '~/services/product.service';
 import { ProgressBarWrapper } from '../video-view/styles';
@@ -29,11 +28,7 @@ export const Playbook: FC<
   PageTypes.Props & { member_area_id: string; memberArea: any }
 > = ({ member_area_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
-  const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<GroupTools[]>([]);
-  const [userInput, setUserInput] = useState<
-    Partial<MemberAreaTypes.UserInput[]>
-  >([]);
   const [open, setOpen] = useState(false);
   const [currentCard, setCurrentCard] = useState<string | null>();
 
@@ -44,10 +39,6 @@ export const Playbook: FC<
     area_id?: string;
     data?: any;
   }>();
-
-  // useEffect(() => {
-  //   //setUserInput(inputData);
-  // }, [inputData]);
 
   useEffect(() => {
     setSteps((oldSteps) => {
@@ -62,24 +53,9 @@ export const Playbook: FC<
       setOpen,
       currentModal,
       area_id: member_area_id,
-      inputs: inputData,
+      inputs: [],
     });
-  }, [open, currentModal, member_area_id, inputData]);
-
-  const GetOnChange = useCallback(
-    async ({ refId, data, extra }) => {
-      const index = userInput?.findIndex((i) => i.member_area_tool_id == refId);
-      SaveClientInput({
-        data: { refId, data, extra, index, inputs: userInput },
-        callbacks: {
-          result: setUserInput,
-          mutate,
-        },
-        member_area_id,
-      });
-    },
-    [member_area_id, mutate, userInput],
-  );
+  }, [open, currentModal, member_area_id]);
 
   const onSelectedCard = useCallback((id) => {
     //setCurrentCard(id);
@@ -87,7 +63,10 @@ export const Playbook: FC<
 
   return (
     <>
-      <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
+      <Toolbar
+        initialTab={1}
+        breadcrumbs={['Minhas mentorias', memberArea.title]}
+      />
       <ContentWidthLimit maxWidth={1900}>
         {!steps ||
           steps.length == 0 ||
@@ -104,7 +83,7 @@ export const Playbook: FC<
             <ProgressBarWrapper>
               <ProgressBar
                 data={steps}
-                input={userInput}
+                input={[]}
                 activeid={currentCard}
                 onGoTo={(id) => onSelectedCard(id)}
               />
@@ -136,7 +115,7 @@ export const Playbook: FC<
                         const type = GetTypeName(task.mentor_tool);
                         setOpen(true);
                         setCurrentModal({
-                          onChange: GetOnChange,
+                          onChange: () => {},
                           type,
                           refId: task.id + '',
                           data: task || {},

@@ -79,7 +79,10 @@ export const KanbanView: FC<
 
   return (
     <>
-      <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
+      <Toolbar
+        initialTab={1}
+        breadcrumbs={['Minhas mentorias', memberArea.title]}
+      />
       <ContentWidthLimit>
         {(!steps || steps.length == 0) && (
           <TipBar>
