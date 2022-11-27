@@ -122,7 +122,10 @@ const Geral: FC<props> = ({ id }) => {
     [product, productImage, video, colorPick, description],
   );
 
-  const handleCapture = (target, imageType: 'main_image' | 'banner_image') => {
+  const handleCapture = (
+    target,
+    imageType: 'main_image' | 'banner_image' | 'extra_image',
+  ) => {
     const fileReader = new FileReader();
     if (!target.files || target.files.length <= 0) return;
 
@@ -548,9 +551,9 @@ const Geral: FC<props> = ({ id }) => {
                   sx={{ padding: '0px', height: '20px' }}
                   color="primary"
                   as="label"
-                  onChange={(e) => handleCapture(e.target, 'banner_image')}
+                  onChange={(e) => handleCapture(e.target, 'extra_image')}
                 >
-                  Trocar banner
+                  Trocar banner central
                   <input hidden accept="image/*" type="file" />
                 </ActionButton>
                 <Typography
