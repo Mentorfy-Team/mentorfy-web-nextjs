@@ -139,7 +139,7 @@ const Certificate = ({ id }) => {
           </DropzoneComponent>
         </>
       )}
-      {files && files[0].data && (
+      {files && files.length && files[0].data && (
         <FileWrapper>
           <PDFReader file={files[0].data} />
         </FileWrapper>
