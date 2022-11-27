@@ -65,7 +65,6 @@ const Certificate = ({ id }) => {
     HandleFileUpload(_files, (file) => {
       setFiles(file);
     });
-    console.log(files ? 'Tem arquivo' : 'nÃO TEM ARQUIVO');
   };
 
   // const onSubmit = useCallback(() => {});
@@ -140,7 +139,7 @@ const Certificate = ({ id }) => {
           </DropzoneComponent>
         </>
       )}
-      {files && files[0].data && (
+      {files && files.length && files[0].data && (
         <FileWrapper>
           <PDFReader file={files[0].data} />
         </FileWrapper>

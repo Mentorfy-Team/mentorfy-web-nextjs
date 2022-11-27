@@ -3,8 +3,6 @@ import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
 import InputField from '~/components/atoms/InputField';
-import Tabbar from '~/components/modules/Tabbar';
-import { TabItem } from '~/components/modules/Tabbar/styles';
 import { MentorRoutes, MentoredRoutes } from '~/consts/routes/routes.consts';
 import { useProfile } from '~/hooks/useProfile';
 import { Authenticate } from '~/services/auth/auth.service';
@@ -19,6 +17,7 @@ import {
   Title,
 } from '../styles';
 import SupabaseClient from '~/services/SupabaseClient';
+import CustomTab from './components/CustomTab';
 
 type props = {
   urlProps: any[];
@@ -59,16 +58,9 @@ const Login: FC<props> = ({ urlProps }) => {
   }, [mutate]);
 
   useEffect(() => {
-    console.log(
-      'profile',
-      !isProfileLoading,
-      profile?.id,
-      profile?.access_type === 'mentor',
-    );
     if (!isProfileLoading) {
       if (profile?.id) {
         if (profile?.access_type === 'mentor') {
-          console.log('go to mentor');
           route.push(MentorRoutes.home);
         } else {
           route.push(MentoredRoutes.home);
@@ -111,29 +103,7 @@ const Login: FC<props> = ({ urlProps }) => {
         </Accent>{' '}
         exclusiva.
       </Title>
-      <Tabbar
-        withborder
-        selected={index}
-        onChange={(_, value) => setIndex(value)}
-      >
-        <TabItem
-          sx={{
-            width: '50%',
-            marginLeft: '0px !important',
-            alignItems: 'center !important',
-          }}
-          label="Login"
-        />
-        <TabItem
-          sx={{
-            alignItems: 'center !important',
-            width: '50%',
-            marginLeft: '0px !important',
-          }}
-          label="Crie sua conta"
-          onClick={() => setAppParams({ subpage: 'cadastro' })}
-        />
-      </Tabbar>
+      <CustomTab onClick={() => setAppParams({ subpage: 'cadastro' })} />
       <FormWrapper
         sx={{ marginTop: '1.5rem' }}
         onSubmit={handleSubmit(onSubmit)}
