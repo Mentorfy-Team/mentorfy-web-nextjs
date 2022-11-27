@@ -45,9 +45,9 @@ export const Playbook: FC<
     data?: any;
   }>();
 
-  useEffect(() => {
-    setUserInput(inputData);
-  }, [inputData]);
+  // useEffect(() => {
+  //   //setUserInput(inputData);
+  // }, [inputData]);
 
   useEffect(() => {
     setSteps((oldSteps) => {
