@@ -15,7 +15,10 @@ const ClientsGrid = ({ mentorados = 0, alunos = 0, acessos = 0 }) => {
         <Item>
           <TextWrapper>
             <Typography variant="body2">Total de Mentorados</Typography>
-            <Typography sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}>
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}
+            >
               {mentorados}
             </Typography>
           </TextWrapper>
@@ -34,7 +37,10 @@ const ClientsGrid = ({ mentorados = 0, alunos = 0, acessos = 0 }) => {
         <Item>
           <TextWrapper>
             <Typography variant="body2">Total de Alunos</Typography>
-            <Typography sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}>
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}
+            >
               {alunos}
             </Typography>
           </TextWrapper>
@@ -47,7 +53,10 @@ const ClientsGrid = ({ mentorados = 0, alunos = 0, acessos = 0 }) => {
         <Item>
           <TextWrapper>
             <Typography variant="body2">Total de Acessos</Typography>
-            <Typography sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}>
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}
+            >
               {acessos}
             </Typography>
           </TextWrapper>

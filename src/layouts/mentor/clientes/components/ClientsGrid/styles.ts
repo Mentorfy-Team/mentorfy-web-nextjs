@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles';
 
 export const Item = styled(Box)`
   align-items: flex-start;
-  background-color: #29282d;
+  background-color: ${({ theme }) => theme.palette.primary.light};
   border: 1px solid ${({ theme }) => theme.palette.accent.dark};
   border-radius: 10px;
   display: flex;
@@ -26,5 +26,9 @@ export const TextWrapper = styled(Box)`
   flex-direction: column;
   ${({ theme }) => theme.breakpoints.up('sm')} {
     gap: 1rem;
+  }
+
+  p {
+    font-size: clamp(0.8rem, 1vw, 1.2rem);
   }
 `;
