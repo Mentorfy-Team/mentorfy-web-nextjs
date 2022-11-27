@@ -517,7 +517,7 @@ const Geral: FC<props> = ({ id }) => {
               {productImage.extra_image.file ? (
                 <Image
                   alt="imagem do produto"
-                  src={productImage.banner_image.file}
+                  src={productImage.extra_image.file}
                   width={180}
                   height={90}
                   style={{
