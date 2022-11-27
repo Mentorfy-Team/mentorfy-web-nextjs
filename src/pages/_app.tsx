@@ -97,11 +97,9 @@ const App = (props: MyAppProps) => {
   useEffect(() => {
     const handleLoadingOn = (url, { shallow }) => {
       setLoading(true);
-      console.log('Loading on', url, shallow);
     };
     const handleLoadingOff = (url, { shallow }) => {
       setLoading(false);
-      console.log('Loading off', url, shallow);
     };
 
     router.events.on('routeChangeStart', handleLoadingOn);

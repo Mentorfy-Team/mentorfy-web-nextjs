@@ -257,7 +257,9 @@ export const VideoView = ({
 
   const handleLike = useCallback(
     (value) => {
-      const index = userInput?.findIndex((i) => i.id.toString() == videoId);
+      const index = userInput?.findIndex(
+        (i) => i.member_area_tool_id.toString() == videoId,
+      );
       GetOnChange({
         refId: videoId,
         data: {},
@@ -280,6 +282,36 @@ export const VideoView = ({
       />
     );
   }, [userInput, videoId]);
+
+  const renderLike = useCallback(() => {
+    const like = userInput.find((inp) => inp.member_area_tool_id === videoId)
+      ?.extra?.like;
+
+    return (
+      <>
+        <LikeButton
+          sx={{
+            opacity: 0.8,
+            backgroundColor:
+              like?.toString() === 'true' ? '#36c059' : 'transparent',
+          }}
+          onClick={() => handleLike(true)}
+        >
+          <Image alt="" width={24} height={24} src="/svgs/like-thumb.svg" />
+        </LikeButton>
+        <LikeButton
+          sx={{
+            opacity: 0.8,
+            backgroundColor:
+              like?.toString() === 'false' ? '#c03636' : 'transparent',
+          }}
+          onClick={() => handleLike(false)}
+        >
+          <Image alt="" width={24} height={24} src="/svgs/unlike-thumb.svg" />
+        </LikeButton>
+      </>
+    );
+  }, [handleLike, userInput, videoId]);
 
   return (
     <>
@@ -335,46 +367,7 @@ export const VideoView = ({
             </IconButton> */}
             <VideoInteractionsBox>
               <Box sx={{ display: 'flex', gap: '0.5rem' }}>
-                <LikeButton
-                  sx={{
-                    opacity: 0.8,
-                    backgroundColor:
-                      userInput &&
-                      userInput.find(
-                        (inp) => inp.member_area_tool_id === videoId,
-                      )?.extra?.like
-                        ? '#36c059'
-                        : 'transparent',
-                  }}
-                  onClick={() => handleLike(true)}
-                >
-                  <Image
-                    alt=""
-                    width={24}
-                    height={24}
-                    src="/svgs/like-thumb.svg"
-                  />
-                </LikeButton>
-                <LikeButton
-                  sx={{
-                    opacity: 0.8,
-                    backgroundColor:
-                      userInput &&
-                      !userInput.find(
-                        (inp) => inp.member_area_tool_id === videoId,
-                      )?.extra?.like
-                        ? '#c03636'
-                        : 'transparent',
-                  }}
-                  onClick={() => handleLike(false)}
-                >
-                  <Image
-                    alt=""
-                    width={24}
-                    height={24}
-                    src="/svgs/unlike-thumb.svg"
-                  />
-                </LikeButton>
+                {renderLike()}
                 {userInput.find((inp) => inp.id?.toString() === videoId) && (
                   <CompleteButton>
                     Concluído

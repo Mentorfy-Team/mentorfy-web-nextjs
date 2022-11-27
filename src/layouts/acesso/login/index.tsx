@@ -59,16 +59,9 @@ const Login: FC<props> = ({ urlProps }) => {
   }, [mutate]);
 
   useEffect(() => {
-    console.log(
-      'profile',
-      !isProfileLoading,
-      profile?.id,
-      profile?.access_type === 'mentor',
-    );
     if (!isProfileLoading) {
       if (profile?.id) {
         if (profile?.access_type === 'mentor') {
-          console.log('go to mentor');
           route.push(MentorRoutes.home);
         } else {
           route.push(MentoredRoutes.home);
