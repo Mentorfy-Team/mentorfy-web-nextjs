@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
@@ -61,6 +61,10 @@ export const Playbook: FC<
     //setCurrentCard(id);
   }, []);
 
+  const isEmptyMentory = useMemo(() => {
+    return steps?.length === 0 || steps?.every((stp) => stp.rows.length == 0);
+  }, [steps]);
+
   return (
     <>
       <Toolbar
@@ -68,15 +72,13 @@ export const Playbook: FC<
         breadcrumbs={['Minhas mentorias', memberArea.title]}
       />
       <ContentWidthLimit maxWidth={1900}>
-        {!steps ||
-          steps.length == 0 ||
-          (steps && steps.every((stp) => stp.rows.length == 0) && (
-            <TipBar>
-              Ainda não há <span>nenhuma etapa ou atividades disponíveis</span>{' '}
-              para essa mentoria. Em caso de dúvidas, entre em contato com o
-              suporte da mentoria.
-            </TipBar>
-          ))}
+        {isEmptyMentory && (
+          <TipBar>
+            Ainda não há <span>nenhuma etapa ou atividades disponíveis</span>{' '}
+            para essa mentoria. Em caso de dúvidas, entre em contato com o
+            suporte da mentoria.
+          </TipBar>
+        )}
         <Wrapper>
           <SideBar>
             <SideBarTitle>{memberArea.title}</SideBarTitle>
@@ -104,9 +106,9 @@ export const Playbook: FC<
               <Banner />
             )}
 
-            <Tips>
-              {steps &&
-                steps
+            {steps.length > 0 && (
+              <Tips>
+                {steps
                   .find((stp) => stp.id === currentCard || !currentCard)
                   ?.rows.map((task) => (
                     <Content
@@ -126,7 +128,8 @@ export const Playbook: FC<
                       <DescriptionText>{task.description}</DescriptionText>
                     </Content>
                   ))}
-            </Tips>
+              </Tips>
+            )}
           </Box>
         </Wrapper>
       </ContentWidthLimit>
