@@ -8,12 +8,7 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
-import {
-  SortableContext,
-  arrayMove,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 
 export type GroupTools = {
   id: string;
@@ -21,27 +16,16 @@ export type GroupTools = {
   description?: string;
   data?: any;
   extra?: any;
-  rows?: MentorTools.ToolData[];
+  rows?: (MentorTools.ToolData & { rows?: any[] })[];
   delete?: boolean;
 };
 
 type Props = {
-  model: (element_id: MentorTools.ToolData, group_id?) => JSX.Element;
-  groupModel: (group_id, child) => JSX.Element;
-  elements: {
-    id: string;
-    rows?: MentorTools.ToolData[];
-    delete?: boolean;
-  }[];
+  elements: any;
   setElements: (elements: any) => void;
 };
 
-export default function DragNDrop({
-  model,
-  elements,
-  setElements,
-  groupModel,
-}: Props) {
+export default function DragNDrop({ elements, setElements }: Props) {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -59,7 +43,7 @@ export default function DragNDrop({
     const { active, over } = event;
     if (active.id !== over?.id) {
       const index = elements.findIndex(
-        (i) => i.rows.findIndex((j) => j.id === active.id) !== -1,
+        (i) => i.rows?.findIndex((j) => j.id === active.id) !== -1,
       );
       setElements((steps: { rows: any[] }[]) => {
         const oldIndex = steps[index].rows.findIndex((i) => i.id === active.id);
@@ -79,7 +63,8 @@ export default function DragNDrop({
       onDragEnd={handleDragEnd}
       modifiers={[restrictToParentElement]}
     >
-      {elements
+      {elements}
+      {/* {elements
         .filter((i) => !i.delete)
         .map((group, groupIndex) => {
           const itens = group.rows.filter((i) => !i.delete);
@@ -92,7 +77,7 @@ export default function DragNDrop({
               {itens.map((item) => model(item))}
             </SortableContext>,
           );
-        })}
+        })} */}
       {/* <DragOverlay modifiers={[restrictToParentElement]}>
         {activeId ? (
           <Box

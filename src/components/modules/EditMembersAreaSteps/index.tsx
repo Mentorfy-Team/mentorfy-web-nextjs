@@ -14,8 +14,8 @@ type props = {
   image?: string;
   title?: JSX.Element | string;
   stepType?: JSX.Element | string | number;
-  onEdit?: () => void;
-  id?: string;
+  onEdit?: (id) => void;
+  step: any;
   isHeader?: boolean;
 };
 const EditMembersAreaSteps: FC<props> = ({
@@ -23,13 +23,13 @@ const EditMembersAreaSteps: FC<props> = ({
   title,
   stepType,
   onEdit,
-  id,
+  step,
   isHeader = false,
 }) => {
   const theme = useTheme();
 
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: id });
+    useSortable({ id: step.id });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
@@ -59,7 +59,13 @@ const EditMembersAreaSteps: FC<props> = ({
   };
 
   return (
-    <div id={id + ''} key={id} ref={setNodeRef} style={style} {...attributes}>
+    <div
+      id={step.id + ''}
+      key={step.id}
+      ref={setNodeRef}
+      style={{ ...style, margin: !isHeader ? '8px' : 'unset' }}
+      {...attributes}
+    >
       <Step
         sx={{
           borderRadious: isHeader ? '0px' : '1.2rem 1.2rem 0 0',
@@ -73,6 +79,7 @@ const EditMembersAreaSteps: FC<props> = ({
                   color: `${theme.palette.tertiary.main}`,
                   cursor: 'pointer',
                   marginBottom: '0.5rem',
+                  margin: '0.2rem',
                 }}
                 {...listeners}
               />
@@ -112,7 +119,7 @@ const EditMembersAreaSteps: FC<props> = ({
             </Box>
           </Box>
           <Button
-            onClick={() => onEdit()}
+            onClick={() => onEdit(step)}
             sx={{ textTransform: 'none', marginBottom: '0.2rem' }}
           >
             Editar

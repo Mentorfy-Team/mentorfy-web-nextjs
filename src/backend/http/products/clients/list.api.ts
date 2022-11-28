@@ -51,7 +51,7 @@ export const get = async (req, res) => {
                   input.profile_id === cl.id,
               ),
           ).length /
-            tools.filter((t) => t.mentor_tool !== 0).length) *
+            tools.filter((t) => t.type !== 0).length) *
           100
         ).toFixed(2),
       ),

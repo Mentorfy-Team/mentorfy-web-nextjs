@@ -76,7 +76,7 @@ const ClientJourney: FC<props> = ({ id }) => {
           (input) => input.member_area_tool_id === selectedTask?.id,
         );
         if (Inputs?.length > 0) {
-          if (selectedTask.mentor_tool === 4) {
+          if (selectedTask.type === 4) {
             const InputsData = {
               input: (Inputs[0].extra as any).comments,
               date: Inputs[0].created_at,
@@ -213,7 +213,7 @@ const ClientJourney: FC<props> = ({ id }) => {
         <SwicthClientJouneyModal
           open={open}
           setOpen={setOpen}
-          type={selectedTask?.mentor_tool}
+          type={selectedTask?.type}
           selectedClient={clientInput.client}
           selectedTask={selectedTask}
           finishedDate={clientInput.date}

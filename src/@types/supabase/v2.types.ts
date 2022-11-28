@@ -144,37 +144,40 @@ export interface Database {
           id: string
           created_at: string | null
           member_area: string | null
-          mentor_tool: number | null
+          type: number
           title: string | null
           description: string | null
           status: boolean | null
           data: Json | null
           order: number | null
           extra: Json | null
+          parent: string | null
         }
         Insert: {
           id?: string
           created_at?: string | null
           member_area?: string | null
-          mentor_tool?: number | null
+          type: number
           title?: string | null
           description?: string | null
           status?: boolean | null
           data?: Json | null
           order?: number | null
           extra?: Json | null
+          parent?: string | null
         }
         Update: {
           id?: string
           created_at?: string | null
           member_area?: string | null
-          mentor_tool?: number | null
+          type?: number
           title?: string | null
           description?: string | null
           status?: boolean | null
           data?: Json | null
           order?: number | null
           extra?: Json | null
+          parent?: string | null
         }
       }
       member_area_type: {

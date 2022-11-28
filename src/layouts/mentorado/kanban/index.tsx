@@ -131,7 +131,7 @@ export const KanbanView: FC<
                     <Task
                       key={task.id}
                       onClick={() => {
-                        const type = GetTypeName(task.mentor_tool);
+                        const type = GetTypeName(task.type);
                         setOpen(true);
                         setCurrentModal({
                           onChange: GetOnChange,

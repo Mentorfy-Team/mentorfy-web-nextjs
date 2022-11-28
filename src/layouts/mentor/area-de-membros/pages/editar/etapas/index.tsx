@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { Task, Workspaces } from '@mui/icons-material';
+import { Workspaces } from '@mui/icons-material';
 import Save from '@mui/icons-material/Save';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -9,8 +9,6 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { GroupTools } from '~/components/modules/DragNDrop';
-import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
-import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import { ToolListNames } from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
 import SwitchModal from '~/layouts/mentor/area-de-membros/helpers/SwitchModal';
@@ -19,16 +17,14 @@ import { UpdateMemberAreaTools } from '~/services/member-area.service';
 import { userStore } from '~/stores';
 import {
   AddGroup,
-  AddTool,
   ButtonsWrapper,
   CustomTypograpy,
-  GroupHeader,
-  GroupWrapper,
   ReturnButton,
   SaveButton,
   ScrollWrapper,
 } from '../styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
+import CreateDnDRows from './helpers/CreateDnDRows';
 
 const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
   ssr: false,
@@ -36,6 +32,7 @@ const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
 
 type Props = {
   id: string;
+  product: any;
 };
 
 type ModalType = {
@@ -47,7 +44,7 @@ type ModalType = {
   rows?: any[];
 };
 
-const EditarMentoria: FC<Props> = ({ id }) => {
+const EditarMentoria: FC<Props> = ({ id, product }) => {
   const [currentModal, setCurrentModal] = useState<ModalType>();
   const [open, setOpen] = useState(false);
   const [steps, setSteps] = useState<GroupTools[]>([]);
@@ -59,67 +56,94 @@ const EditarMentoria: FC<Props> = ({ id }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(id);
 
   useEffect(() => {
-    setSteps((oldSteps) => {
-      oldSteps = [...OrganizeTools(stepsData)];
-      return [...oldSteps];
-    });
+    setSteps(stepsData);
   }, [stepsData]);
 
-  const addNewTool = useCallback(
-    (title, description, mentor_tool, group_id) => {
-      const newTool = {
+  const addNewTool = useCallback((title, description, type, group_id) => {
+    const newTool = {
+      id: Math.random() + '',
+      title: title,
+      description: description,
+      type,
+      parent: group_id,
+    } as MentorTools.ToolData;
+
+    setSteps((oldSteps) => {
+      const index = oldSteps.findIndex((stp) => stp.id === group_id);
+      if (index >= 0) {
+        if (!oldSteps[index]?.rows) oldSteps[index].rows = [];
+        oldSteps[index].rows.push(newTool);
+      } else {
+        const index = oldSteps.findIndex((stp) =>
+          stp.rows.find((row) => row.id === group_id),
+        );
+        if (index >= 0) {
+          const rowIndex = oldSteps[index].rows.findIndex(
+            (row) => row.id === group_id,
+          );
+          if (!oldSteps[index].rows[rowIndex].rows)
+            oldSteps[index].rows[rowIndex].rows = [];
+          oldSteps[index].rows[rowIndex].rows.push(newTool);
+        }
+      }
+      return [...oldSteps];
+    });
+  }, []);
+
+  const addNewGroup = useCallback(
+    (parentId?) => {
+      const newGroup = {
         id: Math.random() + '',
-        title: title,
-        description: description,
-        mentor_tool,
-      };
+        title:
+          `${parentId ? 'Nova categoria' : 'Novo agrupador'} ` +
+          (steps.length + 1),
+        description: '',
+        type: 0,
+        parent: parentId,
+      } as MentorTools.ToolData & { rows: MentorTools.ToolData[] };
 
       setSteps((oldSteps) => {
-        const index = oldSteps.findIndex((stp) => stp.id === group_id);
-        if (!oldSteps[index].rows) oldSteps[index].rows = [];
-        oldSteps[index].rows.push(newTool);
+        if (!oldSteps) oldSteps = [];
 
+        // find in tree the parent
+        if (parentId) {
+          const parentIndex = oldSteps.findIndex(
+            (stp) =>
+              stp.id === parentId ||
+              (stp.rows && stp.rows.find((row) => row.id === parentId)),
+          );
+
+          if (parentIndex >= 0) {
+            if (!oldSteps[parentIndex].rows) oldSteps[parentIndex].rows = [];
+            oldSteps[parentIndex].rows.push(newGroup);
+          }
+        } else {
+          oldSteps.push(newGroup);
+        }
         return [...oldSteps];
       });
     },
-    [],
+    [steps],
   );
-
-  const addNewGroup = useCallback(() => {
-    const newStep = {
-      id: Math.random() + '',
-      title: 'Novo Agrupador de Etapas ' + (steps.length + 1),
-      mentor_tool: '0',
-      rows: [],
-    };
-
-    setSteps((oldSteps) => {
-      if (!oldSteps) oldSteps = [];
-
-      oldSteps.push(newStep);
-      return [...oldSteps];
-    });
-  }, [steps]);
 
   const handleOpenToolsModal = useCallback(
     (group_id) => {
       setCurrentModal({
         onChange: (tool: MentorTools.ToolType) => {
-          addNewTool(
-            `Nova Etapa ${
-              steps.find((stp) => stp.id === group_id).rows.length + 1
-            }`,
-            tool.description,
-            tool.id,
-            group_id,
-          );
+          addNewTool('Nova Etapa', tool.description, tool.id, group_id);
         },
         type: ToolListNames.ToolList.name,
       });
       setOpen(true);
     },
-    [addNewTool, steps],
+    [addNewTool],
   );
+
+  const GetTypeName = useCallback((type) => {
+    return Object.values(ToolListNames).find((i) => {
+      return i.id == parseInt(type);
+    })?.name;
+  }, []);
 
   const HandleModal = useCallback(() => {
     return (
@@ -127,21 +151,21 @@ const EditarMentoria: FC<Props> = ({ id }) => {
         open={open}
         setOpen={setOpen}
         onChange={currentModal.onChange}
-        type={currentModal.type}
+        type={GetTypeName(currentModal.type)}
         refId={currentModal.refId}
         area_id={id}
         data={currentModal.data}
         rows={currentModal.rows}
       />
     );
-  }, [currentModal, open, id]);
+  }, [open, currentModal, GetTypeName, id]);
 
   const handleSave = useCallback(async () => {
     setLoading(true);
     // timout para dar tempo para as imagens se organizarem
     setTimeout(async () => {
       await UpdateMemberAreaTools(id, steps);
-      await mutate();
+      await mutate([]);
       toast.success('Alterações salvas com sucesso', { autoClose: 2000 });
       setTimeout(() => {
         setLoading(false);
@@ -156,31 +180,53 @@ const EditarMentoria: FC<Props> = ({ id }) => {
         await FilesToDelete(data.toRemove);
         delete data.toRemove;
       }
-      let stepIndex = steps.findIndex(
-        (stp) => stp.rows.findIndex((row) => row.id === refId + '') >= 0,
+      const groupIndex = steps.findIndex(
+        (s) =>
+          s.id === refId ||
+          s.rows?.findIndex(
+            (c) => c.id === refId + '' || c.rows?.find((t) => t.id === refId),
+          ) >= 0,
       );
-      if (stepIndex >= 0) {
+
+      const categoryIndex = steps[groupIndex]?.rows?.findIndex(
+        (c) =>
+          c.id === refId ||
+          c.rows?.findIndex((row) => row.id === refId + '') >= 0,
+      );
+
+      const categoryRows = steps[groupIndex]?.rows || [];
+      const taskIndex = categoryRows[categoryIndex]?.rows?.findIndex(
+        (t) => t.id === refId,
+      );
+
+      if (taskIndex >= 0) {
         setSteps((oldSteps) => {
           Object.assign(
-            oldSteps[stepIndex].rows.find((r) => r.id === refId + ''),
+            oldSteps[groupIndex].rows[categoryIndex].rows[taskIndex],
             data,
           );
           return [...oldSteps];
         });
-      } else {
-        stepIndex = steps.findIndex((row) => row.id === refId + '');
+      } else if (categoryIndex >= 0) {
+        setSteps((oldSteps) => {
+          Object.assign(oldSteps[groupIndex].rows[categoryIndex], data);
+          return [...oldSteps];
+        });
+      } else if (groupIndex >= 0) {
         if (data.delete) {
           setSteps((oldSteps) => {
-            Object.assign(oldSteps[stepIndex], data);
-            oldSteps[stepIndex].rows = oldSteps[stepIndex].rows.map((tasks) => {
-              tasks.delete = true;
-              return { ...tasks };
-            });
+            Object.assign(oldSteps[groupIndex], data);
+            oldSteps[groupIndex].rows = oldSteps[groupIndex].rows?.map(
+              (tasks) => {
+                tasks.delete = true;
+                return { ...tasks };
+              },
+            );
             return [...oldSteps];
           });
         } else {
           setSteps((oldSteps) => {
-            Object.assign(oldSteps[stepIndex], data);
+            Object.assign(oldSteps[groupIndex], data);
             return [...oldSteps];
           });
         }
@@ -190,20 +236,36 @@ const EditarMentoria: FC<Props> = ({ id }) => {
     [handleSave, steps],
   );
 
-  const GetTypeName = useCallback((type) => {
-    return Object.values(ToolListNames).find((i) => {
-      return i.id == parseInt(type);
-    }).name;
-  }, []);
-
   const hasChanges = useMemo(() => {
     // verifica se todos os elementos do array são iguais
     if (!steps || steps.length === 0) return false;
-    const haschanges =
-      JSON.stringify(OrganizeTools(stepsData)) !== JSON.stringify(steps);
+    const haschanges = JSON.stringify(stepsData) !== JSON.stringify(steps);
 
     return haschanges;
   }, [steps, stepsData]);
+
+  const DnDRows = useCallback(
+    (values) => {
+      const allowSubGroups = product?.member_area?.type_id === 3;
+      return CreateDnDRows(
+        values,
+        (step) => {
+          setCurrentModal({
+            onChange: GetOnChange,
+            type: step.type,
+            refId: step.id + '',
+            data: step || {},
+            rows: step.rows,
+          });
+          setOpen(true);
+        },
+        handleOpenToolsModal,
+        (id) => addNewGroup(id),
+        allowSubGroups,
+      );
+    },
+    [GetOnChange, addNewGroup, handleOpenToolsModal, product],
+  );
 
   return (
     <>
@@ -266,66 +328,7 @@ const EditarMentoria: FC<Props> = ({ id }) => {
         </AddGroup>
       </Box>
       <ScrollWrapper withtoolbar="true">
-        <DragNDrop
-          setElements={setSteps}
-          groupModel={(group_id, child) => {
-            if (!steps || steps.length === 0) return child;
-            const step = steps.find((i) => i.id === group_id);
-            return (
-              <GroupWrapper key={group_id}>
-                <EditMembersAreaSteps
-                  isHeader
-                  title={step.title || 'Nova etapa'}
-                  stepType={0}
-                  image={step?.extra ? step?.extra[0]?.sourceUrl : null}
-                  onEdit={() => {
-                    const type = GetTypeName(0);
-                    setCurrentModal({
-                      onChange: GetOnChange,
-                      type,
-                      refId: group_id + '',
-                      data: step || {},
-                      rows: step.rows,
-                    });
-                    setOpen(true);
-                  }}
-                  id={group_id + ''}
-                />
-
-                <GroupHeader>{child}</GroupHeader>
-                <AddTool
-                  onClick={() => handleOpenToolsModal(group_id)}
-                  variant="contained"
-                >
-                  <Task />
-                  Adicionar Etapa
-                </AddTool>
-              </GroupWrapper>
-            );
-          }}
-          model={(stp) => {
-            if (!stp) return null;
-            return (
-              <EditMembersAreaSteps
-                title={stp?.title || 'Nova etapa'}
-                stepType={stp.mentor_tool}
-                image={Image}
-                onEdit={() => {
-                  const type = GetTypeName(stp.mentor_tool);
-                  setCurrentModal({
-                    onChange: GetOnChange,
-                    type,
-                    refId: stp.id,
-                    data: stp || {},
-                  });
-                  setOpen(true);
-                }}
-                id={stp.id}
-              />
-            );
-          }}
-          elements={steps}
-        />
+        <DragNDrop setElements={setSteps} elements={DnDRows(steps)} />
       </ScrollWrapper>
       {open && HandleModal()}
     </>

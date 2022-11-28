@@ -98,6 +98,24 @@ export const del: Handler.Callback<GetRequest, GetResponse> = async (
 
   await supabase.from('member_area').delete().eq('id', req.query.id);
 
+  const { data } = await supabase
+    .from('member_area_tool')
+    .select('id')
+    .eq('member_area', req.query.id);
+
+  await supabase
+    .from('client_input_tool')
+    .delete()
+    .in(
+      'member_area_tool_id',
+      data.map((d) => d.id),
+    );
+
+  await supabase
+    .from('member_area_tool')
+    .delete()
+    .eq('member_area', req.query.id);
+
   return res.status(200).json({
     message: 'Product deleted',
   });

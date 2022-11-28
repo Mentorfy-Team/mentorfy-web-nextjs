@@ -67,7 +67,7 @@ export const VideoView = ({
     });
     setVideosOrdem(
       stepsData
-        .filter((step) => step.mentor_tool === ToolListNames.Video.id)
+        .filter((step) => step.type === ToolListNames.Video.id)
         .sort((a, b) => a.order - b.order),
     );
   }, [stepsData]);
