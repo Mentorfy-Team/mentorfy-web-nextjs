@@ -103,6 +103,54 @@ export const FileWrapper = styled('div')`
   display: flex;
   justify-content: center;
   height: 450px;
-  max-width: 100%;
+  max-width: 60%;
   margin-bottom: 1rem;
+`;
+export const Wrapper = styled('div')`
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+`;
+
+export const UsageText = styled(Typography)`
+  color: ${({ theme }) => theme.palette.caption.light};
+  opacity: 0.8;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+  text-align: start;
+`;
+
+export const ButtonsWrapper = styled('div')`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+  width: 50%;
+`;
+
+export const NameButton = styled(Button)`
+  height: 2.5rem;
+  margin-left: 1px;
+  padding: 0px;
+`;
+export const DocumentButton = styled(Button)`
+  height: 2.5rem;
+  margin-left: 1px;
+  padding: 0px;
+`;
+
+export const NameText = styled(Typography)`
+  color: ${({ theme }) => theme.palette.text.secondary};
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2rem;
+  text-align: start;
+`;
+export const DocumentText = styled(Typography)`
+  color: ${({ theme }) => theme.palette.text.secondary};
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2rem;
+  text-align: start;
 `;
