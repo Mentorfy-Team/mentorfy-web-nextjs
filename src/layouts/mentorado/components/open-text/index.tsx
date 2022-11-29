@@ -17,7 +17,7 @@ const OpenText = ({
   data: { data: taskData, title: titleData, description: descriptionData },
   onChange,
   userInput,
-}: MentoredComponents.Props<ToolData[], InputProps, ExtraProps>) => {
+}: MentoredComponents.Props<ToolData, InputProps, ExtraProps>) => {
   const handleFinish = () => {
     onChange({
       data: {},
