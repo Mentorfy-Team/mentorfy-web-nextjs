@@ -9,7 +9,6 @@ import { GroupTools } from '~/components/modules/DragNDrop';
 import ProgressBar from '~/components/modules/ProgressBar';
 import Toolbar from '~/components/modules/Toolbar';
 import { MentoredRoutes } from '~/consts';
-import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import { useUserInputs } from '~/hooks/useUserInputs';
 import { InputUserMemberArea } from '~/services/member-area.service';
@@ -61,10 +60,7 @@ export const VideoView = ({
   const route = useRouter();
 
   useEffect(() => {
-    setSteps((oldSteps) => {
-      oldSteps = [...OrganizeTools(stepsData, ToolListNames.Video.id)];
-      return [...oldSteps];
-    });
+    setSteps(JSON.parse(JSON.stringify(stepsData)));
     setVideosOrdem(
       stepsData
         .filter((step) => step.type === ToolListNames.Video.id)

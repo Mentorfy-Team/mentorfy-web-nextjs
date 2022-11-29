@@ -9,9 +9,7 @@ export const UpdateMemberAreaTools = async (
   stepsToUpdate: GroupTools[],
 ) => {
   // para cada tool salva a ordem na propriedade order
-  const tools: MentorTools.ToolData[] = [];
-
-  const steps = [];
+  const tools: Partial<MentorTools.ToolData>[] = [];
 
   for (let i = 0; i < stepsToUpdate.length; i++) {
     const step = DataUtil.deepClone(stepsToUpdate[i]);

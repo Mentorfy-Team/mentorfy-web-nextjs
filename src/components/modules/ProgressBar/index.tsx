@@ -44,7 +44,7 @@ const ProgressBar = ({
   data: GroupTools[];
   input: MemberAreaTypes.UserInput[];
   activeid: string;
-  onGoTo: (id) => void;
+  onGoTo: (id, parentId?) => void;
 }) => {
   let count = 0;
 
@@ -107,7 +107,10 @@ const ProgressBar = ({
           {step.rows.map((task, j) => {
             count++;
             return (
-              <StepsWrapper key={task.id} onClick={() => onGoTo(task.id)}>
+              <StepsWrapper
+                key={task.id}
+                onClick={() => onGoTo(task.id, step.id)}
+              >
                 <CircleWrapper>
                   <Line />
                   <Dot

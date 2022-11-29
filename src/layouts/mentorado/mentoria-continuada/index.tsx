@@ -6,7 +6,6 @@ import HorizontalProgressBar from '~/components/modules/HorizontalProgressBar';
 import TipBar from '~/components/modules/TipBar';
 import Toolbar from '~/components/modules/Toolbar';
 import { GetAuthSession } from '~/helpers/AuthSession';
-import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import { useUserInputs } from '~/hooks/useUserInputs';
 import { GetProduct } from '~/services/product.service';
@@ -47,10 +46,7 @@ const ContinuosMentoring: FC<
   }, [inputData]);
 
   useEffect(() => {
-    setSteps((oldSteps) => {
-      oldSteps = [...OrganizeTools(stepsData)];
-      return [...oldSteps];
-    });
+    setSteps(JSON.parse(JSON.stringify(stepsData)));
   }, [stepsData]);
 
   const ModalComponent = useCallback(() => {

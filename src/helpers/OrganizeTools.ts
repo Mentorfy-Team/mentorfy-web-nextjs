@@ -10,7 +10,7 @@ export const OrganizeTools = (
     .sort((a, b) => a.order - b.order);
   if (!sortedData) return [];
 
-  const steps: GroupTools[] = [];
+  const steps: Partial<GroupTools>[] = [];
   let countSteps = 0;
 
   for (let i = 0; i < sortedData.length; i++) {

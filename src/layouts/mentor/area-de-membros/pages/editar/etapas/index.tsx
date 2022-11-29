@@ -56,7 +56,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(id);
 
   useEffect(() => {
-    setSteps(stepsData);
+    setSteps(JSON.parse(JSON.stringify(stepsData)));
   }, [stepsData]);
 
   const addNewTool = useCallback((title, description, type, group_id) => {
@@ -238,6 +238,8 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
 
   const hasChanges = useMemo(() => {
     // verifica se todos os elementos do array são iguais
+    if (stepsData.length && steps.length)
+      console.log('hasChanges', stepsData[0].rows.length, steps[0].rows.length);
     if (!steps || steps.length === 0) return false;
     const haschanges = JSON.stringify(stepsData) !== JSON.stringify(steps);
 

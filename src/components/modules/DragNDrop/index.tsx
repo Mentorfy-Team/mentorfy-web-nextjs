@@ -10,14 +10,8 @@ import {
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 
-export type GroupTools = {
-  id: string;
-  title: string;
-  description?: string;
-  data?: any;
-  extra?: any;
-  rows?: (MentorTools.ToolData & { rows?: any[] })[];
-  delete?: boolean;
+export type GroupTools = MentorTools.ToolData & {
+  rows?: (Partial<MentorTools.ToolData> & { rows?: any[] })[];
 };
 
 type Props = {

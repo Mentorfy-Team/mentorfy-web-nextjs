@@ -45,16 +45,18 @@ const OpenText = ({
   return (
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado>
-        {!taskData && (
+        {!descriptionData && (
           <TipBar>
             Ainda não há <span>nenhum conteúdo disponível</span> nossa etapa. Em
             caso de dúvidas, entre em contato com o suporte da mentoria.
           </TipBar>
         )}
-        {taskData && <Description>{descriptionData}</Description>}
+        {descriptionData && <Description>{descriptionData}</Description>}
 
         <Box>{/* // TODO: show txt */}</Box>
-        {taskData && <CloseButton onClick={handleFinish}>Fechar</CloseButton>}
+        {descriptionData && (
+          <CloseButton onClick={handleFinish}>Fechar</CloseButton>
+        )}
       </ModalDialogContent>
     </ModalComponent>
   );

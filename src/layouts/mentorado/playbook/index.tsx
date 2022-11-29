@@ -3,7 +3,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { GroupTools } from '~/components/modules/DragNDrop';
-import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import {
   Banner,
@@ -31,6 +30,10 @@ export const Playbook: FC<
   const [steps, setSteps] = useState<GroupTools[]>([]);
   const [open, setOpen] = useState(false);
   const [currentCard, setCurrentCard] = useState<string | null>();
+  const [selected, setSelected] = useState<{
+    categoryId: string;
+    stepId: string;
+  } | null>();
 
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
@@ -41,10 +44,7 @@ export const Playbook: FC<
   }>();
 
   useEffect(() => {
-    setSteps((oldSteps) => {
-      oldSteps = [...OrganizeTools(stepsData)];
-      return [...oldSteps];
-    });
+    setSteps(JSON.parse(JSON.stringify(stepsData)));
   }, [stepsData]);
 
   const ModalComponent = useCallback(() => {
@@ -64,6 +64,12 @@ export const Playbook: FC<
   const isEmptyMentory = useMemo(() => {
     return steps?.length === 0 || steps?.every((stp) => stp.rows.length == 0);
   }, [steps]);
+
+  const Cards = useCallback(() => {
+    return steps
+      .find((s) => s.id == selected?.stepId || !selected)
+      .rows.find((s) => s.id == selected?.categoryId || !selected).rows;
+  }, [selected, steps]);
 
   return (
     <>
@@ -87,7 +93,9 @@ export const Playbook: FC<
                 data={steps}
                 input={[]}
                 activeid={currentCard}
-                onGoTo={(id) => onSelectedCard(id)}
+                onGoTo={(categoryId, stepId) =>
+                  setSelected({ categoryId, stepId })
+                }
               />
             </ProgressBarWrapper>
           </SideBar>
@@ -108,27 +116,32 @@ export const Playbook: FC<
 
             {steps.length > 0 && (
               <Tips>
-                {steps
-                  .find((stp) => stp.id === currentCard || !currentCard)
-                  ?.rows.map((task) => (
-                    <Content
-                      key={task.id}
-                      onClick={() => {
-                        const type = GetTypeName(task.type);
-                        setOpen(true);
-                        setCurrentModal({
-                          onChange: () => {},
-                          type,
-                          refId: task.id + '',
-                          data: task || {},
-                        });
-                      }}
-                    >
-                      <Typography variant="h6">{task.title}</Typography>
-                      <DescriptionText>{task.description}</DescriptionText>
-                    </Content>
-                  ))}
+                {Cards().map((task) => (
+                  <Content
+                    key={task.id}
+                    onClick={() => {
+                      const type = GetTypeName(task.type);
+                      setOpen(true);
+                      setCurrentModal({
+                        onChange: () => {},
+                        type,
+                        refId: task.id + '',
+                        data: task || {},
+                      });
+                    }}
+                  >
+                    <Typography variant="h6">{task.title}</Typography>
+                    <DescriptionText>{task.description}</DescriptionText>
+                  </Content>
+                ))}
               </Tips>
+            )}
+            {Cards().length === 0 && (
+              <TipBar>
+                Ainda não há <span>nenhuma atividade disponível</span> para essa
+                etapa. Em caso de dúvidas, entre em contato com o suporte da
+                mentoria.
+              </TipBar>
             )}
           </Box>
         </Wrapper>
