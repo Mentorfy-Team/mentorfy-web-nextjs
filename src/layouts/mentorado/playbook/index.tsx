@@ -62,7 +62,7 @@ export const Playbook: FC<
   }, []);
 
   const isEmptyMentory = useMemo(() => {
-    return steps?.length === 0 || steps?.every((stp) => stp.rows.length == 0);
+    return steps?.length === 0;
   }, [steps]);
 
   const Cards = useCallback(() => {
