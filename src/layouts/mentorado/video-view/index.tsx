@@ -60,7 +60,7 @@ export const VideoView = ({
   const route = useRouter();
 
   useEffect(() => {
-    setSteps(JSON.parse(JSON.stringify(stepsData)));
+    if (stepsData) setSteps(JSON.parse(JSON.stringify(stepsData)));
     setVideosOrdem(
       stepsData
         .filter((step) => step.type === ToolListNames.Video.id)

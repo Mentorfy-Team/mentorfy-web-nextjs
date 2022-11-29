@@ -45,7 +45,7 @@ export const KanbanView: FC<
   }, [inputData]);
 
   useEffect(() => {
-    setSteps(JSON.parse(JSON.stringify(stepsData)));
+    if (stepsData) setSteps(JSON.parse(JSON.stringify(stepsData)));
   }, [stepsData]);
 
   const ModalComponent = useCallback(() => {

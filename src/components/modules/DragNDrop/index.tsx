@@ -11,7 +11,7 @@ import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 
 export type GroupTools = MentorTools.ToolData & {
-  rows?: (Partial<MentorTools.ToolData> & { rows?: any[] })[];
+  rows?: (MentorTools.ToolData & { rows?: any[] })[];
 };
 
 type Props = {

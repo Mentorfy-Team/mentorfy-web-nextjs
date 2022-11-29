@@ -26,7 +26,7 @@ export const WrapperContent = styled(Box)`
   fieldset {
     height: 3rem;
   }
-  .css-1x8ds66-MuiFormControl-root-MuiTextField-root {
+  .MuiFormControl-root-MuiTextField-root {
     height: 3rem;
   }
   input {

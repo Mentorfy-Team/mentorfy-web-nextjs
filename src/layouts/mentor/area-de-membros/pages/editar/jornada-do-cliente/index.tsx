@@ -43,7 +43,7 @@ const ClientJourney: FC<props> = ({ id }) => {
   const { setLoading } = userStore();
   const route = useRouter();
   useEffect(() => {
-    setSteps(JSON.parse(JSON.stringify(stepsData)));
+    if (stepsData) setSteps(JSON.parse(JSON.stringify(stepsData)));
   }, [stepsData]);
 
   useEffect(() => {

@@ -13,12 +13,19 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
   const data = req.body.data;
   const id = req.body.id.length > 6 ? req.body.id : null;
 
-  const sortedRemoveTools = data.sort((a, b) => b.type - a.type);
-  const sortedAddTools = data.sort((a, b) => a.type - b.type);
+  const toRemove = data.filter(
+    (step) =>
+      step.delete ||
+      step.rows?.some(
+        (category) =>
+          category.delete || category.rows?.some((task) => task.delete),
+      ),
+  );
+  const toUpsert = data.sort((a, b) => a.type - b.type);
 
   try {
-    await RemoveTools(supabase, sortedRemoveTools);
-    await AddTools(supabase, sortedAddTools, id);
+    await RemoveTools(supabase, toRemove);
+    await AddTools(supabase, toUpsert, id);
   } catch (error) {
     return res.status(500).json({ error: (error as any).message });
   }

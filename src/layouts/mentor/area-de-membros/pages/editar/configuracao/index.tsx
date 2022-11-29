@@ -57,8 +57,13 @@ const Geral: FC<props> = ({ id }) => {
 
   useEffect(() => {
     setProduct(pData);
-    setDescription(description);
+    setDescription(pData.description);
     setTitle(pData?.title);
+    setColorPick({
+      one: pData?.extra?.titleGradiente.one,
+      two: pData?.extra?.titleGradiente.two,
+      three: pData?.extra?.titleGradiente.three,
+    });
     setProductImage({
       main_image: {
         file: pData?.main_image || '',
@@ -80,7 +85,7 @@ const Geral: FC<props> = ({ id }) => {
         return type.id === (product?.member_area as any)?.type_id;
       }),
     );
-  }, [pData, setValue, description, types, product?.member_area]);
+  }, [pData, setValue, types, product?.member_area]);
 
   const onSubmit: SubmitHandler<ProductClient.CreateProduct> = useCallback(
     async (values) => {
@@ -114,12 +119,13 @@ const Geral: FC<props> = ({ id }) => {
         video,
         id: product.id,
         description,
+        title,
         extra: { titleGradiente: colorPick },
       });
       toast.success('Alterações salvas com sucesso', { autoClose: 2000 });
       setIsLoading(false);
     },
-    [product, productImage, video, colorPick, description],
+    [product, productImage, video, colorPick, description, title],
   );
 
   const handleCapture = (

@@ -1,63 +1,48 @@
-import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
-import InputLabel from '@mui/material/InputLabel';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
 
-import { AcessLevelSelectField } from './styles';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
+import Radio from '~/components/atoms/Radio';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import RenderNewMentorForm from './NewMentorForm';
+import RenderExistentMentorForm from './ExistentMentoForm';
 
 const NewMentorModal = ({ open, setOpen }) => {
-  const [selectedProduct, setSelectedProduct] = useState<string[]>([]);
-  const acessLevel = ['Editor', 'Tutor', 'Gestor'];
+  const [isNewMentor, setIsNewMentor] = useState<boolean>(true);
 
-  const handleInputChange = (e) => {
-    const selectedProduct = e.target.value;
+  const renderExistingMentorForm = useCallback(() => {
+    return <RenderExistentMentorForm />;
+  }, []);
 
-    setSelectedProduct(
-      typeof selectedProduct === 'string'
-        ? selectedProduct.split(',')
-        : selectedProduct,
-    );
-  };
+  const renderNewMentorForm = useCallback(() => {
+    return <RenderNewMentorForm />;
+  }, []);
+
   return (
-    <ModalComponent
-      open={open}
-      setOpen={setOpen}
-      title="Cadastro de Mentor"
-      onSave={() => {
-        setOpen(false);
-        setSelectedProduct([]);
-      }}
-    >
+    <ModalComponent open={open} setOpen={setOpen} title="Cadastro de Mentor">
       <ModalDialogContent>
-        <InputField label="Nome" placeholder="Ex: João José" />
-        <InputField label="Email" placeholder="Ex: joaojose@mentorfy.com" />
+        <Box
+          sx={{ display: 'flex', width: '100%' }}
+          justifyContent="space-around"
+        >
+          <Box
+            onClick={() => setIsNewMentor(true)}
+            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          >
+            <Radio checked={isNewMentor} />
+            <Typography>Novo mentor</Typography>
+          </Box>
+          <Box
+            onClick={() => setIsNewMentor(false)}
+            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+          >
+            <Radio checked={!isNewMentor} />
+            <Typography>Usar mentor existente</Typography>
+          </Box>
+        </Box>
 
-        <AcessLevelSelectField>
-          <InputLabel shrink>Produtos Atribuídos</InputLabel>
-          <Select multiple onChange={handleInputChange} value={selectedProduct}>
-            {acessLevel.map((level) => (
-              <MenuItem key={level} value={level}>
-                {level}
-              </MenuItem>
-            ))}
-          </Select>
-        </AcessLevelSelectField>
-
-        <InputField label="Limite de Clientes" placeholder="Ex: 3000" />
-
-        <AcessLevelSelectField>
-          <InputLabel shrink>Nivel de Acesso</InputLabel>
-          <Select placeholder="Ex: SP">
-            {acessLevel.map((level) => (
-              <MenuItem key={level} value={level}>
-                {level}
-              </MenuItem>
-            ))}
-          </Select>
-        </AcessLevelSelectField>
+        {isNewMentor ? renderNewMentorForm() : renderExistingMentorForm()}
       </ModalDialogContent>
     </ModalComponent>
   );
