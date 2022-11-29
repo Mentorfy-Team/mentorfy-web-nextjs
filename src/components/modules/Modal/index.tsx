@@ -27,6 +27,7 @@ type props = {
   id?: string;
   isBlocked?: boolean;
   withX?: boolean;
+  sx?: any;
 };
 
 const ModalComponent: FC<props> = ({
@@ -44,6 +45,7 @@ const ModalComponent: FC<props> = ({
   id,
   isBlocked = false,
   withX = true,
+  sx,
 }) => {
   const theme = useTheme();
 
@@ -54,6 +56,9 @@ const ModalComponent: FC<props> = ({
       onClose={() => setOpen(false)}
       isMentorado={isMentorado}
       popularProduct={popularProduct}
+      sx={{
+        maxWidth: '100%',
+      }}
     >
       {popularProduct ? (
         ''
@@ -75,6 +80,7 @@ const ModalComponent: FC<props> = ({
         isMentorado={isMentorado}
         popularProduct={popularProduct}
         id="dialog"
+        sx={sx}
       >
         {children}
         <ButtonsWrapper>

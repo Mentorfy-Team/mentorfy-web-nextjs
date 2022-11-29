@@ -1,9 +1,8 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { GroupTools } from '~/components/modules/DragNDrop';
-import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import {
   Banner,
@@ -16,8 +15,7 @@ import {
 } from './styles';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import HandleToolModal from '../helpers/HandleToolModal';
-import SaveClientInput, { GetTypeName } from '../helpers/SaveClientInput';
-import { useUserInputs } from '~/hooks/useUserInputs';
+import { GetTypeName } from '../helpers/SaveClientInput';
 import Toolbar from '~/components/modules/Toolbar';
 import { GetProduct } from '~/services/product.service';
 import { ProgressBarWrapper } from '../video-view/styles';
@@ -29,13 +27,13 @@ export const Playbook: FC<
   PageTypes.Props & { member_area_id: string; memberArea: any }
 > = ({ member_area_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
-  const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<GroupTools[]>([]);
-  const [userInput, setUserInput] = useState<
-    Partial<MemberAreaTypes.UserInput[]>
-  >([]);
   const [open, setOpen] = useState(false);
   const [currentCard, setCurrentCard] = useState<string | null>();
+  const [selected, setSelected] = useState<{
+    categoryId: string;
+    stepId: string;
+  } | null>();
 
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
@@ -46,14 +44,7 @@ export const Playbook: FC<
   }>();
 
   useEffect(() => {
-    setUserInput(inputData);
-  }, [inputData]);
-
-  useEffect(() => {
-    setSteps((oldSteps) => {
-      oldSteps = [...OrganizeTools(stepsData)];
-      return [...oldSteps];
-    });
+    setSteps(JSON.parse(JSON.stringify(stepsData)));
   }, [stepsData]);
 
   const ModalComponent = useCallback(() => {
@@ -62,51 +53,51 @@ export const Playbook: FC<
       setOpen,
       currentModal,
       area_id: member_area_id,
-      inputs: inputData,
+      inputs: [],
     });
-  }, [open, currentModal, member_area_id, inputData]);
-
-  const GetOnChange = useCallback(
-    async ({ refId, data, extra }) => {
-      const index = userInput?.findIndex((i) => i.member_area_tool_id == refId);
-      SaveClientInput({
-        data: { refId, data, extra, index, inputs: userInput },
-        callbacks: {
-          result: setUserInput,
-          mutate,
-        },
-        member_area_id,
-      });
-    },
-    [member_area_id, mutate, userInput],
-  );
+  }, [open, currentModal, member_area_id]);
 
   const onSelectedCard = useCallback((id) => {
     //setCurrentCard(id);
   }, []);
 
+  const isEmptyMentory = useMemo(() => {
+    return steps?.length === 0 || steps?.every((stp) => stp.rows.length == 0);
+  }, [steps]);
+
+  const Cards = useCallback(() => {
+    return (
+      steps
+        .find((s) => s.id == selected?.stepId || !selected)
+        ?.rows.find((s) => s.id == selected?.categoryId || !selected).rows || []
+    );
+  }, [selected, steps]);
+
   return (
     <>
-      <Toolbar breadcrumbs={['Minhas mentorias', memberArea.title]} />
+      <Toolbar
+        initialTab={1}
+        breadcrumbs={['Minhas mentorias', memberArea.title]}
+      />
       <ContentWidthLimit maxWidth={1900}>
-        {!steps ||
-          steps.length == 0 ||
-          (steps && steps.every((stp) => stp.rows.length == 0) && (
-            <TipBar>
-              Ainda não há <span>nenhuma etapa ou atividades disponíveis</span>{' '}
-              para essa mentoria. Em caso de dúvidas, entre em contato com o
-              suporte da mentoria.
-            </TipBar>
-          ))}
+        {isEmptyMentory && (
+          <TipBar>
+            Ainda não há <span>nenhuma etapa ou atividades disponíveis</span>{' '}
+            para essa mentoria. Em caso de dúvidas, entre em contato com o
+            suporte da mentoria.
+          </TipBar>
+        )}
         <Wrapper>
           <SideBar>
             <SideBarTitle>{memberArea.title}</SideBarTitle>
             <ProgressBarWrapper>
               <ProgressBar
                 data={steps}
-                input={userInput}
+                input={[]}
                 activeid={currentCard}
-                onGoTo={(id) => onSelectedCard(id)}
+                onGoTo={(categoryId, stepId) =>
+                  setSelected({ categoryId, stepId })
+                }
               />
             </ProgressBarWrapper>
           </SideBar>
@@ -125,29 +116,35 @@ export const Playbook: FC<
               <Banner />
             )}
 
-            <Tips>
-              {steps &&
-                steps
-                  .find((stp) => stp.id === currentCard || !currentCard)
-                  ?.rows.map((task) => (
-                    <Content
-                      key={task.id}
-                      onClick={() => {
-                        const type = GetTypeName(task.mentor_tool);
-                        setOpen(true);
-                        setCurrentModal({
-                          onChange: GetOnChange,
-                          type,
-                          refId: task.id + '',
-                          data: task || {},
-                        });
-                      }}
-                    >
-                      <Typography variant="h6">{task.title}</Typography>
-                      <DescriptionText>{task.description}</DescriptionText>
-                    </Content>
-                  ))}
-            </Tips>
+            {steps.length > 0 && (
+              <Tips>
+                {Cards().map((task) => (
+                  <Content
+                    key={task.id}
+                    onClick={() => {
+                      const type = GetTypeName(task.type);
+                      setOpen(true);
+                      setCurrentModal({
+                        onChange: () => {},
+                        type,
+                        refId: task.id + '',
+                        data: task || {},
+                      });
+                    }}
+                  >
+                    <Typography variant="h6">{task.title}</Typography>
+                    <DescriptionText>{task.description}</DescriptionText>
+                  </Content>
+                ))}
+              </Tips>
+            )}
+            {Cards().length === 0 && (
+              <TipBar>
+                Ainda não há <span>nenhuma atividade disponível</span> para essa
+                etapa. Em caso de dúvidas, entre em contato com o suporte da
+                mentoria.
+              </TipBar>
+            )}
           </Box>
         </Wrapper>
       </ContentWidthLimit>

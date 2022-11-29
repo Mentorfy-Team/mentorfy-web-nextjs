@@ -5,12 +5,10 @@ import Typography from '@mui/material/Typography';
 
 export const Wrapper = styled(Box)`
   display: flex;
-  flex-direction: row;
-  float: center;
   gap: 2rem;
-  margin: 1rem 0 1rem 21%;
-  overflow: auto;
-  width: 800px;
+  margin: 1rem 1.8vw;
+  padding-bottom: 1rem;
+  overflow-x: scroll;
 `;
 
 export const CircleWrapper = styled(Box)`

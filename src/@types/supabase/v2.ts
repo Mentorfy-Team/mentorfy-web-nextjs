@@ -83,7 +83,7 @@ export interface Database {
           id: string;
           created_at: string | null;
           member_area: string | null;
-          mentor_tool: number | null;
+          type: number | null;
           title: string | null;
           description: string | null;
           status: boolean | null;
@@ -95,7 +95,7 @@ export interface Database {
           id?: string;
           created_at?: string | null;
           member_area?: string | null;
-          mentor_tool?: number | null;
+          type?: number | null;
           title?: string | null;
           description?: string | null;
           status?: boolean | null;
@@ -107,7 +107,7 @@ export interface Database {
           id?: string;
           created_at?: string | null;
           member_area?: string | null;
-          mentor_tool?: number | null;
+          type?: number | null;
           title?: string | null;
           description?: string | null;
           status?: boolean | null;
@@ -291,4 +291,3 @@ export interface Database {
     };
   };
 }
-

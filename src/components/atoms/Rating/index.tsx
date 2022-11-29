@@ -31,7 +31,6 @@ const TextRating: React.FC<Props> = ({
   return (
     <Box
       sx={{
-        width: 200,
         display: 'flex',
         alignItems: 'center',
       }}

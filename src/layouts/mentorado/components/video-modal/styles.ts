@@ -45,4 +45,6 @@ export const SendButton = styled(Button)`
 `;
 export const VideoWrapper = styled('div')`
   width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
 `;

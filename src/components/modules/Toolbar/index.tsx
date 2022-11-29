@@ -9,14 +9,16 @@ type Props = {
   onChange?: (value: number) => void;
   tabs?: string[] | number[];
   breadcrumbs?: string[];
+  initialTab?: number;
 };
 
 const Toolbar: React.FC<Props> = ({
   onChange = () => {},
   tabs = [],
   breadcrumbs = [],
+  initialTab = 0,
 }) => {
-  const [tabindex, setTabindex] = React.useState(0);
+  const [tabindex, setTabindex] = React.useState(initialTab);
   const [hasmargintop, setHasMarginTop] = useState<boolean | null>(null);
   const route = useRouter();
   const theme = useTheme();
