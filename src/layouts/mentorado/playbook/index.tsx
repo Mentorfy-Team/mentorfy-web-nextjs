@@ -66,9 +66,11 @@ export const Playbook: FC<
   }, [steps]);
 
   const Cards = useCallback(() => {
-    return steps
-      .find((s) => s.id == selected?.stepId || !selected)
-      .rows.find((s) => s.id == selected?.categoryId || !selected).rows;
+    return (
+      steps
+        .find((s) => s.id == selected?.stepId || !selected)
+        ?.rows.find((s) => s.id == selected?.categoryId || !selected).rows || []
+    );
   }, [selected, steps]);
 
   return (
