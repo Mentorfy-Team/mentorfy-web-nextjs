@@ -1,4 +1,8 @@
-const RemoveTools = async (supabase, list) => {
+import { SupabaseClient } from '@supabase/supabase-js';
+import { Database } from '~/@types/supabase/v2.types';
+import ToolIsParent from './ToolIsParent';
+
+const RemoveTools = async (supabase: SupabaseClient<Database>, list) => {
   for (let i = 0; i < list.length; i++) {
     const tool = list[i];
     delete (tool as any).toRemove;
@@ -10,10 +14,20 @@ const RemoveTools = async (supabase, list) => {
     if (tool.delete) {
       if (isUUID) {
         delete tool.delete;
+        const parents = await ToolIsParent(supabase, tool.id);
+        if (parents.length) {
+          for (let index = 0; index < parents.length; index++) {
+            parents[index]['delete'] = true;
+          }
+          await RemoveTools(supabase, parents);
+        }
+
         const { error } = await supabase
           .from('member_area_tool')
           .delete()
           .match({ id: tool_id });
+
+        const result = error;
       } else {
         continue;
       }
