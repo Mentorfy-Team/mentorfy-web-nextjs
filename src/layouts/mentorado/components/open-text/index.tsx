@@ -9,10 +9,7 @@ import { CloseButton } from './styles';
 type InputProps = { id: string; value: boolean }[];
 type ExtraProps = boolean;
 
-type ToolData = {
-  id: string;
-  title: string;
-};
+type ToolData = string;
 
 const OpenText = ({
   open,
@@ -52,6 +49,13 @@ const OpenText = ({
           </TipBar>
         )}
         {descriptionData && <Description>{descriptionData}</Description>}
+        {taskData && (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: taskData,
+            }}
+          />
+        )}
 
         <Box>{/* // TODO: show txt */}</Box>
         {descriptionData && (
