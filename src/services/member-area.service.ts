@@ -6,21 +6,25 @@ import { HttpClient } from './HttpClient';
 
 export const UpdateMemberAreaTools = async (
   id: string,
-  steps: GroupTools[],
+  stepsToUpdate: GroupTools[],
 ) => {
   // para cada tool salva a ordem na propriedade order
-  const tools: MentorTools.ToolData[] = [];
+  const tools: Partial<MentorTools.ToolData>[] = [];
 
-  for (let i = 0; i < steps.length; i++) {
-    const step = DataUtil.deepClone(steps[i]);
+  for (let i = 0; i < stepsToUpdate.length; i++) {
+    const step = DataUtil.deepClone(stepsToUpdate[i]);
     delete step.rows;
 
-    step['type'] = '0';
     tools.push(step as any);
 
-    for (let e = 0; e < steps[i].rows.length; e++) {
-      const tool = steps[i].rows[e];
+    for (let e = 0; e < stepsToUpdate[i].rows?.length; e++) {
+      const tool = stepsToUpdate[i].rows[e];
       tools.push(tool);
+
+      for (let o = 0; o < tool.rows?.length; o++) {
+        const subtool = tool.rows[o];
+        tools.push(subtool);
+      }
     }
   }
 

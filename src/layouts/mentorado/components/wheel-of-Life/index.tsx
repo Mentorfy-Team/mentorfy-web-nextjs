@@ -86,7 +86,7 @@ const WheelOfLifeModal = ({
             caso de dúvidas, entre em contato com o suporte da mentoria.
           </TipBar>
         )}
-        {!taskData && (
+        {taskData && (
           <div
             style={{
               backgroundColor: '#121212',
@@ -146,7 +146,7 @@ const WheelOfLifeModal = ({
           )}
         /> */}
 
-        {!taskData && (
+        {taskData && (
           <ButtonsWrapper>
             <BackButton
               disabled={currentArea <= 0}

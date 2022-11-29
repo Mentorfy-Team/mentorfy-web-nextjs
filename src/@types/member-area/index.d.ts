@@ -19,7 +19,7 @@ declare namespace MemberAreaTypes {
     path: string;
   };
 
-  type Tool = typeof Database.public.Tables.mentor_tool.Row;
+  type Tool = typeof Database.public.Tables.type.Row;
   type UserInput<Data = any, Extra = any> = Omit<
     typeof Database.public.Tables.client_input_tool.Row,
     'data' | 'extra'

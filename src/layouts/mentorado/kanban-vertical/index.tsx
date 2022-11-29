@@ -1,6 +1,5 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { GroupTools } from '~/components/modules/DragNDrop';
-import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 //import { FilesToDelete } from '~/services/file-upload.service';
 import { useUserInputs } from '~/hooks/useUserInputs';
@@ -55,10 +54,7 @@ const VerticalKanban: FC<
   }, [inputData]);
 
   useEffect(() => {
-    setSteps((oldSteps) => {
-      oldSteps = [...OrganizeTools(stepsData)];
-      return [...oldSteps];
-    });
+    setSteps(JSON.parse(JSON.stringify(stepsData)));
   }, [stepsData]);
 
   const ModalComponent = useCallback(() => {
@@ -98,7 +94,7 @@ const VerticalKanban: FC<
         activeid={task_id}
         onGoTo={() => {}}
       />
-      <ContentWidthLimit maxWidth={700}>
+      <ContentWidthLimit maxWidth={900}>
         {(!steps || steps.length == 0) && (
           <TipBar>
             Ainda não há <span>nenhuma etapa disponível</span> para essa
@@ -139,7 +135,7 @@ const VerticalKanban: FC<
                     <Task
                       key={task.id}
                       onClick={() => {
-                        const type = GetTypeName(task.mentor_tool);
+                        const type = GetTypeName(task.type);
                         setOpen(true);
                         setCurrentModal({
                           onChange: GetOnChange,
@@ -181,7 +177,7 @@ const VerticalKanban: FC<
                         width={200}
                         height={120}
                         src={
-                          step.extra?.length > 1
+                          (step.extra as any)?.length > 1
                             ? step.extra[1].sourceUrl
                             : '/svgs/finished.svg'
                         }
