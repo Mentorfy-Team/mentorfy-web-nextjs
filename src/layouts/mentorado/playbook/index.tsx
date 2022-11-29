@@ -69,7 +69,8 @@ export const Playbook: FC<
     return (
       steps
         .find((s) => s.id == selected?.stepId || !selected)
-        ?.rows.find((s) => s.id == selected?.categoryId || !selected).rows || []
+        ?.rows.find((s) => s.id == selected?.categoryId || !selected)?.rows ||
+      []
     );
   }, [selected, steps]);
 
