@@ -111,6 +111,15 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
             gap: '2rem',
           }}
         >
+          {products.length === 0 && (
+            <Box
+              sx={{
+                color: '#d2d2d222',
+              }}
+            >
+              * Você ainda não criou uma mentoria.
+            </Box>
+          )}
           {products?.map((area, index) => (
             <AreaWrapper
               onClick={
