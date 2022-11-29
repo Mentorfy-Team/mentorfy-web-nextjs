@@ -56,7 +56,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(id);
 
   useEffect(() => {
-    setSteps(JSON.parse(JSON.stringify(stepsData)));
+    if (stepsData) setSteps(JSON.parse(JSON.stringify(stepsData)));
   }, [stepsData]);
 
   const addNewTool = useCallback((title, description, type, group_id) => {
