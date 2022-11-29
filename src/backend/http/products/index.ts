@@ -302,7 +302,9 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
   const { error, data } = await supabase
     .from('product')
     .update(toUpdate)
-    .match({ owner: user.id, id: req.body.id });
+    .match({ owner: user.id, id: req.body.id })
+    .select('*')
+    .single();
 
   res.status(200).json({ product: data, error: error?.message });
 };
