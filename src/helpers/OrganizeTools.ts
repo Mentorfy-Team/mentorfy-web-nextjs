@@ -1,9 +1,6 @@
 import { GroupTools } from '~/components/modules/DragNDrop';
 
-export const OrganizeTools = (
-  data: MentorTools.ToolData[],
-  filterByTypeId?,
-) => {
+export const OrganizeTools = (data: GroupTools[], filterByTypeId?) => {
   if (!data) return [];
   const sortedData = data
     .filter((d) => !filterByTypeId || d.type === 0 || d.type === filterByTypeId)
@@ -39,6 +36,7 @@ export const OrganizeTools = (
               data: sortedData[i].data,
               extra: sortedData[i].extra,
               type: sortedData[i].type,
+              parent: sortedData[i].parent,
             },
           ],
         });
@@ -51,6 +49,7 @@ export const OrganizeTools = (
           data: sortedData[i].data,
           extra: sortedData[i].extra,
           type: sortedData[i].type,
+          parent: sortedData[i].parent,
         });
       }
     }
