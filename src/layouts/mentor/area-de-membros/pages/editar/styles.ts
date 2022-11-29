@@ -52,6 +52,22 @@ export const AddTool = styled(Button)`
   padding-left: 0.4rem;
 `;
 
+export const AddCategory = styled(Box)`
+  display: flex;
+  align-self: center;
+  background-color: transparent;
+  color: ${({ theme }) => theme.palette.secondary.main};
+  height: 2rem;
+  svg {
+    margin-right: 0.2rem;
+    scale: 0.7;
+  }
+  margin-bottom: 0.4rem;
+  margin-right: 0.4rem;
+  margin-top: 0.4rem;
+  padding-left: 0.4rem;
+`;
+
 export const ReturnButton = styled(Button)`
   height: 2.5rem;
   margin-left: 1px;

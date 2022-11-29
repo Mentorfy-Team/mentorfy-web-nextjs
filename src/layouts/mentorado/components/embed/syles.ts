@@ -22,10 +22,12 @@ export const Description = styled(Typography)`
 
 export const EmbedHolder = styled(Box)`
   align-items: center;
-  background-color: #d4d4d4;
+  background-color: ${({ theme }) => theme.palette.primary.dark};
   display: flex;
   justify-content: center;
   max-width: calc(80vw);
   overflow: hidden;
   width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
 `;

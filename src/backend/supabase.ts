@@ -14,17 +14,9 @@ export const SupabaseServer = (req, res) => {
 };
 
 export const SupabaseAdmin = (req?) => {
-  const token = getToken(req);
   return createClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.SUPABASE_SERVICE_ROLE,
-    {
-      global: {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    },
   );
 };
 

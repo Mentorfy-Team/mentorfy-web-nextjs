@@ -18,7 +18,7 @@ type file = {
 
 export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const form = new formidable.IncomingForm();
-  const supabase = SupabaseAdmin(req);
+  const supabase = SupabaseAdmin();
   let file_name = '';
   const uploadFile = async () => {
     // eslint-disable-next-line
@@ -31,7 +31,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
         filepath = filepath.replace(/\s/g, '-');
         const rawData = fs.readFileSync((files.file as any).filepath);
         const { data, error } = await supabase.storage
-          .from('files')
+          .from('images')
           .upload(filepath, rawData, {
             contentType: (files.file as any).mimetype,
           });
@@ -40,7 +40,14 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
           return reject({ success: false });
         }
 
-        resolve(`${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/` + data.path);
+        await supabase.from('member_area_files').insert({
+          ref_id: req.body.id,
+          url: data.path,
+        });
+
+        resolve(
+          `${process.env.NEXT_PUBLIC_SUPABASE_STORAGE}/images/` + data.path,
+        );
       });
     });
   };
@@ -70,12 +77,14 @@ export const del: Handler.Callback<Request, Response> = async (req, res) => {
   if (req.body.length <= 0) return res.status(200).send({ success: true });
   const fixUrls = req.body.map((item) => {
     const url = item.replace(
-      process.env.NEXT_PUBLIC_SUPABASE_STORAGE + '/files/',
+      process.env.NEXT_PUBLIC_SUPABASE_STORAGE + '/images/',
       '',
     );
     return url;
   });
-  const { data, error } = await supabase.storage.from('files').remove(fixUrls);
+  const { data, error } = await supabase.storage.from('images').remove(fixUrls);
+
+  await supabase.from('member_area_files').delete().eq('url', fixUrls);
 
   res.status(200).json({
     error: error?.message,

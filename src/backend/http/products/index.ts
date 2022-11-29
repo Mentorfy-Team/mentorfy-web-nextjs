@@ -98,6 +98,31 @@ export const del: Handler.Callback<GetRequest, GetResponse> = async (
 
   await supabase.from('member_area').delete().eq('id', req.query.id);
 
+  const { data } = await supabase
+    .from('member_area_tool')
+    .select('id')
+    .eq('member_area', req.query.id);
+
+  await supabase
+    .from('client_input_tool')
+    .delete()
+    .in(
+      'member_area_tool_id',
+      data.map((d) => d.id),
+    );
+
+  await supabase
+    .from('member_area_tool')
+    .delete()
+    .eq('member_area', req.query.id);
+
+  const { data: files } = await supabase
+    .from('member_area_files')
+    .select('*')
+    .eq('ref_id', req.query.id);
+
+  await supabase.storage.from('files').remove(files.map((f) => f.id));
+
   return res.status(200).json({
     message: 'Product deleted',
   });
@@ -166,10 +191,20 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
         },
       );
 
+    await supabase.from('member_area_files').insert({
+      ref_id: req.body.id,
+      url: data.path,
+    });
+
     if (!error && req.body.old_banner_url) {
       const { data, error } = await supabase.storage
         .from('images')
         .remove([req.body.old_banner_url.split('images/')[1]]);
+
+      await supabase
+        .from('member_area_files')
+        .delete()
+        .eq('url', req.body.old_banner_url.split('images/')[1]);
     }
     Object.assign(toUpdate, {
       banner_image:
@@ -189,10 +224,21 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
           contentType: `image/${req.body.main_type}`,
         },
       );
+
+    await supabase.from('member_area_files').insert({
+      ref_id: req.body.id,
+      url: data.path,
+    });
+
     if (!error && req.body.old_banner_url) {
       const { data, error } = await supabase.storage
         .from('images')
         .remove([req.body.old_main_url.split('images/')[1]]);
+
+      await supabase
+        .from('member_area_files')
+        .delete()
+        .eq('url', req.body.old_main_url.split('images/')[1]);
     }
     Object.assign(toUpdate, {
       main_image:
@@ -212,10 +258,21 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
           contentType: `image/${req.body.extra_type}`,
         },
       );
+
+    await supabase.from('member_area_files').insert({
+      ref_id: req.body.id,
+      url: data.path,
+    });
+
     if (!error && req.body.old_banner_url) {
       const { data, error } = await supabase.storage
         .from('images')
         .remove([req.body.old_extra_url.split('images/')[1]]);
+
+      await supabase
+        .from('member_area_files')
+        .delete()
+        .eq('url', req.body.old_extra_url.split('images/')[1]);
     }
     Object.assign(toUpdate, {
       extra_image:

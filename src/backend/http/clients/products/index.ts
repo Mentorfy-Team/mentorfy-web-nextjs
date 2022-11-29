@@ -49,7 +49,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     );
 
   const toolsList = tools?.map((tool) => {
-    tool['type'] = (tool as any).mentor_tool;
+    tool['type'] = (tool as any).type;
     return tool;
   });
 
@@ -67,7 +67,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
             (input) =>
               !!toolsList.find((tl) => tl.id === input.member_area_tool_id),
           ).length /
-            toolsList.filter((t) => t.mentor_tool !== 0).length) *
+            toolsList.filter((t) => t.type !== 0).length) *
           100
         ).toFixed(2),
       ),

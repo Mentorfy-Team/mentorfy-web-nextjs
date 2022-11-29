@@ -9,7 +9,6 @@ import { GroupTools } from '~/components/modules/DragNDrop';
 import ProgressBar from '~/components/modules/ProgressBar';
 import Toolbar from '~/components/modules/Toolbar';
 import { MentoredRoutes } from '~/consts';
-import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import { useUserInputs } from '~/hooks/useUserInputs';
 import { InputUserMemberArea } from '~/services/member-area.service';
@@ -61,13 +60,10 @@ export const VideoView = ({
   const route = useRouter();
 
   useEffect(() => {
-    setSteps((oldSteps) => {
-      oldSteps = [...OrganizeTools(stepsData, ToolListNames.Video.id)];
-      return [...oldSteps];
-    });
+    setSteps(JSON.parse(JSON.stringify(stepsData)));
     setVideosOrdem(
       stepsData
-        .filter((step) => step.mentor_tool === ToolListNames.Video.id)
+        .filter((step) => step.type === ToolListNames.Video.id)
         .sort((a, b) => a.order - b.order),
     );
   }, [stepsData]);
@@ -315,7 +311,10 @@ export const VideoView = ({
 
   return (
     <>
-      <Toolbar tabs={[memberArea?.title]} />
+      <Toolbar
+        initialTab={1}
+        breadcrumbs={['Minhas mentorias', memberArea.title]}
+      />
       <ContentWidthLimit maxWidth={1900}>
         {(!steps || steps.length == 0) && (
           <TipBar>

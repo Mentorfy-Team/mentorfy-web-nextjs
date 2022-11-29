@@ -31,6 +31,7 @@
     "@supabase/auth-helpers-nextjs": "^0.5.2",
     "@supabase/auth-helpers-react": "^0.3.1",
     "@supabase/supabase-js": "^2.1.1",
+    "@tinymce/tinymce-react": "^4.2.0",
     "@visx/group": "^2.10.0",
     "@visx/mock-data": "^2.15.1",
     "@visx/scale": "^2.2.2",
