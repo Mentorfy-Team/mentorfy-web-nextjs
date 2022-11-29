@@ -85,7 +85,7 @@ const Geral: FC<props> = ({ id }) => {
         return type.id === (product?.member_area as any)?.type_id;
       }),
     );
-  }, [pData, setValue, description, types, product?.member_area]);
+  }, [pData, setValue, types, product?.member_area]);
 
   const onSubmit: SubmitHandler<ProductClient.CreateProduct> = useCallback(
     async (values) => {
