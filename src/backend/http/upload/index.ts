@@ -41,7 +41,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
         }
 
         await supabase.from('member_area_files').insert({
-          ref_id: req.body.id,
+          ref_id: req.query.id as string,
           url: data.path,
         });
 

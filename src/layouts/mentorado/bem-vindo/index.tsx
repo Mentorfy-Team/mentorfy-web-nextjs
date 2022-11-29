@@ -465,11 +465,12 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
           </>
           <Box
             sx={{
-              maxWidth: '100%',
+              width: '100%',
               textAlign: 'start',
               display: 'flex',
               flexDirection: 'column',
-              margin: '-4rem 1rem 1rem 1rem',
+              margin: '-4rem 0 1rem 0',
+              padding: '0 1rem',
               position: 'relative',
               gap: '0.5rem',
             }}
