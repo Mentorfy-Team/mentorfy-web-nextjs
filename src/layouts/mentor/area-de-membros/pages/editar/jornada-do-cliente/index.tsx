@@ -53,7 +53,7 @@ const ClientJourney: FC<props> = ({ id }) => {
   const handleSelectedStep = (task) => {
     setSelectedTask(task);
 
-    if (task.id === task.id && background === '#7586EC') {
+    if (task.id === selectedTask?.id && background === '#7586EC') {
       setBackground('inherit');
     }
     if (task.id === task.id && background === 'inherit') {

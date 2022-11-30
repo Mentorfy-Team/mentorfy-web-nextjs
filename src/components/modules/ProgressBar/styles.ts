@@ -42,6 +42,7 @@ export const BundleWrapper = styled(Box)`
   display: flex;
   gap: 1.2rem;
   justify-content: center;
+  cursor: pointer;
 `;
 
 export const CircleProgressBar = styled(CircularProgress)`
@@ -81,6 +82,7 @@ export const Line = styled(Box)`
   background-color: #363739;
   min-height: 16px;
   width: 1px;
+  transition: 0.3s;
 `;
 
 export const Dot = styled(Box)`

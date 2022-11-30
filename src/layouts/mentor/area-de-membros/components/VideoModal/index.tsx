@@ -7,7 +7,7 @@ import AddImage from '../AddImage';
 import ContentBox from '../ContentBox';
 import UploadToUrlFiles from '../UploadFileModal/helpers/UploadToUrlFiles';
 import Video from './components/Video';
-import { AddTaskButton } from './styles';
+import { AcceptedLinksText, AddTaskButton, LinkInputWrapper } from './styles';
 
 export type TaskObject = {
   id?: string;
@@ -126,6 +126,7 @@ const VideoModal = ({
           onUploadImage={(target) => handleCapture(target.files)}
         />
         {!multivideos && withLink && (
+          <LinkInputWrapper>
           <InputField
             required
             label="Link"
@@ -133,6 +134,8 @@ const VideoModal = ({
             value={singleVideo?.link}
             onChange={(e) => setSingleVideo({ link: e.target.value })}
           ></InputField>
+          <AcceptedLinksText>*No momento apenas links Vímeo, Panda e Youtube</AcceptedLinksText>
+          </LinkInputWrapper>
         )}
         {multivideos && (
           <ContentBox>

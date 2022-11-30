@@ -97,12 +97,69 @@ export const SvgWrapper = styled('div')`
   }
 `;
 
+export const DraggableItem = styled('div')`
+  cursor: move;
+  height: auto;
+  position: absolute;
+  padding: 0.2rem;
+`;
+
 export const FileWrapper = styled('div')`
   background-color: ${({ theme }) => theme.palette.caption.main};
   border-radius: 6px;
   display: flex;
   justify-content: center;
-  height: 450px;
-  max-width: 100%;
+  height: 500px;
+  max-width: 900px;
   margin-bottom: 1rem;
+  position: relative;
+`;
+export const Wrapper = styled('div')`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 1.5rem 0;
+`;
+
+export const UsageText = styled(Typography)`
+  color: ${({ theme }) => theme.palette.caption.light};
+  opacity: 0.8;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2rem;
+  text-align: start;
+`;
+
+export const ButtonsWrapper = styled('div')`
+  display: flex;
+  gap: 1rem;
+  margin: 2rem 0;
+  justify-content: space-between;
+`;
+
+export const NameButton = styled(Button)`
+  height: 2.5rem;
+  padding: 0px;
+  width: 30%;
+`;
+export const DocumentButton = styled(Button)`
+  height: 2.5rem;
+  padding: 0px;
+  width: 30%;
+
+`;
+
+export const NameText = styled(Typography)`
+  color: ${({ theme }) => theme.palette.text.secondary};
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2rem;
+  text-align: start;
+`;
+export const DocumentText = styled(Typography)`
+  color: ${({ theme }) => theme.palette.text.secondary};
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2rem;
+  text-align: start;
 `;
