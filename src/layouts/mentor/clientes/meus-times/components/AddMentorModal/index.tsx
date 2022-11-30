@@ -16,7 +16,7 @@ const NewMentorModal = ({ open, setOpen }) => {
   }, []);
 
   const renderNewMentorForm = useCallback(() => {
-    return <RenderNewMentorForm />;
+    return <RenderNewMentorForm teams={[]} />;
   }, []);
 
   return (
