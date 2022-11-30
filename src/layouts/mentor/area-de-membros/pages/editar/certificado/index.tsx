@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Save from '@mui/icons-material/Save';
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 import { MentorRoutes } from '~/consts';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import InputField from '~/components/atoms/InputField';
 import HandleFileUpload from '~/helpers/HandleFileUpload';
 
@@ -51,13 +51,10 @@ const Certificate = ({ id }) => {
   const [color, setColor] = useState(false);
   const theme = useTheme();
   const [files, setFiles] = useState<string>('');
-  const [position, setPosition] = useState<number>(0);
-  const [positionY, setPositionY] = useState<number>(0);
   const [showName, setShowName] = useState(false);
   const [showDocument, setShowDocument] = useState(false);
-  const [nameRef, setNameRef] = useState<HTMLElement>(false);
-  const WrapperRef = useRef(null);
-  const elementDocument = useRef(null);
+  const [isDraging, setIsDraging] = useState(false);
+  const [isDragingD, setIsDragingD] = useState(false);
 
   function BpCheckbox(props: CheckboxProps) {
     return (
@@ -84,19 +81,15 @@ const Certificate = ({ id }) => {
     console.log(files);
   };
 
+  useEffect(() => {
+    if(files === ''){
+      setShowDocument(false);
+      setShowName(false);
+    }
+    }, [files]);
+
   const nameElement = <NameText>NOME DO CLIENTE</NameText>;
   const documentElement = <DocumentText>DOCUMENTO DO CLIENTE</DocumentText>;
-
-  useEffect(() => {
-    const el = document.getElementById('dragRef');
-    console.log({
-      bottom: nameRef?.offsetHeight,
-      left: -nameRef?.offsetWidth / 2,
-      right: nameRef?.offsetWidth / 2,
-      top: 0,
-    });
-    if (el) setNameRef(el);
-  }, [nameRef?.offsetHeight, nameRef?.offsetWidth]);
 
   return (
     <ContentWidthLimit>
@@ -178,17 +171,18 @@ const Certificate = ({ id }) => {
                 <FileWrapper id="dragRef">
                   <PDFReader file={files} />
 
-                  <Draggable bounds="parent">
-                    <DraggableItem>{nameElement}</DraggableItem>
+                 {showName && (
+                 <Draggable bounds="parent" onDrag={() => setIsDraging(true)} onStop={() => setIsDraging(false)}>
+                    <DraggableItem sx={{border: `${isDraging ? '2px dotted red' : '1px dotted black'}`}}>{nameElement}</DraggableItem>
                   </Draggable>
-                  {/* <div
-                    ref={elementDocument}
-                    draggable={true}
-                    onDragStart={() => handleDragStart()}
-                    style={{ position: 'absolute' }}
-                  >
-                    {documentElement}
-                  </div> */}
+                  )}
+
+                  {showDocument && (
+                  <Draggable bounds="parent" onDrag={() => setIsDragingD(true)} onStop={() => setIsDragingD(false)}>
+                    <DraggableItem sx={{border: `${isDragingD ? '2px dotted red' : '1px dotted black'}`}}>{documentElement}</DraggableItem>
+                  </Draggable>
+                  )}
+
                 </FileWrapper>
               </Wrapper>
             ) : (

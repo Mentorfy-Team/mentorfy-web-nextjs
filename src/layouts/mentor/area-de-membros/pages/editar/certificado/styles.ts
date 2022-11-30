@@ -99,9 +99,9 @@ export const SvgWrapper = styled('div')`
 
 export const DraggableItem = styled('div')`
   cursor: move;
-  background: red;
   height: auto;
   position: absolute;
+  padding: 0.2rem;
 `;
 
 export const FileWrapper = styled('div')`
@@ -109,14 +109,15 @@ export const FileWrapper = styled('div')`
   border-radius: 6px;
   display: flex;
   justify-content: center;
-  height: 450px;
-  max-width: 60%;
+  height: 500px;
+  max-width: 900px;
   margin-bottom: 1rem;
   position: relative;
 `;
 export const Wrapper = styled('div')`
   display: flex;
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   margin: 1.5rem 0;
 `;
 
@@ -131,21 +132,21 @@ export const UsageText = styled(Typography)`
 
 export const ButtonsWrapper = styled('div')`
   display: flex;
-  flex-direction: column;
   gap: 1rem;
-  margin-top: 2rem;
-  width: 50%;
+  margin: 2rem 0;
+  justify-content: space-between;
 `;
 
 export const NameButton = styled(Button)`
   height: 2.5rem;
-  margin-left: 1px;
   padding: 0px;
+  width: 30%;
 `;
 export const DocumentButton = styled(Button)`
   height: 2.5rem;
-  margin-left: 1px;
   padding: 0px;
+  width: 30%;
+
 `;
 
 export const NameText = styled(Typography)`
