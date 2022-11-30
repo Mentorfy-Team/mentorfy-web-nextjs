@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Save from '@mui/icons-material/Save';
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
 import { MentorRoutes } from '~/consts';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import InputField from '~/components/atoms/InputField';
 import HandleFileUpload from '~/helpers/HandleFileUpload';
 
@@ -16,6 +16,7 @@ import {
   CheckWrapper,
   DocumentButton,
   DocumentText,
+  DraggableItem,
   FileWrapper,
   Label,
   NameButton,
@@ -34,6 +35,7 @@ import DropzoneComponent from '~/components/modules/Dropzone';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
+import Draggable from 'react-draggable';
 
 const PDFReader = dynamic(
   () => import('~/components/atoms/PDFReader/PDFReader'),
@@ -51,9 +53,10 @@ const Certificate = ({ id }) => {
   const [files, setFiles] = useState<string>('');
   const [position, setPosition] = useState<number>(0);
   const [positionY, setPositionY] = useState<number>(0);
-  const [nameElement, setNameElement] = useState<JSX.Element>();
-  const [documentElement, setDocumentElement] = useState<JSX.Element>();
-  const elementName = useRef(null);
+  const [showName, setShowName] = useState(false);
+  const [showDocument, setShowDocument] = useState(false);
+  const [nameRef, setNameRef] = useState<HTMLElement>(false);
+  const WrapperRef = useRef(null);
   const elementDocument = useRef(null);
 
   function BpCheckbox(props: CheckboxProps) {
@@ -81,26 +84,19 @@ const Certificate = ({ id }) => {
     console.log(files);
   };
 
-  // const onSubmit = useCallback(() => {});
+  const nameElement = <NameText>NOME DO CLIENTE</NameText>;
+  const documentElement = <DocumentText>DOCUMENTO DO CLIENTE</DocumentText>;
 
-  const handleCreateNameElement = () => {
-    setNameElement(<NameText>NOME DO CLIENTE</NameText>);
-  };
-  const handleCreateDocumentElement = () => {
-    setDocumentElement(<DocumentText>DOCUMENTO DO CLIENTE</DocumentText>);
-  };
-
-  const handleDragStart = (e) => {
-    setPosition(e.pageX);
-    setPositionY(e.pageY);
-    elementName.current.style.backgroundColor = 'red';
-  };
-
-  const handleDrop = (e) => {
-    elementName.current.style.left = `${position}px`;
-    elementName.current.style.top = `${positionY}px`;
-    console.log('Fui solto');
-  };
+  useEffect(() => {
+    const el = document.getElementById('dragRef');
+    console.log({
+      bottom: nameRef?.offsetHeight,
+      left: -nameRef?.offsetWidth / 2,
+      right: nameRef?.offsetWidth / 2,
+      top: 0,
+    });
+    if (el) setNameRef(el);
+  }, [nameRef?.offsetHeight, nameRef?.offsetWidth]);
 
   return (
     <ContentWidthLimit>
@@ -167,29 +163,24 @@ const Certificate = ({ id }) => {
                   <ButtonsWrapper>
                     <NameButton
                       variant="outlined"
-                      onClick={() => handleCreateNameElement()}
+                      onClick={() => setShowName(true)}
                     >
                       Adicionar Nome
                     </NameButton>
                     <DocumentButton
                       variant="outlined"
-                      onClick={() => handleCreateDocumentElement()}
+                      onClick={() => setShowDocument(true)}
                     >
                       Adicionar Documento
                     </DocumentButton>
                   </ButtonsWrapper>
                 </div>
-                <FileWrapper>
+                <FileWrapper id="dragRef">
                   <PDFReader file={files} />
-                  <div
-                    ref={elementName}
-                    draggable={true}
-                    onDrag={(e) => handleDragStart(e)}
-                    onDragEnd={(e) => handleDrop(e)}
-                    style={{ position: 'absolute', cursor: 'move' }}
-                  >
-                    {nameElement}
-                  </div>
+
+                  <Draggable bounds="parent">
+                    <DraggableItem>{nameElement}</DraggableItem>
+                  </Draggable>
                   {/* <div
                     ref={elementDocument}
                     draggable={true}

@@ -97,6 +97,13 @@ export const SvgWrapper = styled('div')`
   }
 `;
 
+export const DraggableItem = styled('div')`
+  cursor: move;
+  background: red;
+  height: auto;
+  position: absolute;
+`;
+
 export const FileWrapper = styled('div')`
   background-color: ${({ theme }) => theme.palette.caption.main};
   border-radius: 6px;
@@ -105,6 +112,7 @@ export const FileWrapper = styled('div')`
   height: 450px;
   max-width: 60%;
   margin-bottom: 1rem;
+  position: relative;
 `;
 export const Wrapper = styled('div')`
   display: flex;
