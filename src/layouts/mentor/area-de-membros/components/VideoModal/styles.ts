@@ -53,3 +53,18 @@ export const AddTaskButton = styled(Button)`
   line-height: 0.9rem;
   text-transform: none;
 `;
+
+export const LinkInputWrapper = styled(Box)`
+  flex-direction: column;
+  display: flex;
+  width: 100%;
+  
+`;
+
+export const AcceptedLinksText = styled(Typography)`
+  color: ${({ theme }) => theme.palette.caption.main};
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1rem;
+  font-style: italic;
+`;

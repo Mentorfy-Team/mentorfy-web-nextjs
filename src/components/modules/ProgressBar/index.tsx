@@ -90,7 +90,6 @@ const ProgressBar = ({
     } else {
       setCollapse(true);
     }
-
   };
 
   return (
