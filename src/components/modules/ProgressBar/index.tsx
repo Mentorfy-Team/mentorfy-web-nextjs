@@ -1,3 +1,4 @@
+import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
 import { GroupTools } from '../DragNDrop';
 import {
@@ -12,6 +13,7 @@ import {
   Title,
   Wrapper,
 } from './styles';
+import { useState } from 'react';
 
 const mock = {
   title: 'Primeiros Passos',
@@ -46,6 +48,8 @@ const ProgressBar = ({
   activeid: string;
   onGoTo: (id, parentId?) => void;
 }) => {
+  const [collapse, setCollapse] = useState(false);
+  const [stepId, setStepId] = useState<string>('');
   let count = 0;
 
   const getIsDone = (id: string) => {
@@ -78,11 +82,22 @@ const ProgressBar = ({
     return done;
   };
 
+  const handleCollapse = (task) => {
+    setStepId(task);
+
+    if(task === stepId) {
+      setCollapse(!collapse);
+    } else {
+      setCollapse(true);
+    }
+
+  };
+
   return (
     <Wrapper>
       {data.map((step, i) => (
         <div key={step.id}>
-          <BundleWrapper>
+          <BundleWrapper onClick={() => handleCollapse(step.id)}>
             <CircleWrapper>
               <CircleProgressBar
                 value={getProgressByStep(step)}
@@ -92,8 +107,8 @@ const ProgressBar = ({
               />
               {step.rows.length > 0 && (
                 <>
-                  <Line />
-                  <Line />
+                  <Line sx={{backgroundColor: `${stepId === step.id && collapse ? '' : 'inherit'}`}}/>
+                  <Line sx={{backgroundColor: `${stepId === step.id && collapse ? '' : 'inherit'}`}}/>
                 </>
               )}
             </CircleWrapper>
@@ -107,8 +122,8 @@ const ProgressBar = ({
           {step.rows.map((task, j) => {
             count++;
             return (
+              <Collapse key={task.id} in={stepId === step.id && collapse} timeout={300}>
               <StepsWrapper
-                key={task.id}
                 onClick={() => onGoTo(task.id, step.id)}
               >
                 <CircleWrapper>
@@ -130,6 +145,7 @@ const ProgressBar = ({
                   >{`${count} - ${task.title}`}</ClassesNumber>
                 </TextWrapper>
               </StepsWrapper>
+              </Collapse>
             );
           })}
         </div>
