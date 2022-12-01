@@ -8,6 +8,7 @@ const CreateDnDRows = (
   onOpenModal,
   onNewGroup,
   allowSubgroup = false,
+  productType,
 ) => {
   const Group = ({ step, children, isGroup }) => {
     return (
@@ -35,7 +36,7 @@ const CreateDnDRows = (
         {(!isGroup || !allowSubgroup) && (
           <AddTool onClick={() => onOpenModal(step.id)} variant="contained">
             <Task />
-            Adicionar Etapa
+             {productType ? 'Adicionar Aula' : 'Adicionar Etapa'}
           </AddTool>
         )}
       </GroupWrapper>
@@ -70,6 +71,7 @@ const CreateDnDRows = (
                 image={child.extra ? child.extra[0]?.sourceUrl : null}
                 onEdit={onEdit}
                 step={child}
+                productType={productType}
               />
             );
           }

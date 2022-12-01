@@ -95,7 +95,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
       const newGroup = {
         id: Math.random() + '',
         title:
-          `${parentId ? 'Nova categoria' : 'Novo agrupador'} ` +
+          `${parentId ? `${parentId ? 'Nova categoria' : 'Novo agrupador'}` : `${product.deliver === '4' ? 'Novo módulo' : 'Novo agrupador'}`}  ` +
           (steps.length + 1),
         description: '',
         type: 0,
@@ -123,7 +123,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
         return [...oldSteps];
       });
     },
-    [steps],
+    [product.deliver, steps.length],
   );
 
   const handleOpenToolsModal = useCallback(
@@ -249,6 +249,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
   const DnDRows = useCallback(
     (values) => {
       const allowSubGroups = product?.member_area?.type_id === 3;
+      const productType = product.deliver === '4' ? true : false;
       return CreateDnDRows(
         values,
         (step) => {
@@ -264,6 +265,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
         handleOpenToolsModal,
         (id) => addNewGroup(id),
         allowSubGroups,
+        productType,
       );
     },
     [GetOnChange, addNewGroup, handleOpenToolsModal, product],
@@ -326,7 +328,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
           color="secondary"
         >
           <Workspaces />
-          Adicionar Agrupador
+          {product.deliver === '4' ? 'Adicionar Módulo' : 'Adicionar Agrupador'}
         </AddGroup>
       </Box>
       <ScrollWrapper withtoolbar="true">
