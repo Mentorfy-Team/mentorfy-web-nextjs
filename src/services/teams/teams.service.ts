@@ -1,20 +1,11 @@
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from '../HttpClient';
 
-export const GetClient = async (
-  req,
-  withAddress = false,
-): Promise<ProfileApi.Get.Response> => {
+export const AddMentor = async (formData): Promise<ProfileApi.Get.Response> => {
   try {
-    const response = await HttpClient.get<ProfileApi.Get.Response>(
-      ApiRoutes.users_profile,
-      {
-        // * Passa a autenticação para frente
-        headers: req.headers,
-        params: {
-          withAddress,
-        },
-      },
+    const response = await HttpClient.post<ProfileApi.Get.Response>(
+      ApiRoutes.teams_mentor,
+      formData,
     );
 
     if (response.data.error) {

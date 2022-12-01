@@ -57,7 +57,7 @@ export const post = async (req, res) => {
     const team_member = await AddTeamMember({
       supabase,
       data: {
-        team_id: req.body.team_id,
+        teams: req.body.teams,
         user: userAccount,
       },
     });
@@ -66,4 +66,34 @@ export const post = async (req, res) => {
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
+};
+
+export const del = async (req, res) => {
+  const supabase = SupabaseServer(req, res);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return res.status(401);
+  }
+
+  // const { data: profile } = await supabase
+  //   .from('profile')
+  //   .select('*')
+  //   .eq('id', req.query.id);
+
+  // const { data: teams } = await supabase
+  //   .from('team_member')
+  //   .select('*')
+  //   .eq('profile_id', req.query.id);
+
+  // const { data: clients } = await supabase
+  //   .from('team_member_client')
+  //   .select('*')
+  //   .eq('mentor_id', req.query.id);
+
+  // res.status(200).json({ ...profile, teams, clients });
+
+  res.status(200).json({ user });
 };

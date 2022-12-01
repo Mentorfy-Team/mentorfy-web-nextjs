@@ -3,8 +3,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { FC, useCallback, useEffect, useState } from 'react';
 import Plus from '~/../public/svgs/plus';
 import TipBar from '~/components/modules/TipBar';
+import { useClients } from '~/hooks/useClients';
 import { useTeams } from '~/hooks/useTeams';
-import { CreateTeam } from '~/services/teams/teams.service';
+import { AddMentor, CreateTeam } from '~/services/teams/teams.service';
 import { userStore } from '~/stores';
 import NewMentorModal from './components/AddMentorModal';
 import AssignClientsModal from './components/AssignClientsModal';
@@ -25,18 +26,25 @@ const Teams: FC<{ user; initialTeams }> = ({ user }) => {
   const [openAddMentor, setOpenAddMentor] = useState(false);
   const [openAssingClients, setOpenAssingClients] = useState(false);
   const [openDeleteMentor, setDeleteMentor] = useState(false);
+
   const { data: teamsData, mutate, isError } = useTeams(user.id);
-  // Consts to controll buttons text
+  const { clients } = useClients(user.id);
+
   const deleteMentorText = isMobile ? '' : 'Excluir Mentor';
-  const addMentorText = isMobile ? '' : 'Cadastrar Mentor';
-  const assignClientsText = isMobile ? '' : 'Atribuir Clientes';
+  const addMentorText = isMobile ? '' : 'Adicionar Mentor';
+  const assignClientsText = isMobile ? '' : 'Atribuir Cliente';
 
   const [openNewTeam, setOpenNewTeam] = useState(false);
 
   const [myTeams, setMyTeams] = useState<typeof teamsData>([]);
 
+  const [hasMentors, setHasMentors] = useState(false);
+
   useEffect(() => {
-    if (teamsData.length) setMyTeams(teamsData);
+    if (teamsData.length) {
+      setMyTeams(teamsData);
+      setHasMentors(teamsData.some((team) => team.team_member?.length > 0));
+    }
   }, [teamsData]);
 
   useEffect(() => {
@@ -86,16 +94,26 @@ const Teams: FC<{ user; initialTeams }> = ({ user }) => {
     [mutate],
   );
 
+  const handleNewMentor = useCallback(
+    async (formData) => {
+      await AddMentor(formData);
+      await mutate();
+    },
+    [mutate],
+  );
+
   return (
     <>
       <ButtonsWrapper>
-        <DeleteMentorButtons
-          disabled={!myTeams || myTeams.length == 0}
-          variant="text"
-          onClick={() => setDeleteMentor(true)}
-        >
-          {deleteMentorText}
-        </DeleteMentorButtons>
+        {hasMentors && (
+          <DeleteMentorButtons
+            disabled={!myTeams || myTeams.length == 0}
+            variant="text"
+            onClick={() => setDeleteMentor(true)}
+          >
+            {deleteMentorText}
+          </DeleteMentorButtons>
+        )}
         <MentorButtons
           disabled={!myTeams || myTeams.length == 0}
           variant="outlined"
@@ -104,14 +122,16 @@ const Teams: FC<{ user; initialTeams }> = ({ user }) => {
           <Plus height={16} width={16} fill="#FE7D22" />
           {addMentorText}
         </MentorButtons>
-        <MentorButtons
-          variant="outlined"
-          disabled={!myTeams || myTeams.length == 0}
-          onClick={() => setOpenAssingClients(true)}
-        >
-          <Plus height={16} width={16} fill="#FE7D22" />
-          {assignClientsText}
-        </MentorButtons>
+        {clients && clients.length > 0 && (
+          <MentorButtons
+            variant="outlined"
+            disabled={!myTeams || myTeams.length == 0}
+            onClick={() => setOpenAssingClients(true)}
+          >
+            <Plus height={16} width={16} fill="#FE7D22" />
+            {assignClientsText}
+          </MentorButtons>
+        )}
       </ButtonsWrapper>
 
       {(!myTeams || myTeams.length == 0) && (
@@ -127,7 +147,15 @@ const Teams: FC<{ user; initialTeams }> = ({ user }) => {
         Criar Novo Time
       </NewTeamButton>
 
-      <NewMentorModal open={openAddMentor} setOpen={setOpenAddMentor} />
+      <NewMentorModal
+        teams={myTeams}
+        open={openAddMentor}
+        setOpen={setOpenAddMentor}
+        onSubmit={(formData) => {
+          handleNewMentor(formData);
+        }}
+      />
+
       <AssignClientsModal
         open={openAssingClients}
         setOpen={setOpenAssingClients}
