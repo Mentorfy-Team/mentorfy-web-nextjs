@@ -84,6 +84,27 @@ const ModalComponent: FC<props> = ({
       >
         {children}
         <ButtonsWrapper>
+          {onDelete ? (
+            <Button
+              variant="outlined"
+              sx={{
+                textTransform: 'none',
+                float: 'left',
+                width: '40%',
+                margin: '1rem 0px 0px 0px',
+                color: `${deleteMessage ? 'white' : 'gray'}`,
+                backgroundColor: `${deleteMessage && 'red'}`,
+                fontWeight: '300',
+                height: '2.5rem',
+              }}
+              disabled={isBlocked}
+              onClick={() => onDelete()}
+            >
+              Excluir
+            </Button>
+          ) : (
+            <div />
+          )}
           {onSave && (
             <Button
               variant="outlined"
@@ -116,25 +137,6 @@ const ModalComponent: FC<props> = ({
               onClick={() => onClose()}
             >
               Fechar
-            </Button>
-          )}
-          {onDelete && (
-            <Button
-              variant="outlined"
-              sx={{
-                textTransform: 'none',
-                float: 'left',
-                width: '40%',
-                margin: '1rem 0px 0px 0px',
-                color: `${deleteMessage ? 'white' : 'gray'}`,
-                backgroundColor: `${deleteMessage && 'red'}`,
-                fontWeight: '300',
-                height: '2.5rem',
-              }}
-              disabled={isBlocked}
-              onClick={() => onDelete()}
-            >
-              Excluir
             </Button>
           )}
         </ButtonsWrapper>

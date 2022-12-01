@@ -2,15 +2,20 @@ import React from 'react';
 import NextImage from 'next/image';
 import { TipText, TipWrapper } from './styles';
 
-const TipBar: React.FC<{ children; left? }> = ({ children, left = true }) => {
+const TipBar: React.FC<{ children; left?; sx? }> = ({
+  children,
+  sx,
+  left = true,
+}) => {
   return (
     <TipWrapper
       sx={
         left
           ? {
+              ...sx,
               textAlign: 'left',
             }
-          : {}
+          : { ...sx }
       }
     >
       <NextImage

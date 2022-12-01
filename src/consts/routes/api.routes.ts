@@ -11,6 +11,10 @@ export enum ApiRoutes {
   client_products = '/api/clients/products',
   clients_list = '/api/clients/list',
 
+  //* Rotas para api de times
+  teams = '/api/teams',
+  teams_list = '/api/teams/list',
+
   //* Rotas para api de usuários
   products = '/api/products',
   products_image = '/api/products/image',
