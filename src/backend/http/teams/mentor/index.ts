@@ -78,16 +78,13 @@ export const del = async (req, res) => {
     return res.status(401);
   }
 
-  // has permission to delete
-  const { data: teams } = await supabase
+  const { data: teams, error } = await supabase
     .from('team')
     .select('*, team_member(*)')
-    .in(
-      'id',
-      req.body.teams.map((team) => team.id),
-    );
+    .in('id', req.body.teams);
 
   if (
+    !teams ||
     teams.every((t) => t.owner_id !== user.id) ||
     teams.every((t) =>
       (t.team_member as any[]).every(
@@ -98,18 +95,11 @@ export const del = async (req, res) => {
     return res.status(401);
   }
 
-  const { data: team_member } = await supabase
-    .from('team')
-    .select('*')
-    .in('profile_id', req.body.profile_id);
-
-  await supabase
+  const { data, error: deleteError } = await supabase
     .from('team_member')
     .delete()
-    .in(
-      'id',
-      team_member.map((t) => t.id),
-    );
+    .eq('profile_id', req.body.profile_id)
+    .in('team_id', req.body.teams);
 
   // TODO: Log the reason for the deletion
 

@@ -68,7 +68,7 @@ const DeleteMentorModal: React.FC<{
             required
             value={selectedMentor}
             label="Escolha o Mentor"
-            name="team_member_id"
+            name="profile_id"
             onChange={(e) => {
               setSelectedMentor(e.target.value);
               onChange(e);
@@ -88,7 +88,7 @@ const DeleteMentorModal: React.FC<{
               ?.map((mentor) => {
                 console.log('selectedTeams', selectedTeams);
                 return (
-                  <MenuItem key={mentor.id} value={mentor.id}>
+                  <MenuItem key={mentor.profile_id} value={mentor.profile_id}>
                     {mentor.profile?.name}
                   </MenuItem>
                 );
