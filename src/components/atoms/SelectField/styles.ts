@@ -26,4 +26,7 @@ export const SelectFormControl = styled(FormControl)`
       border: 1px solid white;
     }
   }
+  svg { 
+    fill: #fff;
+  }
 `;
