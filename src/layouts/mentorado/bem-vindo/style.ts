@@ -15,6 +15,12 @@ export const Overlay = styled('div')`
   background: linear-gradient(0deg, rgba(8, 8, 8, 1) 0%, rgba(0, 0, 0, 0) 35%);
 `;
 
+export const SliderWrapper = styled(Box)`
+  .slick-track {
+    margin-left: 0px;
+  }
+`;
+
 export const OverlayPopular = styled('div')`
   height: 100%;
 

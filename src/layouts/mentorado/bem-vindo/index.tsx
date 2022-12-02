@@ -40,10 +40,12 @@ import {
   PopularProductDescription,
   ProductTitle,
   RatingBox,
+  SliderWrapper,
   VideoHolder,
   VolumeButton,
 } from './style';
 import { GetAuthSession } from '~/helpers/AuthSession';
+import RatioSize from '~/helpers/RatioSize';
 
 type Props = {
   initProducts: any;
@@ -276,22 +278,88 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
             <Box sx={{ display: 'flex', margin: '1.2rem 0 0.5rem 0' }}>
               <Typography variant="h5">Minhas Mentorias</Typography>
             </Box>
-            <Slider
-              {...settings}
-              slidesToShow={numberOfSlides}
-              className="container"
+            <SliderWrapper
+              sx={{
+                width: numberOfSlides * RatioSize('w', 1.77),
+              }}
             >
-              {clientProducts.map((product, index) => (
+              <Slider
+                {...settings}
+                slidesToShow={clientProducts.length}
+                className="container"
+              >
+                {clientProducts.map((product, index) => (
+                  <CourseBox
+                    onMouseOver={() => {}}
+                    className="item"
+                    key={index}
+                    onClick={() => {
+                      if (
+                        product?.relation?.approved ||
+                        product.owner === user.id
+                      ) {
+                        router.push(
+                          types.find(
+                            (type) => type.id.toString() === product.deliver,
+                          ).path +
+                            '/' +
+                            product.id,
+                        );
+                      } else {
+                        handlePopularProductsModal(product);
+                      }
+                    }}
+                  >
+                    <Image
+                      alt=""
+                      src={product?.main_image || '/images/moonlit.png'}
+                      width={RatioSize('w', 3)}
+                      height={RatioSize('h', 3)}
+                      quality={100}
+                    />
+                    <AbsoluteTopBox>
+                      <CollorFullMentorfy>
+                        Mentor<span>fy</span>
+                      </CollorFullMentorfy>
+                    </AbsoluteTopBox>
+                    {!product?.banner_image && (
+                      <AbsoluteBottomBox>
+                        <ProductTitle>{product?.title}</ProductTitle>
+                      </AbsoluteBottomBox>
+                    )}
+                  </CourseBox>
+                ))}
+              </Slider>
+            </SliderWrapper>
+          </>
+        )}
+        <Box sx={{ display: 'flex', margin: '0.5rem 0 0.5rem 0' }}>
+          <Typography variant="h5">Populares na Mentorfy</Typography>
+        </Box>
+        <SliderWrapper
+          sx={{
+            width: numberOfSlides * RatioSize('w', 1.33),
+          }}
+        >
+          <Slider
+            {...settings}
+            slidesToShow={products.filter((p) => !!p.banner_image).length}
+            className="container"
+          >
+            {products
+              .filter((p) => p.banner_image)
+              .map((product, index) => (
                 <CourseBox
                   onMouseOver={() => {}}
                   className="item"
-                  height={400}
+                  width={RatioSize('w', 2.5, '10/16')}
+                  height={RatioSize('h', 2.5, '10/16')}
                   key={index}
                   onClick={() => {
-                    if (
-                      product?.relation?.approved ||
-                      product.owner === user.id
-                    ) {
+                    const rel = clientProducts.find(
+                      (p) => p.id === product.id,
+                    )?.relation;
+                    if ((rel && rel.approved) || product.owner === user.id) {
                       router.push(
                         types.find(
                           (type) => type.id.toString() === product.deliver,
@@ -306,12 +374,9 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
                 >
                   <Image
                     alt=""
-                    src={product?.main_image || '/images/moonlit.png'}
-                    width={400}
-                    height={400}
-                    style={{
-                      objectFit: 'cover',
-                    }}
+                    src={product?.banner_image || '/images/moonlit.png'}
+                    width={RatioSize('w', 2.5, '10/16')}
+                    height={RatioSize('h', 2.5, '10/16')}
                     quality={100}
                   />
                   <AbsoluteTopBox>
@@ -319,95 +384,15 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
                       Mentor<span>fy</span>
                     </CollorFullMentorfy>
                   </AbsoluteTopBox>
-                  {!product?.banner_image && (
+                  {!product.banner_image && (
                     <AbsoluteBottomBox>
-                      <ProductTitle>{product?.title}</ProductTitle>
+                      <ProductTitle>{product.title}</ProductTitle>
                     </AbsoluteBottomBox>
                   )}
                 </CourseBox>
               ))}
-              {[
-                ...Array(
-                  numberOfSlides -
-                    (clientProducts.length > numberOfSlides
-                      ? numberOfSlides
-                      : clientProducts.length),
-                ),
-              ].map((_, i) => (
-                <CourseBox
-                  onMouseOver={() => {}}
-                  className="item"
-                  height={sizeLg ? '400px' : 'unset'}
-                  width={sizeLg ? '300px' : 'unset'}
-                  key={i}
-                />
-              ))}
-            </Slider>
-          </>
-        )}
-        <Box sx={{ display: 'flex', margin: '0.5rem 0 0.5rem 0' }}>
-          <Typography variant="h5">Populares na Mentorfy</Typography>
-        </Box>
-        <Slider
-          {...settings}
-          slidesToShow={numberOfSlides}
-          className="container"
-        >
-          {products
-            .filter((p) => p.banner_image)
-            .map((product, index) => (
-              <CourseBox
-                onMouseOver={() => {}}
-                className="item"
-                height={sizeLg ? '190px' : 'unset'}
-                width={sizeLg ? '350px' : 'unset'}
-                key={index}
-                onClick={() => {
-                  const rel = clientProducts.find(
-                    (p) => p.id === product.id,
-                  )?.relation;
-                  if ((rel && rel.approved) || product.owner === user.id) {
-                    router.push(
-                      types.find(
-                        (type) => type.id.toString() === product.deliver,
-                      ).path +
-                        '/' +
-                        product.id,
-                    );
-                  } else {
-                    handlePopularProductsModal(product);
-                  }
-                }}
-              >
-                <Image
-                  alt=""
-                  src={product?.banner_image || '/images/moonlit.png'}
-                  width={400}
-                  height={190}
-                  style={{
-                    objectFit: 'cover',
-                  }}
-                  quality={100}
-                />
-                <AbsoluteTopBox>
-                  <CollorFullMentorfy>
-                    Mentor<span>fy</span>
-                  </CollorFullMentorfy>
-                </AbsoluteTopBox>
-                {!product.banner_image && (
-                  <AbsoluteBottomBox>
-                    <ProductTitle>{product.title}</ProductTitle>
-                  </AbsoluteBottomBox>
-                )}
-              </CourseBox>
-            ))}
-          {products?.filter((p) => p.banner_image)?.length < numberOfSlides &&
-            [
-              ...Array(
-                numberOfSlides - products.filter((p) => p.banner_image)?.length,
-              ),
-            ].map((_, i) => <div key={i} />)}
-        </Slider>
+          </Slider>
+        </SliderWrapper>
         {clientProducts?.length === 0 && <Box height="14rem" />}
       </ContentWidthLimit>
       <ModalComponent
