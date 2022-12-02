@@ -78,22 +78,40 @@ export const del = async (req, res) => {
     return res.status(401);
   }
 
-  // const { data: profile } = await supabase
-  //   .from('profile')
-  //   .select('*')
-  //   .eq('id', req.query.id);
+  // has permission to delete
+  const { data: teams } = await supabase
+    .from('team')
+    .select('*, team_member(*)')
+    .in(
+      'id',
+      req.body.teams.map((team) => team.id),
+    );
 
-  // const { data: teams } = await supabase
-  //   .from('team_member')
-  //   .select('*')
-  //   .eq('profile_id', req.query.id);
+  if (
+    teams.every((t) => t.owner_id !== user.id) ||
+    teams.every((t) =>
+      (t.team_member as any[]).every(
+        (m) => m.profile_id !== req.body.profile_id,
+      ),
+    )
+  ) {
+    return res.status(401);
+  }
 
-  // const { data: clients } = await supabase
-  //   .from('team_member_client')
-  //   .select('*')
-  //   .eq('mentor_id', req.query.id);
+  const { data: team_member } = await supabase
+    .from('team')
+    .select('*')
+    .in('profile_id', req.body.profile_id);
 
-  // res.status(200).json({ ...profile, teams, clients });
+  await supabase
+    .from('team_member')
+    .delete()
+    .in(
+      'id',
+      team_member.map((t) => t.id),
+    );
 
-  res.status(200).json({ user });
+  // TODO: Log the reason for the deletion
+
+  res.status(200).json({});
 };

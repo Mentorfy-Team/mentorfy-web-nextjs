@@ -5,7 +5,11 @@ import Plus from '~/../public/svgs/plus';
 import TipBar from '~/components/modules/TipBar';
 import { useClients } from '~/hooks/useClients';
 import { useTeams } from '~/hooks/useTeams';
-import { AddMentor, CreateTeam } from '~/services/teams/teams.service';
+import {
+  AddMentor,
+  CreateTeam,
+  DeleteMentor,
+} from '~/services/teams/teams.service';
 import { userStore } from '~/stores';
 import NewMentorModal from './components/AddMentorModal';
 import AssignClientsModal from './components/AssignClientsModal';
@@ -27,7 +31,11 @@ const Teams: FC<{ user; initialTeams }> = ({ user }) => {
   const [openAssingClients, setOpenAssingClients] = useState(false);
   const [openDeleteMentor, setDeleteMentor] = useState(false);
 
-  const { data: teamsData, mutate, isError } = useTeams(user.id);
+  const {
+    data: teamsData,
+    mutate,
+    isLoading: isLoadingTeams,
+  } = useTeams(user.id);
   const { clients } = useClients(user.id);
 
   const deleteMentorText = isMobile ? '' : 'Excluir Mentor';
@@ -48,8 +56,8 @@ const Teams: FC<{ user; initialTeams }> = ({ user }) => {
   }, [teamsData]);
 
   useEffect(() => {
-    setLoading(!isError && !teamsData);
-  }, [isError, setLoading, teamsData]);
+    setLoading(isLoadingTeams);
+  }, [isLoadingTeams, setLoading]);
 
   const TeamsSection = useCallback(
     ({ teams }: { teams: TeamTypes.TeamTree[] }) => {
@@ -97,6 +105,14 @@ const Teams: FC<{ user; initialTeams }> = ({ user }) => {
   const handleNewMentor = useCallback(
     async (formData) => {
       await AddMentor(formData);
+      await mutate();
+    },
+    [mutate],
+  );
+
+  const handleDeleteMentor = useCallback(
+    async (formData) => {
+      await DeleteMentor(formData);
       await mutate();
     },
     [mutate],
@@ -166,7 +182,12 @@ const Teams: FC<{ user; initialTeams }> = ({ user }) => {
         open={openNewTeam}
         setOpen={setOpenNewTeam}
       />
-      <DeleteMentorModal open={openDeleteMentor} setOpen={setDeleteMentor} />
+      <DeleteMentorModal
+        onSubmit={(formData) => handleDeleteMentor(formData)}
+        teams={myTeams}
+        open={openDeleteMentor}
+        setOpen={setDeleteMentor}
+      />
     </>
   );
 };

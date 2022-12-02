@@ -1,12 +1,42 @@
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from '../HttpClient';
 
-export const AddMentor = async (formData): Promise<ProfileApi.Get.Response> => {
+type AddMentorDTO = {
+  team_id: string;
+  name: string;
+  email: string;
+  phone: string;
+  limit: string;
+};
+
+type DeleteMentorDTO = {
+  team_member_id: string;
+  teams: string[];
+  reason: string;
+};
+
+export const AddMentor = async (formData: AddMentorDTO) => {
   try {
-    const response = await HttpClient.post<ProfileApi.Get.Response>(
-      ApiRoutes.teams_mentor,
-      formData,
-    );
+    const response = await HttpClient.post(ApiRoutes.teams_mentor, formData);
+
+    if (response.data.error) {
+      return {
+        error: response.data.error,
+      };
+    }
+    return response.data;
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
+  }
+};
+
+export const DeleteMentor = async (formData: DeleteMentorDTO) => {
+  try {
+    const response = await HttpClient.delete(ApiRoutes.teams_mentor, {
+      data: formData,
+    });
 
     if (response.data.error) {
       return {
@@ -23,10 +53,7 @@ export const AddMentor = async (formData): Promise<ProfileApi.Get.Response> => {
 
 export const AddClientMentor = async (client: UserClient.CreateClient) => {
   try {
-    const response = await HttpClient.post<UsersApi.Post.Response>(
-      ApiRoutes.clients,
-      client,
-    );
+    const response = await HttpClient.post(ApiRoutes.clients, client);
     if (response.data.error) {
       return {
         error: response.data.error,
@@ -42,12 +69,9 @@ export const AddClientMentor = async (client: UserClient.CreateClient) => {
 
 export const CreateTeam = async (title) => {
   try {
-    const response = await HttpClient.post<UsersApi.Post.Response>(
-      ApiRoutes.teams,
-      {
-        title,
-      },
-    );
+    const response = await HttpClient.post(ApiRoutes.teams, {
+      title,
+    });
     if (response.data.error) {
       return {
         error: response.data.error,
@@ -61,25 +85,19 @@ export const CreateTeam = async (title) => {
   }
 };
 
-export const ListTeams = async (
-  token,
-  id,
-): Promise<UserClient.Post.ClientsResponse> => {
+export const ListTeams = async (token, id) => {
   try {
     const {
       data: { error, result },
-    } = await HttpClient.get<UserClient.Post.ClientsResponse>(
-      ApiRoutes.clients_list,
-      {
-        // * Passa a autenticação para frente
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          id,
-        },
+    } = await HttpClient.get(ApiRoutes.clients_list, {
+      // * Passa a autenticação para frente
+      headers: {
+        Authorization: `Bearer ${token}`,
       },
-    );
+      params: {
+        id,
+      },
+    });
 
     if (error) {
       return {

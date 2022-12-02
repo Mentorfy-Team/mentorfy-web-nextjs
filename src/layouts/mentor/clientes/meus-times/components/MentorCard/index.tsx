@@ -24,10 +24,7 @@ const MentorCard = ({ name, email, activeClients, avatar }) => {
       />
       <MentorInfo>
         <MentorName>{name}</MentorName>
-        <MentorEmail>
-          {email}
-          {email}
-        </MentorEmail>
+        <MentorEmail>{email}</MentorEmail>
         <ActiveClients>Clientes Ativos</ActiveClients>
         <ClientsNumber>{activeClients}</ClientsNumber>
       </MentorInfo>
