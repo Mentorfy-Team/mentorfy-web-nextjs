@@ -66,9 +66,9 @@ const Geral: FC<props> = ({ id }) => {
     setDescription(pData.description);
     setTitle(pData?.title);
     setColorPick({
-      one: pData?.extra?.titleGradiente.one,
-      two: pData?.extra?.titleGradiente.two,
-      three: pData?.extra?.titleGradiente.three,
+      one: pData?.extra?.titleGradiente?.one,
+      two: pData?.extra?.titleGradiente?.two,
+      three: pData?.extra?.titleGradiente?.three,
     });
     setProductImage({
       main_image: {
