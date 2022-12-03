@@ -1,6 +1,5 @@
 import { FC, useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import dynamic from 'next/dynamic';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
@@ -31,7 +30,6 @@ const MinhaConta: FC<props> = ({
   mentored_id,
 }) => {
   const [tabindex, setTabindex] = useState<string>(tab);
-  const isMobile = useMediaQuery('(max-width: 400px)');
   const {
     data: { profile, address },
   } = useProfile(true, mentored_id || user.id);

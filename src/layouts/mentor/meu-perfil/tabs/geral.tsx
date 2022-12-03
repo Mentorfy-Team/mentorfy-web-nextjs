@@ -88,27 +88,29 @@ const MyProfile = ({ profile, user, isViewingMentored }) => {
             <Title pb={0} variant="body1">
               Conteúdos
             </Title>
-            {product?.map((p) => (
-              <Session
-                sx={{
-                  marginBottom: 2,
-                  marginTop: 2,
-                }}
-                key={p.id}
-              >
-                <AvatarWrapper>
-                  <Avatar
-                    alt="foto-perfil"
-                    src={p.main_image as string}
-                    sx={{ width: 30, height: 30 }}
-                  />
-                  <Title variant="body2">{p.title}</Title>
-                </AvatarWrapper>
-                <Box sx={{ width: '200px' }}>
-                  <LinearProgressWithLabel value={p.progress} />
-                </Box>
-              </Session>
-            ))}
+            {product
+              ?.filter((p) => p.owner !== profile.id)
+              ?.map((p) => (
+                <Session
+                  sx={{
+                    marginBottom: 2,
+                    marginTop: 2,
+                  }}
+                  key={p.id}
+                >
+                  <AvatarWrapper>
+                    <Avatar
+                      alt="foto-perfil"
+                      src={p.main_image as string}
+                      sx={{ width: 30, height: 30 }}
+                    />
+                    <Title variant="body2">{p.title}</Title>
+                  </AvatarWrapper>
+                  <Box sx={{ width: '200px' }}>
+                    <LinearProgressWithLabel value={p.progress} />
+                  </Box>
+                </Session>
+              ))}
           </Spacing>
         )}
         <CardDivider>
