@@ -1,9 +1,4 @@
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
-import { FC, useEffect, useState } from 'react';
-import InfoRounded from '@mui/icons-material/InfoRounded';
-import PlayArrow from '@mui/icons-material/PlayArrow';
+import { FC, useCallback, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -11,9 +6,7 @@ import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
 import { ListProducts } from '~/services/product.service';
-const Rating = dynamic(() => import('@mui/material/Rating'), { ssr: false });
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
-const Slider: any = dynamic(() => import('react-slick'), { ssr: false });
 
 import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
@@ -26,31 +19,35 @@ import {
   AbsoluteBottomBox,
   AbsoluteTopBox,
   Background,
-  BannerBox,
   CollorFullMentorfy,
   CollorFullPopular,
   CollorFullTypography,
   CourseBox,
-  CustomTypography,
-  MoreInfo,
-  Overlay,
   OverlayPopular,
-  PlayButton,
   PopularButton,
   PopularProductDescription,
   ProductTitle,
-  RatingBox,
   SliderWrapper,
   VideoHolder,
   VolumeButton,
 } from './style';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import RatioSize from '~/helpers/RatioSize';
+import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
+import { LeftArrow, RightArrow } from '../components/arrows';
+import { CardVertical } from '../components/CardVertical';
+import usePreventBodyScroll from '../components/usePreventBodyScroll';
+const BannerFeatured: any = dynamic(
+  () => import('../components/banner-featured'),
+  { ssr: false },
+);
 
 type Props = {
   initProducts: any;
   initClientProducts: any;
 };
+
+type scrollVisibilityApiType = React.ContextType<typeof VisibilityContext>;
 
 const BemVindo: FC<PageTypes.Props & Props> = ({
   user,
@@ -58,10 +55,7 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
   initClientProducts,
 }) => {
   const sizeLg = useMediaQuery('(min-width: 1200px)');
-  const sizeMd = useMediaQuery('(min-width: 1024px)');
-  const sizeSm = useMediaQuery('(min-width: 426px)');
-
-  const numberOfSlides = sizeLg ? 5 : sizeMd ? 3 : sizeSm ? 2 : 1;
+  const { disableScroll, enableScroll } = usePreventBodyScroll();
 
   const [currentProduct, setCurrentProduct] = useState<ProductTypes.Product>();
   const [open, setOpen] = useState<boolean>(false);
@@ -102,29 +96,31 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
     </Box>
   );
 
-  const settings = {
-    dots: true,
-    speed: 1000,
-    slidesToScroll: 1,
-    nextArrow: <div className="arrow__btn left-arrow">‹</div>,
-    prevArrow: <div className="arrow__btn right-arrow">›</div>,
-  };
-
   useEffect(() => {
     let shouldPlay = false;
-    const index = clientProducts.findIndex(
-      (product) => product?.video || product?.banner_image,
-    );
+    const index = clientProducts.findIndex((product) => product?.video);
     if (index !== -1) {
       setFeaturedProduct(clientProducts[index]);
       shouldPlay = true;
     } else {
-      const index = products.findIndex(
-        (product) => product.video || product.banner_image,
-      );
+      const index = products.findIndex((product) => product.video);
       if (index !== -1) {
         setFeaturedProduct(products[index]);
         shouldPlay = true;
+      } else {
+        const index = clientProducts.findIndex(
+          (product) => product.banner_image,
+        );
+        if (index !== -1) {
+          setFeaturedProduct(clientProducts[index]);
+          shouldPlay = false;
+        } else {
+          const index = products.findIndex((product) => product.banner_image);
+          if (index !== -1) {
+            setFeaturedProduct(products[index]);
+            shouldPlay = false;
+          }
+        }
       }
     }
 
@@ -146,123 +142,103 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
     setCurrentProduct(product);
     setOpen(true);
   };
-  return (
-    <Background>
-      <BannerBox
-        sx={{
-          marginTop: '3.1rem',
-          display: 'flex',
-          justifyContent: 'center',
-          overflow: 'hidden',
-          position: 'relative',
-        }}
-      >
-        <Image
-          className={(playVideoFade ? 'hide' : '') + ' main_image'}
-          src={mainThumb || '/images/banner.png'}
-          style={{
-            objectFit: 'contain',
-            position: 'absolute',
-          }}
-          height="720"
-          width="1920"
-          alt="banner"
-        />
-        <VideoHolder id="holder">
-          <ReactPlayer
-            id="goto"
-            className={(playVideo ? '' : 'hide') + ' video' + ' react-player'}
-            url={playVideo ? featuredProduct?.video : ''}
-            width="100%"
-            loop={true}
-            height="100%"
-            playing={true}
-            controls={false}
-            volume={volume}
-            config={{
-              youtube: {
-                playerVars: {
-                  showinfo: 0,
-                  controls: 0,
-                  autoplay: 1,
-                  disablekb: 0,
-                },
-              },
-            }}
-          />
-        </VideoHolder>
-        <Overlay />
-        <div
-          style={{
-            position: 'absolute',
-          }}
+
+  const RenderMyProducts = useCallback(
+    (p) => {
+      return (
+        <ScrollMenu
+          LeftArrow={LeftArrow}
+          RightArrow={RightArrow}
+          wrapperClassName="slick-track"
+          itemClassName="slick-slide"
         >
-          {TextBanner}
-          <RatingBox>
-            <Rating defaultValue={4.5} precision={0.5} size="small"></Rating>
-            <CustomTypography>2022</CustomTypography>
-            <CustomTypography>1750 Alunos</CustomTypography>
-          </RatingBox>
-          <Box
-            sx={{
-              maxWidth: '37.5rem',
-              textAlign: 'start',
-              overflow: 'hidden',
-              'text-overflow': 'ellipsis',
-              display: '-webkit-box',
-              '-webkit-line-clamp': '3',
-              'line-clamp': '3',
-              '-webkit-box-orient': 'vertical',
-            }}
-          >
-            {featuredProduct?.description}
-          </Box>
-          <Box display="flex" gap="1rem" mt={3} width="100%">
-            <PlayButton
+          <Box width={12} />
+          {p.map((product, index) => (
+            <CardVertical
+              key={product.id}
+              itemId={product.id}
+              product={product}
+              onPopular={handlePopularProductsModal}
+              user={user}
+            />
+          ))}
+        </ScrollMenu>
+      );
+    },
+    [user],
+  );
+
+  const RenderPopular = useCallback(
+    (p) => {
+      return (
+        <ScrollMenu
+          LeftArrow={LeftArrow}
+          RightArrow={RightArrow}
+          wrapperClassName="slick-track"
+          itemClassName="slick-slide"
+        >
+          {p.map((product, index) => (
+            <CourseBox
+              onMouseOver={() => {}}
+              className="item"
+              key={index}
               onClick={() => {
-                if (
-                  featuredProduct.relation.approved ||
-                  featuredProduct.owner === user.id
-                ) {
+                const rel = clientProducts.find(
+                  (p) => p.id === product.id,
+                )?.relation;
+                if ((rel && rel.approved) || product.owner === user.id) {
                   router.push(
-                    types.find(
-                      (type) => type.id.toString() === featuredProduct.deliver,
-                    ).path +
+                    types.find((type) => type.id.toString() === product.deliver)
+                      .path +
                       '/' +
-                      featuredProduct.id,
+                      product.id,
                   );
                 } else {
-                  handlePopularProductsModal(featuredProduct);
+                  handlePopularProductsModal(product);
                 }
               }}
-              variant="outlined"
-            >
-              <PlayArrow />
-              Entrar
-            </PlayButton>
-            <MoreInfo variant="outlined">
-              <InfoRounded
-                sx={{
-                  marginRight: '0.5rem',
-                }}
-              />
-              Mais Informações
-            </MoreInfo>
-            <VolumeButton
-              onClick={() => (volume === 0 ? setVolume(0.5) : setVolume(0))}
             >
               <Image
-                src={
-                  volume === 0 ? '/svgs/volume-xmark.svg' : '/svgs/volume.svg'
-                }
-                alt="volume-icon"
-                height={18}
-                width={18}
+                alt=""
+                src={product?.banner_image || '/images/moonlit.png'}
+                width={RatioSize('w', 1.97, '10/16')}
+                height={RatioSize('h', 1.97, '10/16')}
+                style={{
+                  aspectRatio: '10/16',
+                }}
+                quality={90}
               />
-            </VolumeButton>
-          </Box>
-        </div>
-      </BannerBox>
+              <AbsoluteTopBox>
+                <CollorFullMentorfy>
+                  Mentor<span>fy</span>
+                </CollorFullMentorfy>
+              </AbsoluteTopBox>
+              {!product.banner_image && (
+                <AbsoluteBottomBox>
+                  <ProductTitle>{product.title}</ProductTitle>
+                </AbsoluteBottomBox>
+              )}
+            </CourseBox>
+          ))}
+        </ScrollMenu>
+      );
+    },
+    [clientProducts, router, types, user.id],
+  );
+
+  return (
+    <Background>
+      <BannerFeatured
+        playVideoFade={playVideoFade}
+        mainThumb={mainThumb}
+        playVideo={playVideo}
+        featuredProduct={featuredProduct}
+        volume={volume}
+        TextBanner={TextBanner}
+        user={user}
+        handlePopularProductsModal={handlePopularProductsModal}
+        setVolume={setVolume}
+      />
       <ContentWidthLimit
         sx={{
           marginTop: sizeLg ? '-6rem' : '0',
@@ -278,123 +254,21 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
             <Box sx={{ display: 'flex', margin: '1.2rem 0 0.5rem 0' }}>
               <Typography variant="h5">Minhas Mentorias</Typography>
             </Box>
-            <SliderWrapper
-              sx={{
-                width: numberOfSlides * RatioSize('w', 1.77),
-              }}
-            >
-              <Slider
-                {...settings}
-                slidesToShow={clientProducts.length}
-                className="container"
-              >
-                {clientProducts.map((product, index) => (
-                  <CourseBox
-                    onMouseOver={() => {}}
-                    className="item"
-                    key={index}
-                    onClick={() => {
-                      if (
-                        product?.relation?.approved ||
-                        product.owner === user.id
-                      ) {
-                        router.push(
-                          types.find(
-                            (type) => type.id.toString() === product.deliver,
-                          ).path +
-                            '/' +
-                            product.id,
-                        );
-                      } else {
-                        handlePopularProductsModal(product);
-                      }
-                    }}
-                  >
-                    <Image
-                      alt=""
-                      src={product?.main_image || '/images/moonlit.png'}
-                      width={RatioSize('w', 3)}
-                      height={RatioSize('h', 3)}
-                      quality={100}
-                    />
-                    <AbsoluteTopBox>
-                      <CollorFullMentorfy>
-                        Mentor<span>fy</span>
-                      </CollorFullMentorfy>
-                    </AbsoluteTopBox>
-                    {!product?.banner_image && (
-                      <AbsoluteBottomBox>
-                        <ProductTitle>{product?.title}</ProductTitle>
-                      </AbsoluteBottomBox>
-                    )}
-                  </CourseBox>
-                ))}
-              </Slider>
-            </SliderWrapper>
+            <SliderWrapper>{RenderMyProducts(clientProducts)}</SliderWrapper>
           </>
         )}
+
         <Box sx={{ display: 'flex', margin: '0.5rem 0 0.5rem 0' }}>
           <Typography variant="h5">Populares na Mentorfy</Typography>
         </Box>
-        <SliderWrapper
-          sx={{
-            width: numberOfSlides * RatioSize('w', 1.33),
-          }}
-        >
-          <Slider
-            {...settings}
-            slidesToShow={products.filter((p) => !!p.banner_image).length}
-            className="container"
-          >
-            {products
-              .filter((p) => p.banner_image)
-              .map((product, index) => (
-                <CourseBox
-                  onMouseOver={() => {}}
-                  className="item"
-                  width={RatioSize('w', 2.5, '10/16')}
-                  height={RatioSize('h', 2.5, '10/16')}
-                  key={index}
-                  onClick={() => {
-                    const rel = clientProducts.find(
-                      (p) => p.id === product.id,
-                    )?.relation;
-                    if ((rel && rel.approved) || product.owner === user.id) {
-                      router.push(
-                        types.find(
-                          (type) => type.id.toString() === product.deliver,
-                        ).path +
-                          '/' +
-                          product.id,
-                      );
-                    } else {
-                      handlePopularProductsModal(product);
-                    }
-                  }}
-                >
-                  <Image
-                    alt=""
-                    src={product?.banner_image || '/images/moonlit.png'}
-                    width={RatioSize('w', 2.5, '10/16')}
-                    height={RatioSize('h', 2.5, '10/16')}
-                    quality={100}
-                  />
-                  <AbsoluteTopBox>
-                    <CollorFullMentorfy>
-                      Mentor<span>fy</span>
-                    </CollorFullMentorfy>
-                  </AbsoluteTopBox>
-                  {!product.banner_image && (
-                    <AbsoluteBottomBox>
-                      <ProductTitle>{product.title}</ProductTitle>
-                    </AbsoluteBottomBox>
-                  )}
-                </CourseBox>
-              ))}
-          </Slider>
+
+        <SliderWrapper>
+          {RenderPopular(products.filter((p) => p.banner_image))}
         </SliderWrapper>
+
         {clientProducts?.length === 0 && <Box height="14rem" />}
       </ContentWidthLimit>
+
       <ModalComponent
         id="modal_destaque"
         open={open}

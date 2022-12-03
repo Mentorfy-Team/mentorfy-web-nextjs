@@ -24,7 +24,7 @@ import {
   NewTeamButton,
 } from './styles';
 
-const Teams: FC<{ user; initialTeams }> = ({ user }) => {
+const Teams: FC<{ user }> = ({ user }) => {
   const { setLoading } = userStore();
   const isMobile = useMediaQuery('(max-width: 500px)');
   const [openAddMentor, setOpenAddMentor] = useState(false);

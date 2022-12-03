@@ -17,7 +17,8 @@ export const Overlay = styled('div')`
 
 export const SliderWrapper = styled(Box)`
   .slick-track {
-    margin-left: 0px;
+    position: relative;
+    height: calc(100% + 1rem) !important;
   }
 `;
 
@@ -44,11 +45,7 @@ export const Background = styled(Box)`
     );
     mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
   }
-  * {
-    opacity: 1;
-    scroll-behavior: smooth;
-    transition: opacity 3s ease-in-out;
-  }
+
   // fade out if class hide is present
   .hide {
     opacity: 0;
@@ -70,6 +67,16 @@ export const Background = styled(Box)`
     display: block;
     position: relative;
     transition: transform 500ms;
+    padding: 10px 0 2px 0;
+  }
+
+  .react-horizontal-scrolling-menu--scroll-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  .react-horizontal-scrolling-menu--scroll-container {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
   }
 
   .slick-track:focus-within .slick-slide,
@@ -90,7 +97,6 @@ export const Background = styled(Box)`
 
   .slick-slide img {
     display: block;
-    max-width: 100%;
   }
 
   .arrow__btn {
