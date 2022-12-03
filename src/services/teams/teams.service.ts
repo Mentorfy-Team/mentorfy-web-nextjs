@@ -32,6 +32,23 @@ export const AddMentor = async (formData: AddMentorDTO) => {
   }
 };
 
+export const AssignClients = async (formData: AddMentorDTO) => {
+  try {
+    const response = await HttpClient.post(ApiRoutes.teams_client, formData);
+
+    if (response.data.error) {
+      return {
+        error: response.data.error,
+      };
+    }
+    return response.data;
+  } catch (error: any) {
+    return {
+      error: error.message,
+    };
+  }
+};
+
 export const DeleteMentor = async (formData: DeleteMentorDTO) => {
   try {
     const response = await HttpClient.delete(ApiRoutes.teams_mentor, {
@@ -51,18 +68,40 @@ export const DeleteMentor = async (formData: DeleteMentorDTO) => {
   }
 };
 
-export const AddClientMentor = async (client: UserClient.CreateClient) => {
+export const DeleteTeam = async (formData: DeleteMentorDTO) => {
   try {
-    const response = await HttpClient.post(ApiRoutes.clients, client);
+    const response = await HttpClient.delete(ApiRoutes.teams, {
+      data: formData,
+    });
+
     if (response.data.error) {
       return {
         error: response.data.error,
       };
     }
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     return {
-      error: 'Erro ao cadastrar produto',
+      error: error.message,
+    };
+  }
+};
+
+export const DeleteAttr = async (formData: DeleteMentorDTO) => {
+  try {
+    const response = await HttpClient.delete(ApiRoutes.teams_client, {
+      data: formData,
+    });
+
+    if (response.data.error) {
+      return {
+        error: response.data.error,
+      };
+    }
+    return response.data;
+  } catch (error: any) {
+    return {
+      error: error.message,
     };
   }
 };

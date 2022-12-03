@@ -4,14 +4,21 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { AcessLevelSelectField } from './styles';
 import FormGroup from '@mui/material/FormGroup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const RenderNewMentorForm: React.FC<{
   teams: TeamTypes.TeamTree[];
   onChange;
   onSubmit;
-}> = ({ teams = [], onChange }) => {
+  open;
+}> = ({ teams = [], onChange, open }) => {
   const [selectedTeams, setSelectedTeams] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!open) {
+      setSelectedTeams([]);
+    }
+  }, [open]);
 
   return (
     <FormGroup row>

@@ -8,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { AcessLevelSelectField } from './../AddMentorModal/styles';
 import { useEffect, useState } from 'react';
 
-const DeleteMentorModal: React.FC<{
+const DeleteTeamModal: React.FC<{
   teams: TeamTypes.TeamTree[];
   onSubmit;
   open;
@@ -36,7 +36,7 @@ const DeleteMentorModal: React.FC<{
     <ModalComponent
       open={open}
       setOpen={setOpen}
-      title="Excluir Mentor"
+      title="Remover Time"
       onDelete={() => {
         if (selectedMentor) {
           setOpen(false);
@@ -51,7 +51,7 @@ const DeleteMentorModal: React.FC<{
           <Select
             value={selectedTeams}
             label="Escolha a equipe"
-            name="teams"
+            name="team_id"
             required
             multiple
             onChange={(e) => {
@@ -69,39 +69,6 @@ const DeleteMentorModal: React.FC<{
           </Select>
         </AcessLevelSelectField>
 
-        <AcessLevelSelectField>
-          <InputLabel>Escolha o Mentor</InputLabel>
-          <Select
-            required
-            value={selectedMentor}
-            label="Escolha o Mentor"
-            name="profile_id"
-            onChange={(e) => {
-              setSelectedMentor(e.target.value);
-              onChange(e);
-            }}
-          >
-            {teams
-              .filter((t) =>
-                selectedTeams.some((st) => st === t.id || st === '0'),
-              )
-              .reduce((acc, team) => {
-                // unique
-                const unique = team.team_member.filter(
-                  (tm) => !acc.some((a) => a.profile_id === tm.profile_id),
-                );
-                return [...acc, ...unique];
-              }, [])
-              ?.map((mentor) => {
-                return (
-                  <MenuItem key={mentor.profile_id} value={mentor.profile_id}>
-                    {mentor.profile?.name}
-                  </MenuItem>
-                );
-              })}
-          </Select>
-        </AcessLevelSelectField>
-
         <InputField
           label="Motivo da Exclusão"
           name="reason"
@@ -114,4 +81,4 @@ const DeleteMentorModal: React.FC<{
   );
 };
 
-export default DeleteMentorModal;
+export default DeleteTeamModal;

@@ -28,6 +28,7 @@ type props = {
   isBlocked?: boolean;
   withX?: boolean;
   sx?: any;
+  saveText?: string;
 };
 
 const ModalComponent: FC<props> = ({
@@ -46,6 +47,7 @@ const ModalComponent: FC<props> = ({
   isBlocked = false,
   withX = true,
   sx,
+  saveText,
 }) => {
   const theme = useTheme();
 
@@ -120,7 +122,7 @@ const ModalComponent: FC<props> = ({
               disabled={isBlocked}
               onClick={() => onSave()}
             >
-              {deleteMessage ? 'Cancelar' : 'Salvar'}
+              {deleteMessage ? 'Cancelar' : saveText ? saveText : 'Salvar'}
             </Button>
           )}
           {onClose && (

@@ -7,7 +7,7 @@ export const get = async (req, res) => {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return res.status(401);
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   const { data: teams } = await supabase
@@ -33,7 +33,7 @@ export const post = async (req, res) => {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return res.status(401);
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   const { data: team } = await supabase
@@ -54,7 +54,7 @@ export const del = async (req, res) => {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return res.status(401);
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   await supabase.from('team').delete().eq('id', req.query.id);

@@ -78,15 +78,15 @@ const Certificate = ({ id }) => {
     HandleFileUpload(_files, (file) => {
       setFiles(file.data);
     });
-    console.log(files);
+    //console.log(files);
   };
 
   useEffect(() => {
-    if(files === ''){
+    if (files === '') {
       setShowDocument(false);
       setShowName(false);
     }
-    }, [files]);
+  }, [files]);
 
   const nameElement = <NameText>NOME DO CLIENTE</NameText>;
   const documentElement = <DocumentText>DOCUMENTO DO CLIENTE</DocumentText>;
@@ -171,18 +171,41 @@ const Certificate = ({ id }) => {
                 <FileWrapper id="dragRef">
                   <PDFReader file={files} />
 
-                 {showName && (
-                 <Draggable bounds="parent" onDrag={() => setIsDraging(true)} onStop={() => setIsDraging(false)}>
-                    <DraggableItem sx={{border: `${isDraging ? '2px dotted red' : '1px dotted black'}`}}>{nameElement}</DraggableItem>
-                  </Draggable>
+                  {showName && (
+                    <Draggable
+                      bounds="parent"
+                      onDrag={() => setIsDraging(true)}
+                      onStop={() => setIsDraging(false)}
+                    >
+                      <DraggableItem
+                        sx={{
+                          border: `${
+                            isDraging ? '2px dotted red' : '1px dotted black'
+                          }`,
+                        }}
+                      >
+                        {nameElement}
+                      </DraggableItem>
+                    </Draggable>
                   )}
 
                   {showDocument && (
-                  <Draggable bounds="parent" onDrag={() => setIsDragingD(true)} onStop={() => setIsDragingD(false)}>
-                    <DraggableItem sx={{border: `${isDragingD ? '2px dotted red' : '1px dotted black'}`}}>{documentElement}</DraggableItem>
-                  </Draggable>
+                    <Draggable
+                      bounds="parent"
+                      onDrag={() => setIsDragingD(true)}
+                      onStop={() => setIsDragingD(false)}
+                    >
+                      <DraggableItem
+                        sx={{
+                          border: `${
+                            isDragingD ? '2px dotted red' : '1px dotted black'
+                          }`,
+                        }}
+                      >
+                        {documentElement}
+                      </DraggableItem>
+                    </Draggable>
                   )}
-
                 </FileWrapper>
               </Wrapper>
             ) : (
