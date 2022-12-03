@@ -4,6 +4,7 @@ declare namespace ProfileApi {
       query: {
         withAddress?: boolean;
         id?: string;
+        altId?: string;
       };
     }
     interface Response {

@@ -35,6 +35,7 @@ const MinhaConta: FC<props> = ({
   } = useProfile(true, mentored_id || user.id);
 
   const SwitchTabs = useCallback(() => {
+    if (!profile) return null;
     switch (tabindex) {
       case tabs.Geral.toString():
         return (
