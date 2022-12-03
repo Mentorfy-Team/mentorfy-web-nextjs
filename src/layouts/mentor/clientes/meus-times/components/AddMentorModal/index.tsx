@@ -35,9 +35,10 @@ const NewMentorModal = ({ open, setOpen, teams, onSubmit }) => {
         teams={teams}
         onChange={onChange}
         onSubmit={onSubmit}
+        open={open}
       />
     );
-  }, [onSubmit, teams]);
+  }, [onSubmit, teams, open]);
 
   return (
     <ModalComponent

@@ -1,7 +1,7 @@
-import { SupabaseAdmin, SupabaseServer } from '~/backend/supabase';
-import { AddClientMentor } from '~/backend/repositories/team/AddClientToMentor';
+import { SupabaseServer } from '~/backend/supabase';
 import { HasTeamPermission } from '~/backend/repositories/team/HasTeamPermission';
 import { DeleteClientMentor } from '~/backend/repositories/team/DeleteClientToMentor';
+import AssignClients from '~/backend/repositories/team/AssignClients';
 
 export const get = async (req, res) => {
   const supabase = SupabaseServer(req, res);
@@ -10,7 +10,7 @@ export const get = async (req, res) => {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return res.status(401);
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   const { data: team_members } = await supabase
@@ -22,20 +22,30 @@ export const get = async (req, res) => {
 };
 
 export const post = async (req, res) => {
-  const supabase = SupabaseAdmin();
+  const supabase = SupabaseServer(req, res);
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return res.status(401);
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  await AddClientMentor({
+  if (
+    !req.body.team_members ||
+    !req.body.clients ||
+    !req.body.teams ||
+    !req.body.role
+  ) {
+    return res.status(400).json({ error: 'Missing data' });
+  }
+
+  await AssignClients({
     supabase,
     data: {
-      mentor_id: req.body.mentor_id,
-      profile_id: req.body.profile_id,
+      mentors: req.body.team_members,
+      clients: req.body.clients,
+      teams: req.body.teams,
       role: req.body.role,
     },
   });
@@ -44,32 +54,32 @@ export const post = async (req, res) => {
 };
 
 export const del = async (req, res) => {
-  const supabase = SupabaseAdmin();
+  const supabase = SupabaseServer(req, res);
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return res.status(401);
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   if (
     !HasTeamPermission({
       supabase,
       data: {
-        mentor_id: req.body.mentor_id,
-        client_id: req.body.profile_id,
+        mentor_id: req.body.team_member_id,
+        client_id: req.body.client_id,
         role: 'Tutor',
       },
     })
   ) {
-    return res.status(401);
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   await DeleteClientMentor({
     supabase,
     data: {
-      team_member_client_id: req.body.id,
+      team_member_client_id: req.body.team_member_client_id,
     },
   });
 };

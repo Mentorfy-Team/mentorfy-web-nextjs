@@ -8,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { AcessLevelSelectField } from './../AddMentorModal/styles';
 import { useEffect, useState } from 'react';
 
-const DeleteMentorModal: React.FC<{
+const DeleteAttrModal: React.FC<{
   teams: TeamTypes.TeamTree[];
   onSubmit;
   open;
@@ -17,6 +17,7 @@ const DeleteMentorModal: React.FC<{
   const [formData, setFormData] = useState<any>();
   const [selectedTeams, setSelectedTeams] = useState<string[]>([]);
   const [selectedMentor, setSelectedMentor] = useState<string>();
+  const [selectedClient, setSelectedClient] = useState<string>();
 
   const onChange = (event: any) => {
     setFormData((old) => ({
@@ -36,7 +37,7 @@ const DeleteMentorModal: React.FC<{
     <ModalComponent
       open={open}
       setOpen={setOpen}
-      title="Excluir Mentor"
+      title="Remover Atribuição de Mentor"
       onDelete={() => {
         if (selectedMentor) {
           setOpen(false);
@@ -47,49 +48,24 @@ const DeleteMentorModal: React.FC<{
     >
       <ModalDialogContent>
         <AcessLevelSelectField>
-          <InputLabel>Escolha o(s) Time(s)</InputLabel>
-          <Select
-            value={selectedTeams}
-            label="Escolha a equipe"
-            name="teams"
-            required
-            multiple
-            onChange={(e) => {
-              setSelectedTeams(e.target.value as string[]);
-              onChange(e);
-            }}
-          >
-            {[...(teams || []), { id: '0', title: 'Todos os Times' }]?.map(
-              (team) => (
-                <MenuItem key={team.id} value={team.id}>
-                  {team.title}
-                </MenuItem>
-              ),
-            )}
-          </Select>
-        </AcessLevelSelectField>
-
-        <AcessLevelSelectField>
           <InputLabel>Escolha o Mentor</InputLabel>
           <Select
             required
             value={selectedMentor}
             label="Escolha o Mentor"
-            name="profile_id"
+            name="team_member_id"
             onChange={(e) => {
               setSelectedMentor(e.target.value);
               onChange(e);
             }}
           >
             {teams
-              .filter((t) =>
-                selectedTeams.some((st) => st === t.id || st === '0'),
-              )
               .reduce((acc, team) => {
                 // unique
-                const unique = team.team_member.filter(
+                const unique = team.team_member?.filter(
                   (tm) => !acc.some((a) => a.profile_id === tm.profile_id),
                 );
+                if (!unique) return acc;
                 return [...acc, ...unique];
               }, [])
               ?.map((mentor) => {
@@ -99,6 +75,48 @@ const DeleteMentorModal: React.FC<{
                   </MenuItem>
                 );
               })}
+          </Select>
+        </AcessLevelSelectField>
+        <AcessLevelSelectField>
+          <InputLabel>Escolha o(s) cliente(s)</InputLabel>
+          <Select
+            value={selectedClient}
+            label="Escolha seu(s) cliente(s)"
+            name="team_member_client_id"
+            onChange={(e) => {
+              setSelectedClient(e.target.value[0] as string);
+              onChange({
+                target: {
+                  name: 'team_member_client_id',
+                  value: e.target.value[0],
+                },
+              });
+              onChange({
+                target: {
+                  name: 'client_id',
+                  value: e.target.value[1],
+                },
+              });
+            }}
+          >
+            <MenuItem value={'0'}>Todos</MenuItem>
+            {teams
+              .reduce((acc, team) => {
+                // unique
+                const unique = team.team_member?.filter(
+                  (tm) => !acc.some((a) => a.profile_id === tm.profile_id),
+                );
+                if (!unique) return acc;
+                return [...acc, ...unique];
+              }, [])
+              .find((tm) => {
+                return tm.profile_id == selectedMentor;
+              })
+              ?.team_member_client?.map((tmc) => (
+                <MenuItem key={tmc.id} value={[tmc.id, tmc.profile_id]}>
+                  {tmc.profile.name}
+                </MenuItem>
+              ))}
           </Select>
         </AcessLevelSelectField>
 
@@ -114,4 +132,4 @@ const DeleteMentorModal: React.FC<{
   );
 };
 
-export default DeleteMentorModal;
+export default DeleteAttrModal;

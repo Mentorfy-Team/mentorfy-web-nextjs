@@ -88,8 +88,9 @@ const MiniDrawer: React.FC<props> = ({ children }) => {
                   px: 2,
                   cursor: 'pointer',
                 }}
-                onClick={() => {
-                  router.push(MentorMenu[route].path);
+                onClick={async () => {
+                  await router.prefetch(MentorMenu[route].path);
+                  await router.push(MentorMenu[route].path);
                 }}
               >
                 <ListItemIcon

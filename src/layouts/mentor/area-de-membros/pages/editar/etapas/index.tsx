@@ -95,7 +95,11 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
       const newGroup = {
         id: Math.random() + '',
         title:
-          `${parentId ? `${parentId ? 'Nova categoria' : 'Novo agrupador'}` : `${product.deliver === '4' ? 'Novo módulo' : 'Novo agrupador'}`}  ` +
+          `${
+            parentId
+              ? `${parentId ? 'Nova categoria' : 'Novo agrupador'}`
+              : `${product.deliver === '4' ? 'Novo módulo' : 'Novo agrupador'}`
+          }  ` +
           (steps.length + 1),
         description: '',
         type: 0,
@@ -239,8 +243,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
   const hasChanges = useMemo(() => {
     // verifica se todos os elementos do array são iguais
     if (stepsData.length && steps.length)
-      console.log('hasChanges', stepsData[0].rows.length, steps[0].rows.length);
-    if (!steps || steps.length === 0) return false;
+      if (!steps || steps.length === 0) return false;
     const haschanges = JSON.stringify(stepsData) !== JSON.stringify(steps);
 
     return haschanges;

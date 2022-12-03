@@ -37,7 +37,7 @@ export const ButtonsWrapper = styled('div')`
   }
 `;
 
-export const MentorButtons = styled(Button)`
+export const MentorButtons = styled(Button)<{ fontColor? }>`
   align-items: center;
   display: flex;
 
@@ -50,6 +50,14 @@ export const MentorButtons = styled(Button)`
   @media (max-width: 500px) {
     width: 3.5rem;
   }
+
+  ${({ fontColor }) =>
+    fontColor &&
+    `
+    color: ${fontColor};
+    font-weight: 300;
+    letter-spacing: 0.05rem;
+  `}
 `;
 
 export const DeleteMentorButtons = styled(Button)`
@@ -74,7 +82,7 @@ export const DeleteMentorButtons = styled(Button)`
 export const NewTeamButton = styled(Button)`
   align-items: center;
   background: none;
-
+  white-space: nowrap;
   border: 1px solid ${({ theme }) => theme.palette.secondary.main};
   color: ${({ theme }) => theme.palette.secondary.main};
 
@@ -82,8 +90,7 @@ export const NewTeamButton = styled(Button)`
   gap: 0.5rem;
   justify-content: center;
   line-height: 1rem;
-  margin-left: auto;
-  max-width: 15%;
+
   text-transform: none;
 
   svg {

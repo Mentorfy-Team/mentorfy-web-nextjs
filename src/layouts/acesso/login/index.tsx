@@ -57,14 +57,20 @@ const Login: FC<props> = ({ urlProps }) => {
     return subscription.unsubscribe();
   }, [mutate]);
 
+  const onLogin = useCallback(async () => {
+    if (profile?.access_type === 'mentor') {
+      await route.prefetch(MentorRoutes.home);
+      await route.push(MentorRoutes.home);
+    } else {
+      await route.prefetch(MentoredRoutes.home);
+      await route.push(MentoredRoutes.home);
+    }
+  }, [profile?.access_type, route]);
+
   useEffect(() => {
     if (!isProfileLoading) {
       if (profile?.id) {
-        if (profile?.access_type === 'mentor') {
-          route.push(MentorRoutes.home);
-        } else {
-          route.push(MentoredRoutes.home);
-        }
+        onLogin();
       }
     }
     if (profile?.id) setIsLoading(false);

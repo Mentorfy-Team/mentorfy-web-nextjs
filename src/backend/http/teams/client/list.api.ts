@@ -7,7 +7,7 @@ export const get = async (req, res) => {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return res.status(401);
+    return res.status(401).json({ error: 'Unauthorized' });
   }
 
   const { data: team_members } = await supabase
