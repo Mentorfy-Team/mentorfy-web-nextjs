@@ -165,7 +165,7 @@ export const del = async (req, res) => {
   });
 };
 
-export const get: Handler.Callback<Request, Response> = async (req, res) => {
+export const get = async (req, res) => {
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
   res.status(200).json({});
