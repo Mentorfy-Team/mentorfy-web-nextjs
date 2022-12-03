@@ -42,14 +42,14 @@ const ClientJourney: FC<props> = ({ id }) => {
   } = useListOfClientsInProduct(id);
   const { setLoading } = userStore();
   const route = useRouter();
-  useEffect(() => {
-    if (stepsData) setSteps(JSON.parse(JSON.stringify(stepsData)));
-  }, [stepsData]);
 
   useEffect(() => {
     setLoading(isLoading);
   }, [isLoading, setLoading]);
 
+  useEffect(() => {
+    if (stepsData) setSteps(JSON.parse(JSON.stringify(stepsData)));
+  }, [stepsData]);
   const handleSelectedStep = (task) => {
     setSelectedTask(task);
 

@@ -24,6 +24,7 @@ import {
   SvgWrapper,
 } from './styles';
 import ChavronLeftSvg from '~/../public/svgs/chavron-left';
+import { userStore } from '~/stores';
 type props = {
   id: string;
 };
@@ -37,7 +38,7 @@ const Geral: FC<props> = ({ id }) => {
     extra_image: { file: '', type: '' },
   });
   const { handleSubmit, watch, setValue } = useForm<ProductClient.Product>();
-  const { product: pData } = useGetProduct(id);
+  const { product: pData, isLoading: pIsLoading } = useGetProduct(id);
   const [product, setProduct] = useState<typeof pData>(pData);
   const [description, setDescription] = useState<string>('');
   const [title, setTitle] = useState<string>('');
@@ -54,6 +55,11 @@ const Geral: FC<props> = ({ id }) => {
     two: '#fff',
     three: '#fff',
   });
+  const { setLoading } = userStore();
+
+  useEffect(() => {
+    setLoading(pIsLoading);
+  }, [pIsLoading, setLoading]);
 
   useEffect(() => {
     setProduct(pData);
