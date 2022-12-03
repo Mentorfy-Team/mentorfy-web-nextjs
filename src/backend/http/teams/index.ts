@@ -56,8 +56,26 @@ export const del = async (req, res) => {
   if (!user) {
     return res.status(401).json({ error: 'Unauthorized' });
   }
+  const { data } = await supabase
+    .from('team_member')
+    .select('id')
+    .eq('team_id', req.body.team_id);
 
-  await supabase.from('team').delete().eq('id', req.query.id);
+  await supabase
+    .from('team_member_client')
+    .delete()
+    .in(
+      'team_member_id',
+      data.map((item) => item.id),
+    );
+  await supabase
+    .from('team_member')
+    .delete()
+    .in(
+      'id',
+      data.map((item) => item.id),
+    );
+  await supabase.from('team').delete().eq('id', req.body.team_id);
 
-  res.status(200);
+  res.status(200).json({});
 };

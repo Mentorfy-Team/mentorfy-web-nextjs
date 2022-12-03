@@ -62,9 +62,10 @@ const DeleteAttrModal: React.FC<{
             {teams
               .reduce((acc, team) => {
                 // unique
-                const unique = team.team_member.filter(
+                const unique = team.team_member?.filter(
                   (tm) => !acc.some((a) => a.profile_id === tm.profile_id),
                 );
+                if (!unique) return acc;
                 return [...acc, ...unique];
               }, [])
               ?.map((mentor) => {
@@ -102,9 +103,10 @@ const DeleteAttrModal: React.FC<{
             {teams
               .reduce((acc, team) => {
                 // unique
-                const unique = team.team_member.filter(
+                const unique = team.team_member?.filter(
                   (tm) => !acc.some((a) => a.profile_id === tm.profile_id),
                 );
+                if (!unique) return acc;
                 return [...acc, ...unique];
               }, [])
               .find((tm) => {

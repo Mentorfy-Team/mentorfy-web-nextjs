@@ -52,10 +52,10 @@ const Teams: FC<{ user }> = ({ user }) => {
   const [hasMentors, setHasMentors] = useState(false);
 
   useEffect(() => {
-    if (teamsData.length) {
-      setMyTeams(teamsData);
-      setHasMentors(teamsData.some((team) => team.team_member?.length > 0));
-    }
+    setMyTeams(teamsData || []);
+    setHasMentors(
+      teamsData?.some((team) => team.team_member?.length > 0) || false,
+    );
   }, [teamsData]);
 
   useEffect(() => {
@@ -131,7 +131,7 @@ const Teams: FC<{ user }> = ({ user }) => {
   const handleDeleteTeam = useCallback(
     async (formData) => {
       await DeleteTeam(formData);
-      await mutate();
+      await mutate([]);
     },
     [mutate],
   );
@@ -196,14 +196,16 @@ const Teams: FC<{ user }> = ({ user }) => {
 
       <TeamsSection teams={myTeams} />
       <Box gap={4} alignSelf="self-end" display="flex">
-        <MentorButtons
-          sx={{ border: 'none' }}
-          fontColor="red"
-          variant="text"
-          onClick={() => setDeleteMentor(true)}
-        >
-          Remover Time
-        </MentorButtons>
+        {myTeams && myTeams.length > 0 && (
+          <MentorButtons
+            sx={{ border: 'none' }}
+            fontColor="red"
+            variant="text"
+            onClick={() => setDeleteTeam(true)}
+          >
+            Remover Time
+          </MentorButtons>
+        )}
         <NewTeamButton variant="outlined" onClick={() => setOpenNewTeam(true)}>
           <Plus height={16} width={16} />
           Criar Novo Time

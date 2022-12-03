@@ -15,8 +15,7 @@ const DeleteTeamModal: React.FC<{
   setOpen;
 }> = ({ open, setOpen, teams, onSubmit }) => {
   const [formData, setFormData] = useState<any>();
-  const [selectedTeams, setSelectedTeams] = useState<string[]>([]);
-  const [selectedMentor, setSelectedMentor] = useState<string>();
+  const [selectedTeams, setSelectedTeams] = useState<string>();
 
   const onChange = (event: any) => {
     setFormData((old) => ({
@@ -27,8 +26,7 @@ const DeleteTeamModal: React.FC<{
 
   useEffect(() => {
     if (!open) {
-      setSelectedTeams([]);
-      setSelectedMentor(null);
+      setSelectedTeams(null);
     }
   }, [open]);
 
@@ -38,7 +36,7 @@ const DeleteTeamModal: React.FC<{
       setOpen={setOpen}
       title="Remover Time"
       onDelete={() => {
-        if (selectedMentor) {
+        if (selectedTeams) {
           setOpen(false);
           onSubmit(formData);
         }
@@ -53,19 +51,16 @@ const DeleteTeamModal: React.FC<{
             label="Escolha a equipe"
             name="team_id"
             required
-            multiple
             onChange={(e) => {
-              setSelectedTeams(e.target.value as string[]);
+              setSelectedTeams(e.target.value as string);
               onChange(e);
             }}
           >
-            {[...(teams || []), { id: '0', title: 'Todos os Times' }]?.map(
-              (team) => (
-                <MenuItem key={team.id} value={team.id}>
-                  {team.title}
-                </MenuItem>
-              ),
-            )}
+            {teams?.map((team) => (
+              <MenuItem key={team.id} value={team.id}>
+                {team.title}
+              </MenuItem>
+            ))}
           </Select>
         </AcessLevelSelectField>
 

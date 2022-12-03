@@ -31,7 +31,12 @@ export const post = async (req, res) => {
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
-  if (!req.body.mentors || !req.body.clients || !req.body.role) {
+  if (
+    !req.body.team_members ||
+    !req.body.clients ||
+    !req.body.teams ||
+    !req.body.role
+  ) {
     return res.status(400).json({ error: 'Missing data' });
   }
 
