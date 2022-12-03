@@ -34,7 +34,7 @@ const MinhaConta: FC<props> = ({
   const isMobile = useMediaQuery('(max-width: 400px)');
   const {
     data: { profile, address },
-  } = useProfile(true, mentored_id);
+  } = useProfile(true, mentored_id || user.id);
 
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
