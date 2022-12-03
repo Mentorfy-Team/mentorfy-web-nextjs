@@ -409,7 +409,7 @@ export interface Database {
           created_at?: string | null
         }
       }
-      team_member_cliente: {
+      team_member_client: {
         Row: {
           id: number
           profile_id: string

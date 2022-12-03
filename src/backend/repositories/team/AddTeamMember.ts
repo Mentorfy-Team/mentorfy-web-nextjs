@@ -4,7 +4,7 @@ import { Database } from '~/@types/supabase/v2.types';
 type Props = {
   supabase: SupabaseClient<Database>;
   data: {
-    team_id: string;
+    teams: string[];
     user: {
       id: string;
     };
@@ -14,17 +14,29 @@ type Props = {
 export const AddTeamMember = async ({
   supabase,
   data: {
-    team_id,
+    teams,
     user: { id },
   },
 }: Props) => {
-  const { data: team_member } = await supabase
-    .from('team_member')
-    .insert({
-      team_id: team_id,
-      profile_id: id,
-    })
-    .select('*');
+  const team_member = [];
+
+  for (const team of teams) {
+    const { data, error } = await supabase
+      .from('team_member')
+      .insert([
+        {
+          profile_id: id,
+          team_id: team,
+        },
+      ])
+      .select('*')
+      .single();
+
+    if (error) {
+      // console.log(error);
+    }
+    team_member.push(data);
+  }
 
   return team_member;
 };

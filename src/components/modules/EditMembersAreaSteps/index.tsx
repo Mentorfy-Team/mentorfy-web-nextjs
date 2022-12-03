@@ -17,6 +17,7 @@ type props = {
   onEdit?: (id) => void;
   step: any;
   isHeader?: boolean;
+  productType?: boolean;
 };
 const EditMembersAreaSteps: FC<props> = ({
   image,
@@ -25,6 +26,7 @@ const EditMembersAreaSteps: FC<props> = ({
   onEdit,
   step,
   isHeader = false,
+  productType,
 }) => {
   const theme = useTheme();
 
@@ -36,6 +38,8 @@ const EditMembersAreaSteps: FC<props> = ({
   };
 
   const typeToScreen = (typeTool: number) => {
+    console.log(productType);
+    const name = productType ? 'Agrupador de Módulo' : 'Agrupador de Etapa';
     switch (typeTool) {
       case ToolListNames.QuestionsForm.id:
         return ToolListNames.QuestionsForm.name;
@@ -52,7 +56,7 @@ const EditMembersAreaSteps: FC<props> = ({
       case ToolListNames.WheelOfLifeModal.id:
         return ToolListNames.WheelOfLifeModal.name;
       case 0:
-        return 'Agrupador de Etapa';
+        return name;
       default:
         return 'Tipo não encontrado';
     }

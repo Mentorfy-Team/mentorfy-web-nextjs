@@ -1,8 +1,7 @@
-import { AddTeamMember } from '~/backend/repositories/team/AddTeamMember';
-import { InviteAndCreateAccount } from '~/backend/repositories/auth/InviteAndCreateAccount';
 import { SupabaseAdmin, SupabaseServer } from '~/backend/supabase';
-import { CheckForAccount } from '~/backend/repositories/auth/CheckForAccount';
-import { DeleteTeamMember } from '~/backend/repositories/auth/DeleteTeamMember';
+import { AddClientMentor } from '~/backend/repositories/team/AddClientToMentor';
+import { HasTeamPermission } from '~/backend/repositories/team/HasTeamPermission';
+import { DeleteClientMentor } from '~/backend/repositories/team/DeleteClientToMentor';
 
 export const get = async (req, res) => {
   const supabase = SupabaseServer(req, res);
@@ -14,20 +13,12 @@ export const get = async (req, res) => {
     return res.status(401);
   }
 
-  const { data: teams } = await supabase
-    .from('team')
-    .select('*')
-    .eq('owner', user.id);
-
   const { data: team_members } = await supabase
     .from('team_member')
-    .select('*, profile(*)')
-    .in(
-      'team_id',
-      teams.map((team) => team.id),
-    );
+    .select('*, profile(*), team(*)')
+    .eq('profile_id', req.query.id);
 
-  res.status(200).json({ teams, team_members });
+  res.status(200).json(team_members);
 };
 
 export const post = async (req, res) => {
@@ -40,31 +31,16 @@ export const post = async (req, res) => {
     return res.status(401);
   }
 
-  let userAccount = await CheckForAccount({
-    supabase,
-    data: req.body,
-  });
-
-  if (!userAccount) {
-    userAccount = await InviteAndCreateAccount({
-      supabase,
-      data: {
-        email: req.body.email,
-        name: req.body.name,
-        phone: req.body.phone,
-      },
-    });
-  }
-
-  await AddTeamMember({
+  await AddClientMentor({
     supabase,
     data: {
-      team_id: req.body.team_id,
-      user: userAccount,
+      mentor_id: req.body.mentor_id,
+      profile_id: req.body.profile_id,
+      role: req.body.role,
     },
   });
 
-  res.status(200).json({ user: userAccount });
+  res.status(200).json({});
 };
 
 export const del = async (req, res) => {
@@ -77,10 +53,23 @@ export const del = async (req, res) => {
     return res.status(401);
   }
 
-  await DeleteTeamMember({
+  if (
+    !HasTeamPermission({
+      supabase,
+      data: {
+        mentor_id: req.body.mentor_id,
+        client_id: req.body.profile_id,
+        role: 'Tutor',
+      },
+    })
+  ) {
+    return res.status(401);
+  }
+
+  await DeleteClientMentor({
     supabase,
     data: {
-      team_member_id: req.body.team_member_id,
+      team_member_client_id: req.body.id,
     },
   });
 };

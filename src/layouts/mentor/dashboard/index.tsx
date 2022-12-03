@@ -1,20 +1,22 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Finances from './components/finance';
 import Indicators from './components/Indicators';
-import { ImagesBox } from './styles';
+import { BannerWrapper, DescriptionText, ImagesBox, MentorName, NameWrapper, TextsWrapper, WelcomeText } from './styles';
 import { GetAuthSession } from '~/helpers/AuthSession';
-const Dashboard: FC<PageTypes.Props> = () => {
+import Mountain from '~/../public/svgs/favicon';
+
+const Dashboard: FC<PageTypes.Props> = ({ user }) => {
   const ref = useRef(null);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
 
-  useEffect(() => {
-    setWidth(ref.current.offsetWidth);
-    setHeight(ref.current.offsetHeight);
-  }, []);
+  // useEffect(() => {
+  //   setWidth(ref.current.offsetWidth);
+  //   setHeight(ref.current.offsetHeight);
+  // }, []);
 
   return (
     <>
@@ -23,28 +25,33 @@ const Dashboard: FC<PageTypes.Props> = () => {
         withoutScroll={true}
         maxWidth={1900}
       >
-        <Box
-          sx={{
-            width: '100%',
-            minHeight: '25vh',
-            overflow: 'hidden',
-            position: 'relative',
-          }}
-          ref={ref}
+        <BannerWrapper
         >
+          <TextsWrapper>
+            <NameWrapper>
+              <Mountain />
+              <MentorName>Olá, {user.email}</MentorName>
+            </NameWrapper>
+            <WelcomeText>
+              Seja bem-vindo(a) ao Mentorfy
+            </WelcomeText>
+            <DescriptionText>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              Voluptates qui, repudiandae corrupti, voluptatum aut consequatur,
+              debitis autem iure dolorum reprehenderit ipsum praesentium sunt?
+              Aut temporibus dolores saepe facere exercitationem ratione?
+              Aut temporibus dolores saepe facere exercitationem ratione?
+            </DescriptionText>
+          </TextsWrapper>
           <Image
             alt="banner"
-            width={width}
-            height={height}
-            src="/images/banner.png"
-            style={{
-              objectFit: 'cover',
-              position: 'absolute',
-              bottom: '0px',
-            }}
+            width={371}
+            height={150}
+            src="/images/frase.png"
             quality={100}
+            style={{ margin: '3rem 0 0 auto' }}
           />
-        </Box>
+        </BannerWrapper>
         <Indicators />
         <Finances />
         <Box

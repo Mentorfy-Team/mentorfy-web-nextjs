@@ -10,18 +10,18 @@ export const get = async (req, res) => {
     return res.status(401);
   }
 
-  const { data: teams } = await supabase
-    .from('team')
-    .select('*')
-    .eq('owner', user.id);
-
   const { data: team_members } = await supabase
     .from('team_member')
-    .select('*, profile(*)')
+    .select('*')
+    .eq('team_id', req.query.id);
+
+  const { data: clients } = await supabase
+    .from('team_member_client')
+    .select('*')
     .in(
-      'team_id',
-      teams.map((team) => team.id),
+      'team_member_id',
+      (team_members || []).map((team_member) => team_member.id),
     );
 
-  res.status(200).json({ teams, team_members });
+  res.status(200).json(clients);
 };

@@ -13,7 +13,7 @@ export const get = async (req, res) => {
   const { data: teams } = await supabase
     .from('team')
     .select('*')
-    .eq('owner', user.id);
+    .eq('owner_id', user.id);
 
   const { data: team_members } = await supabase
     .from('team_member')

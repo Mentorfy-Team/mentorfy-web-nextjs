@@ -29,6 +29,7 @@ import {
 } from './styles';
 import PlusSvg from '~/../public/svgs/plus';
 import { GetAuthSession } from '~/helpers/AuthSession';
+import RatioSize from '~/helpers/RatioSize';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   const { products, mutate } = useProducts(user.id);
@@ -38,11 +39,6 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const [productId, setProductId] = useState('');
   const [open, setOpen] = useState(false);
-
-  const handleDeleteProduct = async (id: string) => {
-    setProductId(id);
-    setShowConfirmDelete(true);
-  };
 
   const confirmDeleteProduct = async () => {
     if (!showConfirmDelete) {
@@ -138,8 +134,8 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
                     objectFit: 'cover',
                     borderRadius: '0.5rem',
                   }}
-                  width={300}
-                  height={400}
+                  width={RatioSize('w', 3)}
+                  height={RatioSize('h', 3)}
                 />
               )}
               {!area.main_image && (
@@ -149,8 +145,8 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
                     background:
                       'linear-gradient(180deg, #464646 0%, #161616 100%)',
                   }}
-                  width={300}
-                  height={400}
+                  width={RatioSize('w', 3)}
+                  height={RatioSize('h', 3)}
                 />
               )}
               <AbsoluteTopBox>
@@ -170,27 +166,15 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
         <Box sx={{ display: 'flex' }}>
           <Typography sx={{ mb: '1.5rem' }}>Modelos Prontos</Typography>
         </Box>
-        <EmptyBox sx={{ backgroundColor: '#36353a50' }}>
+        <EmptyBox
+          sx={{
+            backgroundColor: '#36353a50',
+            width: RatioSize('w', 3),
+            height: RatioSize('h', 3),
+          }}
+        >
           <ImageButton>Em breve</ImageButton>
         </EmptyBox>
-        {/* <Box sx={{ display: 'flex', flexDirection: 'row', overflow: 'auto' }}>
-          {['more-options'].map((index) =>
-            index === 'more-options' ? (
-              <EmptyBox>
-                <ImageButton>+ Ver mais opções</ImageButton>
-              </EmptyBox>
-            ) : (
-              <Box minWidth={300} mr={4} key={index} sx={{ cursor: 'pointer' }}>
-                <Image
-                  alt=""
-                  src="/images/area-de-membros.png"
-                  width={246}
-                  height={244}
-                />
-              </Box>
-            ),
-          )}
-        </Box> */}
       </ContentWidthLimit>
       <CreateProductDialog open={openCreatePage} setOpen={setOpenCreatePage} />
       <ModalComponent

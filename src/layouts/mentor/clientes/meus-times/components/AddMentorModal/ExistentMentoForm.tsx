@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { AcessLevelSelectField } from './styles';
 
-const RenderExistentMentorForm: React.FC = () => {
+const RenderExistentMentorForm = ({ onChange, onSubmit, teams }) => {
   const [selectedProduct, setSelectedProduct] = useState<string[]>([]);
   const acessLevel = ['Editor', 'Tutor', 'Gestor'];
 

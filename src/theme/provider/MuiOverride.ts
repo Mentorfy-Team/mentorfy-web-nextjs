@@ -62,6 +62,28 @@ const TextFieldStyle = {
     },
   } as Components['MuiTextField']['styleOverrides'],
 };
+const SelectStyle = {
+  defaultProps: {
+    size: 'small',
+    sx: {},
+  } as ComponentsProps['MuiSelect'],
+  styleOverrides: {
+    root: {
+      '.Mui-disabled': {
+        fieldset: {
+          border: '1px solid #333333 !important',
+        },
+        input: {
+          '-webkit-text-fill-color': '#666666 ',
+          'fill-color': '#666666 ',
+        },
+      },
+      input: {
+        height: '1.8rem',
+      },
+    },
+  } as Components['MuiSelect']['styleOverrides'],
+};
 const FormControlStyle = {
   defaultProps: {
     size: 'small',
@@ -78,6 +100,7 @@ export const MuiOverride: Components<Theme> = {
   },
   MuiButton: ButtonStyle,
   MuiTextField: TextFieldStyle,
+  MuiSelect: SelectStyle,
   MuiFormControl: FormControlStyle,
   MuiTypography: {
     styleOverrides: {

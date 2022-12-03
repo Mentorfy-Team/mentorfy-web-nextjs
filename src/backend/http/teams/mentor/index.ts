@@ -57,7 +57,7 @@ export const post = async (req, res) => {
     const team_member = await AddTeamMember({
       supabase,
       data: {
-        team_id: req.body.team_id,
+        teams: req.body.teams,
         user: userAccount,
       },
     });
@@ -66,4 +66,42 @@ export const post = async (req, res) => {
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
+};
+
+export const del = async (req, res) => {
+  const supabase = SupabaseServer(req, res);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return res.status(401);
+  }
+
+  const { data: teams, error } = await supabase
+    .from('team')
+    .select('*, team_member(*)')
+    .in('id', req.body.teams);
+
+  if (
+    !teams ||
+    teams.every((t) => t.owner_id !== user.id) ||
+    teams.every((t) =>
+      (t.team_member as any[]).every(
+        (m) => m.profile_id !== req.body.profile_id,
+      ),
+    )
+  ) {
+    return res.status(401);
+  }
+
+  const { data, error: deleteError } = await supabase
+    .from('team_member')
+    .delete()
+    .eq('profile_id', req.body.profile_id)
+    .in('team_id', req.body.teams);
+
+  // TODO: Log the reason for the deletion
+
+  res.status(200).json({});
 };
