@@ -78,7 +78,8 @@ const ProductsTable = ({ rows }: { rows: MemberAreaTypes.MemberArea[] }) => {
     setAnchorEl(null);
   };
 
-  const handleEdit = (id = 'x') => {
+  const handleEdit = async (id = 'x') => {
+    await route.prefetch(MentorRoutes.members_area_editar + '/' + id);
     route.push(MentorRoutes.members_area_editar + '/' + id);
   };
 

@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useProfile } from '~/hooks/useProfile';
 import { AppBar, AvatarWrapper, MenuItem, PopoverBox } from './styles';
-import Tipografia from '~/../public/images/tipografia.png';
+import Tipografia from '~/../public/images/logo-montanha.png';
 import MenuAvatar from '~/../public/svgs/menu-avatar';
 import Notification from '~/../public/svgs/notification';
 import Search from '~/../public/svgs/search';
@@ -61,13 +61,12 @@ const HeaderPartial: React.FC = () => {
         >
           <Image
             style={{
-              marginLeft: '2rem',
+              marginLeft: '3.2rem',
             }}
-            height={30}
+            height={40}
             alt="some important man mentoring smart people"
             src={Tipografia}
-            quality={100}
-            placeholder="blur"
+            quality={85}
           />
           {router.pathname.includes('mentorado') && (
             <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/mentor/dashboard`}>

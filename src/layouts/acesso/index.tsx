@@ -44,11 +44,11 @@ function LoginView({
         width={340 / (1.75 + (mobile ? 0.5 : 0))}
         height={140 / (1.75 + (mobile ? 0.5 : 0))}
         src={tipografiaImage}
-        placeholder="blur"
         alt="logo"
         style={{
           objectFit: 'contain',
         }}
+        quality={80}
       />
     ) : (
       <HeaderTitle>{appParams.signup.title}</HeaderTitle>
@@ -75,7 +75,7 @@ function LoginView({
               }}
               alt="some important man mentoring smart people"
               src={backgroundImage}
-              quality={100}
+              quality={85}
               placeholder="blur"
             />
           </BackgroundHolder>

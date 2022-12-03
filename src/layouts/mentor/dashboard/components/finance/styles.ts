@@ -51,12 +51,12 @@ export const BarWrapper = styled(Box)`
 `;
 
 export const ProgressBar = styled(LinearProgress)`
-  background-color: ${({ theme }) => theme.palette.caption.light};;
+  background-color: ${({ theme }) => theme.palette.caption.light};
   border-radius: 4px;
   height: 10px;
   margin: 0 0 1rem 0;
 
-  .css-1hwbv1c-MuiLinearProgress-bar1 {
+  .MuiLinearProgress-bar {
     background: ${({ theme }) => theme.palette.accent.main};
     border-radius: 4px;
   }
@@ -78,5 +78,4 @@ export const MountainName = styled(Typography)`
   font-weight: 400;
   line-height: 110.52%;
   color: ${({ theme }) => theme.palette.caption.main};
-
 `;

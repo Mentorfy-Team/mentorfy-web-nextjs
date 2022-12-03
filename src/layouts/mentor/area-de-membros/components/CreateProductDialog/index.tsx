@@ -38,11 +38,12 @@ export default function CreateProductDialog({ open, setOpen }) {
       }
       setValue('title', '');
       setValue('price', '');
+      await route.prefetch(MentorRoutes.members_area + '/editar/' + product.id);
       route.push(MentorRoutes.members_area + '/editar/' + product.id);
       setOpen(false);
       setIsLoading(false);
     },
-    [route, setOpen, setValue, types],
+    [route, setOpen, setValue],
   );
 
   const handleClose = () => {

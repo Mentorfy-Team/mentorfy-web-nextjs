@@ -17,18 +17,23 @@ import Wallet from './wallet';
 const Finances = () => {
   return (
     <Box
-      sx={{ display: 'flex', justifyContent: 'space-between', gap: '1.2rem', flexWrap: 'wrap' }}
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        gap: '1.2rem',
+        flexWrap: 'wrap',
+      }}
     >
       <Wrapper>
         <Revenue>
           <RevenueTitle>Resumo de seus ganhos líquidos</RevenueTitle>
 
           <Box sx={{ display: 'flex', gap: '2rem' }}>
-            <Box >
+            <Box>
               <TextAmount>Ganhos como produtor</TextAmount>
               <Amount>R$12.340,00</Amount>
             </Box>
-            <Box >
+            <Box>
               <TextAmount>Ganhos como co-produtor</TextAmount>
               <Amount>R$12.340,00</Amount>
             </Box>
@@ -36,24 +41,51 @@ const Finances = () => {
 
           <BarWrapper>
             <MountainsWrapper>
-              <TheMountainWrapper >
-                <Image alt='monte-fugi' src='/svgs/monte-fugi.svg' width={60} height={40} style={{ marginBottom: '-0.5rem' }} />
+              <TheMountainWrapper>
+                <Image
+                  alt="monte-fugi"
+                  src="/svgs/monte-fugi.svg"
+                  width={60}
+                  height={40}
+                  style={{ marginBottom: '-0.5rem' }}
+                />
                 <MountainName>FUGI</MountainName>
               </TheMountainWrapper>
-              <TheMountainWrapper >
-                <Image alt='monte-fugi' src='/svgs/kilimanjaro.svg' width={60} height={40} style={{ marginBottom: '-0.6rem' }} />
+              <TheMountainWrapper>
+                <Image
+                  alt="monte-fugi"
+                  src="/svgs/kilimanjaro.svg"
+                  width={60}
+                  height={40}
+                  style={{ marginBottom: '-0.6rem' }}
+                />
                 <MountainName>KILIMANJARO</MountainName>
               </TheMountainWrapper>
               <TheMountainWrapper>
-                <Image alt='monte-fugi' src='/svgs/monte-olimpo.svg' width={60} height={40} />
+                <Image
+                  alt="monte-fugi"
+                  src="/svgs/monte-olimpo.svg"
+                  width={60}
+                  height={40}
+                />
                 <MountainName>OLIMPO</MountainName>
               </TheMountainWrapper>
               <TheMountainWrapper>
-                <Image alt='monte-fugi' src='/svgs/monte-everest.svg' width={60} height={40} />
+                <Image
+                  alt="monte-fugi"
+                  src="/svgs/monte-everest.svg"
+                  width={60}
+                  height={40}
+                />
                 <MountainName>EVEREST</MountainName>
               </TheMountainWrapper>
               <TheMountainWrapper>
-                <Image alt='monte-fugi' src='/svgs/monte-k2.svg' width={60} height={40} />
+                <Image
+                  alt="monte-fugi"
+                  src="/svgs/monte-k2.svg"
+                  width={60}
+                  height={40}
+                />
                 <MountainName>K2</MountainName>
               </TheMountainWrapper>
             </MountainsWrapper>

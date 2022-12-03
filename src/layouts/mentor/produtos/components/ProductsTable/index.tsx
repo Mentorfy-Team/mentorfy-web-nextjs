@@ -180,7 +180,8 @@ const ProductsTable = ({ rows }: { rows: ProductClient.Product[] }) => {
     setAnchorEl(null);
   };
 
-  const handleEdit = (id) => {
+  const handleEdit = async (id) => {
+    await route.prefetch(MentorRoutes.products_edit + '/' + id);
     route.push(MentorRoutes.products_edit + '/' + id);
   };
   return (
