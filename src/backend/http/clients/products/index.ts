@@ -59,18 +59,21 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     .eq('profile_id', req.query.id);
 
   const productsWithProgress = listProducts.map((p) => {
+    const anws = userInputs.filter(
+      (input) =>
+        !!toolsList.find(
+          (tl) =>
+            tl.id === input.member_area_tool_id && p.id === tl.member_area,
+        ),
+    ).length;
+
+    const percent = anws / toolsList.filter((t) => t.type !== 0).length;
+
+    const calc = parseFloat((percent * 100).toFixed(2));
+
     return {
       ...p,
-      progress: parseFloat(
-        (
-          (userInputs.filter(
-            (input) =>
-              !!toolsList.find((tl) => tl.id === input.member_area_tool_id),
-          ).length /
-            toolsList.filter((t) => t.type !== 0).length) *
-          100
-        ).toFixed(2),
-      ),
+      progress: calc,
     };
   });
 
