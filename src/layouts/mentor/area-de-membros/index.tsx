@@ -119,7 +119,10 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
           {products?.map((area, index) => (
             <AreaWrapper
               onClick={
-                () => {
+                async () => {
+                  await router.prefetch(
+                    MentorRoutes.members_area_editar + '/' + area.id,
+                  );
                   router.push(MentorRoutes.members_area_editar + '/' + area.id);
                 }
                 // router.push(MentorRoutes.members_area_editar + '/' + area.id)
