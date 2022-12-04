@@ -8,6 +8,7 @@ const Checklist = dynamic(() => import('../components/checklist-modal'), {
 });
 const Embed = dynamic(() => import('../components/embed'), {
   loading: () => <LoadingComponent />,
+  ssr: false,
 });
 const OpenText = dynamic(() => import('../components/open-text'), {
   loading: () => <LoadingComponent />,

@@ -10,6 +10,20 @@ export const CloseButton = styled(Button)`
   margin: 3rem 0 0 auto;
   width: 200px;
 `;
+// calendly-inline-widget
+
+export const CalendalyWrapper = styled(Box)`
+  display: flex;
+  width: 100%;
+  background-color: ${({ theme }) => theme.palette.caption.main};
+  padding: 1rem 0 0 0;
+  // center child
+  justify-content: center;
+  .calendly-inline-widget {
+    flex: 1;
+    max-width: 649px;
+  }
+`;
 
 export const Description = styled(Typography)`
   color: ${({ theme }) => theme.palette.caption.main};

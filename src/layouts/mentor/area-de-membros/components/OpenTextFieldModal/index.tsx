@@ -31,10 +31,6 @@ const OpenTextFieldModal = ({
       open={open}
       setOpen={setOpen}
       title="Campo de Texto Aberto"
-      sx={{
-        width: '90vw',
-        maxWidth: '1000px',
-      }}
     >
       <div
         style={{

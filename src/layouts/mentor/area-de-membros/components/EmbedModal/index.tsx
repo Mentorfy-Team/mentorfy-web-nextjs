@@ -71,7 +71,7 @@ const EmbedModal = ({
             className="text-field"
             label="Embed Code"
             multiline
-            maxRows={20}
+            minRows={5}
             color="secondary"
             InputLabelProps={{
               shrink: true,

@@ -103,6 +103,7 @@ const FilesUploadModal = ({
       title="Upload de Arquivo"
     >
       <>
+        <Box width="100vw" />
         <InputField
           label="Título"
           placeholder="Digite o título da etapa"
