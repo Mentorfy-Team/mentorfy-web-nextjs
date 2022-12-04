@@ -102,6 +102,32 @@ export const post: Handler.Callback<GetRequest, GetResponse> = async (
         .select()
         .single();
 
+      const { data: tool, error: eTool } = await supabase
+        .from('member_area_tool')
+        .select('*')
+        .eq('id', tool_id)
+        .single();
+
+      // if (tool.parent) {
+      //   // set extra data to parent tool
+      //   const { data: parentTool, error: eParentTool } = await supabase
+      //     .from('member_area_tool')
+      //     .select('*')
+      //     .eq('id', tool.parent)
+      //     .single();
+      //   await supabase
+      //     .from('member_area_tool')
+      //     .update({
+      //       extra: {
+      //         done: {
+      //           ...(parentTool.extra as any).done,
+      //           [tool_id]: true,
+      //         },
+      //       },
+      //     })
+      //     .eq('id', tool.parent);
+      // }
+
       if (!error && !errorProduct) {
         // ? Registra que o cliente interagiu com uma mentoria
         await LogHistory.Create(

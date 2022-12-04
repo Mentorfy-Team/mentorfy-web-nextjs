@@ -18,6 +18,7 @@ export const Modal = styled(Dialog)<Props>`
     @media (max-width: 600px) {
       height: 100%;
       max-height: 100%;
+      max-width: 100vw;
     }
   }
   ${({ isMentorado }) =>

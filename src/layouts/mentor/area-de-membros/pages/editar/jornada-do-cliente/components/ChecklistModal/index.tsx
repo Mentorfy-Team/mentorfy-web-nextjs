@@ -53,7 +53,6 @@ const CJChecklist = ({
       </FinishedDate>
     </TitleWrapper>
   );
-  console.log('selectedTask', selectedTask);
 
   return (
     <ModalComponent

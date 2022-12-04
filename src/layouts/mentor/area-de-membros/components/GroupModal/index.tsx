@@ -5,7 +5,11 @@ import ModalComponent from '~/components/modules/Modal';
 import HandleFileUpload from '~/helpers/HandleFileUpload';
 import AddImage from '../AddImage';
 import UploadToUrlFiles from '../UploadFileModal/helpers/UploadToUrlFiles';
-import { DeleteText } from './styles';
+import { Checkbox, DeleteText } from './styles';
+import {
+  BpCheckedIcon,
+  BpIcon,
+} from '~/layouts/mentorado/components/checklist-modal/styles';
 
 export type TaskObject = any[];
 
@@ -21,17 +25,19 @@ const GroupModal = ({
   },
   onChange,
   area_id,
+  area_type,
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
   const [deleteGroup, setDeleteGroup] = useState(false);
   const [isSavingImage, setIsSavingImage] = useState(false);
+  const [lockFeature, setLockFeature] = useState(extra?.lockFeature || false);
 
   const [thumbnail, setThumbnail] = useState<any>(
-    extra?.length > 0 ? extra[0] : '',
+    taskData?.length > 0 ? taskData[0] : '',
   );
   const [thumbnailConclusion, setThumbnailConclusion] = useState<any>(
-    extra?.length > 1 ? extra[1] : '',
+    taskData?.length > 1 ? taskData[1] : '',
   );
   const [removedFiles, setRemovedFiles] = useState<string[]>([]);
 
@@ -49,7 +55,8 @@ const GroupModal = ({
     onChange({
       title,
       description,
-      extra: convertedFiles,
+      data: convertedFiles,
+      extra: { lockFeature },
       delete: del,
       toRemove: removedFiles,
     });
@@ -60,8 +67,8 @@ const GroupModal = ({
   const handleCapture = (_files: any) => {
     setIsSavingImage(true);
     HandleFileUpload([_files['0']], (file) => {
-      if (extra?.length > 0 && extra[0]) {
-        setRemovedFiles([...removedFiles, extra[0]]);
+      if (taskData?.length > 0 && taskData[0]) {
+        setRemovedFiles([...removedFiles, taskData[0]]);
       }
       setThumbnail(file);
       setIsSavingImage(false);
@@ -70,8 +77,8 @@ const GroupModal = ({
   const handleCaptureConclusion = (_files: any) => {
     setIsSavingImage(true);
     HandleFileUpload([_files['0']], (file) => {
-      if (extra?.length > 1 && extra[1]) {
-        setRemovedFiles([...removedFiles, extra[1]]);
+      if (taskData?.length > 1 && taskData[1]) {
+        setRemovedFiles([...removedFiles, taskData[1]]);
       }
       setThumbnailConclusion(file);
       setIsSavingImage(false);
@@ -99,7 +106,11 @@ const GroupModal = ({
       deleteMessage={deleteGroup}
       isBlocked={isSavingImage}
     >
-      <>
+      <div
+        style={{
+          width: '500px',
+        }}
+      >
         {deleteGroup ? (
           <>
             <Box sx={{ textAlign: 'center' }}>
@@ -123,6 +134,31 @@ const GroupModal = ({
               label="Descrição"
               placeholder=""
             ></InputField>
+            {[1, 2, 3].some((n) => n == area_type) && (
+              <Box
+                onClick={() => setLockFeature((old) => !old)}
+                display="flex"
+                alignItems="center"
+                pb={4}
+                pt={2}
+                gap={2}
+                sx={{ cursor: 'pointer' }}
+              >
+                <Checkbox
+                  sx={{
+                    padding: '0',
+                    color: 'white',
+                  }}
+                  disableRipple
+                  icon={<BpIcon />}
+                  checkedIcon={<BpCheckedIcon />}
+                  color="default"
+                  checked={lockFeature}
+                  name="lockFeature"
+                />
+                <span>Liberar o próximo módulo ao concluír o atual.</span>
+              </Box>
+            )}
             <Box sx={{ width: '100%' }}>
               <AddImage
                 title="Icone do módulo"
@@ -156,7 +192,7 @@ const GroupModal = ({
             </Box>
           </>
         )}
-      </>
+      </div>
     </ModalComponent>
   );
 };

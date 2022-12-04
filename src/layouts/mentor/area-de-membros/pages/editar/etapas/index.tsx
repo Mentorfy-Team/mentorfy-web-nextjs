@@ -157,11 +157,12 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
         type={GetTypeName(currentModal.type)}
         refId={currentModal.refId}
         area_id={id}
+        area_type={product.deliver}
         data={currentModal.data}
         rows={currentModal.rows}
       />
     );
-  }, [open, currentModal, GetTypeName, id]);
+  }, [open, currentModal, GetTypeName, id, product]);
 
   const handleSave = useCallback(async () => {
     setLoading(true);
