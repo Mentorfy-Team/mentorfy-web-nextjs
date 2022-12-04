@@ -36,7 +36,7 @@ const CreateDnDRows = (
         {(!isGroup || !allowSubgroup) && (
           <AddTool onClick={() => onOpenModal(step.id)} variant="contained">
             <Task />
-             {productType ? 'Adicionar Aula' : 'Adicionar Etapa'}
+            {productType ? 'Adicionar Aula' : 'Adicionar Etapa'}
           </AddTool>
         )}
       </GroupWrapper>
@@ -45,7 +45,7 @@ const CreateDnDRows = (
 
   return rows.map((row) => {
     return (
-      <Group key={row.id} step={row} isGroup={row.type == 0}>
+      <Group key={row.id} step={row} isGroup={row.type == 0 && allowSubgroup}>
         {row.rows?.map((child: any) => {
           if (child.type == 0 && allowSubgroup) {
             return (

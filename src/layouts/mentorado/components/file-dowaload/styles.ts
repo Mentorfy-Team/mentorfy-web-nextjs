@@ -41,8 +41,8 @@ export const DownloaddButton = styled(Button)<{
 `;
 
 export const DownloadText = styled(Typography)`
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 300;
   line-height: 1.4rem;
   margin: 1.6rem 0 1.6rem 0;
 `;

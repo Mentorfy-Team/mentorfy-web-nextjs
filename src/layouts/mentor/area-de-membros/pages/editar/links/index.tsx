@@ -2,9 +2,6 @@ import { FC } from 'react';
 import Box from '@mui/material/Box';
 import { useRouter } from 'next/router';
 import InputField from '~/components/atoms/InputField';
-import { MentorRoutes } from '~/consts';
-import { ReturnButton } from '../styles';
-import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 import { useGetProduct } from '~/hooks/useGetProduct';
 
 type props = {
@@ -22,16 +19,7 @@ const Links: FC<props> = ({ id }) => {
         justifyContent="space-between"
         pb={2}
       >
-        <ReturnButton
-          sx={{
-            float: 'right',
-          }}
-          color="primary"
-          onClick={() => route.push(MentorRoutes.products)}
-        >
-          <ChavronLeftSvg />
-          <span>Voltar</span>
-        </ReturnButton>
+        <div />
       </Box>
 
       <InputField

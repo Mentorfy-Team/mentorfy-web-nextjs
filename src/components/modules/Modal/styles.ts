@@ -52,7 +52,7 @@ export const ModalDialogContent = styled(DialogContent)<Props>`
           }
         `
       : css`
-          width: 480px;
+          width: 100%;
         `}
 
   ${({ popularProduct }) =>

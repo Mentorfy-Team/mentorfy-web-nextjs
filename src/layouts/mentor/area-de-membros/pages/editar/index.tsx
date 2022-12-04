@@ -42,11 +42,16 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
     }
   }, [id, product, tabindex]);
 
-  const MaxWidth = tabindex != 1 && tabindex != 3 && 600;
+  const MaxWidth = tabindex != 1 && tabindex != 3 && 700;
   return (
     <>
       <Toolbar onChange={(value) => setTabindex(value)} tabs={tabs} />
-      <ContentWidthLimit maxWidth={MaxWidth}>{SwitchTabs()}</ContentWidthLimit>
+      {tabindex != 0 && (
+        <ContentWidthLimit maxWidth={MaxWidth}>
+          {SwitchTabs()}
+        </ContentWidthLimit>
+      )}
+      {tabindex == 0 && SwitchTabs()}
     </>
   );
 };

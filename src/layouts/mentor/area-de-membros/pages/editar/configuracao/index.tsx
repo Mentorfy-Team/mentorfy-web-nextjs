@@ -19,11 +19,9 @@ import {
   ActionButton,
   CustomTypograpy,
   PickerWrapper,
-  ReturnButton,
   SaveButton,
   SvgWrapper,
 } from './styles';
-import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 import { userStore } from '~/stores';
 type props = {
   id: string;
@@ -160,10 +158,7 @@ const Geral: FC<props> = ({ id }) => {
         justifyContent="space-between"
         pb={4}
       >
-        <ReturnButton color="primary" onClick={() => route.back()}>
-          <ChavronLeftSvg />
-          <span>Voltar</span>
-        </ReturnButton>
+        <div />
         <SaveButton
           sx={{
             float: 'right',

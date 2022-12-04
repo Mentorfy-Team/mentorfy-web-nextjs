@@ -19,12 +19,11 @@ import {
   AddGroup,
   ButtonsWrapper,
   CustomTypograpy,
-  ReturnButton,
   SaveButton,
   ScrollWrapper,
 } from '../styles';
-import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 import CreateDnDRows from './helpers/CreateDnDRows';
+import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 
 const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
   ssr: false,
@@ -276,68 +275,57 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
 
   return (
     <>
-      <ButtonsWrapper>
-        <ReturnButton
-          variant="text"
-          sx={{
-            width: '12.5rem',
-            height: '2.5rem',
-            textTransform: 'none',
-            display: 'flex',
-            justifyContent: 'flex-start',
-          }}
-          onClick={() => route.back()}
-        >
-          <ChavronLeftSvg />
-          <span>Voltar</span>
-        </ReturnButton>
-        <SaveButton
-          sx={{
-            float: 'right',
-            marginLeft: '2rem',
-          }}
-          variant="outlined"
-          color="primary"
-          onClick={() => handleSave()}
-          loading={isLoading}
-          disabled={!hasChanges || isLoading}
-        >
-          <Save />
-          <Typography
-            sx={{ color: isLoading ? 'transparent' : null }}
-            variant="body2"
-            ml={1}
+      <ContentWidthLimit maxWidth={700}>
+        <ButtonsWrapper>
+          <div />
+          <SaveButton
+            sx={{
+              float: 'right',
+              marginLeft: '2rem',
+            }}
+            variant="outlined"
+            color="primary"
+            onClick={() => handleSave()}
+            loading={isLoading}
+            disabled={!hasChanges || isLoading}
           >
-            Salvar alterações
-          </Typography>
-        </SaveButton>
-      </ButtonsWrapper>
+            <Save />
+            <Typography
+              sx={{ color: isLoading ? 'transparent' : null }}
+              variant="body2"
+              ml={1}
+            >
+              Salvar alterações
+            </Typography>
+          </SaveButton>
+        </ButtonsWrapper>
 
-      <CustomTypograpy>
-        Construa abaixo as etapas/tarefas que seus membros irão percorer. Você
-        poderá adicionar, remover ou alterar posteriormente. Você também pode
-        mover de ordem as etapas e tarefas.
-      </CustomTypograpy>
-      <Divider
-        sx={{
-          borderColor: `${theme.palette.tertiary.light}`,
-          marginBottom: '1.0rem',
-        }}
-      />
-      <Box display="flex" alignSelf="end" gap={2} mb={2}>
-        <AddGroup
-          onClick={() => addNewGroup()}
-          variant="contained"
-          color="secondary"
-        >
-          <Workspaces />
-          {product.deliver === '4' ? 'Adicionar Módulo' : 'Adicionar Módulo'}
-        </AddGroup>
-      </Box>
-      <ScrollWrapper withtoolbar="true">
-        <DragNDrop setElements={setSteps} elements={DnDRows(steps)} />
-      </ScrollWrapper>
-      {open && HandleModal()}
+        <CustomTypograpy>
+          Construa abaixo as etapas/tarefas que seus membros irão percorer. Você
+          poderá adicionar, remover ou alterar posteriormente. Você também pode
+          mover de ordem as etapas e tarefas.
+        </CustomTypograpy>
+        <Divider
+          sx={{
+            borderColor: `${theme.palette.tertiary.light}`,
+            marginBottom: '1.0rem',
+          }}
+        />
+        <Box display="flex" alignSelf="end" gap={2} mb={2}>
+          <AddGroup
+            onClick={() => addNewGroup()}
+            variant="contained"
+            color="secondary"
+          >
+            <Workspaces />
+            {product.deliver === '4' ? 'Adicionar Módulo' : 'Adicionar Módulo'}
+          </AddGroup>
+        </Box>
+        <ScrollWrapper withtoolbar="true">
+          <DragNDrop setElements={setSteps} elements={DnDRows(steps)} />
+        </ScrollWrapper>
+        {open && HandleModal()}
+      </ContentWidthLimit>
     </>
   );
 };

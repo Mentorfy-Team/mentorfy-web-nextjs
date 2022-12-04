@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   DndContext,
+  DragOverlay,
   KeyboardSensor,
   PointerSensor,
   closestCenter,
@@ -9,6 +10,7 @@ import {
 } from '@dnd-kit/core';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import { Box } from '@mui/material';
 
 export type GroupTools = MentorTools.ToolData & {
   rows?: (MentorTools.ToolData & { rows?: any[] })[];
@@ -58,33 +60,19 @@ export default function DragNDrop({ elements, setElements }: Props) {
       modifiers={[restrictToParentElement]}
     >
       {elements}
-      {/* {elements
-        .filter((i) => !i.delete)
-        .map((group, groupIndex) => {
-          const itens = group.rows.filter((i) => !i.delete);
-          return groupModel(
-            group.id,
-            <SortableContext
-              items={itens.map((item) => item.id)}
-              strategy={verticalListSortingStrategy}
-            >
-              {itens.map((item) => model(item))}
-            </SortableContext>,
-          );
-        })} */}
-      {/* <DragOverlay modifiers={[restrictToParentElement]}>
+      <DragOverlay modifiers={[restrictToParentElement]}>
         {activeId ? (
           <Box
             sx={{
-              backgroundColor: 'red',
+              backgroundColor: 'green',
               padding: '10px',
-              opacity: 0.1,
+              opacity: 0.5,
             }}
           >
-            helloworld
+            Solte na nova posição
           </Box>
         ) : null}
-      </DragOverlay> */}
+      </DragOverlay>
     </DndContext>
   );
 }
