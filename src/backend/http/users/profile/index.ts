@@ -27,7 +27,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   if (!user && !req.query.id)
     return res.status(401).json({ error: 'Unauthorized' });
 
-  const id = req.query.id || user.id;
+  const id = req.query.id || req.query.altId || user.id;
 
   const { data: profile, error } = await supabase
     .from('profile')

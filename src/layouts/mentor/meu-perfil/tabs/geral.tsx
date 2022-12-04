@@ -37,8 +37,8 @@ const MyProfile = ({ profile, user, isViewingMentored }) => {
   const { setLoading } = userStore();
   const { history, isLoading: isLoadingHistory } = useHistory(profile?.id);
   const { product, isLoading: isLoadingProducts } = useGetClientProducts(
-    profile?.id,
     user?.id,
+    profile?.id,
   );
 
   useEffect(() => {
@@ -89,7 +89,7 @@ const MyProfile = ({ profile, user, isViewingMentored }) => {
               Conteúdos
             </Title>
             {product
-              ?.filter((p) => p.owner !== profile.id)
+              ?.filter((p) => p.owner !== profile?.id)
               ?.map((p) => (
                 <Session
                   sx={{

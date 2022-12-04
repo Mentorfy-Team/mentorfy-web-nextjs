@@ -40,6 +40,8 @@ export const ClientsNumber = styled(Typography)`
 
 export const Mentor = styled(Box)`
   background-color: ${({ theme }) => theme.palette.primary.light};
+  padding-right: 0.5rem;
   border-radius: 0 5px 5px 0;
   display: flex;
+  cursor: pointer;
 `;

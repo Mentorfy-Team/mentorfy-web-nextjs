@@ -70,6 +70,7 @@ const Teams: FC<{ user }> = ({ user }) => {
             <TeamCard key={team.id} title={team.title}>
               {team.team_member?.map((mentor) => (
                 <MentorCard
+                  id={mentor.profile.id}
                   key={mentor.id}
                   name={mentor.profile.name}
                   email={mentor.profile.email}

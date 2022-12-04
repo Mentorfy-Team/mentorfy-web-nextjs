@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Image from 'next/image';
 import {
   ActiveClients,
@@ -8,10 +8,16 @@ import {
   MentorInfo,
   MentorName,
 } from './styles';
+import { useRouter } from 'next/router';
 
-const MentorCard = ({ name, email, activeClients, avatar }) => {
+const MentorCard = ({ name, email, activeClients, avatar, id }) => {
+  const route = useRouter();
+  const handleGoToProfile = useCallback(() => {
+    route.push(route.asPath + '/perfil?altId=' + id);
+  }, [id, route]);
+
   return (
-    <Mentor>
+    <Mentor onClick={() => handleGoToProfile()}>
       <Image
         alt="imagem-do-mentor"
         src={avatar || '/images/avatar.png'}
