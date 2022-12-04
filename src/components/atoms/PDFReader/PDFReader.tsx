@@ -6,7 +6,11 @@ export default ({ file }) => {
   return (
     <Wrapper>
       <Document file={file}>
-        <Page pageNumber={1} />
+        <Page
+          pageIndex={0}
+          renderTextLayer={false}
+          renderAnnotationLayer={false}
+        />
       </Document>
     </Wrapper>
   );
