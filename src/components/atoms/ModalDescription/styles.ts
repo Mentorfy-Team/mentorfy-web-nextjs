@@ -6,5 +6,5 @@ export const DescriptionText = styled(Typography)`
   font-weight: 300;
   line-height: 1.2rem;
   margin-bottom: 1rem;
-  text-align: center;
+  text-align: left;
 `;
