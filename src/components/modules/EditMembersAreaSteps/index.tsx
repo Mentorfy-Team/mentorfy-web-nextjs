@@ -38,7 +38,7 @@ const EditMembersAreaSteps: FC<props> = ({
   };
 
   const typeToScreen = (typeTool: number) => {
-    const name = productType ? 'Agrupador de Módulo' : 'Agrupador de Etapa';
+    const name = productType ? 'Módulo de Módulo' : 'Módulo de Etapa';
     switch (typeTool) {
       case ToolListNames.QuestionsForm.id:
         return ToolListNames.QuestionsForm.name;

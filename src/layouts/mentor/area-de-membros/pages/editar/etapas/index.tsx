@@ -97,8 +97,8 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
         title:
           `${
             parentId
-              ? `${parentId ? 'Nova categoria' : 'Novo agrupador'}`
-              : `${product.deliver === '4' ? 'Novo módulo' : 'Novo agrupador'}`
+              ? `${parentId ? 'Nova categoria' : 'Novo módulo'}`
+              : `${product.deliver === '4' ? 'Novo módulo' : 'Novo módulo'}`
           }  ` +
           (steps.length + 1),
         description: '',
@@ -331,7 +331,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
           color="secondary"
         >
           <Workspaces />
-          {product.deliver === '4' ? 'Adicionar Módulo' : 'Adicionar Agrupador'}
+          {product.deliver === '4' ? 'Adicionar Módulo' : 'Adicionar Módulo'}
         </AddGroup>
       </Box>
       <ScrollWrapper withtoolbar="true">

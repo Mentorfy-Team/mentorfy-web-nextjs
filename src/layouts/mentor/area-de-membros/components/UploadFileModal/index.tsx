@@ -45,7 +45,7 @@ const FilesUploadModal = ({
   const [description, setDescription] = useState(descriptionData);
 
   const [files, setFiles] = useState<FileType[]>(filesData || []);
-  const [removedFiles, setRemovedFiles] = useState<FileType[]>([]);
+  const [removedFiles, setRemovedFiles] = useState<string[]>([]);
 
   const handleRemoveFile = (_file) => {
     setRemovedFiles([...removedFiles, _file.sourceUrl]);
@@ -158,7 +158,9 @@ const FilesUploadModal = ({
                 width={54}
                 height={46}
                 src={getImage(file)}
-                objectFit="contain"
+                style={{
+                  objectFit: 'contain',
+                }}
               />
               <AttachName>{file.name}</AttachName>
               <RemoveBox onClick={() => handleRemoveFile(file)}>

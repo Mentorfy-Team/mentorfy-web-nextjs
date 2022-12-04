@@ -48,7 +48,7 @@ const OpenTextFieldModal = ({
           onChange={(e) => setTitle(e.target.value)}
         />
         <DescriptionInputField
-          label="Campo de Texto Aberto"
+          label="Descrição (opcional)"
           placeholder="Digite seu texto aqui."
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -59,7 +59,7 @@ const OpenTextFieldModal = ({
           initialValue={data}
           onEditorChange={(a, editor) => setDataText(a)}
           init={{
-            height: 500,
+            height: '50vh',
             width: '100%',
             menubar: false,
             plugins: [

@@ -33,6 +33,7 @@ const GroupModal = ({
   const [thumbnailConclusion, setThumbnailConclusion] = useState<any>(
     extra?.length > 1 ? extra[1] : '',
   );
+  const [removedFiles, setRemovedFiles] = useState<string[]>([]);
 
   const handleSave = async (del?: boolean) => {
     setIsSavingImage(true);
@@ -50,6 +51,7 @@ const GroupModal = ({
       description,
       extra: convertedFiles,
       delete: del,
+      toRemove: removedFiles,
     });
     setIsSavingImage(false);
     setOpen(false);
@@ -58,6 +60,9 @@ const GroupModal = ({
   const handleCapture = (_files: any) => {
     setIsSavingImage(true);
     HandleFileUpload([_files['0']], (file) => {
+      if (extra?.length > 0 && extra[0]) {
+        setRemovedFiles([...removedFiles, extra[0]]);
+      }
       setThumbnail(file);
       setIsSavingImage(false);
     });
@@ -65,6 +70,9 @@ const GroupModal = ({
   const handleCaptureConclusion = (_files: any) => {
     setIsSavingImage(true);
     HandleFileUpload([_files['0']], (file) => {
+      if (extra?.length > 1 && extra[1]) {
+        setRemovedFiles([...removedFiles, extra[1]]);
+      }
       setThumbnailConclusion(file);
       setIsSavingImage(false);
     });
@@ -87,7 +95,7 @@ const GroupModal = ({
       }}
       open={open}
       setOpen={setOpen}
-      title="Agrupador de Etapas"
+      title="Informações do Módulo"
       deleteMessage={deleteGroup}
       isBlocked={isSavingImage}
     >
@@ -96,7 +104,7 @@ const GroupModal = ({
           <>
             <Box sx={{ textAlign: 'center' }}>
               <DeleteText>
-                Esse agrupador possui uma ou mais etapas. Você tem certeza que
+                Esse módulo possui uma ou mais etapas. Você tem certeza que
                 deseja excluir?
               </DeleteText>
             </Box>
@@ -117,15 +125,20 @@ const GroupModal = ({
             ></InputField>
             <Box sx={{ width: '100%' }}>
               <AddImage
-                title="Icone/Imagem do agrupador"
+                title="Icone do módulo"
                 thumbnail={
                   thumbnail ? thumbnail.data || thumbnail.sourceUrl : null
                 }
                 isBlocked={isSavingImage}
                 onUploadImage={(target) => handleCapture(target.files)}
+                onRemove={(sourceUrl) => {
+                  setRemovedFiles([...removedFiles, sourceUrl]);
+                  setThumbnail(null);
+                }}
               />
               <AddImage
                 title="Imagem de conclusão"
+                defaultImage="/svgs/finished.svg"
                 thumbnail={
                   thumbnailConclusion
                     ? thumbnailConclusion.data || thumbnailConclusion.sourceUrl
@@ -134,6 +147,10 @@ const GroupModal = ({
                 isBlocked={isSavingImage}
                 onUploadImage={(target) => {
                   handleCaptureConclusion(target.files);
+                }}
+                onRemove={(sourceUrl) => {
+                  setRemovedFiles([...removedFiles, sourceUrl]);
+                  setThumbnailConclusion(null);
                 }}
               />
             </Box>
