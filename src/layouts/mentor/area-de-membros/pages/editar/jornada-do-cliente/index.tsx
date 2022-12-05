@@ -122,7 +122,7 @@ const ClientJourney: FC<props> = ({ id }) => {
                   }}
                 >
                   <ImageWrapper>
-                    {steps[index].extra && step?.data[0]?.sourceUrl && (
+                    {steps[index].data && step?.data[0]?.sourceUrl && (
                       <Image
                         alt="imagem-principal"
                         width={40}
