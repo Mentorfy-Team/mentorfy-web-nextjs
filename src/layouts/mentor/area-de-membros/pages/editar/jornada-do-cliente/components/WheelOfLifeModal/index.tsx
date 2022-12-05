@@ -14,6 +14,7 @@ import Box from '@mui/material/Box';
 import Image from 'next/image';
 import TextRating from '~/components/atoms/Rating';
 import WheelOfLifeTemplate from '~/layouts/mentorado/components/wheel-of-Life/template/WheelOfLifeTemplate';
+import { useMediaQuery } from '@mui/material';
 
 export type ModalProps = {
   open: boolean;
@@ -31,6 +32,8 @@ const CJwhellOfLife = ({
   finishedDate,
   clientInputs,
 }) => {
+  const sizeLg = useMediaQuery('(min-width: 1200px)');
+
   const ModalTitle = (
     <TitleWrapper>
       <AvatarWrapper>
@@ -85,6 +88,8 @@ const CJwhellOfLife = ({
             <WheelOfLifeTemplate
               taskData={selectedTask.data}
               input={clientInputs}
+              width={sizeLg ? 680 : 350}
+              height={sizeLg ? 400 : 250}
             />
           </WheelWrapper>
         </AnswersWrapper>
