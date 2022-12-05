@@ -7,11 +7,13 @@ import Indicators from './components/Indicators';
 import { BannerWrapper, DescriptionText, ImagesBox, MentorName, NameWrapper, TextsWrapper, WelcomeText } from './styles';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import Mountain from '~/../public/svgs/favicon';
+import { useProfile } from '~/hooks/useProfile';
 
 const Dashboard: FC<PageTypes.Props> = ({ user }) => {
   const ref = useRef(null);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
+  const { data: { profile } } = useProfile(false, user.id);
 
   // useEffect(() => {
   //   setWidth(ref.current.offsetWidth);
@@ -30,17 +32,17 @@ const Dashboard: FC<PageTypes.Props> = ({ user }) => {
           <TextsWrapper>
             <NameWrapper>
               <Mountain />
-              <MentorName>Olá, {user.email}</MentorName>
+              <MentorName>Olá, {profile?.name}</MentorName>
             </NameWrapper>
             <WelcomeText>
               Seja bem-vindo(a) ao Mentorfy
             </WelcomeText>
             <DescriptionText>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Voluptates qui, repudiandae corrupti, voluptatum aut consequatur,
-              debitis autem iure dolorum reprehenderit ipsum praesentium sunt?
-              Aut temporibus dolores saepe facere exercitationem ratione?
-              Aut temporibus dolores saepe facere exercitationem ratione?
+              Mais que uma plataforma dedicada a mentores, somos um caminho. Acreditamos que o
+              papel de um mentor é descobrir soluções e caminhos que ainda não existem na realidade
+              humana, mas quando criados e mapeados, podem dar nomes às montanhas assim como
+              foi com George EVEREST.
+              Mentor, essa é a sua jornada, bem vindo ao caminho que vai te transformar em uma lenda!
             </DescriptionText>
           </TextsWrapper>
           <Image
