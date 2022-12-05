@@ -117,7 +117,6 @@ const WheelOfLifeModal = ({
                   />
                 </>
               )}
-              {console.log('input', input)}
               {currentArea === taskData?.length && (
                 <WheelWrapper>
                   <WheelOfLifeTemplate
