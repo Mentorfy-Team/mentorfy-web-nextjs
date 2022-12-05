@@ -7,13 +7,14 @@ import Toolbar from '~/components/modules/Toolbar';
 import GeralPage from './tabs/geral';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import { useProfile } from '~/hooks/useProfile';
+import Signature from './tabs/assinaturas';
 
 const DadosPage = dynamic(() => import('./tabs/dados-cadastro'));
 
 enum tabs {
   'Geral',
   'Links',
-  'Membros',
+  'Assinatura',
 }
 
 type props = PageTypes.Props & {
@@ -47,6 +48,11 @@ const MinhaConta: FC<props> = ({
         );
       case tabs.Links.toString():
         return <DadosPage profile={profile} address={address} />;
+      case tabs.Assinatura.toString():
+        return <Signature
+          user={user}
+          profile={profile}
+        />;
       default:
         return (
           <GeralPage
@@ -62,7 +68,7 @@ const MinhaConta: FC<props> = ({
     <>
       <Toolbar
         onChange={(value) => setTabindex(value.toString())}
-        tabs={['Perfil', 'Dados de Cadastro']}
+        tabs={['Perfil', 'Dados de Cadastro', 'Assinatura']}
       />
       <ContentWidthLimit>
         <Box

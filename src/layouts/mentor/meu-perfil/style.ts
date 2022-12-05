@@ -138,3 +138,56 @@ export const BOX = styled(Box)`
   display: flex;
   flex-direction: column;
 `;
+
+export const SignatureWrapper = styled(Box)`
+  padding: 2rem 1.5rem;
+  background-color: ${({ theme }) => theme.palette.primary.light};
+  text-align: left;
+  border-radius: 20px;
+`;
+
+export const SignatureText = styled(Typography)`
+  font-weight: 600;
+  font-size: 1.2rem;
+  line-height: 1.4rem;
+  margin-bottom: 1.5rem;
+`;
+
+export const PlanWrapper = styled(Box)`
+  background-color: ${({ theme }) => theme.palette.primary.dark};
+  padding:  1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 10px;
+
+`;
+
+export const PlanText = styled(Typography)`
+  font-weight: 400;
+  font-size: 0.8rem;
+  line-height: 1.1rem;
+`;
+
+export const PlanValidity = styled(Typography)`
+  background-color: ${({ theme }) => theme.palette.warning.main};
+  padding: 0.2rem;
+  font-weight: 400;
+  font-size: 0.7rem;
+  line-height: 0.8rem;
+  border-radius: 10px;
+  color: ${({ theme }) => theme.palette.caption.dark};
+`;
+
+export const ExpiresDateText = styled(Typography)`
+  font-weight: 400;
+  font-size: 0.7rem;
+  line-height: 0.8rem;
+  color: ${({ theme }) => theme.palette.caption.main};
+`;
+
+export const ExpiresDate = styled(Typography)`
+  font-weight: 400;
+  font-size: 0.8rem;
+  line-height: 1.1rem;
+`;
