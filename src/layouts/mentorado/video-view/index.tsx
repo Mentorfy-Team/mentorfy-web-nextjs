@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import dynamic from 'next/dynamic';
@@ -309,6 +309,34 @@ export const VideoView = ({
     );
   }, [handleLike, userInput, videoId]);
 
+  const unlockedStep = useMemo(() => {
+    const unlocked = [];
+    for (let i = 0; i < steps.length; i++) {
+      if (i === 0) {
+        unlocked.push(steps[i].id);
+      } else {
+        const tasks = steps[i].rows;
+
+        const doneTasks = tasks?.filter((t) => {
+          const input = userInput?.find((i) => i.member_area_tool_id == t.id);
+          return !!input;
+        });
+
+        if (doneTasks?.length == tasks?.length) {
+          unlocked.push(steps[i].id);
+        } else {
+          if ((steps[i].extra as any).lockFeature) {
+            unlocked.push(steps[i].id);
+            break;
+          } else {
+            unlocked.push(steps[i].id);
+          }
+        }
+      }
+    }
+    return unlocked;
+  }, [steps, userInput]);
+
   return (
     <>
       <Toolbar
@@ -421,7 +449,7 @@ export const VideoView = ({
             }}
           >
             <ProgressBar
-              data={steps}
+              data={steps.filter(({ id }) => unlockedStep.some((s) => s == id))}
               input={userInput}
               activeid={videoId}
               onGoTo={(id) => onSelectedVideo(id)}
