@@ -7,13 +7,12 @@ import Indicators from './components/Indicators';
 import { BannerWrapper, DescriptionText, ImagesBox, MentorName, NameWrapper, TextsWrapper, WelcomeText } from './styles';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import Mountain from '~/../public/svgs/favicon';
-import { useProfile } from '~/hooks/useProfile';
+import { GetProfile } from '~/services/profile.service';
 
-const Dashboard: FC<PageTypes.Props> = ({ user }) => {
+const Dashboard: FC<PageTypes.Props> = ({ user, profile }) => {
   const ref = useRef(null);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
-  const { data: { profile } } = useProfile(false, user.id);
 
   // useEffect(() => {
   //   setWidth(ref.current.offsetWidth);
@@ -121,10 +120,11 @@ export const getProps = async (ctx) => {
         permanent: false,
       },
     };
-
+  const profile = await GetProfile(ctx.req, false, session.user.id);
   return {
     props: {
       user: session.user,
+      profile: profile.profile,
     },
   };
 };
