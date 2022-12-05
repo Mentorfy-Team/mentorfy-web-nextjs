@@ -134,7 +134,7 @@ const GroupModal = ({
               label="Descrição"
               placeholder=""
             ></InputField>
-            {[1, 2, 3].some((n) => n == area_type) && (
+            {[1, 2, 3, 4].some((n) => n == area_type) && (
               <Box
                 onClick={() => setLockFeature((old) => !old)}
                 display="flex"
