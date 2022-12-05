@@ -1,9 +1,7 @@
-import ChavronLeftSvg from '~/../public/svgs/chavron-left';
 import Box from '@mui/material/Box';
 import { useRouter } from 'next/router';
 import Save from '@mui/icons-material/Save';
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
-import { MentorRoutes } from '~/consts';
 import { useEffect, useState } from 'react';
 import InputField from '~/components/atoms/InputField';
 import HandleFileUpload from '~/helpers/HandleFileUpload';
@@ -22,7 +20,6 @@ import {
   NameButton,
   NameText,
   P,
-  ReturnButton,
   SaveButton,
   SvgWrapper,
   UploadField,
@@ -100,13 +97,7 @@ const Certificate = ({ id }) => {
           justifyContent="space-between"
           pb={2}
         >
-          <ReturnButton
-            color="primary"
-            onClick={() => route.push(MentorRoutes.products)}
-          >
-            <ChavronLeftSvg />
-            <span>Voltar</span>
-          </ReturnButton>
+          <div />
           <SaveButton
             variant="outlined"
             color="primary"

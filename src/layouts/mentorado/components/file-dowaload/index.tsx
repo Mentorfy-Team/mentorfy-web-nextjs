@@ -68,13 +68,18 @@ const FilesDownloadModal = ({
         {taskData && (
           <Box sx={{ width: '90%' }}>
             <Description>{descriptionData}</Description>
+            Pré Visualização:
             <FileWrapper>
               <PDFReader file={taskData[0].sourceUrl} />
             </FileWrapper>
           </Box>
         )}
 
-        {taskData && <DownloadText>Faça o download abaixo</DownloadText>}
+        {taskData && (
+          <DownloadText>
+            Para ver o arquivo completo, clique no botão abaixo.
+          </DownloadText>
+        )}
         {taskData && (
           <DownloaddButton
             as="a"
@@ -84,7 +89,7 @@ const FilesDownloadModal = ({
             download
             onClick={handleFinish}
           >
-            DOWNLOAD
+            BAIXAR ARQUIVO
           </DownloaddButton>
         )}
       </ModalDialogContent>

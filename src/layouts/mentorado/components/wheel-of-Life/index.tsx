@@ -22,6 +22,7 @@ const PDFDownload = dynamic(() => import('~/components/atoms/PDFDownload'), {
 
 import WheelOfLifeTemplate from './template/WheelOfLifeTemplate';
 import TipBar from '~/components/modules/TipBar';
+import { useMediaQuery } from '@mui/material';
 
 type InputProps = { id: string; rating: number }[];
 type ExtraProps = boolean;
@@ -40,22 +41,7 @@ const WheelOfLifeModal = ({
 }: MentoredComponents.Props<ToolProps[], InputProps, ExtraProps>) => {
   const [input, setInput] = useState(userInput?.data || []);
   const [currentArea, setCurrentArea] = useState(0);
-
-  // const generateData = useCallback((areas: string[], input: InputProps) => {
-  //   // for each area, create a new object with the area name and the rating
-  //   const data = [];
-  //   for (let i = 0; i < areas.length; i++) {
-  //     for (let j = 0; j < 10; j++) {
-  //       data.push({
-  //         value: input[i]?.rating > j ? 1 : 0,
-  //         area: areas[i],
-  //         rating: j,
-  //       });
-  //     }
-  //   }
-  //   return data;
-  // }, []);
-
+  const sizeLg = useMediaQuery('(min-width: 1200px)');
   const handleFinish = () => {
     onChange({
       data: input,
@@ -131,9 +117,15 @@ const WheelOfLifeModal = ({
                   />
                 </>
               )}
+              {console.log('input', input)}
               {currentArea === taskData?.length && (
                 <WheelWrapper>
-                  <WheelOfLifeTemplate taskData={taskData} input={input} />
+                  <WheelOfLifeTemplate
+                    width={sizeLg ? 680 : 350}
+                    height={sizeLg ? 400 : 250}
+                    taskData={taskData}
+                    input={input}
+                  />
                 </WheelWrapper>
               )}
             </ContentWrapper>

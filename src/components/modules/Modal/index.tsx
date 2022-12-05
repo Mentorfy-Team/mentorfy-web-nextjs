@@ -29,6 +29,7 @@ type props = {
   withX?: boolean;
   sx?: any;
   saveText?: string;
+  maxWidth?: string;
 };
 
 const ModalComponent: FC<props> = ({
@@ -48,6 +49,7 @@ const ModalComponent: FC<props> = ({
   withX = true,
   sx,
   saveText,
+  maxWidth,
 }) => {
   const theme = useTheme();
 
@@ -58,9 +60,7 @@ const ModalComponent: FC<props> = ({
       onClose={() => setOpen(false)}
       isMentorado={isMentorado}
       popularProduct={popularProduct}
-      sx={{
-        maxWidth: '100%',
-      }}
+      maxWidthSize={maxWidth}
     >
       {popularProduct ? (
         ''

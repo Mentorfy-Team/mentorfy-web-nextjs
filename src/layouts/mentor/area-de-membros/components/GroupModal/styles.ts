@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import InputField from '~/components/atoms/InputField';
+import CheckboxMui from '@mui/material/Checkbox';
 
 export const TaskField = styled(InputField)`
   border: none;
@@ -16,6 +17,8 @@ export const TaskWrapper = styled(Box)`
   align-items: center;
   display: flex;
 `;
+
+export const Checkbox = styled(CheckboxMui)``;
 
 export const SaveButton = styled(Button)`
   background-color: ${({ theme }) => theme.palette.primary.main};

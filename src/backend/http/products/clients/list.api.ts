@@ -86,14 +86,16 @@ export const get = async (req, res) => {
           (inp) =>
             !!step.rows.find((row) => row.id === inp.member_area_tool_id),
         );
-        if (hasInput) {
-          // adiciona o cliente na lista de clientes que já passaram por essa etapa, se não estiver lá
-          if (!checkClientStep.some((c) => c.id === cl.id)) {
-            checkClientStep.push(cl);
-            return true;
-          }
-        }
-        return false;
+
+        return true;
+        // if (hasInput) {
+        //   // adiciona o cliente na lista de clientes que já passaram por essa etapa, se não estiver lá
+        //   if (!checkClientStep.some((c) => c.id === cl.id)) {
+        //     checkClientStep.push(cl);
+        //     return true;
+        //   }
+        // }
+        //return false;
       }),
     };
   });

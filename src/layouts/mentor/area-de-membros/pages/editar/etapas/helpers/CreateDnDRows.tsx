@@ -21,7 +21,7 @@ const CreateDnDRows = (
           isHeader
           title={step.title}
           stepType={0}
-          image={step.extra ? step.extra[0]?.sourceUrl : null}
+          image={step.data ? step.data[0]?.sourceUrl : null}
           onEdit={onEdit}
           step={step}
         />
@@ -36,7 +36,7 @@ const CreateDnDRows = (
         {(!isGroup || !allowSubgroup) && (
           <AddTool onClick={() => onOpenModal(step.id)} variant="contained">
             <Task />
-             {productType ? 'Adicionar Aula' : 'Adicionar Etapa'}
+            {productType ? 'Adicionar Aula' : 'Adicionar Etapa'}
           </AddTool>
         )}
       </GroupWrapper>
@@ -45,7 +45,7 @@ const CreateDnDRows = (
 
   return rows.map((row) => {
     return (
-      <Group key={row.id} step={row} isGroup={row.type == 0}>
+      <Group key={row.id} step={row} isGroup={row.type == 0 && allowSubgroup}>
         {row.rows?.map((child: any) => {
           if (child.type == 0 && allowSubgroup) {
             return (
@@ -55,7 +55,7 @@ const CreateDnDRows = (
                     key={subChild.id}
                     title={subChild.title}
                     stepType={subChild.type}
-                    image={subChild.extra ? subChild.extra[0]?.sourceUrl : null}
+                    image={subChild.data ? subChild.data[0]?.sourceUrl : null}
                     onEdit={onEdit}
                     step={subChild}
                   />
@@ -68,7 +68,7 @@ const CreateDnDRows = (
                 key={child.id}
                 title={child.title}
                 stepType={child.type}
-                image={child.extra ? child.extra[0]?.sourceUrl : null}
+                image={child.data ? child.data[0]?.sourceUrl : null}
                 onEdit={onEdit}
                 step={child}
                 productType={productType}

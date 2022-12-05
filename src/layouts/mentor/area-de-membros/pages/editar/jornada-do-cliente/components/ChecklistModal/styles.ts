@@ -45,15 +45,25 @@ export const TaskTitle = styled(Typography)`
   font-size: 1.1rem;
   font-weight: 600;
   line-height: 1.4rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin-bottom: 1rem;
+  color: ${({ theme }) => theme.palette.accent.main};
+`;
+
+export const SubTaskTitle = styled(Typography)`
+  align-self: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.4rem;
+  display: contents;
+  p {
+    align-self: start;
+  }
 `;
 
 export const TaskWrapper = styled('div')`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  width: 90%;
+  gap: 0.5rem;
+  padding-bottom: 2rem;
+  width: 100%;
 `;

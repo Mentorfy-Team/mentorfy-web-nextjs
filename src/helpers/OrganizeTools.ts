@@ -27,7 +27,7 @@ export const OrganizeTools = (data: GroupTools[], filterByTypeId?) => {
       if (i === 0) {
         steps.push({
           id: '0',
-          title: 'Agrupador Padrão',
+          title: 'Módulo Padrão',
           rows: [
             {
               id: sortedData[i].id,

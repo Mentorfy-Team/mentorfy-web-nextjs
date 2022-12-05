@@ -10,6 +10,11 @@ export default class MyDocument extends Document {
         <Head>
           <meta name="theme-color" content="#FE7D22" />
           <link rel="shortcut icon" href="/favicon.png" />
+          <script
+            type="text/javascript"
+            src="https://assets.calendly.com/assets/external/widget.js"
+            async
+          ></script>
         </Head>
         <body>
           <Main />

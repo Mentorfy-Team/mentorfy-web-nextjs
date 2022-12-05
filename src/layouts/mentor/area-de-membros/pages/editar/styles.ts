@@ -105,7 +105,7 @@ export const ScrollWrapper = styled(Box)<{ withtoolbar?: string }>`
 
 export const CustomTypograpy = styled(Typography)`
   color: ${({ theme }) => theme.palette.tertiary.main};
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-style: normal;
   font-weight: 400;
   line-height: 1.2rem;

@@ -24,10 +24,10 @@ export const OptionsWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  height: 200px;
-  margin-top: 3rem;
+  margin-top: 2rem;
   overflow-y: auto;
   text-align: center;
+  padding-right: 0.5rem;
 `;
 
 export const OptionsBox = styled(Box)`
@@ -37,10 +37,12 @@ export const OptionsBox = styled(Box)`
 `;
 
 export const OptionsText = styled(Typography)`
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 1.2rem;
   opacity: 0.8;
+  // texto justificado
+  text-align: justify;
 `;
 
 export const BpIcon = styled('span')`
@@ -66,7 +68,6 @@ export const TaskTitle = styled(Typography)`
   line-height: 1.4rem;
   margin-bottom: 1rem;
   text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 export const ButtonsWrapper = styled('div')`

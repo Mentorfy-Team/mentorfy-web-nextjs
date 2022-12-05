@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { GroupTools } from '~/components/modules/DragNDrop';
 import HorizontalProgressBar from '~/components/modules/HorizontalProgressBar';
@@ -97,6 +97,35 @@ const ContinuosMentoring: FC<
       ],
     },
   ];
+
+  const unlockedStep = useMemo(() => {
+    const unlocked = [];
+    for (let i = 0; i < steps.length; i++) {
+      if (i === 0) {
+        unlocked.push(steps[i].id);
+      } else {
+        const tasks = steps[i].rows;
+
+        const doneTasks = tasks?.filter((t) => {
+          const input = userInput?.find((i) => i.member_area_tool_id == t.id);
+          return !!input;
+        });
+
+        if (doneTasks?.length == tasks?.length) {
+          unlocked.push(steps[i].id);
+        } else {
+          if ((steps[i].extra as any).lockFeature) {
+            unlocked.push(steps[i].id);
+            break;
+          } else {
+            unlocked.push(steps[i].id);
+          }
+        }
+      }
+    }
+    return unlocked;
+  }, [steps, userInput]);
+
   return (
     <>
       <Toolbar
@@ -119,58 +148,60 @@ const ContinuosMentoring: FC<
         />
         <ScrollArea>
           {steps &&
-            steps.map((step) => (
-              <Bundle key={step.id}>
-                <ImageWrapper>
-                  {step?.extra && step?.extra[0]?.sourceUrl && (
-                    <Image
-                      alt="imagem"
-                      width={50}
-                      height={50}
-                      src={step?.extra[0]?.sourceUrl}
-                      style={{
-                        objectFit: 'contain',
-                        alignSelf: 'center',
-                      }}
-                    />
-                  )}
-                  <BundleTitle>{step.title}</BundleTitle>
-                  <BundleMonth>{step.description}</BundleMonth>
-                </ImageWrapper>
-
-                <TasksWrapper>
-                  {(!step.rows || step.rows.length == 0) && (
-                    <TipBar>
-                      Ainda não há <span>nenhuma atividade disponível</span>{' '}
-                      para essa etapa. Aguarde novas atualizações.
-                    </TipBar>
-                  )}
-                  {step.rows.map((task) => (
-                    <Task
-                      key={task.id}
-                      onClick={() => {
-                        const type = GetTypeName(task.type);
-                        setOpen(true);
-                        setCurrentModal({
-                          onChange: GetOnChange,
-                          type,
-                          refId: task.id + '',
-                          data: task || {},
-                        });
-                      }}
-                    >
-                      <TasktTitle>{task.title}</TasktTitle>
+            steps
+              .filter(({ id }) => unlockedStep.some((s) => s == id))
+              .map((step) => (
+                <Bundle key={step.id}>
+                  <ImageWrapper>
+                    {step?.data && step?.data[0]?.sourceUrl && (
                       <Image
                         alt="imagem"
-                        width={15}
-                        height={15}
-                        src="/svgs/done.svg"
+                        width={50}
+                        height={50}
+                        src={step?.data[0]?.sourceUrl}
+                        style={{
+                          objectFit: 'contain',
+                          alignSelf: 'center',
+                        }}
                       />
-                    </Task>
-                  ))}
-                </TasksWrapper>
-              </Bundle>
-            ))}
+                    )}
+                    <BundleTitle>{step.title}</BundleTitle>
+                    <BundleMonth>{step.description}</BundleMonth>
+                  </ImageWrapper>
+
+                  <TasksWrapper>
+                    {(!step.rows || step.rows.length == 0) && (
+                      <TipBar>
+                        Ainda não há <span>nenhuma atividade disponível</span>{' '}
+                        para essa etapa. Aguarde novas atualizações.
+                      </TipBar>
+                    )}
+                    {step.rows.map((task) => (
+                      <Task
+                        key={task.id}
+                        onClick={() => {
+                          const type = GetTypeName(task.type);
+                          setOpen(true);
+                          setCurrentModal({
+                            onChange: GetOnChange,
+                            type,
+                            refId: task.id + '',
+                            data: task || {},
+                          });
+                        }}
+                      >
+                        <TasktTitle>{task.title}</TasktTitle>
+                        <Image
+                          alt="imagem"
+                          width={15}
+                          height={15}
+                          src="/svgs/done.svg"
+                        />
+                      </Task>
+                    ))}
+                  </TasksWrapper>
+                </Bundle>
+              ))}
         </ScrollArea>
       </ContentWidthLimit>
       {open && ModalComponent()}

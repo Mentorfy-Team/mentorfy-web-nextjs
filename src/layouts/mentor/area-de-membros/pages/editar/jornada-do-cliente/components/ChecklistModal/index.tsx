@@ -6,12 +6,14 @@ import {
   ClientName,
   FinishedDate,
   QuestionsText,
+  SubTaskTitle,
   TaskTitle,
   TaskWrapper,
   TitleWrapper,
 } from './styles';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
+import TipBar from '~/components/modules/TipBar';
 
 export type ModalProps = {
   open: boolean;
@@ -61,16 +63,35 @@ const CJChecklist = ({
       onClose={() => setOpen(false)}
     >
       <ModalDialogContent>
+        <TaskTitle>{selectedTask.title}</TaskTitle>
         <AnswersWrapper>
           {selectedTask.data?.map((question) => (
             <TaskWrapper key={question.id}>
-              <TaskTitle>{question.title + ' :'}</TaskTitle>
-
+              <SubTaskTitle>{question.title + ' :'}</SubTaskTitle>
+              {(!question?.rows || question?.rows?.length == 0) && (
+                <TipBar
+                  sx={{
+                    marginBottom: '0px',
+                    opacity: 0.3,
+                  }}
+                >
+                  Ainda não há <span>nenhuma subtarefa cadastrada</span> para
+                  essa tarefa.
+                </TipBar>
+              )}
               {question.rows.map((subTask) =>
                 clientInputs.find(
                   (input) => subTask.id === input.id && input.value === true,
                 ) ? (
-                  <Box key={subTask.id} sx={{ display: 'flex', gap: '0.5rem' }}>
+                  <Box
+                    key={subTask.id}
+                    sx={{
+                      display: 'flex',
+                      gap: '0.5rem',
+                      alignItems: 'center',
+                      alignContent: 'center',
+                    }}
+                  >
                     <Image
                       alt="imagem"
                       width={14}
@@ -82,7 +103,14 @@ const CJChecklist = ({
                     </QuestionsText>
                   </Box>
                 ) : (
-                  <Box key={subTask.id} sx={{ display: 'flex', gap: '0.5rem' }}>
+                  <Box
+                    key={subTask.id}
+                    sx={{
+                      display: 'flex',
+                      gap: '0.5rem',
+                      alignItems: 'center',
+                    }}
+                  >
                     <Image
                       alt="imagem"
                       width={14}

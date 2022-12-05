@@ -127,14 +127,16 @@ const VideoModal = ({
         />
         {!multivideos && withLink && (
           <LinkInputWrapper>
-          <InputField
-            required
-            label="Link"
-            placeholder="https://youtube.com.br/xyz"
-            value={singleVideo?.link}
-            onChange={(e) => setSingleVideo({ link: e.target.value })}
-          ></InputField>
-          <AcceptedLinksText>*No momento apenas links Vímeo, Panda e Youtube</AcceptedLinksText>
+            <InputField
+              required
+              label="Link"
+              placeholder="https://youtube.com.br/xyz"
+              value={singleVideo?.link}
+              onChange={(e) => setSingleVideo({ link: e.target.value })}
+            ></InputField>
+            <AcceptedLinksText>
+              *No momento apenas links Vímeo, Panda e Youtube
+            </AcceptedLinksText>
           </LinkInputWrapper>
         )}
         {multivideos && (

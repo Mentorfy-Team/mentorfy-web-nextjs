@@ -6,9 +6,21 @@ import { css, styled } from '@mui/material/styles';
 type Props = {
   isMentorado?: boolean;
   popularProduct?: boolean;
+  maxWidthSize?: string;
 };
 
 export const Modal = styled(Dialog)<Props>`
+  .MuiPaper-root {
+    height: fit-content;
+    max-height: 90%;
+    max-width: ${({ maxWidthSize }) => maxWidthSize || '700px'};
+    overflow: unset;
+    @media (max-width: 600px) {
+      height: 100%;
+      max-height: 100%;
+      max-width: 100vw;
+    }
+  }
   ${({ isMentorado }) =>
     isMentorado &&
     css`
@@ -52,7 +64,7 @@ export const ModalDialogContent = styled(DialogContent)<Props>`
           }
         `
       : css`
-          width: 480px;
+          width: 100%;
         `}
 
   ${({ popularProduct }) =>

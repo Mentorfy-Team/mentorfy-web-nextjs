@@ -19,12 +19,13 @@ const OpenText = ({
   userInput,
 }: MentoredComponents.Props<ToolData, InputProps, ExtraProps>) => {
   const handleFinish = () => {
-    onChange({
-      data: {},
-      extra: {
-        finished: true,
-      },
-    });
+    if (taskData)
+      onChange({
+        data: {},
+        extra: {
+          finished: true,
+        },
+      });
     setOpen(false);
   };
 
@@ -58,9 +59,7 @@ const OpenText = ({
         )}
 
         <Box>{/* // TODO: show txt */}</Box>
-        {descriptionData && (
-          <CloseButton onClick={handleFinish}>Fechar</CloseButton>
-        )}
+        <CloseButton onClick={handleFinish}>Fechar</CloseButton>
       </ModalDialogContent>
     </ModalComponent>
   );

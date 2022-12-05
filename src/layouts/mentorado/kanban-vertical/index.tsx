@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GroupTools } from '~/components/modules/DragNDrop';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 //import { FilesToDelete } from '~/services/file-upload.service';
@@ -82,6 +82,34 @@ const VerticalKanban: FC<
     [member_area_id, mutate, userInput],
   );
 
+  const unlockedStep = useMemo(() => {
+    const unlocked = [];
+    for (let i = 0; i < steps.length; i++) {
+      if (i === 0) {
+        unlocked.push(steps[i].id);
+      } else {
+        const tasks = steps[i].rows;
+
+        const doneTasks = tasks?.filter((t) => {
+          const input = userInput?.find((i) => i.member_area_tool_id == t.id);
+          return !!input;
+        });
+
+        if (doneTasks?.length == tasks?.length) {
+          unlocked.push(steps[i].id);
+        } else {
+          if ((steps[i].extra as any).lockFeature) {
+            unlocked.push(steps[i].id);
+            break;
+          } else {
+            unlocked.push(steps[i].id);
+          }
+        }
+      }
+    }
+    return unlocked;
+  }, [steps, userInput]);
+
   return (
     <>
       <Toolbar
@@ -104,92 +132,95 @@ const VerticalKanban: FC<
         )}
         <ScrollArea>
           {steps &&
-            steps.map((step) => (
-              <Bundle key={step.id}>
-                <ImageWrapper>
-                  {step?.extra && step?.extra[0]?.sourceUrl && (
-                    <Image
-                      alt="imagem"
-                      width={50}
-                      height={50}
-                      src={step?.extra[0]?.sourceUrl}
-                      style={{
-                        objectFit: 'contain',
-                        marginBottom: '0.5rem',
-                        alignSelf: 'center',
-                      }}
-                    />
-                  )}
-                  <BundleTitle>{step.title}</BundleTitle>
-                  <BundleDescription>{step.description}</BundleDescription>
-                </ImageWrapper>
-
-                <TasksWrapper>
-                  {(!step.rows || step.rows.length == 0) && (
-                    <TipBar>
-                      Ainda não há <span>nenhuma atividade disponível</span>{' '}
-                      para essa etapa. Aguarde novas atualizações.
-                    </TipBar>
-                  )}
-                  {step.rows.map((task) => (
-                    <Task
-                      key={task.id}
-                      onClick={() => {
-                        const type = GetTypeName(task.type);
-                        setOpen(true);
-                        setCurrentModal({
-                          onChange: GetOnChange,
-                          type,
-                          refId: task.id + '',
-                          data: task || {},
-                        });
-                      }}
-                    >
-                      <TasktTitle>{task.title}</TasktTitle>
+            steps
+              .filter(({ id }) => unlockedStep.some((s) => s == id))
+              .map((step) => (
+                <Bundle key={step.id}>
+                  <ImageWrapper>
+                    {step?.data && step?.data[0]?.sourceUrl && (
                       <Image
                         alt="imagem"
-                        width={14}
-                        height={15}
+                        width={50}
+                        height={50}
+                        src={step?.data[0]?.sourceUrl}
                         style={{
-                          marginLeft: '0.4rem',
-                          alignSelf: 'center',
-                        }}
-                        src={`/svgs/${
-                          userInput?.find(
-                            (inp) => inp.member_area_tool_id === task.id,
-                          )?.extra
-                            ? 'done'
-                            : 'done-gray'
-                        }.svg`}
-                      />
-                    </Task>
-                  ))}
-
-                  {step.rows.filter(
-                    (task) =>
-                      userInput.findIndex(
-                        (inp) => inp.member_area_tool_id.toString() === task.id,
-                      ) !== -1,
-                  ).length === step.rows.length &&
-                    step.rows.length > 0 && (
-                      <Image
-                        alt="imagem"
-                        width={200}
-                        height={120}
-                        src={
-                          (step.extra as any)?.length > 1
-                            ? step.extra[1].sourceUrl
-                            : '/svgs/finished.svg'
-                        }
-                        style={{
-                          marginTop: '1.2rem',
                           objectFit: 'contain',
+                          marginBottom: '0.5rem',
+                          alignSelf: 'center',
                         }}
                       />
                     )}
-                </TasksWrapper>
-              </Bundle>
-            ))}
+                    <BundleTitle>{step.title}</BundleTitle>
+                    <BundleDescription>{step.description}</BundleDescription>
+                  </ImageWrapper>
+
+                  <TasksWrapper>
+                    {(!step.rows || step.rows.length == 0) && (
+                      <TipBar>
+                        Ainda não há <span>nenhuma atividade disponível</span>{' '}
+                        para essa etapa. Aguarde novas atualizações.
+                      </TipBar>
+                    )}
+                    {step.rows.map((task) => (
+                      <Task
+                        key={task.id}
+                        onClick={() => {
+                          const type = GetTypeName(task.type);
+                          setOpen(true);
+                          setCurrentModal({
+                            onChange: GetOnChange,
+                            type,
+                            refId: task.id + '',
+                            data: task || {},
+                          });
+                        }}
+                      >
+                        <TasktTitle>{task.title}</TasktTitle>
+                        <Image
+                          alt="imagem"
+                          width={14}
+                          height={15}
+                          style={{
+                            marginLeft: '0.4rem',
+                            alignSelf: 'center',
+                          }}
+                          src={`/svgs/${
+                            userInput?.find(
+                              (inp) => inp.member_area_tool_id === task.id,
+                            )?.extra
+                              ? 'done'
+                              : 'done-gray'
+                          }.svg`}
+                        />
+                      </Task>
+                    ))}
+
+                    {step.rows.filter(
+                      (task) =>
+                        userInput.findIndex(
+                          (inp) =>
+                            inp.member_area_tool_id.toString() === task.id,
+                        ) !== -1,
+                    ).length === step.rows.length &&
+                      step.rows.length > 0 && (
+                        <Image
+                          alt="imagem"
+                          width={200}
+                          height={120}
+                          src={
+                            (step.extra as any)?.length > 1
+                              ? step.extra[1].sourceUrl
+                              : '/svgs/finished.svg'
+                          }
+                          style={{
+                            marginTop: '1.2rem',
+                            objectFit: 'contain',
+                          }}
+                        />
+                      )}
+                  </TasksWrapper>
+                </Bundle>
+              ))}
         </ScrollArea>
       </ContentWidthLimit>
       {open && ModalComponent()}

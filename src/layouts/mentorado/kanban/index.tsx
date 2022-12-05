@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
@@ -73,6 +73,34 @@ export const KanbanView: FC<
     [member_area_id, mutate, userInput],
   );
 
+  const unlockedStep = useMemo(() => {
+    const unlocked = [];
+    for (let i = 0; i < steps.length; i++) {
+      if (i === 0) {
+        unlocked.push(steps[i].id);
+      } else {
+        const tasks = steps[i].rows;
+
+        const doneTasks = tasks?.filter((t) => {
+          const input = userInput?.find((i) => i.member_area_tool_id == t.id);
+          return !!input;
+        });
+
+        if (doneTasks?.length == tasks?.length) {
+          unlocked.push(steps[i].id);
+        } else {
+          if ((steps[i].extra as any).lockFeature) {
+            unlocked.push(steps[i].id);
+            break;
+          } else {
+            unlocked.push(steps[i].id);
+          }
+        }
+      }
+    }
+    return unlocked;
+  }, [steps, userInput]);
+
   return (
     <>
       <Toolbar
@@ -89,102 +117,105 @@ export const KanbanView: FC<
         )}
         <Wrapper>
           {steps &&
-            steps.map((step) => (
-              <Step key={step.id}>
-                {step?.extra && step?.extra[0]?.sourceUrl && (
-                  <Image
-                    alt="imagem"
-                    width={50}
-                    height={50}
-                    src={step?.extra[0]?.sourceUrl}
-                    style={{
-                      objectFit: 'contain',
-                      marginBottom: '0.5rem',
-                    }}
-                  />
-                )}
-                <Title mt={step?.extra && step?.extra[0]?.sourceUrl ? 0 : 4}>
-                  {step.title}
-                </Title>
-                <Box
-                  sx={{
-                    height: '100%',
-                    width: '100%',
-                    overflowY: 'auto',
-                    marginTop: '1rem',
-                    marginRight: step.rows.length > 5 ? '-1.2rem' : 0,
-                    paddingRight: step.rows.length > 5 ? '0.5rem' : 0,
-                  }}
-                >
-                  <Description>{step.description}</Description>
-                  {(!step.rows || step.rows.length == 0) && (
-                    <TipBar>
-                      Ainda não há <span>nenhuma atividade disponível</span>{' '}
-                      para essa etapa. Aguarde novas atualizações.
-                    </TipBar>
-                  )}
-                  {step.rows.map((task) => (
-                    <Task
-                      key={task.id}
-                      onClick={() => {
-                        const type = GetTypeName(task.type);
-                        setOpen(true);
-                        setCurrentModal({
-                          onChange: GetOnChange,
-                          type,
-                          refId: task.id + '',
-                          data: task || {},
-                        });
+            steps
+              .filter(({ id }) => unlockedStep.some((s) => s == id))
+              .map((step) => (
+                <Step key={step.id}>
+                  {step?.data && step?.data[0]?.sourceUrl && (
+                    <Image
+                      alt="imagem"
+                      width={50}
+                      height={50}
+                      src={step?.data[0]?.sourceUrl}
+                      style={{
+                        objectFit: 'contain',
+                        marginBottom: '0.5rem',
                       }}
-                    >
-                      <TasktTitle sx={{ textAlign: 'start' }}>
-                        {task.title}
-                      </TasktTitle>
-
-                      <Image
-                        alt="imagem"
-                        width={14}
-                        height={15}
-                        style={{
-                          marginLeft: '0.4rem',
-                          alignSelf: 'center',
-                        }}
-                        src={`/svgs/${
-                          userInput?.find(
-                            (inp) => inp.member_area_tool_id === task.id,
-                          )?.extra
-                            ? 'done'
-                            : 'done-gray'
-                        }.svg`}
-                      />
-                    </Task>
-                  ))}
-
-                  {step.rows.filter(
-                    (task) =>
-                      userInput.findIndex(
-                        (inp) => inp.member_area_tool_id.toString() === task.id,
-                      ) !== -1,
-                  ).length === step.rows.length &&
-                    step.rows.length > 0 && (
-                      <Image
-                        alt="imagem"
-                        width={200}
-                        height={120}
-                        src={
-                          (step.extra as any)?.length > 1
-                            ? step.extra[1].sourceUrl
-                            : '/svgs/finished.svg'
-                        }
-                        style={{
-                          marginTop: '1.2rem',
-                          objectFit: 'contain',
-                        }}
-                      />
+                    />
+                  )}
+                  <Title mt={step?.data && step?.data[0]?.sourceUrl ? 0 : 4}>
+                    {step.title}
+                  </Title>
+                  <Box
+                    sx={{
+                      height: '100%',
+                      width: '100%',
+                      overflowY: 'auto',
+                      marginTop: '1rem',
+                      marginRight: step.rows.length > 5 ? '-1.2rem' : 0,
+                      paddingRight: step.rows.length > 5 ? '0.5rem' : 0,
+                    }}
+                  >
+                    <Description>{step.description}</Description>
+                    {(!step.rows || step.rows.length == 0) && (
+                      <TipBar>
+                        Ainda não há <span>nenhuma atividade disponível</span>{' '}
+                        para essa etapa. Aguarde novas atualizações.
+                      </TipBar>
                     )}
-                </Box>
-              </Step>
-            ))}
+                    {step.rows.map((task) => (
+                      <Task
+                        key={task.id}
+                        onClick={() => {
+                          const type = GetTypeName(task.type);
+                          setOpen(true);
+                          setCurrentModal({
+                            onChange: GetOnChange,
+                            type,
+                            refId: task.id + '',
+                            data: task || {},
+                          });
+                        }}
+                      >
+                        <TasktTitle sx={{ textAlign: 'start' }}>
+                          {task.title}
+                        </TasktTitle>
+
+                        <Image
+                          alt="imagem"
+                          width={14}
+                          height={15}
+                          style={{
+                            marginLeft: '0.4rem',
+                            alignSelf: 'center',
+                          }}
+                          src={`/svgs/${
+                            userInput?.find(
+                              (inp) => inp.member_area_tool_id === task.id,
+                            )?.extra
+                              ? 'done'
+                              : 'done-gray'
+                          }.svg`}
+                        />
+                      </Task>
+                    ))}
+
+                    {step.rows.filter(
+                      (task) =>
+                        userInput.findIndex(
+                          (inp) =>
+                            inp.member_area_tool_id.toString() === task.id,
+                        ) !== -1,
+                    ).length === step.rows.length &&
+                      step.rows.length > 0 && (
+                        <Image
+                          alt="imagem"
+                          width={200}
+                          height={120}
+                          src={
+                            (step.extra as any)?.length > 1
+                              ? step.extra[1].sourceUrl
+                              : '/svgs/finished.svg'
+                          }
+                          style={{
+                            marginTop: '1.2rem',
+                            objectFit: 'contain',
+                          }}
+                        />
+                      )}
+                  </Box>
+                </Step>
+              ))}
         </Wrapper>
       </ContentWidthLimit>
       {open && ModalComponent()}

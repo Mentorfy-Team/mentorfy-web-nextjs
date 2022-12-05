@@ -33,7 +33,7 @@ export const ButtonsWrapper = styled('div')`
 
 export const WheelWrapper = styled(Box)`
   background-color: ${({ theme }) => theme.palette.primary.main};
-  width: 100%;
+  overflow: visible;
 `;
 
 export const ContentWrapper = styled('div')`
@@ -42,7 +42,6 @@ export const ContentWrapper = styled('div')`
   flex-direction: column;
   gap: 1.5rem;
   justify-content: center;
-  margin-top: 3rem;
 `;
 
 export const ForwardButton = styled(Button)`

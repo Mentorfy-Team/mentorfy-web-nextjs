@@ -8,6 +8,7 @@ const Checklist = dynamic(() => import('../components/checklist-modal'), {
 });
 const Embed = dynamic(() => import('../components/embed'), {
   loading: () => <LoadingComponent />,
+  ssr: false,
 });
 const OpenText = dynamic(() => import('../components/open-text'), {
   loading: () => <LoadingComponent />,
@@ -32,7 +33,7 @@ const Schedule = dynamic(() => import('../components/schedule'), {
 });
 
 export const ToolListNames = {
-  StepGroup: { name: 'Agrupador de Etapas', id: 0 },
+  StepGroup: { name: 'Módulo de Etapas', id: 0 },
   QuestionsForm: { name: 'Formulário de Perguntas', id: 1 },
   UploadFile: { name: 'Upload de Arquivo', id: 2 },
   Checklist: { name: 'Checklist', id: 3 },
