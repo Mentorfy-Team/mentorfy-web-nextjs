@@ -67,9 +67,7 @@ const Embed = ({
           ) : (
             <div>{ReactHtmlParser(taskData)}</div>
           ))}
-        {!taskData && (
-          <CloseButton onClick={handleFinish}>Concluir</CloseButton>
-        )}
+        {taskData && <CloseButton onClick={handleFinish}>Concluir</CloseButton>}
       </ModalDialogContent>
     </ModalComponent>
   );
