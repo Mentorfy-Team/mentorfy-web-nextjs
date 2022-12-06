@@ -8,7 +8,6 @@ import { AppBar, AvatarWrapper, MenuItem, PopoverBox } from './styles';
 import Tipografia from '~/../public/images/logo-montanha.png';
 import MenuAvatar from '~/../public/svgs/menu-avatar';
 import Notification from '~/../public/svgs/notification';
-import Search from '~/../public/svgs/search';
 
 import Link from 'next/link';
 
@@ -81,7 +80,7 @@ const HeaderPartial: React.FC = () => {
             </Link>
           )}
         </div>
-        <Search />
+        {/* <Search /> */}
         <Notification />
         <AvatarWrapper onClick={handleClick}>
           <MenuAvatar fill={profile?.avatar ? 'transparent' : null} />
