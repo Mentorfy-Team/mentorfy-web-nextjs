@@ -1,10 +1,16 @@
 const Database: ExternalModules.Supabase.Database;
 
 declare namespace ProductTypes {
-  type Product = typeof Database.public.Tables.product.Row & {
+  type Product = Omit<
+    typeof Database.public.Tables.product.Row,
+    'member_area'
+  > & {
     extra: any;
     progress?: number;
     relation?: typeof Database.public.Tables.client_product.Row;
+    member_area?: typeof Database.public.Tables.member_area.Row & {
+      member_area_type: typeof Database.public.Tables.member_area_type.Row;
+    };
   };
   type Address = typeof Database.public.Tables.address.Row;
 
