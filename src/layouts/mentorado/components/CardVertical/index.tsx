@@ -28,7 +28,6 @@ export function CardVertical({
   const router = useRouter();
   const visible = visibility.isItemVisible(itemId);
   const { types } = useMemberAreaTypes();
-
   return (
     <div
       role="button"
@@ -40,7 +39,7 @@ export function CardVertical({
       className="card"
     >
       <CourseBox
-        onMouseOver={() => {}}
+        onMouseOver={() => { }}
         className="item"
         key={itemId}
         onClick={() => {
@@ -48,8 +47,8 @@ export function CardVertical({
             router.push(
               types.find((type) => type.id.toString() === product.deliver)
                 .path +
-                '/' +
-                product.id,
+              '/' +
+              product.id,
             );
           } else {
             onPopular(product);
@@ -58,7 +57,7 @@ export function CardVertical({
       >
         <Image
           alt=""
-          src={product?.main_image || '/images/moonlit.png'}
+          src={product?.main_image || product.member_area.member_area_type.image}
           width={RatioSize('w', 3)}
           height={RatioSize('h', 3)}
           quality={90}

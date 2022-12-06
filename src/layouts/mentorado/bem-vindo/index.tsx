@@ -179,7 +179,7 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
         >
           {p.map((product, index) => (
             <CourseBox
-              onMouseOver={() => {}}
+              onMouseOver={() => { }}
               className="item"
               key={index}
               onClick={() => {
@@ -190,8 +190,8 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
                   router.push(
                     types.find((type) => type.id.toString() === product.deliver)
                       .path +
-                      '/' +
-                      product.id,
+                    '/' +
+                    product.id,
                   );
                 } else {
                   handlePopularProductsModal(product);
