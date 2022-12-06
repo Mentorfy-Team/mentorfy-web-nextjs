@@ -14,9 +14,9 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     req.query.id !== 'undefined' &&
     req.query.id !== 'null'
   ) {
-    const { data: products } = await supabase
-      .from('product, member_area(*, member_area_type(*))')
-      .select('*')
+    const { data: products, error } = await supabase
+      .from('product')
+      .select('*, member_area(*, member_area_type(*))')
       .eq('owner', req.query.id);
 
     const { data: relations } = await supabase
