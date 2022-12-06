@@ -20,7 +20,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
       .eq('owner', req.query.id);
 
     const { data: relations } = await supabase
-      .from('client_product, member_area(*, member_area_type(*)')
+      .from('client_product')
       .select('*')
       .in(
         'product_id',
