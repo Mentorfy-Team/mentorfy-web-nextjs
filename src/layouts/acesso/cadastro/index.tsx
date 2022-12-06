@@ -69,7 +69,7 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
   const onSubmit = useCallback(async () => {
     const values = inputs;
 
-    if (!betaEmailAccess.includes(values.email)) {
+    if (!betaEmailAccess.includes(values.email.toLocaleLowerCase())) {
       setError(
         'Acesso restrito a usuários betas convidados. Solicite seu convite diretamente.',
       );
