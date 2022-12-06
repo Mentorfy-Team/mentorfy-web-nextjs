@@ -15,12 +15,12 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     req.query.id !== 'null'
   ) {
     const { data: products } = await supabase
-      .from('product')
+      .from('product, member_area(*, member_area_type(*))')
       .select('*')
       .eq('owner', req.query.id);
 
     const { data: relations } = await supabase
-      .from('client_product')
+      .from('client_product, member_area(*, member_area_type(*)')
       .select('*')
       .in(
         'product_id',
