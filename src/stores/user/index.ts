@@ -30,7 +30,7 @@ const initialUserStore = {
   appParams: {},
 };
 
-const userStore = create((set, get) => ({
+const userStore = create<UserStateType>((set, get) => ({
   ...initialUserStore,
   userLogin: (user: ExternalModules.Supabase.User) => {
     set(

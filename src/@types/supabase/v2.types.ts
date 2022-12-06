@@ -207,6 +207,7 @@ export interface Database {
           name: string
           path: string | null
           tooltypes: number[] | null
+          image: string | null
         }
         Insert: {
           id?: number
@@ -214,6 +215,7 @@ export interface Database {
           name: string
           path?: string | null
           tooltypes?: number[] | null
+          image?: string | null
         }
         Update: {
           id?: number
@@ -221,6 +223,7 @@ export interface Database {
           name?: string
           path?: string | null
           tooltypes?: number[] | null
+          image?: string | null
         }
       }
       mentor_tool: {
