@@ -229,18 +229,24 @@ export interface Database {
           created_at: string | null
           name: string
           description: string | null
+          image: string | null
+          order: number
         }
         Insert: {
           id?: number
           created_at?: string | null
           name: string
           description?: string | null
+          image?: string | null
+          order?: number
         }
         Update: {
           id?: number
           created_at?: string | null
           name?: string
           description?: string | null
+          image?: string | null
+          order?: number
         }
       }
       product: {
@@ -372,21 +378,18 @@ export interface Database {
           title: string
           owner_id: string
           created_at: string | null
-          produtos: string[] | null
         }
         Insert: {
           id?: string
           title: string
           owner_id: string
           created_at?: string | null
-          produtos?: string[] | null
         }
         Update: {
           id?: string
           title?: string
           owner_id?: string
           created_at?: string | null
-          produtos?: string[] | null
         }
       }
       team_member: {

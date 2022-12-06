@@ -5,6 +5,7 @@ import { useMentorTools } from '~/hooks/useMentorTools';
 import { Description, Title, WrapperTool } from './styles';
 import { useGetProduct } from '~/hooks/useGetProduct';
 import { userStore } from '~/stores';
+import Image from 'next/image';
 
 const ModalComponent = dynamic(() => import('~/components/modules/Modal'), {
   ssr: false,
@@ -33,33 +34,40 @@ const ToolList: React.FC<Props> = ({ onChange, setOpen, open, area_id }) => {
       withoutSave
       title="Lista de Ferramentas"
     >
-      {tools?.map((item) => (
-        <WrapperTool
-          onClick={() => {
-            onChange(item);
-            setOpen(false);
-          }}
-          key={item.id}
-        >
-          <Box
-            sx={{
-              flex: 1,
-              backgroundColor: 'primary.light',
+      {tools
+        ?.sort((a, b) => a.order - b.order)
+        ?.map((item) => (
+          <WrapperTool
+            onClick={() => {
+              onChange(item);
+              setOpen(false);
             }}
-          />
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              padding: '0.4rem 1rem',
-              backgroundColor: 'primary.dark',
-            }}
+            key={item.id}
           >
-            <Title>{item.name}</Title>
-            <Description>{item.description}</Description>
-          </Box>
-        </WrapperTool>
-      ))}
+            <Image
+              width="535"
+              height="150"
+              alt={item.name}
+              src={item.image}
+              style={{
+                objectFit: 'cover',
+                flex: 1,
+                backgroundColor: 'primary.light',
+              }}
+            />
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                padding: '0.4rem 1rem',
+                backgroundColor: 'primary.dark',
+              }}
+            >
+              <Title>{item.name}</Title>
+              <Description>{item.description}</Description>
+            </Box>
+          </WrapperTool>
+        ))}
     </ModalComponent>
   );
 };

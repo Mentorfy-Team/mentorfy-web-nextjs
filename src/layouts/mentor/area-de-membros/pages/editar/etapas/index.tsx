@@ -133,7 +133,12 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
     (group_id) => {
       setCurrentModal({
         onChange: (tool: MentorTools.ToolType) => {
-          addNewTool('Nova Etapa', tool.description, tool.id, group_id);
+          addNewTool(
+            tool.name || 'Nova Etapa',
+            tool.description,
+            tool.id,
+            group_id,
+          );
         },
         type: ToolListNames.ToolList.name,
       });
