@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   DndContext,
-  DragOverlay,
   KeyboardSensor,
   PointerSensor,
   closestCenter,
@@ -10,7 +9,6 @@ import {
 } from '@dnd-kit/core';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
-import { Box } from '@mui/material';
 
 export type GroupTools = MentorTools.ToolData & {
   rows?: (MentorTools.ToolData & { rows?: any[] })[];
@@ -56,11 +54,11 @@ export default function DragNDrop({ elements, setElements }: Props) {
       onDragStart={handleDragStart}
       sensors={sensors}
       collisionDetection={closestCenter}
-      onDragEnd={handleDragEnd}
+      // onDragEnd={handleDragEnd}
       modifiers={[restrictToParentElement]}
     >
       {elements}
-      <DragOverlay modifiers={[restrictToParentElement]}>
+      {/* <DragOverlay modifiers={[restrictToParentElement]}>
         {activeId ? (
           <Box
             sx={{
@@ -72,7 +70,7 @@ export default function DragNDrop({ elements, setElements }: Props) {
             Solte na nova posição
           </Box>
         ) : null}
-      </DragOverlay>
+      </DragOverlay> */}
     </DndContext>
   );
 }
