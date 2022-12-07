@@ -22,7 +22,6 @@ import {
   SaveButton,
   ScrollWrapper,
 } from '../styles';
-import CreateDnDRows from './helpers/CreateDnDRows';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 
 const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
@@ -254,31 +253,6 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
     return haschanges;
   }, [steps, stepsData]);
 
-  const DnDRows = useCallback(
-    (values) => {
-      const allowSubGroups = product?.member_area?.type_id === 3;
-      const productType = product.deliver === '4' ? true : false;
-      return CreateDnDRows(
-        values,
-        (step) => {
-          setCurrentModal({
-            onChange: GetOnChange,
-            type: step.type,
-            refId: step.id + '',
-            data: step || {},
-            rows: step.rows,
-          });
-          setOpen(true);
-        },
-        handleOpenToolsModal,
-        (id) => addNewGroup(id),
-        allowSubGroups,
-        productType,
-      );
-    },
-    [GetOnChange, addNewGroup, handleOpenToolsModal, product],
-  );
-
   return (
     <>
       <ContentWidthLimit maxWidth={700}>
@@ -328,7 +302,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
           </AddGroup>
         </Box>
         <ScrollWrapper withtoolbar="true">
-          <DragNDrop setElements={setSteps} elements={DnDRows(steps)} />
+          <DragNDrop setElements={setSteps} elements={steps} />
         </ScrollWrapper>
         {open && HandleModal()}
       </ContentWidthLimit>

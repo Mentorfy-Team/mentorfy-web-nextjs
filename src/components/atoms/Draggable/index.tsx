@@ -4,7 +4,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 export function Draggable(props) {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: props.id });
+    useSortable({ id: props.id, data: props });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,

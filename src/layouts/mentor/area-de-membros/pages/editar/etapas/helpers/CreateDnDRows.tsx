@@ -2,14 +2,14 @@ import { AddBox, Task } from '@mui/icons-material';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import { AddCategory, AddTool, GroupWrapper } from '../../styles';
 
-const CreateDnDRows = (
-  rows: any[],
+const CreateDnDRows = ({
+  rows,
   onEdit,
   onOpenModal,
   onNewGroup,
   allowSubgroup = false,
   productType,
-) => {
+}) => {
   const Group = ({ step, children, isGroup }) => {
     return (
       <GroupWrapper
