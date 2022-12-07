@@ -72,6 +72,7 @@ const VideoViewModal = ({
 
   const handleComment = () => {
     const comment = commentRef.current.value;
+    let lastComments = [];
     if (comment) {
       setInput((inp) => {
         const newInput = { ...inp };
@@ -83,23 +84,20 @@ const VideoViewModal = ({
           created_at: new Date().toString(),
         });
         newInput.comments = comments;
+
+        lastComments = comments;
         return newInput;
       });
       commentRef.current.value = '';
+    } else {
+      lastComments = input.comments || [];
     }
 
     onChange({
       data: {},
       extra: {
         ...extra,
-        comments: [
-          ...(input.comments || []),
-          {
-            user_id: data.profile.id,
-            comment,
-            created_at: new Date().toString(),
-          },
-        ],
+        comments: lastComments,
       },
     });
   };

@@ -6,4 +6,9 @@ export const betaEmailAccess = [
   'comercial@alligaredigital.com.br',
   'alligare@gmail.com',
   'neri.couto@gmail.com',
+  'gmgabrielmartins@hotmail.com',
+  'wiltristao@gmail.com',
+  'vagnerkellers@hotmail.com',
+  'Ceo@marcosdaniels.com',
+  'agathaatp@gmail.com',
 ];

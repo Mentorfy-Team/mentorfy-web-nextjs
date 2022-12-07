@@ -193,9 +193,19 @@ const ContinuosMentoring: FC<
                         <TasktTitle>{task.title}</TasktTitle>
                         <Image
                           alt="imagem"
-                          width={15}
+                          width={14}
                           height={15}
-                          src="/svgs/done.svg"
+                          style={{
+                            marginLeft: '0.4rem',
+                            alignSelf: 'center',
+                          }}
+                          src={`/svgs/${
+                            userInput?.find(
+                              (inp) => inp.member_area_tool_id === task.id,
+                            )?.extra
+                              ? 'done'
+                              : 'done-gray'
+                          }.svg`}
                         />
                       </Task>
                     ))}
