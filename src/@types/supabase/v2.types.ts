@@ -270,6 +270,7 @@ export interface Database {
           video: string | null
           extra: Json | null
           extra_image: string | null
+          certificate: Json | null
         }
         Insert: {
           owner: string
@@ -288,6 +289,7 @@ export interface Database {
           video?: string | null
           extra?: Json | null
           extra_image?: string | null
+          certificate?: Json | null
         }
         Update: {
           owner?: string
@@ -306,6 +308,7 @@ export interface Database {
           video?: string | null
           extra?: Json | null
           extra_image?: string | null
+          certificate?: Json | null
         }
       }
       profile: {
