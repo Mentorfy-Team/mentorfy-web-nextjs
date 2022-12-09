@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Unstable_Grid2';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { SketchPicker } from 'react-color';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import InputField from '~/components/atoms/InputField';
@@ -15,7 +14,6 @@ import { useGetProduct } from '~/hooks/useGetProduct';
 import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { UpdateProduct } from '~/services/product.service';
 import {
-  AbsolutePosition,
   ActionButton,
   CustomTypograpy,
   PickerWrapper,
@@ -23,6 +21,7 @@ import {
   SvgWrapper,
 } from './styles';
 import { userStore } from '~/stores';
+import { ColorPicker } from './components/ColorPicker';
 type props = {
   id: string;
 };
@@ -234,159 +233,42 @@ const Geral: FC<props> = ({ id }) => {
           Cor gradiente do título da mentoria ( opcional )
         </Typography>
         <Box display="flex" gap={4}>
-          <Box id="ColorOne" sx={{ position: 'relative' }}>
-            <Box
-              width="1.5rem"
-              height="1.5rem"
-              mt={1}
-              sx={{
-                border: '2px solid #ffffff',
-                borderRadius: '10%',
-                padding: '5px',
-                background: colorPick?.one || '#d4d4d4',
-                boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-                display: 'inline-block',
-                cursor: 'pointer',
-              }}
-              onClick={() =>
-                setDisplayPicker({
-                  ...displayPicker,
-                  one: !displayPicker.one,
-                })
-              }
-            ></Box>
-            {displayPicker.one && (
-              <>
-                <div
-                  style={{
-                    position: 'fixed',
-                    top: '0px',
-                    right: '0px',
-                    bottom: '0px',
-                    left: '0px',
-                  }}
-                  onClick={() =>
-                    setDisplayPicker({
-                      ...displayPicker,
-                      one: !displayPicker.one,
-                    })
-                  }
-                />
-                <AbsolutePosition>
-                  <SketchPicker
-                    color={colorPick?.one || '#d4d4d4'}
-                    onChange={(color) =>
-                      setColorPick((old) => {
-                        return { ...old, one: color.hex };
-                      })
-                    }
-                  />
-                </AbsolutePosition>
-              </>
-            )}
-          </Box>
-          <Box id="ColorTwo" sx={{ position: 'relative' }}>
-            <Box
-              width="1.5rem"
-              height="1.5rem"
-              mt={1}
-              sx={{
-                border: '2px solid #ffffff',
-                borderRadius: '10%',
-                padding: '5px',
-                background: colorPick?.two || '#d4d4d4',
-                boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-                display: 'inline-block',
-                cursor: 'pointer',
-              }}
-              onClick={() =>
-                setDisplayPicker({
-                  ...displayPicker,
-                  two: !displayPicker.two,
-                })
-              }
-            ></Box>
-            {displayPicker.two && (
-              <>
-                <div
-                  style={{
-                    position: 'fixed',
-                    top: '0px',
-                    right: '0px',
-                    bottom: '0px',
-                    left: '0px',
-                  }}
-                  onClick={() =>
-                    setDisplayPicker({
-                      ...displayPicker,
-                      two: !displayPicker.two,
-                    })
-                  }
-                />
-                <AbsolutePosition>
-                  <SketchPicker
-                    color={colorPick?.two || '#d4d4d4'}
-                    onChange={(color) =>
-                      setColorPick((old) => {
-                        return { ...old, two: color.hex };
-                      })
-                    }
-                  />
-                </AbsolutePosition>
-              </>
-            )}
-          </Box>
-          <Box id="ColorThree" sx={{ position: 'relative' }}>
-            <Box
-              width="1.5rem"
-              height="1.5rem"
-              mt={1}
-              sx={{
-                border: '2px solid #ffffff',
-                borderRadius: '10%',
-                padding: '5px',
-                background: colorPick?.three || '#d4d4d4',
-                boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-                display: 'inline-block',
-                cursor: 'pointer',
-              }}
-              onClick={() =>
-                setDisplayPicker({
-                  ...displayPicker,
-                  three: !displayPicker.three,
-                })
-              }
-            ></Box>
-            {displayPicker.three && (
-              <>
-                <div
-                  style={{
-                    position: 'fixed',
-                    top: '0px',
-                    right: '0px',
-                    bottom: '0px',
-                    left: '0px',
-                  }}
-                  onClick={() =>
-                    setDisplayPicker({
-                      ...displayPicker,
-                      three: !displayPicker.three,
-                    })
-                  }
-                />
-                <AbsolutePosition>
-                  <SketchPicker
-                    color={colorPick?.three || '#d4d4d4'}
-                    onChange={(color) =>
-                      setColorPick((old) => {
-                        return { ...old, three: color.hex };
-                      })
-                    }
-                  />
-                </AbsolutePosition>
-              </>
-            )}
-          </Box>
+          <ColorPicker
+            colorPick={colorPick.one}
+            onChange={(color) =>
+              setColorPick((old) => {
+                return { ...old, one: color?.hex };
+              })
+            }
+            open={displayPicker.one}
+            setOpen={(value) =>
+              setDisplayPicker({ one: value, two: false, three: false })
+            }
+          />
+          <ColorPicker
+            colorPick={colorPick.two}
+            onChange={(color) =>
+              setColorPick((old) => {
+                return { ...old, two: color?.hex };
+              })
+            }
+            open={displayPicker.two}
+            setOpen={(value) =>
+              setDisplayPicker({ one: false, two: value, three: false })
+            }
+          />
+          <ColorPicker
+            colorPick={colorPick.three}
+            onChange={(color) =>
+              setColorPick((old) => {
+                return { ...old, three: color?.hex };
+              })
+            }
+            open={displayPicker.three}
+            setOpen={(value) =>
+              setDisplayPicker({ one: false, two: false, three: value })
+            }
+          />
         </Box>
       </PickerWrapper>
       <Grid mt={3} container>
