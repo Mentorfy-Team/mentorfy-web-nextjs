@@ -40,6 +40,7 @@ export const BundleWrapper = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 1.4rem;
+  cursor: pointer;
 `;
 
 export const CircleProgressBar = styled(CircularProgress)`

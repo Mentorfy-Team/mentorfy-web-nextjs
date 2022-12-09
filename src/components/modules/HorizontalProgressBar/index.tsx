@@ -1,4 +1,6 @@
 import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import { useState } from 'react';
 import { GroupTools } from '../DragNDrop';
 import {
   BundleWrapper,
@@ -48,7 +50,8 @@ const HorizontalProgressBar = ({
   onGoTo: (id) => void;
 }) => {
   let count = 0;
-
+  const [collapse, setCollapse] = useState(false);
+  const [stepId, setStepId] = useState<string>('');
   const getIsDone = (id: string) => {
     const inputDone = input.find((i) => i.member_area_tool_id === id);
     if (inputDone) return true;
@@ -79,11 +82,21 @@ const HorizontalProgressBar = ({
     return done;
   };
 
+  const handleCollapse = (task) => {
+    setStepId(task);
+
+    if (task === stepId) {
+      setCollapse(!collapse);
+    } else {
+      setCollapse(true);
+    }
+  };
+
   return (
     <Wrapper>
       {data.map((step, i) => (
         <div key={step.id} style={{ display: 'flex' }}>
-          <BundleWrapper>
+          <BundleWrapper onClick={() => handleCollapse(step.id)}>
             <CircleWrapper>
               <CircleProgressBar
                 value={getProgressByStep(step)}
@@ -108,26 +121,41 @@ const HorizontalProgressBar = ({
           {step.rows.map((task, j) => {
             count++;
             return (
-              <StepsWrapper key={task.id} onClick={() => onGoTo(task.id)}>
-                <CircleWrapper>
-                  <Line />
-                  <Dot
-                    className={activeid === task.id ? 'active-background' : ''}
-                    sx={{
-                      backgroundColor: getIsDone(task.id) ? '#38c284' : 'unset',
-                    }}
-                  />
-                  {j + 1 !== step.rows.length ? <Line /> : <Box height={10} />}
-                </CircleWrapper>
-                <TextWrapper>
-                  <ClassesNumber
-                    className={activeid === task.id ? 'active' : ''}
-                    sx={{
-                      marginTop: '-0.1rem',
-                    }}
-                  >{`${count} - ${task.title}`}</ClassesNumber>
-                </TextWrapper>
-              </StepsWrapper>
+              <Collapse
+                key={task.id}
+                in={stepId === step.id && collapse}
+                timeout={300}
+                orientation="horizontal"
+              >
+                <StepsWrapper key={task.id} onClick={() => onGoTo(task.id)}>
+                  <CircleWrapper>
+                    <Line />
+                    <Dot
+                      className={
+                        activeid === task.id ? 'active-background' : ''
+                      }
+                      sx={{
+                        backgroundColor: getIsDone(task.id)
+                          ? '#38c284'
+                          : 'unset',
+                      }}
+                    />
+                    {j + 1 !== step.rows.length ? (
+                      <Line />
+                    ) : (
+                      <Box height={10} />
+                    )}
+                  </CircleWrapper>
+                  <TextWrapper>
+                    <ClassesNumber
+                      className={activeid === task.id ? 'active' : ''}
+                      sx={{
+                        marginTop: '-0.1rem',
+                      }}
+                    >{`${count} - ${task.title}`}</ClassesNumber>
+                  </TextWrapper>
+                </StepsWrapper>
+              </Collapse>
             );
           })}
         </div>
