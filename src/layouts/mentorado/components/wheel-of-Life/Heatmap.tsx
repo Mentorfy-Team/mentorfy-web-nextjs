@@ -1,4 +1,12 @@
-import { Heatmap, HeatmapConfig } from '@ant-design/plots';
+import { HeatmapConfig } from '@ant-design/plots/lib/components/heatmap';
+import dynamic from 'next/dynamic';
+
+const Heatmap = dynamic(
+  () => import('@ant-design/plots').then((mod) => mod.Heatmap),
+  {
+    ssr: false,
+  },
+);
 
 export default ({ data, width, height }) => {
   const config = {
