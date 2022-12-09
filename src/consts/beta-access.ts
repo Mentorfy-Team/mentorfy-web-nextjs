@@ -11,5 +11,6 @@ export const betaEmailAccess = [
   'vagnerkellers@hotmail.com',
   'Ceo@marcosdaniels.com',
   'agathaatp@gmail.com',
-  'vagnerkellers@hotmail.com'
+  'vagnerkellers@hotmail.com',
+  'arthur_parente@outlook.com',
 ];
