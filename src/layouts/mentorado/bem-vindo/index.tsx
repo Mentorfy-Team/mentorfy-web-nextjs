@@ -78,10 +78,10 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
   const TextBanner = (
     <Box
       sx={{
-        maxWidth: '16.5rem',
         textAlign: 'start',
         marginTop: '-3rem',
         marginBottom: '1rem',
+        width: 'clamp( 325px, 50vw, 500px)',
       }}
     >
       <CollorFullTypography
