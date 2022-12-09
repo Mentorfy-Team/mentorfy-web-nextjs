@@ -17,9 +17,7 @@ import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { useProducts } from '~/hooks/useProducts';
 import {
   AbsoluteBottomBox,
-  AbsoluteTopBox,
   Background,
-  CollorFullMentorfy,
   CollorFullPopular,
   CollorFullTypography,
   CourseBox,
@@ -179,7 +177,7 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
         >
           {p.map((product, index) => (
             <CourseBox
-              onMouseOver={() => { }}
+              onMouseOver={() => {}}
               className="item"
               key={index}
               onClick={() => {
@@ -190,8 +188,8 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
                   router.push(
                     types.find((type) => type.id.toString() === product.deliver)
                       .path +
-                    '/' +
-                    product.id,
+                      '/' +
+                      product.id,
                   );
                 } else {
                   handlePopularProductsModal(product);
@@ -208,11 +206,7 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
                 }}
                 quality={90}
               />
-              <AbsoluteTopBox>
-                <CollorFullMentorfy>
-                  Mentor<span>fy</span>
-                </CollorFullMentorfy>
-              </AbsoluteTopBox>
+
               {!product.banner_image && (
                 <AbsoluteBottomBox>
                   <ProductTitle>{product.title}</ProductTitle>
