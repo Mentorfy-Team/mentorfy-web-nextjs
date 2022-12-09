@@ -14,7 +14,7 @@ export function useProfile(withAddress = false, altProfileId?: string) {
     route.push('/');
   };
 
-  const { data, error, mutate } = useSWR<
+  const { data, error, mutate, isLoading } = useSWR<
     UserTypes.ProfileWithAddress & { logout?: () => void }
   >(
     `${ApiRoutes.users_profile}?withAddress=${withAddress}${
@@ -25,7 +25,7 @@ export function useProfile(withAddress = false, altProfileId?: string) {
 
   return {
     data: { ...data, logout: () => logout() },
-    isLoading: !error && !data,
+    isLoading,
     isError: error,
     mutate,
   };

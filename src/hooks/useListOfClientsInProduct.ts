@@ -5,14 +5,14 @@ import { fetcher } from '~/hooks/fetcher';
 type props = Partial<ProductTypes.ClientJorney>;
 
 export function useListOfClientsInProduct(id) {
-  const { data, error } = useSWR<props>(
+  const { data, error, isLoading } = useSWR<props>(
     `${ApiRoutes.products_clients_list}?id=${id}`,
     fetcher,
   );
 
   return {
     data: data || {},
-    isLoading: !error && !data,
+    isLoading,
     isError: error,
   };
 }

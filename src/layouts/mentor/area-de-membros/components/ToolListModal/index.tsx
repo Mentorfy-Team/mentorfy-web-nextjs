@@ -19,13 +19,17 @@ type Props = {
 
 const ToolList: React.FC<Props> = ({ onChange, setOpen, open, area_id }) => {
   const { product, isLoading } = useGetProduct(area_id);
-  const { tools, mutate, isError } = useMentorTools(product?.id);
+  const {
+    tools,
+    mutate,
+    isLoading: isToolsLoading,
+  } = useMentorTools(product?.id);
   const { setLoading, isLoading: GlobalLoading } = userStore();
 
   useEffect(() => {
-    setLoading(!isError && !tools);
+    setLoading(isToolsLoading);
     if (product?.id) mutate();
-  }, [isError, isLoading, mutate, product?.id, setLoading, tools]);
+  }, [isLoading, isToolsLoading, mutate, product?.id, setLoading, tools]);
 
   return (
     <ModalComponent

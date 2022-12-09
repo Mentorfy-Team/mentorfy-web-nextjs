@@ -174,8 +174,8 @@ export const VideoView = ({
   useEffect(() => {
     if (inputData !== userInput) {
       setUserInput(inputData);
-      GetCurrentVideo();
     }
+    GetCurrentVideo();
   }, [GetCurrentVideo, inputData, userInput]);
 
   const onSelectedNext = useCallback(() => {
@@ -224,6 +224,7 @@ export const VideoView = ({
     const video = steps
       .find((stp) => stp.rows.find((row) => row.id == videoId))
       ?.rows.find((row) => row.id == videoId);
+    console.log(steps.find((stp) => stp.rows.find((row) => row.id == videoId)));
     return video;
   }, [steps, videoId]);
 
@@ -354,7 +355,7 @@ export const VideoView = ({
         <Wrapper>
           <VideoWrapper>
             <Typography variant="h6" sx={{ margin: '1rem 0' }}>
-              {getVideo()?.title}
+              {getVideo()?.parent_tool?.title} - {getVideo()?.title}
             </Typography>
             <Box
               sx={{ width: '985px', height: '554px', backgroundColor: 'black' }}

@@ -3,7 +3,7 @@ import { ApiRoutes } from '~/consts/routes/api.routes';
 import { fetcher } from '~/hooks/fetcher';
 
 export function useProducts(id?, initialData?) {
-  const { data, error, mutate } = useSWR<ProductTypes.Product[]>(
+  const { data, error, mutate, isLoading } = useSWR<ProductTypes.Product[]>(
     `${ApiRoutes.products_list}?id=${id}`,
     fetcher,
     {
@@ -13,7 +13,7 @@ export function useProducts(id?, initialData?) {
 
   return {
     products: data || [],
-    isLoading: !error && !data,
+    isLoading,
     isError: error,
     mutate,
   };
