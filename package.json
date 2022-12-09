@@ -11,8 +11,7 @@
     "lint": "next lint",
     "analyze": "ANALYZE=true next build",
     "prepare": "husky install",
-    "postinstall": "husky install",
-    "pre-commit": "next lint"
+    "postinstall": "husky install"
   },
   "dependencies": {
     "@ant-design/plots": "1.2.2",
