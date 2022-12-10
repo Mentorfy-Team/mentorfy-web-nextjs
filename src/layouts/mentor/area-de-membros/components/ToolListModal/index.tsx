@@ -38,40 +38,49 @@ const ToolList: React.FC<Props> = ({ onChange, setOpen, open, area_id }) => {
       withoutSave
       title="Lista de Ferramentas"
     >
-      {tools
-        ?.sort((a, b) => a.order - b.order)
-        ?.map((item) => (
-          <WrapperTool
-            onClick={() => {
-              onChange(item);
-              setOpen(false);
-            }}
-            key={item.id}
-          >
-            <Image
-              width="535"
-              height="150"
-              alt={item.name}
-              src={item.image}
-              style={{
-                objectFit: 'cover',
-                flex: 1,
-                backgroundColor: 'primary.light',
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1,
+        }}
+      >
+        {tools
+          ?.sort((a, b) => a.order - b.order)
+          ?.map((item) => (
+            <WrapperTool
+              onClick={() => {
+                onChange(item);
+                setOpen(false);
               }}
-            />
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                padding: '0.4rem 1rem',
-                backgroundColor: 'primary.dark',
-              }}
+              key={item.id}
             >
-              <Title>{item.name}</Title>
-              <Description>{item.description}</Description>
-            </Box>
-          </WrapperTool>
-        ))}
+              <Image
+                width="535"
+                height="150"
+                alt={item.name}
+                src={item.image}
+                style={{
+                  objectFit: 'cover',
+                  flex: 1,
+                  backgroundColor: 'primary.light',
+                }}
+              />
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  padding: '0.4rem 1rem',
+                  backgroundColor: 'primary.dark',
+                  maxWidth: '535px',
+                }}
+              >
+                <Title>{item.name}</Title>
+                <Description>{item.description}</Description>
+              </Box>
+            </WrapperTool>
+          ))}
+      </Box>
     </ModalComponent>
   );
 };
