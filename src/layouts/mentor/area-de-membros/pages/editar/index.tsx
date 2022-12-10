@@ -24,7 +24,6 @@ const tabs = [
 ];
 const EditarMentoria: FC<Props> = ({ id, product }) => {
   const [tabindex, setTabindex] = useState(0);
-
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
       case 4:
