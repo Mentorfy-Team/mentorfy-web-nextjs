@@ -126,7 +126,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
         return [...oldSteps];
       });
     },
-    [product.deliver, steps.length],
+    [product?.deliver, steps.length],
   );
 
   const handleOpenToolsModal = useCallback(
@@ -324,7 +324,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
             color="secondary"
           >
             <Workspaces />
-            {product.deliver === '4' ? 'Adicionar Módulo' : 'Adicionar Módulo'}
+            {product?.deliver === '4' ? 'Adicionar Módulo' : 'Adicionar Módulo'}
           </AddGroup>
         </Box>
         <ScrollWrapper withtoolbar="true">

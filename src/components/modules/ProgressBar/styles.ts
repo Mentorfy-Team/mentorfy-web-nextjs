@@ -92,3 +92,11 @@ export const Dot = styled(Box)`
   height: 10px;
   width: 10px;
 `;
+
+export const Square = styled(Box)`
+  background-color: ${({ theme }) => theme.palette.secondary.main};
+  border: 1px solid #363739;
+  border-radius: 4%;
+  height: 10px;
+  width: 10px;
+`;

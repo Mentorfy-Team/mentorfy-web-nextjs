@@ -20,6 +20,7 @@ const AddTools = async (supabase: SupabaseClient<Database>, list, id) => {
       const saveOldId = tool.id;
       delete tool.id;
       delete tool.rows;
+      delete tool.parent_tool;
 
       if (tool.parent && tool.parent.toString() !== 'undefined') {
         // Procura se algum parent foi criado no mesmo request
@@ -54,6 +55,7 @@ const AddTools = async (supabase: SupabaseClient<Database>, list, id) => {
       // Se o id for uuid, então é um registro existente
       delete tool.id;
       delete tool.rows;
+      delete tool.parent_tool;
       if ((tool.data as any)?.length === 0) {
         tool.data = null;
       }

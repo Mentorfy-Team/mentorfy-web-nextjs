@@ -69,6 +69,14 @@ export const getProps = async (ctx) => {
 
   const product = await GetProduct(ctx.req, ctx.query.id);
 
+  if (!product)
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+
   return {
     props: {
       id: ctx.query.id,
