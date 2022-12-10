@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { GroupTools } from '../DragNDrop';
 import {
   BundleWrapper,
@@ -16,42 +16,27 @@ import {
   Wrapper,
 } from './styles';
 
-const mock = {
-  title: 'Primeiros Passos',
-  classesNumber: '1 de 9 aulas',
-  steps: [
-    {
-      title: 'Aula 1',
-      description: 'Introdução',
-      done: true,
-    },
-    {
-      title: 'Aula 2',
-      description: 'Introdução',
-      done: false,
-    },
-    {
-      title: 'Aula 3',
-      description: 'Introdução',
-      done: false,
-    },
-  ],
-};
-
 const HorizontalProgressBar = ({
   data = [],
   input = [],
   activeid,
+  activeStepId,
   onGoTo,
 }: {
   data: GroupTools[];
   input: MemberAreaTypes.UserInput[];
   activeid: string;
+  activeStepId: string;
   onGoTo: (id) => void;
 }) => {
+  const [collapse, setCollapse] = useState(true);
+  const [stepId, setStepId] = useState<string>();
   let count = 0;
-  const [collapse, setCollapse] = useState(false);
-  const [stepId, setStepId] = useState<string>('');
+
+  const selectedStepId = useMemo(() => {
+    return stepId || activeStepId;
+  }, [activeStepId, stepId]);
+
   const getIsDone = (id: string) => {
     const inputDone = input.find((i) => i.member_area_tool_id === id);
     if (inputDone) return true;
@@ -85,7 +70,7 @@ const HorizontalProgressBar = ({
   const handleCollapse = (task) => {
     setStepId(task);
 
-    if (task === stepId) {
+    if (task === selectedStepId) {
       setCollapse(!collapse);
     } else {
       setCollapse(true);
@@ -106,8 +91,20 @@ const HorizontalProgressBar = ({
               />
               {step.rows.length > 0 && (
                 <Box sx={{ display: 'flex' }}>
-                  <Line />
-                  <Line />
+                  <Line
+                    sx={{
+                      backgroundColor: `${
+                        selectedStepId === step.id && collapse ? '' : 'inherit'
+                      }`,
+                    }}
+                  />
+                  <Line
+                    sx={{
+                      backgroundColor: `${
+                        selectedStepId === step.id && collapse ? '' : 'inherit'
+                      }`,
+                    }}
+                  />
                 </Box>
               )}
             </CircleWrapper>
@@ -123,7 +120,7 @@ const HorizontalProgressBar = ({
             return (
               <Collapse
                 key={task.id}
-                in={stepId === step.id && collapse}
+                in={selectedStepId === step.id && collapse}
                 timeout={300}
                 orientation="horizontal"
               >
