@@ -67,7 +67,6 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
       setShowConfirmDelete(false);
     }
   };
-  console.log(products);
 
   return (
     <>

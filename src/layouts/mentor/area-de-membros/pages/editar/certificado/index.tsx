@@ -75,7 +75,6 @@ const Certificate = ({ id }) => {
     HandleFileUpload(_files, (file) => {
       setFiles(file.data);
     });
-    //console.log(files);
   };
 
   useEffect(() => {

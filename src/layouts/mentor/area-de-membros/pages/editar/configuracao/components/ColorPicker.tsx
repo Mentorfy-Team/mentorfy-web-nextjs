@@ -49,7 +49,6 @@ export const ColorPicker = ({ colorPick, onChange, open, setOpen }) => {
               }}
               color={colorPick || '#d4d4d4'}
               onChange={(color) => {
-                console.log(color, colorPick);
                 onChange(color);
               }}
             />

@@ -13,7 +13,7 @@ import {
   Title,
   Wrapper,
 } from './styles';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 const mock = {
   title: 'Primeiros Passos',
@@ -41,16 +41,22 @@ const ProgressBar = ({
   data = [],
   input = [],
   activeid,
+  activeStepId,
   onGoTo,
 }: {
   data: GroupTools[];
   input: MemberAreaTypes.UserInput[];
   activeid: string;
+  activeStepId: string;
   onGoTo: (id, parentId?) => void;
 }) => {
-  const [collapse, setCollapse] = useState(false);
-  const [stepId, setStepId] = useState<string>('');
+  const [collapse, setCollapse] = useState(true);
+  const [stepId, setStepId] = useState<string>();
   let count = 0;
+
+  const selectedStepId = useMemo(() => {
+    return stepId || activeStepId;
+  }, [activeStepId, stepId]);
 
   const getIsDone = (id: string) => {
     const inputDone = input.find((i) => i.member_area_tool_id === id);
@@ -82,10 +88,10 @@ const ProgressBar = ({
     return done;
   };
 
-  const handleCollapse = (task) => {
-    setStepId(task);
+  const handleCollapse = (step) => {
+    setStepId(step);
 
-    if (task === stepId) {
+    if (step === selectedStepId) {
       setCollapse(!collapse);
     } else {
       setCollapse(true);
@@ -109,14 +115,14 @@ const ProgressBar = ({
                   <Line
                     sx={{
                       backgroundColor: `${
-                        stepId === step.id && collapse ? '' : 'inherit'
+                        selectedStepId === step.id && collapse ? '' : 'inherit'
                       }`,
                     }}
                   />
                   <Line
                     sx={{
                       backgroundColor: `${
-                        stepId === step.id && collapse ? '' : 'inherit'
+                        selectedStepId === step.id && collapse ? '' : 'inherit'
                       }`,
                     }}
                   />
@@ -135,7 +141,7 @@ const ProgressBar = ({
             return (
               <Collapse
                 key={task.id}
-                in={stepId === step.id && collapse}
+                in={selectedStepId === step.id && collapse}
                 timeout={300}
               >
                 <StepsWrapper onClick={() => onGoTo(task.id, step.id)}>

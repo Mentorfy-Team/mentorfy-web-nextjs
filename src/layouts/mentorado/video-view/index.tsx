@@ -39,6 +39,7 @@ export const VideoView = ({
 }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const [videoId, setVideoId] = useState<string>(video_id);
+  const [stepId, setStepId] = useState<string>();
   const [nextVideoId, setNextVideoId] = useState<string>(null);
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<GroupTools[]>([]);
@@ -148,6 +149,7 @@ export const VideoView = ({
           }
           if (!(row.extra as any)?.finished && !nextVideo) {
             lastId = row.id;
+            setStepId(stp.id);
           }
         });
     });
@@ -224,7 +226,6 @@ export const VideoView = ({
     const video = steps
       .find((stp) => stp.rows.find((row) => row.id == videoId))
       ?.rows.find((row) => row.id == videoId);
-    console.log(steps.find((stp) => stp.rows.find((row) => row.id == videoId)));
     return video;
   }, [steps, videoId]);
 
@@ -453,6 +454,7 @@ export const VideoView = ({
               data={steps.filter(({ id }) => unlockedStep.some((s) => s == id))}
               input={userInput}
               activeid={videoId}
+              activeStepId={stepId}
               onGoTo={(id) => onSelectedVideo(id)}
             />
           </ProgressBarWrapper>
