@@ -34,6 +34,15 @@ declare namespace ProductTypes {
     inputs: typeof Database.public.Tables.client_input_tool.Row[];
   };
 
+  type Certificate = {
+    product_id?: string
+    default_certificate?: string
+    title?: string
+    url?: string
+    student?: Json | null
+    course?: Json | null
+  }
+
   namespace Post {
     interface Request extends ExternalModules.Next.NextApiRequest {
       body: any;
