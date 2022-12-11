@@ -144,7 +144,7 @@ const ContinuosMentoring: FC<
           data={steps}
           input={userInput}
           activeid={task_id}
-          activeStepId={task_id}
+          activeStepId={steps[0]?.id}
           onGoTo={() => {}}
         />
         <ScrollArea>
