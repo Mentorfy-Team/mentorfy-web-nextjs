@@ -258,8 +258,8 @@ export const getProps = async (ctx) => {
       member_area_id: id,
       memberArea: {
         id: id,
-        title: product.title,
-        description: product.description,
+        title: product?.title,
+        description: product?.description,
       },
       error: error || null,
     },
