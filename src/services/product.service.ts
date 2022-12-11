@@ -12,10 +12,13 @@ export const GetProduct = async (req, id): Promise<ProductApi.Product> => {
       },
     });
 
-    return response.data.product as ProductApi.Product;
+    if (response.data.error) {
+      throw new Error(response.data.error);
+    }
+    return response.data as ProductApi.Product;
   } catch (error: any) {
     return {
-      error: error.message,
+      error: JSON.stringify(error),
     } as any;
   }
 };

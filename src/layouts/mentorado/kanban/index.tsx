@@ -247,11 +247,11 @@ export const getProps = async (ctx) => {
   // }
 
   if (!memberArea || (memberArea as any)?.error) {
-    console.error((memberArea as any).error);
+    console.error(memberArea as any);
 
     memberArea = {
       id: 'c38b2a17-38e7-4fdc-acad-6c76f59bd62d',
-      title: (memberArea as any).error,
+      title: JSON.stringify(memberArea),
       description: 'teste',
     };
   }

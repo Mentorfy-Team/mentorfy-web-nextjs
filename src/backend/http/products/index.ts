@@ -59,7 +59,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     );
   }
 
-  return res.status(200).json({
+  return res.status(error ? 404 : 200).json({
     product,
     error: error?.message,
   });
