@@ -59,9 +59,14 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     );
   }
 
+  if (error || !product || !product.id) {
+    return res.status(404).json({
+      error: JSON.stringify(error),
+    });
+  }
+
   return res.status(200).json({
     product,
-    error: error?.message,
   });
 };
 

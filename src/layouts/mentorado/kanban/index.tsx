@@ -13,6 +13,7 @@ import { GetAuthSession } from '~/helpers/AuthSession';
 import SaveClientInput, { GetTypeName } from '../helpers/SaveClientInput';
 import HandleToolModal from '../helpers/HandleToolModal';
 import TipBar from '~/components/modules/TipBar';
+import { useGetProduct } from '~/hooks/useGetProduct';
 
 export type UserInput = {
   id?: string;
@@ -22,8 +23,12 @@ export type UserInput = {
 };
 
 export const KanbanView: FC<
-  PageTypes.Props & { member_area_id: string; memberArea: any }
-> = ({ member_area_id, memberArea }) => {
+  PageTypes.Props & { member_area_id: string; memberAreaInitial: any; error }
+> = ({ member_area_id, memberAreaInitial, error }) => {
+  const { product: memberArea } = useGetProduct(
+    member_area_id,
+    memberAreaInitial,
+  );
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<GroupTools[]>([]);
@@ -89,7 +94,7 @@ export const KanbanView: FC<
         if (doneTasks?.length == tasks?.length) {
           unlocked.push(steps[i].id);
         } else {
-          if ((steps[i].extra as any).lockFeature) {
+          if ((steps[i].extra as any)?.lockFeature) {
             unlocked.push(steps[i].id);
             break;
           } else {
@@ -105,7 +110,7 @@ export const KanbanView: FC<
     <>
       <Toolbar
         initialTab={1}
-        breadcrumbs={['Minhas mentorias', memberArea.title]}
+        breadcrumbs={['Minhas mentorias', memberArea?.title]}
       />
       <ContentWidthLimit>
         {(!steps || steps.length == 0) && (
@@ -238,21 +243,23 @@ export const getProps = async (ctx) => {
   const id = ctx.query.id as string;
 
   // fetch for member area
-  const memberArea = await GetProduct(ctx.req, id);
+  const { product, error }: any = await GetProduct(ctx.req, id);
 
-  if (!memberArea) {
-    return {
-      notFound: true,
-    };
-  }
+  // if (!product || error) {
+  //   return {
+  //         notFound: true,
+  //       };
+  // }
+
   return {
     props: {
       member_area_id: id,
-      memberArea: {
-        id: memberArea.id,
-        title: memberArea.title,
-        description: memberArea.description,
+      memberAreaInitial: {
+        id: id,
+        title: product?.title,
+        description: product?.description,
       },
+      error: error || null,
     },
   };
 };
