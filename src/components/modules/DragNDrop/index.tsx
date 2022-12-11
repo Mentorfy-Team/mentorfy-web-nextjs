@@ -43,12 +43,11 @@ export default function DragNDrop({ elements, setElements }: Props) {
       setElements((steps: GroupTools[]) => {
         const newItens = [...steps];
 
-        const granFatherIndex = newItens.findIndex((i) =>
-          i.rows.find((i) => i.id === tool.parent),
-        );
-
         // Se o pai tiver um pai, é porque tool é filho de uma categoria.
         if (tool.parent_tool?.parent) {
+          const granFatherIndex = newItens.findIndex((i) =>
+            i.rows.find((j) => j.id === tool.parent),
+          );
           const fatherIndex = newItens[granFatherIndex].rows.findIndex(
             (i) => i.id === tool.parent,
           );
@@ -71,6 +70,9 @@ export default function DragNDrop({ elements, setElements }: Props) {
           );
         } else {
           // move etapa
+          const granFatherIndex = newItens.findIndex(
+            (i) => i.id === tool.parent,
+          );
           const rowsToOrganize = newItens[granFatherIndex].rows;
 
           const oldIndex = rowsToOrganize.findIndex((i) => i.id === active.id);
