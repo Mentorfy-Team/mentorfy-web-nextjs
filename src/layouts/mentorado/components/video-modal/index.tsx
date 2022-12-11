@@ -110,7 +110,12 @@ const VideoViewModal = ({
   );
   return (
     <ModalComponent title={HeadText} setOpen={setOpen} open={open} isMentorado>
-      <ModalDialogContent isMentorado>
+      <ModalDialogContent
+        sx={{
+          minHeight: '800px',
+        }}
+        isMentorado
+      >
         {!taskData && (
           <TipBar>
             Ainda não há <span>nenhum conteúdo disponível</span> nossa etapa. Em
