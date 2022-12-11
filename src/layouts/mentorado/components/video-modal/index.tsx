@@ -112,7 +112,7 @@ const VideoViewModal = ({
     <ModalComponent title={HeadText} setOpen={setOpen} open={open} isMentorado>
       <ModalDialogContent
         sx={{
-          minHeight: '800px',
+          minHeight: '750px',
         }}
         isMentorado
       >
@@ -153,7 +153,7 @@ const VideoViewModal = ({
           <>
             <Typography
               variant="body1"
-              sx={{ margin: '2.8rem 0 0.8rem 0', alignSelf: 'self-start' }}
+              sx={{ margin: '1rem 0 0.8rem 0', alignSelf: 'self-start' }}
             >
               Enviar mensagem ao Mentor
             </Typography>
@@ -162,7 +162,6 @@ const VideoViewModal = ({
                 width: '100%',
                 display: 'flex',
                 gap: '0.5rem',
-                marginBottom: '2rem',
               }}
             >
               <CommentInput ref={commentRef} placeholder="Deixe sua mensagem" />
@@ -177,6 +176,7 @@ const VideoViewModal = ({
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '2rem',
+                  marginTop: '2rem',
                 }}
               >
                 {input.comments
