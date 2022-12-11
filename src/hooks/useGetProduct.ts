@@ -11,11 +11,12 @@ type props = Partial<ProductTypes.Product> & {
 };
 
 export function useGetProduct(id, defaultProps?) {
+  const fallbackData = defaultProps ? { fallbackData: defaultProps } : {};
   const { data, error, isLoading } = useSWR<{ product?: props }>(
     `${ApiRoutes.products}?id=${id}`,
     fetcher,
     {
-      fallbackData: defaultProps || {},
+      ...fallbackData,
     },
   );
 
