@@ -89,7 +89,7 @@ export const KanbanView: FC<
         if (doneTasks?.length == tasks?.length) {
           unlocked.push(steps[i].id);
         } else {
-          if ((steps[i].extra as any).lockFeature) {
+          if ((steps[i].extra as any)?.lockFeature) {
             unlocked.push(steps[i].id);
             break;
           } else {
