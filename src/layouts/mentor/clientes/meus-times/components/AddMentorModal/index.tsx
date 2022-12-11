@@ -38,7 +38,10 @@ const NewMentorModal = ({ open, setOpen, onSubmit, refData }: Props) => {
     <ModalComponent
       open={open}
       setOpen={setOpen}
-      onSave={() => onSubmit(formData)}
+      onSave={() => {
+        onSubmit(formData);
+        setOpen(false);
+      }}
       title="Adicionar Mentor"
     >
       {/* <Box
