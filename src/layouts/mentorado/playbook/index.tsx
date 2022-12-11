@@ -96,8 +96,9 @@ export const Playbook: FC<
                 data={steps}
                 input={[]}
                 activeid={currentCard}
-                onGoTo={(categoryId, stepId) =>
-                  setSelected({ categoryId, stepId })
+                activeStepId={selected?.stepId}
+                onGoTo={(categoryId, step) =>
+                  setSelected({ categoryId, stepId: step.id })
                 }
               />
             </ProgressBarWrapper>

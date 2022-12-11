@@ -51,18 +51,18 @@ const Certificate = ({ id }) => {
   const theme = useTheme();
   const [files, setFiles] = useState<FileType[]>([]);
   const [show, setShow] = useState({
-    'showName': false,
-    'showDocument': false,
-    'showFinishedAt': false,
-    'showCourseName': false,
-    'showMentorName': false,
+    showName: false,
+    showDocument: false,
+    showFinishedAt: false,
+    showCourseName: false,
+    showMentorName: false,
   });
   const [isStoped, setIsStoped] = useState({
-    'stopedName': false,
-    'stopedDocument': false,
-    'stopedFinishedAt': false,
-    'stopedCourseName': false,
-    'stopedMentorName': false,
+    stopedName: false,
+    stopedDocument: false,
+    stopedFinishedAt: false,
+    stopedCourseName: false,
+    stopedMentorName: false,
   });
   const [certificate, setCertificate] = useState({
     product_id: id,
@@ -81,7 +81,7 @@ const Certificate = ({ id }) => {
       document: {
         pageX: '',
         pageY: '',
-      }
+      },
     },
     course: {
       name: {
@@ -95,7 +95,8 @@ const Certificate = ({ id }) => {
     },
   });
 
-  const [defaultCertificate, setDefaultCertificate] = useState(DefaultCertificate);
+  const [defaultCertificate, setDefaultCertificate] =
+    useState(DefaultCertificate);
 
   function BpCheckbox(props: CheckboxProps) {
     return (
@@ -153,7 +154,13 @@ const Certificate = ({ id }) => {
       });
     }
     if (e.target.innerHTML === 'Usar certificado padrão Mentorfy') {
-      setShow({ showName: false, showDocument: false, showFinishedAt: false, showCourseName: false, showMentorName: false });
+      setShow({
+        showName: false,
+        showDocument: false,
+        showFinishedAt: false,
+        showCourseName: false,
+        showMentorName: false,
+      });
       setColor(!color);
       setFiles([]);
       setTitle('');
@@ -170,17 +177,16 @@ const Certificate = ({ id }) => {
         return {
           ...old,
           title: title,
-          default_certificate: false,
-          url: files.data,
+          default_certificate: null,
+          url: (files as any).data,
           student: {
             ...old?.student,
             name: {
               pageX: e.layerX,
-              pageY: e.layerY
-            }
-          }
+              pageY: e.layerY,
+            },
+          },
         };
-
       });
     }
 
@@ -196,11 +202,10 @@ const Certificate = ({ id }) => {
             ...old?.student,
             document: {
               pageX: e.layerX,
-              pageY: e.layerY
-            }
-          }
+              pageY: e.layerY,
+            },
+          },
         };
-
       });
     }
     if (e.target.innerHTML === 'DATA DE TÉRMINO') {
@@ -215,11 +220,10 @@ const Certificate = ({ id }) => {
             ...old?.student,
             finished_at: {
               pageX: e.layerX,
-              pageY: e.layerY
-            }
-          }
+              pageY: e.layerY,
+            },
+          },
         };
-
       });
     }
     if (e.target.innerHTML === 'NOME DO CURSO') {
@@ -234,11 +238,10 @@ const Certificate = ({ id }) => {
             ...old?.course,
             name: {
               pageX: e.layerX,
-              pageY: e.layerY
-            }
-          }
+              pageY: e.layerY,
+            },
+          },
         };
-
       });
     }
     if (e.target.innerHTML === 'SEU NOME') {
@@ -253,14 +256,12 @@ const Certificate = ({ id }) => {
             ...old?.course,
             owner: {
               pageX: e.layerX,
-              pageY: e.layerY
-            }
-          }
+              pageY: e.layerY,
+            },
+          },
         };
-
       });
     }
-
   };
 
   useEffect(() => {
@@ -282,7 +283,6 @@ const Certificate = ({ id }) => {
     }
     if (!color) {
       await UpdateCertificate(certificate);
-
     }
     toast.success('Certificado salvo com sucesso');
     setIsLoading(false);
@@ -295,8 +295,7 @@ const Certificate = ({ id }) => {
   const mentorNameElement = <DocumentText>SEU NOME</DocumentText>;
 
   return (
-
-    <form onSubmit={handleSubmit(onSubmit)} >
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Box
         display="flex"
         flexDirection="row"
@@ -327,181 +326,179 @@ const Certificate = ({ id }) => {
         }}
         onChange={(e) => setTitle(e.target.value)}
       />
-      <CheckWrapper
-        onClick={(e) => handleShowStates(e)}
-      >
+      <CheckWrapper onClick={(e) => handleShowStates(e)}>
         <BpCheckbox />
         <CheckText sx={{ color: `${color && '#7DDC51'}` }}>
           Usar certificado padrão Mentorfy
         </CheckText>
       </CheckWrapper>
 
-      {
-        !color && (
-          <>
-            {files && files?.length !== 0 && (
-              <Wrapper>
-                <div>
-                  <UsageText>
-                    Selecione os campos que você gostaria de adicionar em seu certificado
-                    <strong> clicando no botão</strong> com o respectivo nome do campo, em seguida<strong> arraste o
-                      campo criado para o local exato </strong>em que deve ficar no certificado. Repita o processo para cada campo desejado.
-                  </UsageText>
-                  <ButtonsWrapper>
-                    <FieldButton
-                      variant="outlined"
-                      name='name'
-                      onClick={(e) => handleShowStates(e)}
-                    >
-                      Nome do Aluno
-                    </FieldButton>
-                    <FieldButton
-                      name='document'
-                      variant="outlined"
-                      onClick={(e) => handleShowStates(e)}
-                    >
-                      Documento do Aluno
-                    </FieldButton>
-                    <FieldButton
-                      variant="outlined"
-                      name='finishedAt'
-                      onClick={(e) => handleShowStates(e)}
-                    >
-                      Data de Término
-                    </FieldButton>
-                    <FieldButton
-                      name='courseName'
-                      variant="outlined"
-                      onClick={(e) => handleShowStates(e)}
-                    >
-                      Nome do Curso
-                    </FieldButton>
-                    <FieldButton
-                      name='mentorName'
-                      variant="outlined"
-                      onClick={(e) => handleShowStates(e)}
-                    >
-                      Seu Nome
-                    </FieldButton>
-                  </ButtonsWrapper>
-                </div>
-                <FileWrapper id="dragRef">
-                  <PDFReader file={files?.data} />
+      {!color && (
+        <>
+          {files && files?.length !== 0 && (
+            <Wrapper>
+              <div>
+                <UsageText>
+                  Selecione os campos que você gostaria de adicionar em seu
+                  certificado
+                  <strong> clicando no botão</strong> com o respectivo nome do
+                  campo, em seguida
+                  <strong> arraste o campo criado para o local exato </strong>em
+                  que deve ficar no certificado. Repita o processo para cada
+                  campo desejado.
+                </UsageText>
+                <ButtonsWrapper>
+                  <FieldButton
+                    variant="outlined"
+                    name="name"
+                    onClick={(e) => handleShowStates(e)}
+                  >
+                    Nome do Aluno
+                  </FieldButton>
+                  <FieldButton
+                    name="document"
+                    variant="outlined"
+                    onClick={(e) => handleShowStates(e)}
+                  >
+                    Documento do Aluno
+                  </FieldButton>
+                  <FieldButton
+                    variant="outlined"
+                    name="finishedAt"
+                    onClick={(e) => handleShowStates(e)}
+                  >
+                    Data de Término
+                  </FieldButton>
+                  <FieldButton
+                    name="courseName"
+                    variant="outlined"
+                    onClick={(e) => handleShowStates(e)}
+                  >
+                    Nome do Curso
+                  </FieldButton>
+                  <FieldButton
+                    name="mentorName"
+                    variant="outlined"
+                    onClick={(e) => handleShowStates(e)}
+                  >
+                    Seu Nome
+                  </FieldButton>
+                </ButtonsWrapper>
+              </div>
+              <FileWrapper id="dragRef">
+                <PDFReader file={(files as any)?.data} />
 
-                  {show.showName && (
-                    <Draggable
-                      bounds="parent"
-                      onStop={(e) => handleStopDraging(e)}
+                {show.showName && (
+                  <Draggable
+                    bounds="parent"
+                    onStop={(e) => handleStopDraging(e)}
+                  >
+                    <DraggableItem
+                      sx={{
+                        border: `${isStoped.stopedName && '1px dotted black'}`,
+                      }}
                     >
-                      <DraggableItem
-                        sx={{
-                          border: `${isStoped.stopedName && '1px dotted black'
-                            }`,
-                        }}
-                      >
-                        {nameElement}
-                      </DraggableItem>
-                    </Draggable>
-                  )}
+                      {nameElement}
+                    </DraggableItem>
+                  </Draggable>
+                )}
 
-                  {show.showDocument && (
-                    <Draggable
-                      bounds="parent"
-                      onStop={(e) => handleStopDraging(e)}
+                {show.showDocument && (
+                  <Draggable
+                    bounds="parent"
+                    onStop={(e) => handleStopDraging(e)}
+                  >
+                    <DraggableItem
+                      sx={{
+                        border: `${
+                          isStoped.stopedDocument && '1px dotted black'
+                        }`,
+                      }}
                     >
-                      <DraggableItem
-                        sx={{
-                          border: `${isStoped.stopedDocument && '1px dotted black'
-                            }`,
-                        }}
-                      >
-                        {documentElement}
-                      </DraggableItem>
-                    </Draggable>
-                  )}
+                      {documentElement}
+                    </DraggableItem>
+                  </Draggable>
+                )}
 
-                  {show.showFinishedAt && (
-                    <Draggable
-                      bounds="parent"
-                      onStop={(e) => handleStopDraging(e)}
+                {show.showFinishedAt && (
+                  <Draggable
+                    bounds="parent"
+                    onStop={(e) => handleStopDraging(e)}
+                  >
+                    <DraggableItem
+                      sx={{
+                        border: `${
+                          isStoped.stopedFinishedAt && '1px dotted black'
+                        }`,
+                      }}
                     >
-                      <DraggableItem
-                        sx={{
-                          border: `${isStoped.stopedFinishedAt && '1px dotted black'
-                            }`,
-                        }}
-                      >
-                        {finishedAtElement}
-                      </DraggableItem>
-                    </Draggable>
-                  )}
-                  {show.showCourseName && (
-                    <Draggable
-                      bounds="parent"
-                      onStop={(e) => handleStopDraging(e)}
+                      {finishedAtElement}
+                    </DraggableItem>
+                  </Draggable>
+                )}
+                {show.showCourseName && (
+                  <Draggable
+                    bounds="parent"
+                    onStop={(e) => handleStopDraging(e)}
+                  >
+                    <DraggableItem
+                      sx={{
+                        border: `${
+                          isStoped.stopedCourseName && '1px dotted black'
+                        }`,
+                      }}
                     >
-                      <DraggableItem
-                        sx={{
-                          border: `${isStoped.stopedCourseName && '1px dotted black'
-                            }`,
-                        }}
-                      >
-                        {courseNameElement}
-                      </DraggableItem>
-                    </Draggable>
-                  )}
-                  {show.showMentorName && (
-                    <Draggable
-                      bounds="parent"
-                      onStop={(e) => handleStopDraging(e)}
+                      {courseNameElement}
+                    </DraggableItem>
+                  </Draggable>
+                )}
+                {show.showMentorName && (
+                  <Draggable
+                    bounds="parent"
+                    onStop={(e) => handleStopDraging(e)}
+                  >
+                    <DraggableItem
+                      sx={{
+                        border: `${
+                          isStoped.stopedMentorName && '1px dotted black'
+                        }`,
+                      }}
                     >
-                      <DraggableItem
-                        sx={{
-                          border: `${isStoped.stopedMentorName && '1px dotted black'
-                            }`,
-                        }}
-                      >
-                        {mentorNameElement}
-                      </DraggableItem>
-                    </Draggable>
-                  )}
-                </FileWrapper>
-              </Wrapper>
-            )}
-            {files?.length === 0 &&
-              (
-                <DropzoneComponent onDrop={(_files) => handleUpload(_files)}>
-                  <UploadField>
-                    <Label>
-                      <Image
-                        alt="upload"
-                        width={58}
-                        height={39}
-                        src="/svgs/upload.svg"
-                      />
-                      <UploadTypography>
-                        Solte o arquivo para fazer upload
-                      </UploadTypography>
-                      <P>Tamanho máximo de 40mb (No momento, apenas PDF) </P>
-                    </Label>
-                  </UploadField>
-                </DropzoneComponent>
-              )}
-          </>
-        )
-      }
-      {
-        color && (
-          <Wrapper>
-            <FileWrapper id="dragRef">
-              <PDFReader file={defaultCertificate.url} />
-            </FileWrapper>
-          </Wrapper>
-        )
-      }
-
-    </form >
-
+                      {mentorNameElement}
+                    </DraggableItem>
+                  </Draggable>
+                )}
+              </FileWrapper>
+            </Wrapper>
+          )}
+          {files?.length === 0 && (
+            <DropzoneComponent onDrop={(_files) => handleUpload(_files)}>
+              <UploadField>
+                <Label>
+                  <Image
+                    alt="upload"
+                    width={58}
+                    height={39}
+                    src="/svgs/upload.svg"
+                  />
+                  <UploadTypography>
+                    Solte o arquivo para fazer upload
+                  </UploadTypography>
+                  <P>Tamanho máximo de 40mb (No momento, apenas PDF) </P>
+                </Label>
+              </UploadField>
+            </DropzoneComponent>
+          )}
+        </>
+      )}
+      {color && (
+        <Wrapper>
+          <FileWrapper id="dragRef">
+            <PDFReader file={defaultCertificate.url} />
+          </FileWrapper>
+        </Wrapper>
+      )}
+    </form>
   );
 };
 

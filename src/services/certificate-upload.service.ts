@@ -1,21 +1,21 @@
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from './HttpClient';
 
-export const UpdateCertificate = async (certificate: ProductClient.Product) => {
+export const UpdateCertificate = async (certificate: any) => {
   try {
-    const response = await HttpClient.put<ProductApi.Post.Response>(
+    const response = await HttpClient.put(
       ApiRoutes.products_certificate,
-      certificate
+      certificate,
     );
     if (response.data.error) {
       return {
-        error: response.data.error
+        error: response.data.error,
       };
     }
     return response.data;
   } catch (error) {
     return {
-      error: 'Erro ao salvar o certificado'
+      error: 'Erro ao salvar o certificado',
     };
   }
 };
