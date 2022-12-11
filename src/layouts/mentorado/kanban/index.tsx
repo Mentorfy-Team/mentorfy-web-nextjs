@@ -111,6 +111,7 @@ export const KanbanView: FC<
       <Toolbar
         initialTab={1}
         breadcrumbs={['Minhas mentorias', memberArea?.title]}
+        contact={memberArea?.contact}
       />
       <ContentWidthLimit>
         {(!steps || steps.length == 0) && (

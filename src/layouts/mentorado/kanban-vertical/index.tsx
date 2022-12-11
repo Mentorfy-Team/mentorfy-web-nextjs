@@ -140,6 +140,7 @@ const VerticalKanban: FC<
       <Toolbar
         initialTab={1}
         breadcrumbs={['Minhas mentorias', memberArea.title]}
+        contact={memberArea?.contact}
       />
       <HorizontalProgressBar
         data={steps}
