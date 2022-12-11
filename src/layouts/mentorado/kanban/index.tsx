@@ -22,8 +22,8 @@ export type UserInput = {
 };
 
 export const KanbanView: FC<
-  PageTypes.Props & { member_area_id: string; memberArea: any }
-> = ({ member_area_id, memberArea }) => {
+  PageTypes.Props & { member_area_id: string; memberArea: any; error }
+> = ({ member_area_id, memberArea, error }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<GroupTools[]>([]);
@@ -217,6 +217,13 @@ export const KanbanView: FC<
                 </Step>
               ))}
         </Wrapper>
+        <div
+          style={{
+            opacity: 0.04,
+          }}
+        >
+          {error}
+        </div>
       </ContentWidthLimit>
       {open && ModalComponent()}
     </>
@@ -238,32 +245,23 @@ export const getProps = async (ctx) => {
   const id = ctx.query.id as string;
 
   // fetch for member area
-  let memberArea: any = await GetProduct(ctx.req, id);
+  const { product, error }: any = await GetProduct(ctx.req, id);
 
-  // if (!memberArea) {
+  // if (!product || error) {
   //   return {
-  //     notFound: true,
-  //   };
+  //         notFound: true,
+  //       };
   // }
-
-  if (!memberArea || (memberArea as any)?.error) {
-    console.error(memberArea as any);
-
-    memberArea = {
-      id: 'c38b2a17-38e7-4fdc-acad-6c76f59bd62d',
-      title: JSON.stringify(memberArea),
-      description: 'teste',
-    };
-  }
 
   return {
     props: {
       member_area_id: id,
       memberArea: {
         id: id,
-        title: memberArea.title,
-        description: memberArea.description,
+        title: product.title,
+        description: product.description,
       },
+      error: error || null,
     },
   };
 };
