@@ -10,10 +10,13 @@ type props = Partial<ProductTypes.Product> & {
   }[];
 };
 
-export function useGetProduct(id) {
+export function useGetProduct(id, defaultProps?) {
   const { data, error, isLoading } = useSWR<{ product?: props }>(
     `${ApiRoutes.products}?id=${id}`,
     fetcher,
+    {
+      fallbackData: defaultProps || {},
+    },
   );
 
   return {

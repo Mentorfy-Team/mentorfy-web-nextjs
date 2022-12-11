@@ -13,6 +13,7 @@ import { GetAuthSession } from '~/helpers/AuthSession';
 import SaveClientInput, { GetTypeName } from '../helpers/SaveClientInput';
 import HandleToolModal from '../helpers/HandleToolModal';
 import TipBar from '~/components/modules/TipBar';
+import { useGetProduct } from '~/hooks/useGetProduct';
 
 export type UserInput = {
   id?: string;
@@ -22,8 +23,12 @@ export type UserInput = {
 };
 
 export const KanbanView: FC<
-  PageTypes.Props & { member_area_id: string; memberArea: any; error }
-> = ({ member_area_id, memberArea, error }) => {
+  PageTypes.Props & { member_area_id: string; memberAreaInitial: any; error }
+> = ({ member_area_id, memberAreaInitial, error }) => {
+  const { product: memberArea } = useGetProduct(
+    member_area_id,
+    memberAreaInitial,
+  );
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<GroupTools[]>([]);
@@ -105,7 +110,7 @@ export const KanbanView: FC<
     <>
       <Toolbar
         initialTab={1}
-        breadcrumbs={['Minhas mentorias', memberArea.title]}
+        breadcrumbs={['Minhas mentorias', memberArea?.title]}
       />
       <ContentWidthLimit>
         {(!steps || steps.length == 0) && (
@@ -217,13 +222,6 @@ export const KanbanView: FC<
                 </Step>
               ))}
         </Wrapper>
-        <div
-          style={{
-            opacity: 0.04,
-          }}
-        >
-          {error}
-        </div>
       </ContentWidthLimit>
       {open && ModalComponent()}
     </>
@@ -256,7 +254,7 @@ export const getProps = async (ctx) => {
   return {
     props: {
       member_area_id: id,
-      memberArea: {
+      memberAreaInitial: {
         id: id,
         title: product?.title,
         description: product?.description,
