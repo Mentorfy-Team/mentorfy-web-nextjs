@@ -238,13 +238,24 @@ export const getProps = async (ctx) => {
   const id = ctx.query.id as string;
 
   // fetch for member area
-  const memberArea = await GetProduct(ctx.req, id);
+  let memberArea: any = await GetProduct(ctx.req, id);
 
-  if (!memberArea) {
-    return {
-      notFound: true,
+  // if (!memberArea) {
+  //   return {
+  //     notFound: true,
+  //   };
+  // }
+
+  if (!memberArea || (memberArea as any)?.error) {
+    console.error((memberArea as any).error);
+
+    memberArea = {
+      id: 'c38b2a17-38e7-4fdc-acad-6c76f59bd62d',
+      title: (memberArea as any).error,
+      description: 'teste',
     };
   }
+
   return {
     props: {
       member_area_id: id,
