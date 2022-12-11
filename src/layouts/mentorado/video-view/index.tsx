@@ -30,6 +30,16 @@ import Comments from './components/comments';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import { GetProduct } from '~/services/product.service';
 import { GetProfile } from '~/services/profile.service';
+import { FindNextVideo, FindNotWatchedVideo } from './helpers/FindNextVideo';
+import { FindVideoById } from './helpers/FindVideoById';
+
+type VideoModuleType = {
+  id: string;
+  module_index: number;
+  video_id: string;
+  video_index: number;
+  video: MentorTools.ToolData;
+};
 
 export const VideoView = ({
   profile,
@@ -38,16 +48,16 @@ export const VideoView = ({
   memberArea,
 }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
-  const [videoId, setVideoId] = useState<string>(video_id);
-  const [nextVideoId, setNextVideoId] = useState<string>(null);
   const { inputs: inputData } = useUserInputs(member_area_id);
+
   const [steps, setSteps] = useState<GroupTools[]>([]);
-  const [videosOrdem, setVideosOrdem] = useState<MentorTools.ToolData[]>([]);
   const [userInput, setUserInput] = useState<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
-  const [open, setOpen] = useState(false);
 
+  const [selectedModule, setSelectedModule] = useState<string>();
+
+  const [open, setOpen] = useState(false);
   const commentRef = useRef(null);
 
   const [currentModal, setCurrentModal] = useState<{
@@ -61,14 +71,10 @@ export const VideoView = ({
 
   useEffect(() => {
     if (stepsData) setSteps(JSON.parse(JSON.stringify(stepsData)));
-    setVideosOrdem(
-      stepsData
-        .filter((step) => step.type === ToolListNames.Video.id)
-        .sort((a, b) => a.order - b.order),
-    );
   }, [stepsData]);
 
   const HandleModal = useCallback(() => {
+    if (!currentModal) return null;
     return (
       <SwitchMentoredModal
         open={open}
@@ -136,71 +142,47 @@ export const VideoView = ({
     [handleSave, userInput],
   );
 
-  // search for the first not finished step and set the video id
-  const GetCurrentVideo = useCallback(() => {
-    let lastId;
-    let nextVideo;
-    steps.forEach((stp) => {
-      if (!nextVideo)
-        stp.rows.find((row) => {
-          if (lastId) {
-            nextVideo = row.id;
-          }
-          if (!(row.extra as any)?.finished && !nextVideo) {
-            lastId = row.id;
-          }
-        });
-    });
-
-    if (lastId) {
-      if (lastId !== videoId) {
-        const id = !video_id ? lastId : video_id;
-        setVideoId(id);
-        // route.push(
-        //   {
-        //     pathname: MentoredRoutes.video_view + '/' + member_area_id,
-        //     query: { v: id },
-        //   },
-        //   undefined,
-        //   { shallow: true },
-        // );
-      }
-      setNextVideoId(nextVideo);
-    } else {
-      setVideoId(null);
+  const mainModule = useMemo(() => {
+    if (selectedModule) {
+      return FindVideoById(selectedModule, steps);
     }
-  }, [steps, video_id, videoId]);
+    return FindNotWatchedVideo(steps, inputData);
+  }, [inputData, selectedModule, steps]);
+
+  const nextVideo = useMemo(() => {
+    if (!mainModule) return null;
+    const rs = FindNextVideo(
+      mainModule.module_index,
+      mainModule.video_index,
+      steps,
+    );
+    return rs;
+  }, [mainModule, steps]);
 
   useEffect(() => {
     if (inputData !== userInput) {
       setUserInput(inputData);
-      GetCurrentVideo();
     }
-  }, [GetCurrentVideo, inputData, userInput]);
+  }, [inputData, userInput]);
 
   const onSelectedNext = useCallback(() => {
-    const next = videosOrdem.findIndex((i) => i.id == videoId) + 1;
-
-    if (next !== 0 && next < videosOrdem.length) {
-      setVideoId(videosOrdem[next].id);
+    if (nextVideo) {
+      setSelectedModule(nextVideo.video.id);
       route.push(
         {
           pathname: MentoredRoutes.video_view + '/' + member_area_id,
-          query: { v: videosOrdem[next].id },
+          query: { v: nextVideo.video.id },
         },
         undefined,
         { shallow: true },
       );
     }
-    if (next + 1 >= videosOrdem.length) {
-      setNextVideoId(null);
-    }
-  }, [videosOrdem, videoId, route, member_area_id]);
+  }, [nextVideo, route, member_area_id]);
 
   const onSelectedVideo = useCallback(
     (id) => {
       if (!id) return;
-      setVideoId(id);
+      setSelectedModule(id);
       route.push(
         {
           pathname: MentoredRoutes.video_view + '/' + member_area_id,
@@ -209,30 +191,18 @@ export const VideoView = ({
         undefined,
         { shallow: true },
       );
-
-      const next = videosOrdem.findIndex((i) => i.id == id) + 1;
-      if (next >= videosOrdem.length) {
-        setNextVideoId(null);
-      } else {
-        setNextVideoId(videosOrdem[next].id);
-      }
     },
-    [member_area_id, route, videosOrdem],
+    [member_area_id, route],
   );
-
-  const getVideo = useCallback(() => {
-    const video = steps
-      .find((stp) => stp.rows.find((row) => row.id == videoId))
-      ?.rows.find((row) => row.id == videoId);
-    return video;
-  }, [steps, videoId]);
 
   const SendComment = useCallback(() => {
     if (commentRef.current.value) {
-      const index = userInput?.findIndex((i) => i.id.toString() == videoId);
+      const index = userInput?.findIndex(
+        (i) => i.id.toString() == mainModule?.video?.id,
+      );
 
       GetOnChange({
-        refId: videoId,
+        refId: mainModule?.video?.id,
         data: {},
         extra: {
           ...(index > -1 ? userInput[index].extra : {}),
@@ -249,15 +219,15 @@ export const VideoView = ({
 
       commentRef.current.value = '';
     }
-  }, [GetOnChange, profile, userInput, videoId]);
+  }, [GetOnChange, profile, userInput, mainModule?.video?.id]);
 
   const handleLike = useCallback(
     (value) => {
       const index = userInput?.findIndex(
-        (i) => i.member_area_tool_id.toString() == videoId,
+        (i) => i.member_area_tool_id.toString() == mainModule?.video?.id,
       );
       GetOnChange({
-        refId: videoId,
+        refId: mainModule?.video?.id,
         data: {},
         extra: {
           ...(index > -1 ? userInput[index].extra : {}),
@@ -265,23 +235,25 @@ export const VideoView = ({
         },
       });
     },
-    [GetOnChange, userInput, videoId],
+    [GetOnChange, userInput, mainModule?.video?.id],
   );
 
   const CommentsSession = useCallback(() => {
     return (
       <Comments
         comments={
-          userInput.find((i) => i.member_area_tool_id.toString() == videoId)
-            ?.extra?.comments
+          userInput.find(
+            (i) => i.member_area_tool_id.toString() == mainModule?.video?.id,
+          )?.extra?.comments
         }
       />
     );
-  }, [userInput, videoId]);
+  }, [userInput, mainModule?.video?.id]);
 
   const renderLike = useCallback(() => {
-    const like = userInput.find((inp) => inp.member_area_tool_id === videoId)
-      ?.extra?.like;
+    const like = userInput.find(
+      (inp) => inp.member_area_tool_id === mainModule?.video?.id,
+    )?.extra?.like;
 
     return (
       <>
@@ -307,7 +279,7 @@ export const VideoView = ({
         </LikeButton>
       </>
     );
-  }, [handleLike, userInput, videoId]);
+  }, [handleLike, userInput, mainModule?.video?.id]);
 
   const unlockedStep = useMemo(() => {
     const unlocked = [];
@@ -325,7 +297,7 @@ export const VideoView = ({
         if (doneTasks?.length == tasks?.length) {
           unlocked.push(steps[i].id);
         } else {
-          if ((steps[i].extra as any).lockFeature) {
+          if ((steps[i].extra as any)?.lockFeature) {
             unlocked.push(steps[i].id);
             break;
           } else {
@@ -354,36 +326,52 @@ export const VideoView = ({
         <Wrapper>
           <VideoWrapper>
             <Typography variant="h6" sx={{ margin: '1rem 0' }}>
-              {getVideo()?.title}
+              {mainModule?.video?.parent_tool?.title} -
+              {mainModule?.video?.title}
             </Typography>
-            <Box
-              sx={{ width: '985px', height: '554px', backgroundColor: 'black' }}
-            >
-              <ReactPlayer
-                url={(getVideo()?.data as any)?.link}
-                width="100%"
-                onEnded={() =>
-                  GetOnChange({
-                    refId: videoId,
-                    data: {},
-                    extra: {
-                      finished: true,
-                    },
-                  })
-                }
-                height="100%"
-                controls={true}
-                config={{
-                  youtube: {
-                    playerVars: {
-                      showinfo: 0,
-                      controls: 1,
-                      disablekb: 0,
-                    },
-                  },
+            {mainModule?.video?.type != 4 && (
+              <Box
+                sx={{
+                  width: '985px',
+                  height: '554px',
+                  backgroundColor: 'black',
                 }}
-              />
-            </Box>
+              ></Box>
+            )}
+            {mainModule?.video?.type == 4 && (
+              <Box
+                sx={{
+                  width: '985px',
+                  height: '554px',
+                  backgroundColor: 'black',
+                }}
+              >
+                <ReactPlayer
+                  url={(mainModule?.video?.data as any)?.link}
+                  width="100%"
+                  onEnded={() =>
+                    GetOnChange({
+                      refId: mainModule?.video.id,
+                      data: {},
+                      extra: {
+                        finished: true,
+                      },
+                    })
+                  }
+                  height="100%"
+                  controls={true}
+                  config={{
+                    youtube: {
+                      playerVars: {
+                        showinfo: 0,
+                        controls: 1,
+                        disablekb: 0,
+                      },
+                    },
+                  }}
+                />
+              </Box>
+            )}
             {/* <IconButton sx={{ float: 'right' }}>
               <Image
                 alt=""
@@ -395,7 +383,9 @@ export const VideoView = ({
             <VideoInteractionsBox>
               <Box sx={{ display: 'flex', gap: '0.5rem' }}>
                 {renderLike()}
-                {userInput.find((inp) => inp.id?.toString() === videoId) && (
+                {userInput.find(
+                  (inp) => inp.id?.toString() === mainModule?.video?.id,
+                ) && (
                   <CompleteButton>
                     Concluído
                     <Image
@@ -407,7 +397,7 @@ export const VideoView = ({
                   </CompleteButton>
                 )}
               </Box>
-              {nextVideoId && (
+              {nextVideo?.video_index && (
                 <NextVButton onClick={() => onSelectedNext()}>
                   Próximo
                   <Image
@@ -424,7 +414,7 @@ export const VideoView = ({
               variant="body1"
               sx={{ margin: '1rem 0', maxWidth: 980, width: '100%' }}
             >
-              {getVideo()?.description}
+              {mainModule?.video?.description}
             </Typography>
 
             <Typography variant="body1" sx={{ margin: '2.5rem 0 0.8rem 0' }}>
@@ -451,12 +441,27 @@ export const VideoView = ({
             <ProgressBar
               data={steps.filter(({ id }) => unlockedStep.some((s) => s == id))}
               input={userInput}
-              activeid={videoId}
-              onGoTo={(id) => onSelectedVideo(id)}
+              activeid={mainModule?.video?.id}
+              activeStepId={mainModule?.module?.id}
+              onGoTo={(id, task) => {
+                if (task.type == 4) {
+                  onSelectedVideo(id);
+                } else {
+                  setCurrentModal({
+                    onChange: () => {},
+                    type: GetTypeName(task.type),
+                    refId: id,
+                    area_id: member_area_id,
+                    data: task,
+                  });
+                  setOpen(true);
+                }
+              }}
             />
           </ProgressBarWrapper>
         </Wrapper>
       </ContentWidthLimit>
+      <HandleModal />
     </>
   );
 };

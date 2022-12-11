@@ -9,13 +9,7 @@ const settings = {
 };
 
 import React from 'react';
-import {
-  AbsoluteBottomBox,
-  AbsoluteTopBox,
-  CollorFullMentorfy,
-  CourseBox,
-  ProductTitle,
-} from './styles';
+import { AbsoluteBottomBox, CourseBox, ProductTitle } from './styles';
 import Image from 'next/image';
 
 type Props = {
@@ -45,11 +39,7 @@ const Carousel: React.FC<Props> = ({ numSlides, list, onClick }) => {
             }}
             quality={100}
           />
-          <AbsoluteTopBox>
-            <CollorFullMentorfy>
-              Mentor<span>fy</span>
-            </CollorFullMentorfy>
-          </AbsoluteTopBox>
+
           {!element?.banner_image && (
             <AbsoluteBottomBox>
               <ProductTitle>{element?.title}</ProductTitle>

@@ -7,6 +7,7 @@ declare namespace MentorTools {
   > & {
     delete?: boolean;
     rows?: ToolData[];
+    parent_tool?: ToolData;
   };
 
   type QuestionsFormProps = {

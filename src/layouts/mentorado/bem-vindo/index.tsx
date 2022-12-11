@@ -17,9 +17,7 @@ import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { useProducts } from '~/hooks/useProducts';
 import {
   AbsoluteBottomBox,
-  AbsoluteTopBox,
   Background,
-  CollorFullMentorfy,
   CollorFullPopular,
   CollorFullTypography,
   CourseBox,
@@ -80,10 +78,10 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
   const TextBanner = (
     <Box
       sx={{
-        maxWidth: '16.5rem',
         textAlign: 'start',
         marginTop: '-3rem',
         marginBottom: '1rem',
+        width: 'clamp( 325px, 50vw, 500px)',
       }}
     >
       <CollorFullTypography
@@ -208,11 +206,7 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
                 }}
                 quality={90}
               />
-              <AbsoluteTopBox>
-                <CollorFullMentorfy>
-                  Mentor<span>fy</span>
-                </CollorFullMentorfy>
-              </AbsoluteTopBox>
+
               {!product.banner_image && (
                 <AbsoluteBottomBox>
                   <ProductTitle>{product.title}</ProductTitle>

@@ -1,0 +1,23 @@
+export const DefaultCertificate = {
+  url: '/default-certificate.pdf',
+  student: {
+    name: {
+      pageX: '73',
+      pageY: '300',
+    },
+    finished_at: {
+      pageX: '89',
+      pageY: '352',
+    },
+  },
+  course: {
+    name: {
+      pageX: '212',
+      pageY: '334',
+    },
+    owner: {
+      pageX: '63',
+      pageY: '404',
+    },
+  },
+};

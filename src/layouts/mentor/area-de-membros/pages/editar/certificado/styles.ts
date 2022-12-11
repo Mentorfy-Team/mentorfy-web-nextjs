@@ -46,6 +46,8 @@ export const Label = styled('label')`
   justify-content: center;
   margin-top: 0.7rem;
   width: 100%;
+  cursor: pointer;
+
 
   &:hover {
     border: 1px dotted ${({ theme }) => theme.palette.text.primary};
@@ -102,6 +104,7 @@ export const DraggableItem = styled('div')`
   height: auto;
   position: absolute;
   padding: 0.2rem;
+  border: 1px dotted red;
 `;
 
 export const FileWrapper = styled('div')`
@@ -109,7 +112,7 @@ export const FileWrapper = styled('div')`
   border-radius: 6px;
   display: flex;
   justify-content: center;
-  height: 500px;
+  aspect-ratio: 16/9;
   max-width: 900px;
   margin-bottom: 1rem;
   position: relative;
@@ -137,16 +140,10 @@ export const ButtonsWrapper = styled('div')`
   justify-content: space-between;
 `;
 
-export const NameButton = styled(Button)`
+export const FieldButton = styled(Button)`
   height: 2.5rem;
   padding: 0px;
   width: 30%;
-`;
-export const DocumentButton = styled(Button)`
-  height: 2.5rem;
-  padding: 0px;
-  width: 30%;
-
 `;
 
 export const NameText = styled(Typography)`

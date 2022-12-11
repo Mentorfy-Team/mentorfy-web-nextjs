@@ -22,9 +22,15 @@ import {
   SaveButton,
   ScrollWrapper,
 } from '../styles';
-import CreateDnDRows from './helpers/CreateDnDRows';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 
+const CreateDnDRows = dynamic(() => import('./helpers/CreateDnDRows'), {
+  ssr: false,
+});
 const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
   ssr: false,
 });
@@ -98,8 +104,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
             parentId
               ? `${parentId ? 'Nova categoria' : 'Novo módulo'}`
               : `${product.deliver === '4' ? 'Novo módulo' : 'Novo módulo'}`
-          }  ` +
-          (steps.length + 1),
+          }  ` + (parentId ? '' : steps.length + 1),
         description: '',
         type: 0,
         parent: parentId,
@@ -126,14 +131,19 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
         return [...oldSteps];
       });
     },
-    [product.deliver, steps.length],
+    [product?.deliver, steps.length],
   );
 
   const handleOpenToolsModal = useCallback(
     (group_id) => {
       setCurrentModal({
         onChange: (tool: MentorTools.ToolType) => {
-          addNewTool('Nova Etapa', tool.description, tool.id, group_id);
+          addNewTool(
+            tool.name || 'Nova Etapa',
+            tool.description,
+            tool.id,
+            group_id,
+          );
         },
         type: ToolListNames.ToolList.name,
       });
@@ -250,25 +260,35 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
   }, [steps, stepsData]);
 
   const DnDRows = useCallback(
-    (values) => {
+    (values: GroupTools[]) => {
+      if (!values || values.length === 0) return <></>;
       const allowSubGroups = product?.member_area?.type_id === 3;
       const productType = product.deliver === '4' ? true : false;
-      return CreateDnDRows(
-        values,
-        (step) => {
-          setCurrentModal({
-            onChange: GetOnChange,
-            type: step.type,
-            refId: step.id + '',
-            data: step || {},
-            rows: step.rows,
-          });
-          setOpen(true);
-        },
-        handleOpenToolsModal,
-        (id) => addNewGroup(id),
-        allowSubGroups,
-        productType,
+
+      console.log('DND: ', values);
+      return (
+        <SortableContext
+          items={values[0].rows.map((i) => i.id + '')}
+          strategy={verticalListSortingStrategy}
+        >
+          <CreateDnDRows
+            rows={values}
+            onEdit={(step) => {
+              setCurrentModal({
+                onChange: GetOnChange,
+                type: step.type,
+                refId: step.id + '',
+                data: step || {},
+                rows: step.rows,
+              });
+              setOpen(true);
+            }}
+            onOpenModal={handleOpenToolsModal}
+            onNewGroup={(id) => addNewGroup(id)}
+            allowSubgroup={allowSubGroups}
+            productType={productType}
+          />
+        </SortableContext>
       );
     },
     [GetOnChange, addNewGroup, handleOpenToolsModal, product],
@@ -319,11 +339,15 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
             color="secondary"
           >
             <Workspaces />
-            {product.deliver === '4' ? 'Adicionar Módulo' : 'Adicionar Módulo'}
+            {product?.deliver === '4' ? 'Adicionar Módulo' : 'Adicionar Módulo'}
           </AddGroup>
         </Box>
         <ScrollWrapper withtoolbar="true">
-          <DragNDrop setElements={setSteps} elements={DnDRows(steps)} />
+          <DragNDrop
+            setElements={setSteps}
+            elements={DnDRows(steps)}
+            allowOverlay={product.deliver === '3'}
+          />
         </ScrollWrapper>
         {open && HandleModal()}
       </ContentWidthLimit>

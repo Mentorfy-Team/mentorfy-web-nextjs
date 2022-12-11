@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import Image from 'next/image';
 import Description from '~/components/atoms/ModalDescription';
 import TextRating from '~/components/atoms/Rating';
@@ -41,6 +42,7 @@ const WheelOfLifeModal = ({
 }: MentoredComponents.Props<ToolProps[], InputProps, ExtraProps>) => {
   const [input, setInput] = useState(userInput?.data || []);
   const [currentArea, setCurrentArea] = useState(0);
+  const [finalLoading, setFinalLoading] = useState(true);
   const sizeLg = useMediaQuery('(min-width: 1200px)');
   const handleFinish = () => {
     onChange({
@@ -51,6 +53,38 @@ const WheelOfLifeModal = ({
     });
     setOpen(false);
   };
+
+  const loadResultGraph = useCallback(() => {
+    if (currentArea === taskData?.length && !finalLoading) {
+      return (
+        <WheelWrapper>
+          <WheelOfLifeTemplate
+            width={sizeLg ? 680 : 350}
+            height={sizeLg ? 400 : 250}
+            taskData={taskData}
+            input={input}
+          />
+        </WheelWrapper>
+      );
+    } else if (currentArea === taskData?.length) {
+      setTimeout(() => {
+        setFinalLoading(false);
+      }, 1000);
+
+      return (
+        <Box
+          sx={{
+            display: 'grid',
+            width: sizeLg ? 680 : 350,
+            height: sizeLg ? 400 : 250,
+            placeItems: 'center',
+          }}
+        >
+          <CircularProgress color="success" />
+        </Box>
+      );
+    }
+  }, [currentArea, finalLoading, input, sizeLg, taskData]);
 
   const HeadText = (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -98,6 +132,7 @@ const WheelOfLifeModal = ({
                       const index = input.findIndex(
                         (item) => item.id === taskData[currentArea].id,
                       );
+                      setFinalLoading(true);
                       setInput((prev) => {
                         if (index === -1) {
                           return [
@@ -117,16 +152,8 @@ const WheelOfLifeModal = ({
                   />
                 </>
               )}
-              {currentArea === taskData?.length && (
-                <WheelWrapper>
-                  <WheelOfLifeTemplate
-                    width={sizeLg ? 680 : 350}
-                    height={sizeLg ? 400 : 250}
-                    taskData={taskData}
-                    input={input}
-                  />
-                </WheelWrapper>
-              )}
+
+              {loadResultGraph()}
             </ContentWrapper>
           </div>
         )}
@@ -157,10 +184,11 @@ const WheelOfLifeModal = ({
                 Próximo
               </ForwardButton>
             )}
-            {currentArea === taskData?.length && (
+            {currentArea === taskData?.length && !finalLoading && (
               <PDFDownload
                 fileName="wheel-of-life.pdf"
                 pageStyles={{}}
+                loadingComponent={<CircularProgress color="success" />}
                 template_id="wheel-id"
               >
                 <ForwardButton variant="contained">Download</ForwardButton>
@@ -168,7 +196,7 @@ const WheelOfLifeModal = ({
             )}
             {currentArea === taskData?.length && (
               <ForwardButton variant="contained" onClick={() => handleFinish()}>
-                Concluir
+                Salvar Respostas
               </ForwardButton>
             )}
           </ButtonsWrapper>

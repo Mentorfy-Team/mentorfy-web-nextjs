@@ -31,14 +31,14 @@ const EditMembersAreaSteps: FC<props> = ({
   const theme = useTheme();
 
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: step.id });
+    useSortable({ id: step.id, data: step });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
   const typeToScreen = (typeTool: number) => {
-    const name = productType ? 'Módulo de Módulo' : 'Módulo de Etapa';
+    const name = productType ? 'Módulo de Padrão' : 'Módulo de Etapas';
     switch (typeTool) {
       case ToolListNames.QuestionsForm.id:
         return ToolListNames.QuestionsForm.name;

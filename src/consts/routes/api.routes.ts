@@ -23,6 +23,7 @@ export enum ApiRoutes {
   products_list = '/api/products/list',
   products_update = '/api/products/update',
   products_clients_list = '/api/products/clients/list',
+  products_certificate = 'api/products/certificate',
 
   //* Rotas para api de area de membros
   member_areas = '/api/member-areas',

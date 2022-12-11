@@ -17,9 +17,7 @@ import CreateProductDialog from './components/CreateProductDialog';
 import { DeleteText } from './components/GroupModal/styles';
 import {
   AbsoluteBottomBox,
-  AbsoluteTopBox,
   AreaWrapper,
-  CollorFullMentorfy,
   CreateAreaButton,
   DeleteAreaButton,
   EmptyBox,
@@ -144,19 +142,23 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
               {!area.main_image && (
                 <Box
                   sx={{
-                    // gradiente azul e laranja
-                    background:
-                      'linear-gradient(180deg, #464646 0%, #161616 100%)',
+                    border: `1px solid ${theme.palette.accent.dark}`,
+                    borderRadius: '10px',
                   }}
-                  width={RatioSize('w', 3)}
-                  height={RatioSize('h', 3)}
-                />
+                >
+                  <Image
+                    alt=""
+                    src={area.member_area?.member_area_type.image}
+                    style={{
+                      objectFit: 'cover',
+                      borderRadius: '0.5rem',
+                    }}
+                    width={RatioSize('w', 3)}
+                    height={RatioSize('h', 3)}
+                  />
+                </Box>
               )}
-              <AbsoluteTopBox>
-                <CollorFullMentorfy>
-                  Mentor<span>fy</span>
-                </CollorFullMentorfy>
-              </AbsoluteTopBox>
+
               {!area?.banner_image && (
                 <AbsoluteBottomBox>
                   <ProductTitle>{area?.title}</ProductTitle>

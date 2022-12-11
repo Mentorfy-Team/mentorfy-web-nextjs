@@ -14,7 +14,7 @@ type Props = {
   pageStyles: Style;
   fileName: string;
   children: React.ReactNode;
-  loadingComponent?: React.ReactNode;
+  loadingComponent?: any;
 };
 
 export default ({
@@ -47,14 +47,13 @@ export default ({
   // monitora e atualiza/roda a função de geração do pdf
   useEffect(() => {
     GenerateDocument(template_id, pageStyles);
-  }, [template_id, pageStyles]);
+  });
 
   return (
     <PDFDownloadLink document={pdfDocument} fileName={fileName}>
       {({ blob, url, loading, error }) => {
-        // TODO: handle error
         // TODO: handle doc ready
-        return loading ? loadingComponent || 'Carregando...' : children;
+        return children;
       }}
     </PDFDownloadLink>
   );

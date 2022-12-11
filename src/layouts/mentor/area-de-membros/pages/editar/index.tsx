@@ -24,7 +24,6 @@ const tabs = [
 ];
 const EditarMentoria: FC<Props> = ({ id, product }) => {
   const [tabindex, setTabindex] = useState(0);
-
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
       case 4:
@@ -69,6 +68,14 @@ export const getProps = async (ctx) => {
     };
 
   const product = await GetProduct(ctx.req, ctx.query.id);
+
+  if (!product)
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
 
   return {
     props: {

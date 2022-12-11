@@ -8,12 +8,13 @@ import {
   ClassesNumber,
   Dot,
   Line,
+  Square,
   StepsWrapper,
   TextWrapper,
   Title,
   Wrapper,
 } from './styles';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 const mock = {
   title: 'Primeiros Passos',
@@ -41,16 +42,22 @@ const ProgressBar = ({
   data = [],
   input = [],
   activeid,
+  activeStepId,
   onGoTo,
 }: {
   data: GroupTools[];
   input: MemberAreaTypes.UserInput[];
   activeid: string;
-  onGoTo: (id, parentId?) => void;
+  activeStepId: string;
+  onGoTo: (id: string, step?: GroupTools) => void;
 }) => {
-  const [collapse, setCollapse] = useState(false);
-  const [stepId, setStepId] = useState<string>('');
+  const [collapse, setCollapse] = useState(true);
+  const [stepId, setStepId] = useState<string>();
   let count = 0;
+
+  const selectedStepId = useMemo(() => {
+    return stepId || activeStepId;
+  }, [activeStepId, stepId]);
 
   const getIsDone = (id: string) => {
     const inputDone = input.find((i) => i.member_area_tool_id === id);
@@ -82,10 +89,10 @@ const ProgressBar = ({
     return done;
   };
 
-  const handleCollapse = (task) => {
-    setStepId(task);
+  const handleCollapse = (step) => {
+    setStepId(step);
 
-    if(task === stepId) {
+    if (step === selectedStepId) {
       setCollapse(!collapse);
     } else {
       setCollapse(true);
@@ -106,8 +113,20 @@ const ProgressBar = ({
               />
               {step.rows.length > 0 && (
                 <>
-                  <Line sx={{backgroundColor: `${stepId === step.id && collapse ? '' : 'inherit'}`}}/>
-                  <Line sx={{backgroundColor: `${stepId === step.id && collapse ? '' : 'inherit'}`}}/>
+                  <Line
+                    sx={{
+                      backgroundColor: `${
+                        selectedStepId === step.id && collapse ? '' : 'inherit'
+                      }`,
+                    }}
+                  />
+                  <Line
+                    sx={{
+                      backgroundColor: `${
+                        selectedStepId === step.id && collapse ? '' : 'inherit'
+                      }`,
+                    }}
+                  />
                 </>
               )}
             </CircleWrapper>
@@ -119,31 +138,53 @@ const ProgressBar = ({
             </TextWrapper>
           </BundleWrapper>
           {step.rows.map((task, j) => {
-            count++;
+            if (task.type != 2) count++;
             return (
-              <Collapse key={task.id} in={stepId === step.id && collapse} timeout={300}>
-              <StepsWrapper
-                onClick={() => onGoTo(task.id, step.id)}
+              <Collapse
+                key={task.id}
+                in={selectedStepId === step.id && collapse}
+                timeout={300}
               >
-                <CircleWrapper>
-                  <Line />
-                  <Dot
-                    className={activeid === task.id ? 'active-background' : ''}
-                    sx={{
-                      backgroundColor: getIsDone(task.id) ? '#38c284' : 'unset',
-                    }}
-                  />
-                  {j + 1 !== step.rows.length ? <Line /> : <Box height={16} />}
-                </CircleWrapper>
-                <TextWrapper>
-                  <ClassesNumber
-                    className={activeid === task.id ? 'active' : ''}
-                    sx={{
-                      marginTop: '-0.1rem',
-                    }}
-                  >{`${count} - ${task.title}`}</ClassesNumber>
-                </TextWrapper>
-              </StepsWrapper>
+                <StepsWrapper onClick={() => onGoTo(task.id, task)}>
+                  <CircleWrapper>
+                    <Line />
+                    {task.type == 2 && (
+                      <>
+                        <Square />
+                        <Line />
+                      </>
+                    )}
+                    {task.type != 2 && (
+                      <>
+                        <Dot
+                          className={
+                            activeid === task.id ? 'active-background' : ''
+                          }
+                          sx={{
+                            backgroundColor: getIsDone(task.id)
+                              ? '#38c284'
+                              : 'unset',
+                          }}
+                        />
+                        {j + 1 !== step.rows.length ? (
+                          <Line />
+                        ) : (
+                          <Box height={16} />
+                        )}
+                      </>
+                    )}
+                  </CircleWrapper>
+                  <TextWrapper>
+                    <ClassesNumber
+                      className={activeid === task.id ? 'active' : ''}
+                      sx={{
+                        marginTop: '-0.1rem',
+                      }}
+                    >{`${task.type != 2 ? count + ' -' : ''} ${
+                      task.title
+                    }`}</ClassesNumber>
+                  </TextWrapper>
+                </StepsWrapper>
               </Collapse>
             );
           })}

@@ -1,20 +1,21 @@
+import React from 'react';
 import { AddBox, Task } from '@mui/icons-material';
 import EditMembersAreaSteps from '~/components/modules/EditMembersAreaSteps';
 import { AddCategory, AddTool, GroupWrapper } from '../../styles';
 
-const CreateDnDRows = (
-  rows: any[],
+export default function CreateDnDRows({
+  rows,
   onEdit,
   onOpenModal,
   onNewGroup,
   allowSubgroup = false,
   productType,
-) => {
+}) {
   const Group = ({ step, children, isGroup }) => {
     return (
       <GroupWrapper
         sx={{
-          margin: !isGroup ? '1rem' : '0',
+          margin: '1rem',
         }}
       >
         <EditMembersAreaSteps
@@ -79,6 +80,4 @@ const CreateDnDRows = (
       </Group>
     );
   });
-};
-
-export default CreateDnDRows;
+}

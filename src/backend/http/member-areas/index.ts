@@ -11,7 +11,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
 
   const { data: products } = await supabase
     .from('member_area')
-    .select('*')
+    .select('*, member_area_type(*)')
     .eq('id', req.query.id)
     .single();
 

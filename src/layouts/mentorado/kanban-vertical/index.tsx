@@ -34,6 +34,8 @@ const VerticalKanban: FC<
   PageTypes.Props & { member_area_id: string; memberArea: any; task_id: string }
 > = ({ member_area_id, memberArea, task_id }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
+  const [stepId, setStepId] = useState<string>();
+
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<GroupTools[]>([]);
   const [userInput, setUserInput] = useState<
@@ -82,6 +84,29 @@ const VerticalKanban: FC<
     [member_area_id, mutate, userInput],
   );
 
+  const ActiveStepId = useMemo(() => {
+    // return the first step id that has a task that is not completed
+    const unlocked = [];
+    for (let i = 0; i < steps.length; i++) {
+      if (i === 0) {
+        unlocked.push(steps[i].id);
+      } else {
+        const tasks = steps[i].rows;
+
+        const doneTasks = tasks?.filter((t) => {
+          const input = userInput?.find((i) => i.member_area_tool_id == t.id);
+          return !!input;
+        });
+
+        if (doneTasks?.length != tasks?.length) {
+          unlocked.push(steps[i].id);
+          break;
+        }
+      }
+    }
+    return unlocked[unlocked.length - 1];
+  }, [steps, userInput]);
+
   const unlockedStep = useMemo(() => {
     const unlocked = [];
     for (let i = 0; i < steps.length; i++) {
@@ -120,6 +145,7 @@ const VerticalKanban: FC<
         data={steps}
         input={userInput}
         activeid={task_id}
+        activeStepId={ActiveStepId}
         onGoTo={() => {}}
       />
       <ContentWidthLimit maxWidth={900}>

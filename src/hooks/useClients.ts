@@ -3,7 +3,7 @@ import { ApiRoutes } from '~/consts/routes/api.routes';
 import { fetcher } from '~/hooks/fetcher';
 
 export function useClients(id, approved?) {
-  const { data, error, mutate } = useSWR<{
+  const { data, error, mutate, isLoading } = useSWR<{
     clients: ClientTypes.Client[];
     statistics: { totalClients: number; totalAccesses: number };
   }>(
@@ -14,7 +14,7 @@ export function useClients(id, approved?) {
   return {
     clients: data?.clients || [],
     statistics: data?.statistics || { totalClients: 0, totalAccesses: 0 },
-    isLoading: !error && !data,
+    isLoading,
     isError: error,
     mutate,
   };

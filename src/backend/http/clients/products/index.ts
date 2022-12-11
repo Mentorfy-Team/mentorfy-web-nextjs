@@ -15,7 +15,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
 
   const { data: productsOwned, error: poe } = await supabase
     .from('product')
-    .select('*, member_area(*)')
+    .select('*, member_area(*, member_area_type(*))')
     .eq('owner', req.query.id);
 
   if (productsOwned && productsOwned.length > 0)
@@ -24,7 +24,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   if (clientProducts && clientProducts.length > 0) {
     const { data: products, error } = await supabase
       .from('product')
-      .select('*, member_area(*)')
+      .select('*, member_area(*, member_area_type(*))')
       .in(
         'id',
         clientProducts?.map((relation) => relation.product_id),

@@ -11,14 +11,14 @@ type props = Partial<ProductTypes.Product> & {
 };
 
 export function useGetProduct(id) {
-  const { data, error } = useSWR<{ product?: props }>(
+  const { data, error, isLoading } = useSWR<{ product?: props }>(
     `${ApiRoutes.products}?id=${id}`,
     fetcher,
   );
 
   return {
     product: data ? data.product : {},
-    isLoading: !error && !data,
+    isLoading,
     isError: error,
   };
 }

@@ -7,8 +7,6 @@ import RatioSize from '~/helpers/RatioSize';
 import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import {
   AbsoluteBottomBox,
-  AbsoluteTopBox,
-  CollorFullMentorfy,
   CourseBox,
   ProductTitle,
 } from '../../bem-vindo/style';
@@ -28,7 +26,6 @@ export function CardVertical({
   const router = useRouter();
   const visible = visibility.isItemVisible(itemId);
   const { types } = useMemberAreaTypes();
-
   return (
     <div
       role="button"
@@ -58,16 +55,14 @@ export function CardVertical({
       >
         <Image
           alt=""
-          src={product?.main_image || '/images/moonlit.png'}
+          src={
+            product?.main_image || product.member_area.member_area_type.image
+          }
           width={RatioSize('w', 3)}
           height={RatioSize('h', 3)}
           quality={90}
         />
-        <AbsoluteTopBox>
-          <CollorFullMentorfy>
-            Mentor<span>fy</span>
-          </CollorFullMentorfy>
-        </AbsoluteTopBox>
+
         {!product?.banner_image && (
           <AbsoluteBottomBox>
             <ProductTitle>{product?.title}</ProductTitle>

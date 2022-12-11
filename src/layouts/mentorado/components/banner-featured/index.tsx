@@ -1,5 +1,5 @@
 import { InfoRounded, PlayArrow } from '@mui/icons-material';
-import { Box, Rating } from '@mui/material';
+import { Box } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react';
@@ -7,11 +7,9 @@ import ReactPlayer from 'react-player';
 import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import {
   BannerBox,
-  CustomTypography,
   MoreInfo,
   Overlay,
   PlayButton,
-  RatingBox,
   VideoHolder,
   VolumeButton,
 } from '../../bem-vindo/style';
@@ -83,11 +81,11 @@ const BannerFeatured = ({
         }}
       >
         {TextBanner}
-        <RatingBox>
+        {/* <RatingBox>
           <Rating defaultValue={4.5} precision={0.5} size="small"></Rating>
           <CustomTypography>2022</CustomTypography>
           <CustomTypography>1750 Alunos</CustomTypography>
-        </RatingBox>
+        </RatingBox> */}
         <Box
           sx={{
             maxWidth: '37.5rem',
