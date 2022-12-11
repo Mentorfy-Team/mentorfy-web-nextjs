@@ -210,6 +210,30 @@ const ContinuosMentoring: FC<
                         />
                       </Task>
                     ))}
+
+                    {step.rows.filter(
+                      (task) =>
+                        userInput.findIndex(
+                          (inp) =>
+                            inp.member_area_tool_id.toString() === task.id,
+                        ) !== -1,
+                    ).length === step.rows.length &&
+                      step.rows.length > 0 && (
+                        <Image
+                          alt="imagem"
+                          width={200}
+                          height={120}
+                          src={
+                            (step.extra as any)?.length > 1
+                              ? step.extra[1].sourceUrl
+                              : '/svgs/finished.svg'
+                          }
+                          style={{
+                            marginTop: '1.2rem',
+                            objectFit: 'contain',
+                          }}
+                        />
+                      )}
                   </TasksWrapper>
                 </Bundle>
               ))}
