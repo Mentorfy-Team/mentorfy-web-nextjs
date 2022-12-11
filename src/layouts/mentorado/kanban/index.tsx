@@ -260,7 +260,7 @@ export const getProps = async (ctx) => {
     props: {
       member_area_id: id,
       memberArea: {
-        id: memberArea.id,
+        id: id,
         title: memberArea.title,
         description: memberArea.description,
       },
