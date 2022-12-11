@@ -1,12 +1,6 @@
 import { SupabaseServer } from '~/backend/supabase';
 
-type PostRequest = ProductApi.Post.Request;
-type PostResponse = ProductApi.Post.Response | any;
-
-export const put: Handler.Callback<PostRequest, PostResponse> = async (
-  req,
-  res,
-) => {
+export const put = async (req, res) => {
   const supabase = SupabaseServer(req, res);
   // console.log(req);
   const { data: certificate, error } = await supabase
@@ -24,10 +18,9 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
 
   if (error) {
     return res.status(400).json({
-      error: 'Não foi possível salvar o seu certificado'
+      error: 'Não foi possível salvar o seu certificado',
     });
   }
 
   return res.status(200).json(certificate);
-
 };
