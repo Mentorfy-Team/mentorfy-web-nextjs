@@ -19,9 +19,14 @@ export type GroupTools = MentorTools.ToolData & {
 type Props = {
   elements: any;
   setElements: (elements: any) => void;
+  allowOverlay?: boolean;
 };
 
-export default function DragNDrop({ elements, setElements }: Props) {
+export default function DragNDrop({
+  elements,
+  setElements,
+  allowOverlay = false,
+}: Props) {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -99,19 +104,21 @@ export default function DragNDrop({ elements, setElements }: Props) {
       modifiers={[restrictToParentElement]}
     >
       {elements}
-      <DragOverlay modifiers={[restrictToParentElement]}>
-        {activeId ? (
-          <Box
-            sx={{
-              backgroundColor: 'green',
-              padding: '10px',
-              opacity: 0.8,
-            }}
-          >
-            Solte na nova posição
-          </Box>
-        ) : null}
-      </DragOverlay>
+      {allowOverlay && (
+        <DragOverlay modifiers={[restrictToParentElement]}>
+          {activeId ? (
+            <Box
+              sx={{
+                backgroundColor: 'green',
+                padding: '10px',
+                opacity: 0.8,
+              }}
+            >
+              Solte na nova posição
+            </Box>
+          ) : null}
+        </DragOverlay>
+      )}
     </DndContext>
   );
 }
