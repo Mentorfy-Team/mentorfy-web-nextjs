@@ -31,7 +31,7 @@ const EditMembersAreaSteps: FC<props> = ({
   const theme = useTheme();
 
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: step.id });
+    useSortable({ id: step.id, data: step });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,

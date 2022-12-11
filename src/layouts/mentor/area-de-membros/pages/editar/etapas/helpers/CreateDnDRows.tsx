@@ -14,7 +14,7 @@ const CreateDnDRows = (
     return (
       <GroupWrapper
         sx={{
-          margin: !isGroup ? '1rem' : '0',
+          margin: '1rem',
         }}
       >
         <EditMembersAreaSteps

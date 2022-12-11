@@ -98,8 +98,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
             parentId
               ? `${parentId ? 'Nova categoria' : 'Novo módulo'}`
               : `${product.deliver === '4' ? 'Novo módulo' : 'Novo módulo'}`
-          }  ` +
-          (steps.length + 1),
+          }  ` + (parentId ? '' : steps.length + 1),
         description: '',
         type: 0,
         parent: parentId,
