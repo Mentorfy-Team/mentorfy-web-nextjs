@@ -16,6 +16,8 @@ export const TeamTitle = styled(Typography)`
   font-size: 1.2rem;
   font-weight: 600;
   line-height: 1.1rem;
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const MentorsWrapper = styled(Box)`
