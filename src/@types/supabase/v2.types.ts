@@ -271,6 +271,7 @@ export interface Database {
           extra: Json | null
           extra_image: string | null
           certificate: Json | null
+          contact: string | null
         }
         Insert: {
           owner: string
@@ -290,6 +291,7 @@ export interface Database {
           extra?: Json | null
           extra_image?: string | null
           certificate?: Json | null
+          contact?: string | null
         }
         Update: {
           owner?: string
@@ -309,6 +311,7 @@ export interface Database {
           extra?: Json | null
           extra_image?: string | null
           certificate?: Json | null
+          contact?: string | null
         }
       }
       profile: {

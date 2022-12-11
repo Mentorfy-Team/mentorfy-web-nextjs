@@ -303,6 +303,9 @@ export const put: Handler.Callback<PostRequest, PostResponse> = async (
   if (req.body.extra) {
     Object.assign(toUpdate, { extra: req.body.extra });
   }
+  if (req.body.extra) {
+    Object.assign(toUpdate, { contact: req.body.contact });
+  }
 
   const { error, data } = await supabase
     .from('product')

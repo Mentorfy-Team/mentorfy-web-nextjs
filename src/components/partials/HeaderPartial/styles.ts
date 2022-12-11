@@ -43,6 +43,11 @@ export const AppBar = styled(MuiAppBar)`
   a {
     text-decoration: none;
     color: white;
+    border: 1px solid ${({ theme }) => theme.palette.secondary.dark};
+    color: ${({ theme }) => theme.palette.secondary.dark};
+    border-radius: 5px;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.9rem;
   }
 `;
 

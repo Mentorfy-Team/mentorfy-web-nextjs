@@ -13,6 +13,7 @@ import InputField from '~/components/atoms/InputField';
 import { useGetProduct } from '~/hooks/useGetProduct';
 import { useMemberAreaTypes } from '~/hooks/useMemberAreaType';
 import { UpdateProduct } from '~/services/product.service';
+import { formatPhoneNumber, parsePhoneNumber } from 'react-phone-number-input';
 import {
   ActionButton,
   CustomTypograpy,
@@ -39,6 +40,7 @@ const Geral: FC<props> = ({ id }) => {
   const [product, setProduct] = useState<typeof pData>(pData);
   const [description, setDescription] = useState<string>('');
   const [title, setTitle] = useState<string>('');
+  const [tel, setTel] = useState<string>('');
   const { types } = useMemberAreaTypes();
   const [currentType, setCurrentType] = useState<MemberAreaTypes.Type>();
   const theme = useTheme();
@@ -62,6 +64,7 @@ const Geral: FC<props> = ({ id }) => {
     setProduct(pData);
     setDescription(pData.description);
     setTitle(pData?.title);
+    setTel(pData?.contact);
     setColorPick({
       one: pData?.extra?.titleGradiente?.one,
       two: pData?.extra?.titleGradiente?.two,
@@ -123,12 +126,13 @@ const Geral: FC<props> = ({ id }) => {
         id: product.id,
         description,
         title,
+        contact: tel,
         extra: { titleGradiente: colorPick },
       });
       toast.success('Alterações salvas com sucesso', { autoClose: 2000 });
       setIsLoading(false);
     },
-    [product, productImage, video, colorPick, description, title],
+    [product, productImage, video, colorPick, description, title, tel],
   );
 
   const handleCapture = (
@@ -217,9 +221,36 @@ const Geral: FC<props> = ({ id }) => {
       />
       <InputField
         color="secondary"
+        value={
+          parsePhoneNumber(tel + '')?.number ? formatPhoneNumber(tel) : tel
+        }
+        label="Telefone para contato ( opcional / recomendado )"
+        InputLabelProps={{
+          shrink: true,
+        }}
+        type="tel"
+        placeholder="(xx) xxxxx-xxxx"
+        onChange={(e) => {
+          const value = '+55' + e.target.value.replace(/\D/g, '');
+          const number = parsePhoneNumber(value + '')?.number;
+
+          if (number?.length > 14) {
+            setTel(tel);
+            return;
+          }
+
+          if (number) {
+            setTel(number);
+          } else {
+            setTel(e.target.value);
+          }
+        }}
+      />
+      <InputField
+        color="secondary"
         value={currentType?.name}
         disabled
-        label="Tipo de Área de Membros"
+        label="Estrutura de Área de Membros"
         InputLabelProps={{
           shrink: true,
         }}
