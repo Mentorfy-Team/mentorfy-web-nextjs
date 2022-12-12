@@ -265,7 +265,6 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
       const allowSubGroups = product?.member_area?.type_id === 3;
       const productType = product.deliver === '4' ? true : false;
 
-      console.log('DND: ', values);
       return (
         <SortableContext
           items={values[0].rows.map((i) => i.id + '')}

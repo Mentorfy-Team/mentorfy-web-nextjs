@@ -410,9 +410,8 @@ const Certificate = ({ id }) => {
                   >
                     <DraggableItem
                       sx={{
-                        border: `${
-                          isStoped.stopedDocument && '1px dotted black'
-                        }`,
+                        border: `${isStoped.stopedDocument && '1px dotted black'
+                          }`,
                       }}
                     >
                       {documentElement}
@@ -427,9 +426,8 @@ const Certificate = ({ id }) => {
                   >
                     <DraggableItem
                       sx={{
-                        border: `${
-                          isStoped.stopedFinishedAt && '1px dotted black'
-                        }`,
+                        border: `${isStoped.stopedFinishedAt && '1px dotted black'
+                          }`,
                       }}
                     >
                       {finishedAtElement}
@@ -443,9 +441,8 @@ const Certificate = ({ id }) => {
                   >
                     <DraggableItem
                       sx={{
-                        border: `${
-                          isStoped.stopedCourseName && '1px dotted black'
-                        }`,
+                        border: `${isStoped.stopedCourseName && '1px dotted black'
+                          }`,
                       }}
                     >
                       {courseNameElement}
@@ -459,9 +456,8 @@ const Certificate = ({ id }) => {
                   >
                     <DraggableItem
                       sx={{
-                        border: `${
-                          isStoped.stopedMentorName && '1px dotted black'
-                        }`,
+                        border: `${isStoped.stopedMentorName && '1px dotted black'
+                          }`,
                       }}
                     >
                       {mentorNameElement}

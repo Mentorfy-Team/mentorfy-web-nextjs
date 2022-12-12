@@ -1,75 +1,71 @@
 import ModalComponent from '~/components/modules/Modal';
-import { ModalDialogContent } from '~/components/modules/Modal/styles';
 
 import { useCallback, useState } from 'react';
-import Radio from '~/components/atoms/Radio';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import RenderNewMentorForm from './NewMentorForm';
 import RenderExistentMentorForm from './ExistentMentoForm';
 
-const NewMentorModal = ({ open, setOpen, teams, onSubmit }) => {
+type Props = {
+  open;
+  setOpen;
+  onSubmit;
+  refData: string;
+};
+
+const NewMentorModal = ({ open, setOpen, onSubmit, refData }: Props) => {
   const [isNewMentor, setIsNewMentor] = useState<boolean>(true);
   const [formData, setFormData] = useState<any>();
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((old) => ({
-      ...old,
-      [event.target.name]: event.target.value,
-    }));
-  };
+  const onChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setFormData((old) => ({
+        ...old,
+        teams: [refData],
+        [event.target.name]: event.target.value,
+      }));
+    },
+    [refData],
+  );
 
   const renderExistingMentorForm = useCallback(() => {
-    return (
-      <RenderExistentMentorForm
-        teams={teams}
-        onChange={onChange}
-        onSubmit={onSubmit}
-      />
-    );
-  }, [onSubmit, teams]);
+    return <RenderExistentMentorForm onChange={onChange} onSubmit={onSubmit} />;
+  }, [onChange, onSubmit]);
 
   const renderNewMentorForm = useCallback(() => {
-    return (
-      <RenderNewMentorForm
-        teams={teams}
-        onChange={onChange}
-        onSubmit={onSubmit}
-        open={open}
-      />
-    );
-  }, [onSubmit, teams, open]);
+    return <RenderNewMentorForm onChange={onChange} />;
+  }, [onChange]);
 
   return (
     <ModalComponent
       open={open}
       setOpen={setOpen}
-      onSave={() => onSubmit(formData)}
+      onSave={() => {
+        onSubmit(formData);
+        setOpen(false);
+      }}
       title="Adicionar Mentor"
     >
-      <ModalDialogContent>
+      {/* <Box
+        sx={{ display: 'flex', width: '100%' }}
+        justifyContent="space-around"
+      >
         <Box
-          sx={{ display: 'flex', width: '100%' }}
-          justifyContent="space-around"
+          onClick={() => setIsNewMentor(true)}
+          sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
         >
-          <Box
-            onClick={() => setIsNewMentor(true)}
-            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-          >
-            <Radio checked={isNewMentor} />
-            <Typography>Novo cadastro</Typography>
-          </Box>
-          <Box
-            onClick={() => setIsNewMentor(false)}
-            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-          >
-            <Radio checked={!isNewMentor} />
-            <Typography>Usar existente</Typography>
-          </Box>
+          <Radio checked={isNewMentor} />
+          <Typography>Novo cadastro</Typography>
         </Box>
+        <Box
+          onClick={() => setIsNewMentor(false)}
+          sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+        >
+          <Radio checked={!isNewMentor} />
+          <Typography>Usar existente</Typography>
+        </Box>
+      </Box> */}
 
-        {isNewMentor ? renderNewMentorForm() : renderExistingMentorForm()}
-      </ModalDialogContent>
+      {renderNewMentorForm()}
+      {/* {isNewMentor ? renderNewMentorForm() : renderExistingMentorForm()} */}
     </ModalComponent>
   );
 };

@@ -1,5 +1,4 @@
 import ModalComponent from '~/components/modules/Modal';
-import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
@@ -56,142 +55,141 @@ const AssignClientsModal: React.FC<{
       }
       saveText="Atribuir"
     >
-      <ModalDialogContent>
-        <AcessLevelSelectField>
-          <InputLabel>Escolha a(s) equipe(s)</InputLabel>
-          <Select
-            value={selectedTeams}
-            label="Escolha a(s) equipe(s)"
-            name="teams"
-            multiple
-            onChange={(e) => {
-              setSelectedTeams(e.target.value as string[]);
-              if ((e.target.value as string[]).some((v) => v === '0')) {
-                onChange({
-                  target: {
-                    value: teams.map((team) => team.id),
-                    name: 'teams',
-                  },
-                });
-              } else {
-                onChange(e);
-              }
-              setSelectedMentors([]);
-            }}
-          >
-            <MenuItem value={'0'}>Todos</MenuItem>
-            {teams?.map((team) => (
-              <MenuItem key={team.id} value={team.id}>
-                {team.title}
-              </MenuItem>
-            ))}
-          </Select>
-        </AcessLevelSelectField>
-        <AcessLevelSelectField>
-          <InputLabel>Escolha o(s) mentor(es)</InputLabel>
-          <Select
-            value={selectedMentors}
-            label="Escolha o(s) mentor(es)"
-            name="team_members"
-            multiple
-            onChange={(e) => {
-              setSelectedMentors(e.target.value as string[]);
-
-              if ((e.target.value as string[]).some((v) => v === '0')) {
-                onChange({
-                  target: {
-                    value: teams
-                      .filter((t) =>
-                        selectedTeams.some((st) => st === t.id || st === '0'),
-                      )
-                      .reduce((acc, team) => {
-                        // unique
-                        const unique = team.team_member.filter(
-                          (tm) =>
-                            !acc.some((a) => a.profile_id === tm.profile_id),
-                        );
-                        return [...acc, ...unique];
-                      }, [])
-                      .map((tm) => tm.id),
-                    name: 'team_members',
-                  },
-                });
-              } else {
-                onChange(e);
-              }
-              setSelectedClients([]);
-            }}
-          >
-            <MenuItem value={'0'}>Todos</MenuItem>
-            {teams
-              .filter((t) =>
-                selectedTeams.some((st) => st === t.id || st === '0'),
-              )
-              .reduce((acc, team) => {
-                // unique
-                const unique = team.team_member.filter(
-                  (tm) => !acc.some((a) => a.profile_id === tm.profile_id),
-                );
-                return [...acc, ...unique];
-              }, [])
-              ?.map((mentor) => (
-                <MenuItem key={mentor.id} value={mentor.id}>
-                  {mentor.profile.name}
-                </MenuItem>
-              ))}
-          </Select>
-        </AcessLevelSelectField>
-
-        <AcessLevelSelectField>
-          <InputLabel>Escolha seu(s) cliente(s)</InputLabel>
-          <Select
-            value={selectedClients}
-            label="Escolha seu(s) cliente(s)"
-            name="clients"
-            multiple
-            onChange={(e) => {
-              setSelectedClients(e.target.value as string[]);
-
-              if ((e.target.value as string[]).some((v) => v === '0')) {
-                onChange({
-                  target: {
-                    value: clients.map((c) => c.id),
-                    name: 'clients',
-                  },
-                });
-              } else {
-                onChange(e);
-              }
-            }}
-          >
-            <MenuItem value={'0'}>Todos</MenuItem>
-            {clients?.map((client) => (
-              <MenuItem key={client.id} value={client.id}>
-                {client.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </AcessLevelSelectField>
-
-        <AcessLevelSelectField>
-          <InputLabel shrink>Nível de Acesso</InputLabel>
-          <Select
-            label="Nível de Acesso"
-            name="role"
-            onChange={(e) => {
-              setSelectedAccessLevel(e.target.value as string);
+      <div>Atribua clientes para seu membro da equipe ter acesso.</div>
+      <AcessLevelSelectField>
+        <InputLabel>Escolha a(s) equipe(s)</InputLabel>
+        <Select
+          value={selectedTeams}
+          label="Escolha a(s) equipe(s)"
+          name="teams"
+          multiple
+          onChange={(e) => {
+            setSelectedTeams(e.target.value as string[]);
+            if ((e.target.value as string[]).some((v) => v === '0')) {
+              onChange({
+                target: {
+                  value: teams.map((team) => team.id),
+                  name: 'teams',
+                },
+              });
+            } else {
               onChange(e);
-            }}
-            value={selectedAccessLevel}
-          >
-            {acessLevel.map((level) => (
-              <MenuItem key={level} value={level}>
-                {level}
+            }
+            setSelectedMentors([]);
+          }}
+        >
+          <MenuItem value={'0'}>Todos</MenuItem>
+          {teams?.map((team) => (
+            <MenuItem key={team.id} value={team.id}>
+              {team.title}
+            </MenuItem>
+          ))}
+        </Select>
+      </AcessLevelSelectField>
+      <AcessLevelSelectField>
+        <InputLabel>Escolha o(s) mentor(es)</InputLabel>
+        <Select
+          value={selectedMentors}
+          label="Escolha o(s) mentor(es)"
+          name="team_members"
+          multiple
+          onChange={(e) => {
+            setSelectedMentors(e.target.value as string[]);
+
+            if ((e.target.value as string[]).some((v) => v === '0')) {
+              onChange({
+                target: {
+                  value: teams
+                    .filter((t) =>
+                      selectedTeams.some((st) => st === t.id || st === '0'),
+                    )
+                    .reduce((acc, team) => {
+                      // unique
+                      const unique = team.team_member.filter(
+                        (tm) =>
+                          !acc.some((a) => a.profile_id === tm.profile_id),
+                      );
+                      return [...acc, ...unique];
+                    }, [])
+                    .map((tm) => tm.id),
+                  name: 'team_members',
+                },
+              });
+            } else {
+              onChange(e);
+            }
+            setSelectedClients([]);
+          }}
+        >
+          <MenuItem value={'0'}>Todos</MenuItem>
+          {teams
+            .filter((t) =>
+              selectedTeams.some((st) => st === t.id || st === '0'),
+            )
+            .reduce((acc, team) => {
+              // unique
+              const unique = team.team_member.filter(
+                (tm) => !acc.some((a) => a.profile_id === tm.profile_id),
+              );
+              return [...acc, ...unique];
+            }, [])
+            ?.map((mentor) => (
+              <MenuItem key={mentor.id} value={mentor.id}>
+                {mentor.profile.name}
               </MenuItem>
             ))}
-          </Select>
-        </AcessLevelSelectField>
-      </ModalDialogContent>
+        </Select>
+      </AcessLevelSelectField>
+
+      <AcessLevelSelectField>
+        <InputLabel>Escolha seu(s) cliente(s)</InputLabel>
+        <Select
+          value={selectedClients}
+          label="Escolha seu(s) cliente(s)"
+          name="clients"
+          multiple
+          onChange={(e) => {
+            setSelectedClients(e.target.value as string[]);
+
+            if ((e.target.value as string[]).some((v) => v === '0')) {
+              onChange({
+                target: {
+                  value: clients.map((c) => c.id),
+                  name: 'clients',
+                },
+              });
+            } else {
+              onChange(e);
+            }
+          }}
+        >
+          <MenuItem value={'0'}>Todos</MenuItem>
+          {clients?.map((client) => (
+            <MenuItem key={client.id} value={client.id}>
+              {client.name}
+            </MenuItem>
+          ))}
+        </Select>
+      </AcessLevelSelectField>
+
+      <AcessLevelSelectField>
+        <InputLabel shrink>Nível de Acesso</InputLabel>
+        <Select
+          label="Nível de Acesso"
+          name="role"
+          onChange={(e) => {
+            setSelectedAccessLevel(e.target.value as string);
+            onChange(e);
+          }}
+          value={selectedAccessLevel}
+        >
+          {acessLevel.map((level) => (
+            <MenuItem key={level} value={level}>
+              {level}
+            </MenuItem>
+          ))}
+        </Select>
+      </AcessLevelSelectField>
     </ModalComponent>
   );
 };

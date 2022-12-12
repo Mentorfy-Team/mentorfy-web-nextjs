@@ -24,14 +24,33 @@ import NewTeamModal from './components/NewTeamModal';
 import TeamCard from './components/TeamCard';
 import { ButtonsWrapper, MentorButtons, NewTeamButton } from './styles';
 
+type prop = {
+  open: boolean;
+  refId: string;
+};
+
+type TeamType = {
+  teams: TeamTypes.TeamTree[];
+  onAddMentor: (refId: prop) => void;
+  onAssignClients: (refId: prop) => void;
+  onDeleteMentor: (refId: prop) => void;
+  onDeleteAttr: (refId: prop) => void;
+};
+
 const Teams: FC<{ user }> = ({ user }) => {
   const { setLoading } = userStore();
   const isMobile = useMediaQuery('(max-width: 500px)');
-  const [openAddMentor, setOpenAddMentor] = useState(false);
+  const [openAddMentor, setOpenAddMentor] = useState({
+    open: false,
+    refId: '',
+  });
   const [openAssingClients, setOpenAssingClients] = useState(false);
-  const [openDeleteMentor, setDeleteMentor] = useState(false);
-  const [openDeleteTeam, setDeleteTeam] = useState(false);
+  const [openDeleteMentor, setDeleteMentor] = useState({
+    open: false,
+    refId: '',
+  });
   const [openDeleteAttr, setDeleteAttr] = useState(false);
+  const [openDeleteTeam, setDeleteTeam] = useState(false);
 
   const {
     data: teamsData,
@@ -63,11 +82,43 @@ const Teams: FC<{ user }> = ({ user }) => {
   }, [isLoadingTeams, setLoading]);
 
   const TeamsSection = useCallback(
-    ({ teams }: { teams: TeamTypes.TeamTree[] }) => {
+    ({
+      teams,
+      onAddMentor,
+      onAssignClients,
+      onDeleteMentor,
+      onDeleteAttr,
+    }: TeamType) => {
       return (
         <Box gap={2}>
           {teams?.map((team) => (
-            <TeamCard key={team.id} title={team.title}>
+            <TeamCard
+              key={team.id}
+              buttons={
+                <>
+                  {team.team_member.length > 0 && (
+                    <MentorButtons
+                      variant="text"
+                      fontColor="red"
+                      onClick={() => {
+                        console.log('refId: delete - ', team.id);
+                        onDeleteMentor({ refId: team.id, open: true });
+                      }}
+                    >
+                      {deleteMentorText}
+                    </MentorButtons>
+                  )}
+                  <MentorButtons
+                    variant="outlined"
+                    onClick={() => onAddMentor({ refId: team.id, open: true })}
+                  >
+                    <Plus height={16} width={16} fill="#FE7D22" />
+                    {addMentorText}
+                  </MentorButtons>
+                </>
+              }
+              title={team.title}
+            >
               {team.team_member?.map((mentor) => (
                 <MentorCard
                   id={mentor.profile.id}
@@ -148,24 +199,6 @@ const Teams: FC<{ user }> = ({ user }) => {
   return (
     <>
       <ButtonsWrapper>
-        {hasMentors && (
-          <MentorButtons
-            disabled={!myTeams || myTeams.length == 0}
-            variant="text"
-            fontColor="red"
-            onClick={() => setDeleteMentor(true)}
-          >
-            {deleteMentorText}
-          </MentorButtons>
-        )}
-        <MentorButtons
-          disabled={!myTeams || myTeams.length == 0}
-          variant="outlined"
-          onClick={() => setOpenAddMentor(true)}
-        >
-          <Plus height={16} width={16} fill="#FE7D22" />
-          {addMentorText}
-        </MentorButtons>
         {clients && clients.length > 0 && (
           <MentorButtons
             variant="text"
@@ -177,14 +210,14 @@ const Teams: FC<{ user }> = ({ user }) => {
           </MentorButtons>
         )}
         {clients && clients.length > 0 && (
-          <MentorButtons
+          <NewTeamButton
             variant="outlined"
             disabled={!myTeams || myTeams.length == 0}
             onClick={() => setOpenAssingClients(true)}
           >
             <Plus height={16} width={16} fill="#FE7D22" />
             {assignClientsText}
-          </MentorButtons>
+          </NewTeamButton>
         )}
       </ButtonsWrapper>
 
@@ -195,7 +228,13 @@ const Teams: FC<{ user }> = ({ user }) => {
         </TipBar>
       )}
 
-      <TeamsSection teams={myTeams} />
+      <TeamsSection
+        teams={myTeams}
+        onAddMentor={(values) => setOpenAddMentor(values)}
+        onDeleteMentor={(values) => setDeleteMentor(values)}
+        onAssignClients={(values) => setOpenAssingClients(true)}
+        onDeleteAttr={(values) => setDeleteAttr(true)}
+      />
       <Box gap={4} alignSelf="self-end" display="flex">
         {myTeams && myTeams.length > 0 && (
           <MentorButtons
@@ -212,42 +251,40 @@ const Teams: FC<{ user }> = ({ user }) => {
           Criar Novo Time
         </NewTeamButton>
       </Box>
-
       <NewMentorModal
-        teams={myTeams}
-        open={openAddMentor}
-        setOpen={setOpenAddMentor}
         onSubmit={(formData) => {
           handleNewMentor(formData);
         }}
+        refData={openAddMentor.refId}
+        open={openAddMentor.open}
+        setOpen={(open) => setOpenAddMentor((old) => ({ ...old, open }))}
       />
-
+      <DeleteMentorModal
+        onSubmit={(formData) => handleDeleteMentor(formData)}
+        refData={openDeleteMentor.refId}
+        teams={myTeams}
+        open={openDeleteMentor.open}
+        setOpen={() => setDeleteMentor((old) => ({ ...old, open: false }))}
+      />
       <AssignClientsModal
         open={openAssingClients}
-        setOpen={setOpenAssingClients}
+        setOpen={(open) => setOpenAssingClients(false)}
         teams={myTeams}
         clients={clients}
         onSubmit={(formData) => {
           handleAssignClients(formData);
         }}
       />
-
-      <NewTeamModal
-        onSubmit={(values) => handleNewTeam(values)}
-        open={openNewTeam}
-        setOpen={setOpenNewTeam}
-      />
-      <DeleteMentorModal
-        onSubmit={(formData) => handleDeleteMentor(formData)}
-        teams={myTeams}
-        open={openDeleteMentor}
-        setOpen={setDeleteMentor}
-      />
       <DeleteAttrModal
         onSubmit={(formData) => handleDeleteAttr(formData)}
         teams={myTeams}
         open={openDeleteAttr}
-        setOpen={setDeleteAttr}
+        setOpen={() => setDeleteAttr(false)}
+      />
+      <NewTeamModal
+        onSubmit={(values) => handleNewTeam(values)}
+        open={openNewTeam}
+        setOpen={setOpenNewTeam}
       />
       <DeleteTeamModal
         onSubmit={(formData) => handleDeleteTeam(formData)}

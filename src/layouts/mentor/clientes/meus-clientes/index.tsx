@@ -33,7 +33,7 @@ const Clients: FC<{ user: User }> = ({ user }) => {
     isLoading: isLoadingClient,
   } = useClients(user.id);
   const [selectedClient, setSelectedClient] = useState(null);
-  // userStore
+
   const { setLoading: setGlobalLoading, isLoading: GlobalLoading } =
     userStore();
   const route = useRouter();
