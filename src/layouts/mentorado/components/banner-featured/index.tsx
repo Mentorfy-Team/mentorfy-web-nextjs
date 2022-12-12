@@ -104,15 +104,15 @@ const BannerFeatured = ({
           <PlayButton
             onClick={() => {
               if (
-                featuredProduct.relation.approved ||
+                featuredProduct.relation?.approved ||
                 featuredProduct.owner === user.id
               ) {
                 router.push(
                   types.find(
                     (type) => type.id.toString() === featuredProduct.deliver,
                   ).path +
-                    '/' +
-                    featuredProduct.id,
+                  '/' +
+                  featuredProduct.id,
                 );
               } else {
                 handlePopularProductsModal(featuredProduct);
