@@ -16,19 +16,23 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
 
   const tool_formated = [];
   // change the parent object to parent id
-  tools.forEach((tool) => {
-    if (tool.parent) {
-      tool['parent_tool'] = tool.parent;
-      tool.parent = tool.parent ? (tool.parent as any).id : null;
-    }
-    tool_formated.push(tool);
-  });
+  if(tools){
+    tools.forEach((tool) => {
+      if (tool.parent) {
+        tool['parent_tool'] = tool.parent;
+        tool.parent = tool.parent ? (tool.parent as any).id : null;
+      }
+      tool_formated.push(tool);
+    });
 
-  // sort by order
-  const sortedTools = tool_formated.sort((a, b) => a.order - b.order);
-  const toolGroups = list_to_tree(sortedTools);
+    // sort by order
+    const sortedTools = tool_formated.sort((a, b) => a.order - b.order);
+    const toolGroups = list_to_tree(sortedTools);
 
-  return res.status(200).json(toolGroups);
+    return res.status(200).json(toolGroups);
+  } else {
+    return res.status(200).json([]);
+  }
 };
 
 function list_to_tree(list) {
