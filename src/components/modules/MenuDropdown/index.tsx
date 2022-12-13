@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Button } from './styles';
+import { Button, Wrapper } from './styles';
 
 type Item = {
   label: string;
@@ -35,7 +35,7 @@ export default function MenuDropdown({
   };
 
   return (
-    <>
+    <Wrapper>
       <Button
         id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}
@@ -75,7 +75,7 @@ export default function MenuDropdown({
                 gap: '1rem',
                 width: '100%',
                 fontSize: '0.8rem',
-                backgroundColor: item.disabled ? '#f5f5f5' : '#2c2c2c',
+                backgroundColor: item.disabled ? '#000' : '#2c2c2c',
               }}
             >
               {item.icon}
@@ -84,6 +84,6 @@ export default function MenuDropdown({
           ))}
         {BtModel && itens.map((item) => BtModel(item))}
       </Menu>
-    </>
+    </Wrapper>
   );
 }

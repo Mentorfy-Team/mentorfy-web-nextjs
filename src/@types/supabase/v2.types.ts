@@ -387,18 +387,21 @@ export interface Database {
           title: string
           owner_id: string
           created_at: string | null
+          products: string[]
         }
         Insert: {
           id?: string
           title: string
           owner_id: string
           created_at?: string | null
+          products?: string[]
         }
         Update: {
           id?: string
           title?: string
           owner_id?: string
           created_at?: string | null
+          products?: string[]
         }
       }
       team_member: {
