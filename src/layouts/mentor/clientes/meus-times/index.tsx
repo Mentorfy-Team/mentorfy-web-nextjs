@@ -1,7 +1,15 @@
+import {
+  DeleteForever,
+  FolderShared,
+  Group,
+  PersonAdd,
+  School,
+  Widgets,
+} from '@mui/icons-material';
 import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { FC, useCallback, useEffect, useState } from 'react';
-import Plus from '~/../public/svgs/plus';
+import MenuDropdown from '~/components/modules/MenuDropdown';
 import TipBar from '~/components/modules/TipBar';
 import { useClients } from '~/hooks/useClients';
 import { useTeams } from '~/hooks/useTeams';
@@ -22,7 +30,7 @@ import DeleteTeamModal from './components/DeleteTeamModal';
 import MentorCard from './components/MentorCard';
 import NewTeamModal from './components/NewTeamModal';
 import TeamCard from './components/TeamCard';
-import { ButtonsWrapper, MentorButtons, NewTeamButton } from './styles';
+import { ButtonsWrapper } from './styles';
 
 type prop = {
   open: boolean;
@@ -32,9 +40,7 @@ type prop = {
 type TeamType = {
   teams: TeamTypes.TeamTree[];
   onAddMentor: (refId: prop) => void;
-  onAssignClients: (refId: prop) => void;
   onDeleteMentor: (refId: prop) => void;
-  onDeleteAttr: (refId: prop) => void;
 };
 
 const Teams: FC<{ user }> = ({ user }) => {
@@ -82,13 +88,7 @@ const Teams: FC<{ user }> = ({ user }) => {
   }, [isLoadingTeams, setLoading]);
 
   const TeamsSection = useCallback(
-    ({
-      teams,
-      onAddMentor,
-      onAssignClients,
-      onDeleteMentor,
-      onDeleteAttr,
-    }: TeamType) => {
+    ({ teams, onAddMentor, onDeleteMentor }: TeamType) => {
       return (
         <Box gap={2}>
           {teams?.map((team) => (
@@ -96,25 +96,25 @@ const Teams: FC<{ user }> = ({ user }) => {
               key={team.id}
               buttons={
                 <>
-                  {team.team_member.length > 0 && (
-                    <MentorButtons
-                      variant="text"
-                      fontColor="red"
-                      onClick={() => {
-                        console.log('refId: delete - ', team.id);
-                        onDeleteMentor({ refId: team.id, open: true });
-                      }}
-                    >
-                      {deleteMentorText}
-                    </MentorButtons>
-                  )}
-                  <MentorButtons
-                    variant="outlined"
-                    onClick={() => onAddMentor({ refId: team.id, open: true })}
-                  >
-                    <Plus height={16} width={16} fill="#FE7D22" />
-                    {addMentorText}
-                  </MentorButtons>
+                  <MenuDropdown
+                    title="Gerenciar Mentores"
+                    disabled={!myTeams || myTeams.length == 0}
+                    icon={<School fontSize="small" fill="#FE7D22" />}
+                    itens={[
+                      {
+                        label: addMentorText,
+                        icon: <PersonAdd fontSize="small" fill="#FE7D22" />,
+                        onClick: () =>
+                          onAddMentor({ refId: team.id, open: true }),
+                      },
+                      {
+                        label: deleteMentorText,
+                        icon: <DeleteForever fontSize="small" fill="#FE7D22" />,
+                        onClick: () =>
+                          onDeleteMentor({ refId: team.id, open: true }),
+                      },
+                    ]}
+                  />
                 </>
               }
               title={team.title}
@@ -199,26 +199,23 @@ const Teams: FC<{ user }> = ({ user }) => {
   return (
     <>
       <ButtonsWrapper>
-        {clients && clients.length > 0 && (
-          <MentorButtons
-            variant="text"
-            fontColor="red"
-            disabled={!myTeams || myTeams.length == 0}
-            onClick={() => setDeleteAttr(true)}
-          >
-            {deAssignClientsText}
-          </MentorButtons>
-        )}
-        {clients && clients.length > 0 && (
-          <NewTeamButton
-            variant="outlined"
-            disabled={!myTeams || myTeams.length == 0}
-            onClick={() => setOpenAssingClients(true)}
-          >
-            <Plus height={16} width={16} fill="#FE7D22" />
-            {assignClientsText}
-          </NewTeamButton>
-        )}
+        <MenuDropdown
+          title="Gerenciar Clientes"
+          disabled={!myTeams || myTeams.length == 0}
+          icon={<Group fontSize="small" fill="#FE7D22" />}
+          itens={[
+            {
+              label: assignClientsText,
+              icon: <PersonAdd fontSize="small" fill="#FE7D22" />,
+              onClick: () => setOpenAssingClients(true),
+            },
+            {
+              label: deAssignClientsText,
+              icon: <DeleteForever fontSize="small" fill="#FE7D22" />,
+              onClick: () => setDeleteAttr(true),
+            },
+          ]}
+        />
       </ButtonsWrapper>
 
       {(!myTeams || myTeams.length == 0) && (
@@ -232,24 +229,25 @@ const Teams: FC<{ user }> = ({ user }) => {
         teams={myTeams}
         onAddMentor={(values) => setOpenAddMentor(values)}
         onDeleteMentor={(values) => setDeleteMentor(values)}
-        onAssignClients={(values) => setOpenAssingClients(true)}
-        onDeleteAttr={(values) => setDeleteAttr(true)}
       />
-      <Box gap={4} alignSelf="self-end" display="flex">
-        {myTeams && myTeams.length > 0 && (
-          <MentorButtons
-            sx={{ border: 'none' }}
-            fontColor="red"
-            variant="text"
-            onClick={() => setDeleteTeam(true)}
-          >
-            Remover Time
-          </MentorButtons>
-        )}
-        <NewTeamButton variant="outlined" onClick={() => setOpenNewTeam(true)}>
-          <Plus height={16} width={16} />
-          Criar Novo Time
-        </NewTeamButton>
+      <Box alignSelf="self-end" display="flex">
+        <MenuDropdown
+          title="Gerenciar Times"
+          icon={<Widgets fontSize="small" fill="#FE7D22" />}
+          itens={[
+            {
+              label: 'Criar Novo Time',
+              icon: <FolderShared fontSize="small" fill="#FE7D22" />,
+              onClick: () => setOpenNewTeam(true),
+            },
+            {
+              label: 'Remover Time',
+              icon: <DeleteForever fontSize="small" fill="#FE7D22" />,
+              onClick: () => setDeleteTeam(true),
+              disabled: !myTeams || myTeams.length == 0,
+            },
+          ]}
+        />
       </Box>
       <NewMentorModal
         onSubmit={(formData) => {
