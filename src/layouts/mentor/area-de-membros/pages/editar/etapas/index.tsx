@@ -267,7 +267,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
 
       return (
         <SortableContext
-          items={values[0].rows.map((i) => i.id + '')}
+          items={(values[0].rows || []).map((i) => i.id + '')}
           strategy={verticalListSortingStrategy}
         >
           <CreateDnDRows
