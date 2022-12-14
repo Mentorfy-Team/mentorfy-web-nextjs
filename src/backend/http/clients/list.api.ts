@@ -14,27 +14,18 @@ export const get = async (req, res) => {
   const { data: relations, error: relErr } = await supabase
     .from('client_product')
     .select('*')
-    .in(
-      'product_id',
-      products.map((product) => product.id),
-    )
+    .in('product_id', products.map((product) => product.id) || [])
     .eq('approved', approved);
 
   const { data: users } = await supabase
     .from('profile')
     .select('id, name, email, phone')
-    .in(
-      'id',
-      relations.map((relation) => relation.user_id),
-    );
+    .in('id', relations.map((relation) => relation.user_id) || []);
 
   const { count: views, error } = await supabase
     .from('profile_history')
     .select('*', { count: 'exact' })
-    .in(
-      'profile_id',
-      relations.map((relation) => relation.user_id),
-    )
+    .in('profile_id', relations.map((relation) => relation.user_id) || [])
     .eq('code', 100);
 
   const clients = users.map((user) => {

@@ -115,10 +115,7 @@ export const del = async (req, res) => {
   const { error: errorRelation } = await supabase
     .from('client_product')
     .delete()
-    .in(
-      'product_id',
-      products.map((p) => p.id),
-    )
+    .in('product_id', products.map((p) => p.id) || [])
     .eq('user_id', req.query.client_id);
 
   if (errorRelation) {

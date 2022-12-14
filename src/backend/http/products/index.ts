@@ -92,10 +92,7 @@ export const del: Handler.Callback<GetRequest, GetResponse> = async (
       await supabase
         .from('client_product')
         .delete()
-        .in(
-          'id',
-          relations.map((r) => r.id),
-        );
+        .in('id', relations.map((r) => r.id) || []);
     }
   }
 
@@ -111,10 +108,7 @@ export const del: Handler.Callback<GetRequest, GetResponse> = async (
   await supabase
     .from('client_input_tool')
     .delete()
-    .in(
-      'member_area_tool_id',
-      data.map((d) => d.id),
-    );
+    .in('member_area_tool_id', data.map((d) => d.id) || []);
 
   await supabase
     .from('member_area_tool')

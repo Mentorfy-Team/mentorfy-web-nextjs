@@ -31,10 +31,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     const { data: relations } = await supabase
       .from('client_product')
       .select('*')
-      .in(
-        'product_id',
-        products?.map((p) => p.id),
-      );
+      .in('product_id', products?.map((p) => p.id) || []);
 
     const productRelations = products.map((p) => {
       const productRelations = relations.filter((r) => r.product_id === p.id);

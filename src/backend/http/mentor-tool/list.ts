@@ -15,7 +15,7 @@ export const get = async (req, res) => {
     const { data: tools, error } = await supabase
       .from('mentor_tool')
       .select('*')
-      .in('id', member_area?.member_area_type['tooltypes']);
+      .in('id', member_area?.member_area_type['tooltypes'] || []);
 
     if (error) {
       res.statusCode = 500;

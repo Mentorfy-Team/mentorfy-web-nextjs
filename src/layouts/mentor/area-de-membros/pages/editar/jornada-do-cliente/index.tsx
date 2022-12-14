@@ -36,10 +36,12 @@ const ClientJourney: FC<props> = ({ id }) => {
   const [clientInput, setClientInput] = useState<any>();
   const [open, setOpen] = useState(false);
   const [steps, setSteps] = useState<ProductTypes.resultJorney[]>();
+
   const {
     data: { clients, result: stepsData },
     isLoading,
   } = useListOfClientsInProduct(id);
+
   const { setLoading } = userStore();
   const route = useRouter();
 

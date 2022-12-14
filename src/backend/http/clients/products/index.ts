@@ -25,10 +25,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     const { data: products, error } = await supabase
       .from('product')
       .select('*, member_area(*, member_area_type(*))')
-      .in(
-        'id',
-        clientProducts?.map((relation) => relation.product_id),
-      );
+      .in('id', clientProducts?.map((relation) => relation.product_id) || []);
 
     if (products) {
       listProducts = listProducts.concat(
@@ -43,10 +40,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   const { data: tools, error: errorTools } = await supabase
     .from('member_area_tool')
     .select('*')
-    .in(
-      'member_area',
-      listProducts.map((p) => p.id),
-    );
+    .in('member_area', listProducts.map((p) => p.id) || []);
 
   const toolsList = tools?.map((tool) => {
     tool['type'] = (tool as any).type;

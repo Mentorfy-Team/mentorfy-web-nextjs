@@ -34,8 +34,8 @@ export const AssignClients = async ({
   const { data, error } = await supabase
     .from('team_member_client')
     .select('*')
-    .in('team_member_id', mentors)
-    .in('profile_id', clients);
+    .in('team_member_id', mentors || [])
+    .in('profile_id', clients || []);
 
   // update existing in toUpsert
   for (const row of data) {
