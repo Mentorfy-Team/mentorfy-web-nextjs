@@ -3,7 +3,7 @@ import React from 'react';
 
 import { MentorsWrapper, TeamTitle, TeamWrapper } from './styles';
 
-const TeamCard = ({ title, buttons = null, teamProducts, children }) => {
+const TeamCard = ({ title, buttons = null, teamProducts = [], children }) => {
   return (
     <>
       <TeamWrapper>
@@ -38,7 +38,11 @@ const TeamCard = ({ title, buttons = null, teamProducts, children }) => {
                   }}
                 >
                   {teamProducts.slice(0, 1).join(', ')}
-                  <Tooltip title={teamProducts.join(', ') + '.'}>
+                  <Tooltip
+                    title={teamProducts
+                      .slice(1, teamProducts.length)
+                      .join(', ')}
+                  >
                     <span
                       style={{
                         backgroundColor: '#5F6EC3',

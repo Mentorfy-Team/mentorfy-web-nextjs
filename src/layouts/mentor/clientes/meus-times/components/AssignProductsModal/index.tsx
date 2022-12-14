@@ -5,14 +5,16 @@ import MenuItem from '@mui/material/MenuItem';
 
 import { AcessLevelSelectField } from '../AddMentorModal/styles';
 import { useEffect, useState } from 'react';
+import { Checkbox } from '@mui/material';
 
 const AssignProductsModal: React.FC<{
-  teams: TeamTypes.TeamTree[];
-  clients: ClientTypes.Client[];
+  team: TeamTypes.TeamTree;
+  products: ProductTypes.Product[];
   onSubmit;
   open: boolean;
+  title: string;
   setOpen: (value: boolean) => void;
-}> = ({ open, setOpen, clients = [], onSubmit, teams = [] }) => {
+}> = ({ open, setOpen, products = [], onSubmit, team, title }) => {
   const [selectedTeams, setSelectedTeams] = useState<string[]>([]);
   const [selectedMentors, setSelectedMentors] = useState<string[]>([]);
   const [selectedClients, setSelectedClients] = useState<string[]>([]);
@@ -25,6 +27,7 @@ const AssignProductsModal: React.FC<{
   const onChange = (event) => {
     setFormData((old) => ({
       ...old,
+      team_id: team.id,
       [event.target.name]: event.target.value,
     }));
   };
@@ -42,7 +45,7 @@ const AssignProductsModal: React.FC<{
     <ModalComponent
       open={open}
       setOpen={setOpen}
-      title="Atribuir Clientes"
+      title={title}
       onSave={() => {
         onSubmit(formData);
         setOpen(false);
@@ -53,23 +56,55 @@ const AssignProductsModal: React.FC<{
         selectedMentors.length == 0 &&
         selectedTeams.length == 0
       }
-      saveText="Atribuir"
+      saveText="Confirmar alteração"
+      maxWidth="500px"
     >
-      <div>Atribua clientes para seu membro da equipe ter acesso.</div>
-      <AcessLevelSelectField>
-        <InputLabel>Escolha a(s) equipe(s)</InputLabel>
+      <div
+        style={{
+          maxWidth: '90vw',
+          width: '100%',
+        }}
+      >
+        Adicione ou remova produtos para acesso do time.
+      </div>
+      <AcessLevelSelectField
+        sx={{
+          maxWidth: '90vw',
+          width: '400px',
+        }}
+      >
+        <InputLabel>Escolha o(s) produto(s)</InputLabel>
         <Select
           value={selectedTeams}
-          label="Escolha a(s) equipe(s)"
-          name="teams"
+          label="Escolha o(s) produto(s)"
+          name="products"
           multiple
+          renderValue={(selected) =>
+            products
+              .filter(
+                (product) => (selected as string[]).indexOf(product.id) > -1,
+              )
+              .map((product) => product.title)
+              .join(', ')
+          }
           onChange={(e) => {
-            setSelectedTeams(e.target.value as string[]);
+            if (
+              e.target.value.includes('0') &&
+              selectedTeams[selectedTeams.length - 1] !== '0'
+            ) {
+              setSelectedTeams(
+                (e.target.value as string[]).filter((v) => v === '0'),
+              );
+            } else {
+              setSelectedTeams(
+                (e.target.value as string[]).filter((v) => v !== '0'),
+              );
+            }
             if ((e.target.value as string[]).some((v) => v === '0')) {
               onChange({
                 target: {
-                  value: teams.map((team) => team.id),
-                  name: 'teams',
+                  value: products.map((team) => team.id),
+                  name: 'products',
                 },
               });
             } else {
@@ -79,113 +114,13 @@ const AssignProductsModal: React.FC<{
           }}
         >
           <MenuItem value={'0'}>Todos</MenuItem>
-          {teams?.map((team) => (
+          {products?.map((team) => (
             <MenuItem key={team.id} value={team.id}>
+              <Checkbox
+                color="success"
+                checked={selectedTeams.indexOf(team.id) > -1}
+              />
               {team.title}
-            </MenuItem>
-          ))}
-        </Select>
-      </AcessLevelSelectField>
-      <AcessLevelSelectField>
-        <InputLabel>Escolha o(s) mentor(es)</InputLabel>
-        <Select
-          value={selectedMentors}
-          label="Escolha o(s) mentor(es)"
-          name="team_members"
-          multiple
-          onChange={(e) => {
-            setSelectedMentors(e.target.value as string[]);
-
-            if ((e.target.value as string[]).some((v) => v === '0')) {
-              onChange({
-                target: {
-                  value: teams
-                    .filter((t) =>
-                      selectedTeams.some((st) => st === t.id || st === '0'),
-                    )
-                    .reduce((acc, team) => {
-                      // unique
-                      const unique = team.team_member.filter(
-                        (tm) =>
-                          !acc.some((a) => a.profile_id === tm.profile_id),
-                      );
-                      return [...acc, ...unique];
-                    }, [])
-                    .map((tm) => tm.id),
-                  name: 'team_members',
-                },
-              });
-            } else {
-              onChange(e);
-            }
-            setSelectedClients([]);
-          }}
-        >
-          <MenuItem value={'0'}>Todos</MenuItem>
-          {teams
-            .filter((t) =>
-              selectedTeams.some((st) => st === t.id || st === '0'),
-            )
-            .reduce((acc, team) => {
-              // unique
-              const unique = team.team_member.filter(
-                (tm) => !acc.some((a) => a.profile_id === tm.profile_id),
-              );
-              return [...acc, ...unique];
-            }, [])
-            ?.map((mentor) => (
-              <MenuItem key={mentor.id} value={mentor.id}>
-                {mentor.profile.name}
-              </MenuItem>
-            ))}
-        </Select>
-      </AcessLevelSelectField>
-
-      <AcessLevelSelectField>
-        <InputLabel>Escolha seu(s) cliente(s)</InputLabel>
-        <Select
-          value={selectedClients}
-          label="Escolha seu(s) cliente(s)"
-          name="clients"
-          multiple
-          onChange={(e) => {
-            setSelectedClients(e.target.value as string[]);
-
-            if ((e.target.value as string[]).some((v) => v === '0')) {
-              onChange({
-                target: {
-                  value: clients.map((c) => c.id),
-                  name: 'clients',
-                },
-              });
-            } else {
-              onChange(e);
-            }
-          }}
-        >
-          <MenuItem value={'0'}>Todos</MenuItem>
-          {clients?.map((client) => (
-            <MenuItem key={client.id} value={client.id}>
-              {client.name}
-            </MenuItem>
-          ))}
-        </Select>
-      </AcessLevelSelectField>
-
-      <AcessLevelSelectField>
-        <InputLabel>Nível de Acesso</InputLabel>
-        <Select
-          label="Nível de Acesso"
-          name="role"
-          onChange={(e) => {
-            setSelectedAccessLevel(e.target.value as string);
-            onChange(e);
-          }}
-          value={selectedAccessLevel}
-        >
-          {acessLevel.map((level) => (
-            <MenuItem key={level} value={level}>
-              {level}
             </MenuItem>
           ))}
         </Select>

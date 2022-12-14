@@ -4,6 +4,7 @@ import {
   DeleteForever,
   Group,
   School,
+  SettingsSuggest,
   Widgets,
 } from '@mui/icons-material';
 import Box from '@mui/material/Box';
@@ -37,17 +38,16 @@ import NewTeamModal from './components/NewTeamModal';
 import TeamCard from './components/TeamCard';
 import { ButtonsWrapper } from './styles';
 
-type prop = {
+type Props = {
   open: boolean;
   refId: string;
 };
 
 type TeamType = {
   teams: TeamTypes.TeamTree[];
-  onAddMentor: (refId: prop) => void;
-  onDeleteMentor: (refId: prop) => void;
-  onAddProductAttr: (refId: prop) => void;
-  onDeleteProductAttr: (refId: prop) => void;
+  onAddMentor: (props: Props) => void;
+  onDeleteMentor: (props: Props) => void;
+  onAddProductAttr: (props: { team; open }) => void;
 };
 
 const Teams: FC<{ user }> = ({ user }) => {
@@ -65,9 +65,12 @@ const Teams: FC<{ user }> = ({ user }) => {
     open: false,
     refId: '',
   });
-  const [openProductAttr, setOpenProductAttr] = useState({
+  const [openProductAttr, setOpenProductAttr] = useState<{
+    open;
+    team: TeamTypes.TeamTree;
+  }>({
     open: false,
-    refId: '',
+    team: null,
   });
   const [deleteProductAttr, setDeleteProductAttr] = useState({
     open: false,
@@ -86,8 +89,7 @@ const Teams: FC<{ user }> = ({ user }) => {
   const addMentorText = isMobile ? '' : 'Adicionar Mentor';
   const assignClientsText = isMobile ? '' : 'Atribuir Clientes';
   const deAssignClientsText = isMobile ? '' : 'Remover Atribuição';
-  const AssignProductsText = isMobile ? '' : 'Atribuir Produtos';
-  const deAssignProductsText = isMobile ? '' : 'Remover Atribuição';
+  const AssignProductsText = isMobile ? '' : 'Gerenciar Produtos';
 
   const [openNewTeam, setOpenNewTeam] = useState(false);
 
@@ -107,19 +109,15 @@ const Teams: FC<{ user }> = ({ user }) => {
   }, [isLoadingTeams, setLoading]);
 
   const TeamsSection = useCallback(
-    ({
-      teams,
-      onAddMentor,
-      onDeleteMentor,
-      onAddProductAttr,
-      onDeleteProductAttr,
-    }: TeamType) => {
+    ({ teams, onAddMentor, onDeleteMentor, onAddProductAttr }: TeamType) => {
       return (
         <Box gap={2}>
           {teams?.map((team) => (
             <TeamCard
               key={team.id}
-              teamProducts={team.products}
+              teamProducts={products
+                .filter((p) => team.products.includes(p.id))
+                .map((p) => p.title)}
               buttons={
                 <>
                   <MenuDropdown
@@ -148,10 +146,12 @@ const Teams: FC<{ user }> = ({ user }) => {
                     icon={<Airplay fontSize="small" fill="#FE7D22" />}
                     itens={[
                       {
-                        label: AssignProductsText,
-                        icon: <Add fontSize="small" fill="#FE7D22" />,
-                        onClick: () =>
-                          onAddProductAttr({ refId: team.id, open: true }),
+                        label: 'Alterar Acessos',
+                        disabled: hasMentors,
+                        icon: (
+                          <SettingsSuggest fontSize="small" fill="#FE7D22" />
+                        ),
+                        onClick: () => onAddProductAttr({ team, open: true }),
                       },
                     ]}
                   />
@@ -185,15 +185,7 @@ const Teams: FC<{ user }> = ({ user }) => {
         </Box>
       );
     },
-    [
-      AssignProductsText,
-      addMentorText,
-      deAssignProductsText,
-      deleteMentorText,
-      hasMentors,
-      myTeams,
-      products,
-    ],
+    [addMentorText, deleteMentorText, hasMentors, myTeams, products],
   );
 
   const handleNewTeam = useCallback(
@@ -298,7 +290,6 @@ const Teams: FC<{ user }> = ({ user }) => {
         onAddMentor={(values) => setOpenAddMentor(values)}
         onDeleteMentor={(values) => setDeleteMentor(values)}
         onAddProductAttr={(values) => setOpenProductAttr(values)}
-        onDeleteProductAttr={(values) => setDeleteProductAttr(values)}
       />
       <Box alignSelf="self-end" display="flex">
         <MenuDropdown
@@ -363,10 +354,11 @@ const Teams: FC<{ user }> = ({ user }) => {
       <AssignProductsModal
         open={openProductAttr.open}
         setOpen={(open) =>
-          setOpenProductAttr((old) => ({ open: false, refId: null }))
+          setOpenProductAttr((old) => ({ open: false, team: null }))
         }
-        teams={myTeams}
-        clients={clients}
+        team={openProductAttr.team}
+        products={products}
+        title={AssignProductsText}
         onSubmit={(formData) => {
           handleUpdateProducts(formData);
         }}
