@@ -103,9 +103,8 @@ const ClientJourney: FC<props> = ({ id }) => {
       <TipWrapper>
         <Image alt="tip-icon" src="/svgs/tip-icon.svg" width={22} height={22} />
         <TipText>
-          Clique em uma etapa para
-          <span>filtrar a lista de mentorados</span>
-          que concluíram a etapa. Clique novamente para cancelar.
+          Clique em uma etapa e selecione um cliente para
+          <span>visualizar suas respostas e progressões</span>.
         </TipText>
       </TipWrapper>
 

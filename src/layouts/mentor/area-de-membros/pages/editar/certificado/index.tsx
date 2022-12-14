@@ -51,11 +51,11 @@ const Certificate = ({ id }) => {
   const theme = useTheme();
   const [files, setFiles] = useState<FileType[]>([]);
   const [show, setShow] = useState({
-    showName: false,
-    showDocument: false,
-    showFinishedAt: false,
-    showCourseName: false,
-    showMentorName: false,
+    name: false,
+    document: false,
+    finishedAt: false,
+    courseName: false,
+    mentorName: false,
   });
   const [isStoped, setIsStoped] = useState({
     stopedName: false,
@@ -123,48 +123,37 @@ const Certificate = ({ id }) => {
   };
 
   const handleShowStates = (e) => {
-    if (e.target.getAttribute('name') === 'name') {
-      setShow((oldStates) => {
-        const newState = { ...oldStates, showName: true };
-        return newState;
-      });
-    }
-    if (e.target.getAttribute('name') === 'document') {
-      setShow((oldStates) => {
-        const newState = { ...oldStates, showDocument: true };
-        return newState;
-      });
-    }
-    if (e.target.getAttribute('name') === 'finishedAt') {
-      setShow((oldStates) => {
-        const newState = { ...oldStates, showFinishedAt: true };
-        return newState;
-      });
-    }
-    if (e.target.getAttribute('name') === 'courseName') {
-      setShow((oldStates) => {
-        const newState = { ...oldStates, showCourseName: true };
-        return newState;
-      });
-    }
-    if (e.target.getAttribute('name') === 'mentorName') {
-      setShow((oldStates) => {
-        const newState = { ...oldStates, showMentorName: true };
-        return newState;
-      });
-    }
+    // * dinamicamente seta o nome do atributo dentro do state com status true
+    setShow((oldStates) => {
+      const newState = { ...oldStates, [e.target.getAttribute('name')]: true };
+      return newState;
+    });
+
     if (e.target.innerHTML === 'Usar certificado padrão Mentorfy') {
       setShow({
-        showName: false,
-        showDocument: false,
-        showFinishedAt: false,
-        showCourseName: false,
-        showMentorName: false,
+        name: false,
+        document: false,
+        finishedAt: false,
+        courseName: false,
+        mentorName: false,
       });
       setColor(!color);
       setFiles([]);
       setTitle('');
     }
+  };
+
+  const formatAndSave = (e, state, fieldName) => {
+    return {
+      ...state,
+      student: {
+        ...state?.student,
+        [fieldName]: {
+          pageX: e.layerX,
+          pageY: e.layerY,
+        },
+      },
+    };
   };
 
   const handleStopDraging = (e) => {
@@ -214,16 +203,7 @@ const Certificate = ({ id }) => {
         return newState;
       });
       setCertificate((old) => {
-        return {
-          ...old,
-          student: {
-            ...old?.student,
-            finished_at: {
-              pageX: e.layerX,
-              pageY: e.layerY,
-            },
-          },
-        };
+        return formatAndSave(e, old, 'finished_at');
       });
     }
     if (e.target.innerHTML === 'NOME DO CURSO') {
@@ -232,16 +212,7 @@ const Certificate = ({ id }) => {
         return newState;
       });
       setCertificate((old) => {
-        return {
-          ...old,
-          course: {
-            ...old?.course,
-            name: {
-              pageX: e.layerX,
-              pageY: e.layerY,
-            },
-          },
-        };
+        return formatAndSave(e, old, 'name');
       });
     }
     if (e.target.innerHTML === 'SEU NOME') {
@@ -250,16 +221,7 @@ const Certificate = ({ id }) => {
         return newState;
       });
       setCertificate((old) => {
-        return {
-          ...old,
-          course: {
-            ...old?.course,
-            owner: {
-              pageX: e.layerX,
-              pageY: e.layerY,
-            },
-          },
-        };
+        return formatAndSave(e, old, 'owner');
       });
     }
   };
@@ -388,7 +350,7 @@ const Certificate = ({ id }) => {
               <FileWrapper id="dragRef">
                 <PDFReader file={(files as any)?.data} />
 
-                {show.showName && (
+                {show.name && (
                   <Draggable
                     bounds="parent"
                     onStop={(e) => handleStopDraging(e)}
@@ -403,15 +365,16 @@ const Certificate = ({ id }) => {
                   </Draggable>
                 )}
 
-                {show.showDocument && (
+                {show.document && (
                   <Draggable
                     bounds="parent"
                     onStop={(e) => handleStopDraging(e)}
                   >
                     <DraggableItem
                       sx={{
-                        border: `${isStoped.stopedDocument && '1px dotted black'
-                          }`,
+                        border: `${
+                          isStoped.stopedDocument && '1px dotted black'
+                        }`,
                       }}
                     >
                       {documentElement}
@@ -419,45 +382,48 @@ const Certificate = ({ id }) => {
                   </Draggable>
                 )}
 
-                {show.showFinishedAt && (
+                {show.finishedAt && (
                   <Draggable
                     bounds="parent"
                     onStop={(e) => handleStopDraging(e)}
                   >
                     <DraggableItem
                       sx={{
-                        border: `${isStoped.stopedFinishedAt && '1px dotted black'
-                          }`,
+                        border: `${
+                          isStoped.stopedFinishedAt && '1px dotted black'
+                        }`,
                       }}
                     >
                       {finishedAtElement}
                     </DraggableItem>
                   </Draggable>
                 )}
-                {show.showCourseName && (
+                {show.courseName && (
                   <Draggable
                     bounds="parent"
                     onStop={(e) => handleStopDraging(e)}
                   >
                     <DraggableItem
                       sx={{
-                        border: `${isStoped.stopedCourseName && '1px dotted black'
-                          }`,
+                        border: `${
+                          isStoped.stopedCourseName && '1px dotted black'
+                        }`,
                       }}
                     >
                       {courseNameElement}
                     </DraggableItem>
                   </Draggable>
                 )}
-                {show.showMentorName && (
+                {show.mentorName && (
                   <Draggable
                     bounds="parent"
                     onStop={(e) => handleStopDraging(e)}
                   >
                     <DraggableItem
                       sx={{
-                        border: `${isStoped.stopedMentorName && '1px dotted black'
-                          }`,
+                        border: `${
+                          isStoped.stopedMentorName && '1px dotted black'
+                        }`,
                       }}
                     >
                       {mentorNameElement}

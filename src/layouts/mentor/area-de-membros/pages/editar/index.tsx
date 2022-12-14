@@ -15,15 +15,16 @@ import { GetAuthSession } from '~/helpers/AuthSession';
 import Certificate from './certificado';
 import { GetProduct } from '~/services/product.service';
 
-const tabs = [
-  'Etapas',
-  'Jornada do Cliente',
-  'Configuração',
-  'Certificado',
-  'Links',
-];
-const EditarMentoria: FC<Props> = ({ id, product }) => {
-  const [tabindex, setTabindex] = useState(0);
+const EditarMentoria: FC<Props> = ({ id, product, user }) => {
+  const [tabindex, setTabindex] = useState(1);
+  const [tabs] = useState([
+    'Etapas',
+    'Jornada do Cliente',
+    'Configuração',
+    'Certificado',
+    'Links',
+  ]);
+
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
       case 4:
@@ -37,14 +38,16 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
       case 0:
         return <StepsPage id={id} product={product} />;
       default:
-        return <StepsPage id={id} product={product} />;
+        return <div />;
     }
   }, [id, product, tabindex]);
 
   const MaxWidth = tabindex != 1 && tabindex != 3 && 700;
   return (
     <>
-      <Toolbar onChange={(value) => setTabindex(value)} tabs={tabs} />
+      {product.owner == user.id && (
+        <Toolbar onChange={(value) => setTabindex(value)} tabs={tabs} />
+      )}
       {tabindex != 0 && (
         <ContentWidthLimit maxWidth={MaxWidth}>
           {SwitchTabs()}
