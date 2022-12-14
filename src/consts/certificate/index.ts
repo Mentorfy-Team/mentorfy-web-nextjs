@@ -1,5 +1,6 @@
 export const DefaultCertificate = {
   url: '/default-certificate.pdf',
+  default_certificate: true,
   student: {
     name: {
       pageX: '73',

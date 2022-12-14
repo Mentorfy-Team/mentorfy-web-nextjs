@@ -2,7 +2,6 @@ import { SupabaseServer } from '~/backend/supabase';
 
 export const put = async (req, res) => {
   const supabase = SupabaseServer(req, res);
-  // console.log(req);
   const { data: certificate, error } = await supabase
     .from('product')
     .update({

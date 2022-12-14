@@ -7,13 +7,14 @@ import Toolbar from '~/components/modules/Toolbar';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 //import { FilesToDelete } from '~/services/file-upload.service';
 import { useUserInputs } from '~/hooks/useUserInputs';
-import { GetProduct } from '~/services/product.service';
 import { Description, Step, Task, TasktTitle, Title, Wrapper } from './styles';
-import { GetAuthSession } from '~/helpers/AuthSession';
 import SaveClientInput, { GetTypeName } from '../helpers/SaveClientInput';
 import HandleToolModal from '../helpers/HandleToolModal';
 import TipBar from '~/components/modules/TipBar';
 import { useGetProduct } from '~/hooks/useGetProduct';
+import { GetAuthSession } from '~/helpers/AuthSession';
+import { GetProduct } from '~/services/product.service';
+import CertificateModal from '../components/certificate-modal';
 
 export type UserInput = {
   id?: string;
@@ -23,8 +24,8 @@ export type UserInput = {
 };
 
 export const KanbanView: FC<
-  PageTypes.Props & { member_area_id: string; memberAreaInitial: any; error }
-> = ({ member_area_id, memberAreaInitial, error }) => {
+  PageTypes.Props & { member_area_id: string; memberAreaInitial: any; error, product: ProductTypes.Product }
+> = ({ member_area_id, memberAreaInitial, error, product }) => {
   const { product: memberArea } = useGetProduct(
     member_area_id,
     memberAreaInitial,
@@ -36,6 +37,7 @@ export const KanbanView: FC<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
   const [open, setOpen] = useState(false);
+  const [showCertificate, setShowCertificate] = useState(true);
 
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
@@ -105,6 +107,22 @@ export const KanbanView: FC<
     }
     return unlocked;
   }, [steps, userInput]);
+
+  const getProgress = (ids) => {
+    let progress = 0;
+    ids.forEach((id) => {
+      const inputDone = userInput.find((i) => i.member_area_tool_id === id);
+      if (inputDone) progress++;
+    });
+    return ids.length > 0 ? (progress / ids.length) * 100 : 0;
+  };
+
+  const getProgressByStep = (step: GroupTools) => {
+    const ids = step.rows.map((r) => r.id);
+    return getProgress(ids);
+  };
+
+  const isDone = steps.every((step) => getProgressByStep(step) == 100);
 
   return (
     <>
@@ -185,13 +203,12 @@ export const KanbanView: FC<
                             marginLeft: '0.4rem',
                             alignSelf: 'center',
                           }}
-                          src={`/svgs/${
-                            userInput?.find(
-                              (inp) => inp.member_area_tool_id === task.id,
-                            )?.extra
-                              ? 'done'
-                              : 'done-gray'
-                          }.svg`}
+                          src={`/svgs/${userInput?.find(
+                            (inp) => inp.member_area_tool_id === task.id,
+                          )?.extra
+                            ? 'done'
+                            : 'done-gray'
+                            }.svg`}
                         />
                       </Task>
                     ))}
@@ -224,7 +241,15 @@ export const KanbanView: FC<
               ))}
         </Wrapper>
       </ContentWidthLimit>
+
       {open && ModalComponent()}
+      {isDone && (
+        <CertificateModal
+          open={showCertificate}
+          setOpen={setShowCertificate}
+          product={product?.certificate}
+        />
+      )}
     </>
   );
 };
@@ -260,6 +285,7 @@ export const getProps = async (ctx) => {
         title: product?.title,
         description: product?.description,
       },
+      product,
       error: error || null,
     },
   };

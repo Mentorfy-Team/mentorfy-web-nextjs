@@ -36,7 +36,7 @@ declare namespace ProductTypes {
 
   type Certificate = {
     product_id?: string
-    default_certificate?: string
+    default_certificate?: boolean
     title?: string
     url?: string
     student?: Json | null

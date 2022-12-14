@@ -67,7 +67,7 @@ const Certificate = ({ id }) => {
   const [certificate, setCertificate] = useState({
     product_id: id,
     title: '',
-    default_certificate: '',
+    default_certificate: false,
     url: '',
     student: {
       name: {
