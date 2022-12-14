@@ -173,9 +173,9 @@ const AssignClientsModal: React.FC<{
       </AcessLevelSelectField>
 
       <AcessLevelSelectField>
-        <InputLabel shrink>Nível de Acesso</InputLabel>
+        <InputLabel>Nível de Acessox</InputLabel>
         <Select
-          label="Nível de Acesso"
+          label="Nível de Acessox"
           name="role"
           onChange={(e) => {
             setSelectedAccessLevel(e.target.value as string);

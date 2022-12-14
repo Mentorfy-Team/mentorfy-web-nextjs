@@ -16,6 +16,7 @@ export enum ApiRoutes {
   teams_list = '/api/teams/list',
   teams_mentor = '/api/teams/mentor',
   teams_client = '/api/teams/client',
+  teams_product = '/api/teams/product',
 
   //* Rotas para api de usuários
   products = '/api/products',

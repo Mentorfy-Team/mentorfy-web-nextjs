@@ -173,7 +173,7 @@ const AssignProductsModal: React.FC<{
       </AcessLevelSelectField>
 
       <AcessLevelSelectField>
-        <InputLabel shrink>Nível de Acesso</InputLabel>
+        <InputLabel>Nível de Acesso</InputLabel>
         <Select
           label="Nível de Acesso"
           name="role"

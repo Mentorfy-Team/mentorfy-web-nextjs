@@ -9,13 +9,16 @@ import {
 import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { FC, useCallback, useEffect, useState } from 'react';
+import { useSWRConfig } from 'swr';
 import MenuDropdown from '~/components/modules/MenuDropdown';
 import TipBar from '~/components/modules/TipBar';
+import { ApiRoutes } from '~/consts/routes/api.routes';
 import { useClients } from '~/hooks/useClients';
 import { useProducts } from '~/hooks/useProducts';
 import { useTeams } from '~/hooks/useTeams';
 import {
   AddMentor,
+  AddProductAttr,
   AssignClients,
   CreateTeam,
   DeleteAttr,
@@ -28,7 +31,6 @@ import AssignClientsModal from './components/AssignClientsModal';
 import AssignProductsModal from './components/AssignProductsModal';
 import DeleteAttrModal from './components/DeleteAttrModal';
 import DeleteMentorModal from './components/DeleteMentorModal';
-import DeleteProductAttrModal from './components/DeleteProductAttrModal';
 import DeleteTeamModal from './components/DeleteTeamModal';
 import MentorCard from './components/MentorCard';
 import NewTeamModal from './components/NewTeamModal';
@@ -78,6 +80,7 @@ const Teams: FC<{ user }> = ({ user }) => {
     isLoading: isLoadingTeams,
   } = useTeams(user.id);
   const { clients } = useClients(user.id);
+  const { mutate: fnMutate } = useSWRConfig();
 
   const deleteMentorText = isMobile ? '' : 'Excluir Mentor';
   const addMentorText = isMobile ? '' : 'Adicionar Mentor';
@@ -116,6 +119,7 @@ const Teams: FC<{ user }> = ({ user }) => {
           {teams?.map((team) => (
             <TeamCard
               key={team.id}
+              teamProducts={team.products}
               buttons={
                 <>
                   <MenuDropdown
@@ -148,12 +152,6 @@ const Teams: FC<{ user }> = ({ user }) => {
                         icon: <Add fontSize="small" fill="#FE7D22" />,
                         onClick: () =>
                           onAddProductAttr({ refId: team.id, open: true }),
-                      },
-                      {
-                        label: deAssignProductsText,
-                        icon: <DeleteForever fontSize="small" fill="#FE7D22" />,
-                        onClick: () =>
-                          onDeleteProductAttr({ refId: team.id, open: true }),
                       },
                     ]}
                   />
@@ -205,19 +203,25 @@ const Teams: FC<{ user }> = ({ user }) => {
     },
     [mutate],
   );
-  const handleAddProduct = useCallback(
+
+  const handleUpdateProducts = useCallback(
     async (formData) => {
-      await AddProductAttr(formData);
-      await mutate();
+      const mteam = myTeams.map((team) => {
+        if (team.id == formData.team_id) {
+          return {
+            ...team,
+            products: formData.products,
+          };
+        }
+        return team;
+      });
+      await fnMutate(ApiRoutes.teams, AddProductAttr(formData), {
+        optimisticData: {
+          myTeams: mteam,
+        },
+      });
     },
-    [mutate],
-  );
-  const handleDeleteProduct = useCallback(
-    async (formData) => {
-      await DeleteProductAttr(formData);
-      await mutate();
-    },
-    [mutate],
+    [fnMutate, myTeams],
   );
 
   const handleNewMentor = useCallback(
@@ -356,19 +360,15 @@ const Teams: FC<{ user }> = ({ user }) => {
         open={openDeleteTeam}
         setOpen={setDeleteTeam}
       />
-      <DeleteProductAttrModal
-        onSubmit={(formData) => handleDeleteTeam(formData)}
-        teams={myTeams}
-        open={openDeleteTeam}
-        setOpen={setDeleteTeam}
-      />
       <AssignProductsModal
-        open={openAssingClients}
-        setOpen={(open) => setOpenAssingClients(false)}
+        open={openProductAttr.open}
+        setOpen={(open) =>
+          setOpenProductAttr((old) => ({ open: false, refId: null }))
+        }
         teams={myTeams}
         clients={clients}
         onSubmit={(formData) => {
-          handleAssignClients(formData);
+          handleUpdateProducts(formData);
         }}
       />
     </>

@@ -124,6 +124,24 @@ export const CreateTeam = async (title) => {
   }
 };
 
+export const AddProductAttr = async ({ team_id, products }) => {
+  const response = await HttpClient.put(ApiRoutes.teams_product, {
+    team_id,
+    products,
+  });
+  return response.data;
+};
+
+export const DeleteProductAttr = async ({ team_id, products }) => {
+  const response = await HttpClient.put(ApiRoutes.teams_product, {
+    params: {
+      team_id,
+      products,
+    },
+  });
+  return response.data;
+};
+
 export const ListTeams = async (token, id) => {
   try {
     const {
