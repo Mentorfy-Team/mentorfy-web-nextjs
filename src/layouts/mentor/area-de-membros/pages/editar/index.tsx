@@ -4,7 +4,7 @@ import Toolbar from '~/components/modules/Toolbar';
 
 type Props = PageTypes.Props & {
   data: MentorTools.ToolData[];
-  product: any;
+  product: ProductApi.Product;
   id: string;
 };
 import ConfigPage from '~/layouts/mentor/area-de-membros/pages/editar/configuracao';
@@ -16,7 +16,7 @@ import Certificate from './certificado';
 import { GetProduct } from '~/services/product.service';
 
 const EditarMentoria: FC<Props> = ({ id, product, user }) => {
-  const [tabindex, setTabindex] = useState(1);
+  const [tabindex, setTabindex] = useState(product.owner == user.id ? 0 : 1);
   const [tabs] = useState([
     'Etapas',
     'Jornada do Cliente',
@@ -45,6 +45,7 @@ const EditarMentoria: FC<Props> = ({ id, product, user }) => {
   const MaxWidth = tabindex != 1 && tabindex != 3 && 700;
   return (
     <>
+      {console.log('product', product)}
       {product.owner == user.id && (
         <Toolbar onChange={(value) => setTabindex(value)} tabs={tabs} />
       )}
@@ -70,9 +71,9 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const product = await GetProduct(ctx.req, ctx.query.id);
+  const response = await GetProduct(ctx.req, ctx.query.id);
 
-  if (!product)
+  if (!response)
     return {
       redirect: {
         destination: '/',
@@ -84,7 +85,7 @@ export const getProps = async (ctx) => {
     props: {
       id: ctx.query.id,
       user: session.user,
-      product,
+      product: response.product,
     },
   };
 };

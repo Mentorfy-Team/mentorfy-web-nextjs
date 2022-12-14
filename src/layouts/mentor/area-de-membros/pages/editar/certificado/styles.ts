@@ -10,6 +10,17 @@ export const BpIcon = styled('span')`
   width: 16px;
 `;
 
+export const SizeButton = styled('button')`
+  border-radius: 10%;
+  height: 1rem;
+  width: 1rem;
+  background-color: ${({ theme }) => theme.palette.accent.main};
+  padding: 0px 0px;
+  border: none;
+  color: white;
+  margin: 0px 0.5rem;
+`;
+
 export const BpCheckedIcon = styled('div')`
   align-items: center;
   background-image: url('/svgs/bp-checked-icon.svg');
@@ -47,7 +58,6 @@ export const Label = styled('label')`
   margin-top: 0.7rem;
   width: 100%;
   cursor: pointer;
-
 
   &:hover {
     border: 1px dotted ${({ theme }) => theme.palette.text.primary};
