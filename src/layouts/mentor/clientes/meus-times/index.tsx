@@ -147,7 +147,6 @@ const Teams: FC<{ user }> = ({ user }) => {
                     itens={[
                       {
                         label: 'Alterar Acessos',
-                        disabled: hasMentors,
                         icon: (
                           <SettingsSuggest fontSize="small" fill="#FE7D22" />
                         ),
