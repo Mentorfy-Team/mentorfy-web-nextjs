@@ -1,6 +1,6 @@
 import { useMediaQuery } from '@mui/material';
 import React from 'react';
-import { Document, Page } from 'react-pdf/dist/esm/entry.webpack5';
+import { Document, Page } from 'react-pdf';
 import { Wrapper } from './styles';
 
 const PDFReader = ({ file }) => {

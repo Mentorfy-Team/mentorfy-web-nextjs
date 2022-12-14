@@ -483,17 +483,23 @@ export const getProps = async (ctx) => {
   const video_id = (ctx.query.v || 0) as string;
 
   // fetch for member area
-  const memberArea = await GetProduct(ctx.req, id);
+  const response = await GetProduct(ctx.req, id);
   const profile = await GetProfile(ctx.req);
+
+  if (!response) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
       member_area_id: id,
       video_id,
       memberArea: {
-        id: memberArea.id,
-        title: memberArea.title,
-        description: memberArea.description,
+        id: response.product.id,
+        title: response.product.title,
+        description: response.product.description,
       },
       profile,
     },

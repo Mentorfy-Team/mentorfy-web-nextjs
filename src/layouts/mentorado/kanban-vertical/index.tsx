@@ -271,9 +271,9 @@ export const getProps = async (ctx) => {
   const task_id = (ctx.query.task_id || 0) as string;
 
   // fetch for member area
-  const memberArea = await GetProduct(ctx.req, id);
+  const response = await GetProduct(ctx.req, id);
 
-  if (!memberArea) {
+  if (!response) {
     return {
       notFound: true,
     };
@@ -283,9 +283,9 @@ export const getProps = async (ctx) => {
       member_area_id: id,
       task_id,
       memberArea: {
-        id: memberArea.id,
-        title: memberArea.title,
-        description: memberArea.description,
+        id: response.product.id,
+        title: response.product.title,
+        description: response.product.description,
       },
     },
   };

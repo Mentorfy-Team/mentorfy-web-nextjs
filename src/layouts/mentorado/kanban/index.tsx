@@ -24,7 +24,12 @@ export type UserInput = {
 };
 
 export const KanbanView: FC<
-  PageTypes.Props & { member_area_id: string; memberAreaInitial: any; error, product: ProductTypes.Product }
+  PageTypes.Props & {
+    member_area_id: string;
+    memberAreaInitial: any;
+    error;
+    product: ProductTypes.Product;
+  }
 > = ({ member_area_id, memberAreaInitial, error, product }) => {
   const { product: memberArea } = useGetProduct(
     member_area_id,
@@ -203,12 +208,13 @@ export const KanbanView: FC<
                             marginLeft: '0.4rem',
                             alignSelf: 'center',
                           }}
-                          src={`/svgs/${userInput?.find(
-                            (inp) => inp.member_area_tool_id === task.id,
-                          )?.extra
-                            ? 'done'
-                            : 'done-gray'
-                            }.svg`}
+                          src={`/svgs/${
+                            userInput?.find(
+                              (inp) => inp.member_area_tool_id === task.id,
+                            )?.extra
+                              ? 'done'
+                              : 'done-gray'
+                          }.svg`}
                         />
                       </Task>
                     ))}
@@ -247,7 +253,7 @@ export const KanbanView: FC<
         <CertificateModal
           open={showCertificate}
           setOpen={setShowCertificate}
-          product={product?.certificate}
+          product={product?.certificate as any}
         />
       )}
     </>
@@ -269,24 +275,24 @@ export const getProps = async (ctx) => {
   const id = ctx.query.id as string;
 
   // fetch for member area
-  const { product, error }: any = await GetProduct(ctx.req, id);
+  const response: any = await GetProduct(ctx.req, id);
 
-  // if (!product || error) {
-  //   return {
-  //         notFound: true,
-  //       };
-  // }
+  if (!response) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
       member_area_id: id,
       memberAreaInitial: {
         id: id,
-        title: product?.title,
-        description: product?.description,
+        title: response.product?.title,
+        description: response.product?.description,
       },
-      product,
-      error: error || null,
+      product: response.product,
+      error: null,
     },
   };
 };
