@@ -99,6 +99,7 @@ const Teams: FC<{ user }> = ({ user }) => {
 
   useEffect(() => {
     setMyTeams(teamsData || []);
+    console.log('teamsData', teamsData);
     setHasMentors(
       teamsData?.some((team) => team.team_member?.length > 0) || false,
     );
@@ -202,17 +203,21 @@ const Teams: FC<{ user }> = ({ user }) => {
           return {
             ...team,
             products: formData.products,
-          };
+          } as TeamTypes.TeamTree;
         }
         return team;
       });
-      await fnMutate(ApiRoutes.teams, AddProductAttr(formData), {
-        optimisticData: {
-          myTeams: mteam,
+      await fnMutate(
+        `${ApiRoutes.teams_list}?id=${user.id}`,
+        AddProductAttr(formData),
+        {
+          optimisticData: mteam,
+          populateCache: false,
         },
-      });
+      );
+      //await mutate();
     },
-    [fnMutate, myTeams],
+    [fnMutate, myTeams, user.id],
   );
 
   const handleNewMentor = useCallback(
@@ -326,7 +331,7 @@ const Teams: FC<{ user }> = ({ user }) => {
       />
       <AssignClientsModal
         open={openAssingClients}
-        setOpen={(open) => setOpenAssingClients(false)}
+        setOpen={() => setOpenAssingClients(false)}
         teams={myTeams}
         clients={clients}
         onSubmit={(formData) => {
@@ -350,18 +355,20 @@ const Teams: FC<{ user }> = ({ user }) => {
         open={openDeleteTeam}
         setOpen={setDeleteTeam}
       />
-      <AssignProductsModal
-        open={openProductAttr.open}
-        setOpen={(open) =>
-          setOpenProductAttr((old) => ({ open: false, team: null }))
-        }
-        team={openProductAttr.team}
-        products={products}
-        title={AssignProductsText}
-        onSubmit={(formData) => {
-          handleUpdateProducts(formData);
-        }}
-      />
+      {openProductAttr?.team && (
+        <AssignProductsModal
+          open={openProductAttr.open}
+          setOpen={() =>
+            setOpenProductAttr(() => ({ open: false, team: null }))
+          }
+          team={openProductAttr.team}
+          products={products}
+          title={AssignProductsText}
+          onSubmit={(formData) => {
+            handleUpdateProducts(formData);
+          }}
+        />
+      )}
     </>
   );
 };

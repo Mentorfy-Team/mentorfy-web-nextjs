@@ -4,7 +4,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
 import { AcessLevelSelectField } from '../AddMentorModal/styles';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Checkbox } from '@mui/material';
 
 const AssignProductsModal: React.FC<{
@@ -15,12 +15,11 @@ const AssignProductsModal: React.FC<{
   title: string;
   setOpen: (value: boolean) => void;
 }> = ({ open, setOpen, products = [], onSubmit, team, title }) => {
-  const [selectedTeams, setSelectedTeams] = useState<string[]>([]);
-  const [selectedMentors, setSelectedMentors] = useState<string[]>([]);
-  const [selectedClients, setSelectedClients] = useState<string[]>([]);
-  const [selectedAccessLevel, setSelectedAccessLevel] = useState<string>();
+  const [selectedProducts, setSelectedProducts] = useState<string[]>();
 
-  const acessLevel = ['Editor', 'Tutor', 'Gestor'];
+  const listProducts = useMemo(() => {
+    return selectedProducts || team.products;
+  }, [selectedProducts, team]);
 
   const [formData, setFormData] = useState<any>();
 
@@ -34,10 +33,7 @@ const AssignProductsModal: React.FC<{
 
   useEffect(() => {
     if (!open) {
-      setSelectedTeams([]);
-      setSelectedMentors([]);
-      setSelectedClients([]);
-      setSelectedAccessLevel('');
+      setSelectedProducts([]);
     }
   }, [open]);
 
@@ -50,12 +46,7 @@ const AssignProductsModal: React.FC<{
         onSubmit(formData);
         setOpen(false);
       }}
-      isBlocked={
-        !selectedAccessLevel &&
-        selectedClients.length == 0 &&
-        selectedMentors.length == 0 &&
-        selectedTeams.length == 0
-      }
+      isBlocked={selectedProducts?.length == 0}
       saveText="Confirmar alteração"
       maxWidth="500px"
     >
@@ -75,7 +66,7 @@ const AssignProductsModal: React.FC<{
       >
         <InputLabel>Escolha o(s) produto(s)</InputLabel>
         <Select
-          value={selectedTeams}
+          value={listProducts}
           label="Escolha o(s) produto(s)"
           name="products"
           multiple
@@ -90,13 +81,13 @@ const AssignProductsModal: React.FC<{
           onChange={(e) => {
             if (
               e.target.value.includes('0') &&
-              selectedTeams[selectedTeams.length - 1] !== '0'
+              listProducts[listProducts?.length - 1] !== '0'
             ) {
-              setSelectedTeams(
+              setSelectedProducts(
                 (e.target.value as string[]).filter((v) => v === '0'),
               );
             } else {
-              setSelectedTeams(
+              setSelectedProducts(
                 (e.target.value as string[]).filter((v) => v !== '0'),
               );
             }
@@ -110,17 +101,16 @@ const AssignProductsModal: React.FC<{
             } else {
               onChange(e);
             }
-            setSelectedMentors([]);
           }}
         >
           <MenuItem value={'0'}>Todos</MenuItem>
-          {products?.map((team) => (
-            <MenuItem key={team.id} value={team.id}>
+          {products?.map((product) => (
+            <MenuItem key={product.id} value={product.id}>
               <Checkbox
                 color="success"
-                checked={selectedTeams.indexOf(team.id) > -1}
+                checked={listProducts?.indexOf(product.id) > -1}
               />
-              {team.title}
+              {product.title}
             </MenuItem>
           ))}
         </Select>
