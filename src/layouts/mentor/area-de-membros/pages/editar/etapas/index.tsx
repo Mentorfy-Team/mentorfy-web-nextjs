@@ -100,9 +100,10 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
       const newGroup = {
         id: Math.random() + '',
         title:
-          `${parentId
-            ? `${parentId ? 'Nova categoria' : 'Novo módulo'}`
-            : `${product.deliver === '4' ? 'Novo módulo' : 'Novo módulo'}`
+          `${
+            parentId
+              ? `${parentId ? 'Nova categoria' : 'Novo módulo'}`
+              : `${product.deliver === '4' ? 'Novo módulo' : 'Novo módulo'}`
           }  ` + (parentId ? '' : steps.length + 1),
         description: '',
         type: 0,
@@ -175,7 +176,6 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
 
   const handleSave = useCallback(async () => {
     setLoading(true);
-    console.log(steps);
     // timout para dar tempo para as imagens se organizarem
     setTimeout(async () => {
       await UpdateMemberAreaTools(id, steps);

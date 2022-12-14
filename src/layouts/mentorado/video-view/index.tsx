@@ -470,8 +470,11 @@ export const VideoView = ({
 // * ServerSideRender (SSR)
 export const getProps = async (ctx) => {
   const { session } = await GetAuthSession(ctx);
+  let id = ctx.query.id as string;
 
-  if (!session)
+  if (id.includes('pdf')) id = null;
+
+  if (!session || !id)
     return {
       redirect: {
         destination: '/',
@@ -479,7 +482,6 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const id = ctx.query.id as string;
   const video_id = (ctx.query.v || 0) as string;
 
   // fetch for member area

@@ -263,16 +263,17 @@ export const KanbanView: FC<
 // * ServerSideRender (SSR)
 export const getProps = async (ctx) => {
   const { session } = await GetAuthSession(ctx);
+  let id = ctx.query.id as string;
 
-  if (!session)
+  if (id.includes('pdf')) id = null;
+
+  if (!session || !id)
     return {
       redirect: {
         destination: '/',
         permanent: false,
       },
     };
-
-  const id = ctx.query.id as string;
 
   // fetch for member area
   const response: any = await GetProduct(ctx.req, id);
