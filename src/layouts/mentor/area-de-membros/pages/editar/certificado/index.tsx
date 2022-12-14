@@ -123,22 +123,32 @@ const Certificate = ({ id }) => {
     }
   };
 
-  const formatObj = (e, state, categoryName, fieldName) => {
+  const formatObj = ({ posX, posY }, state, categoryName, fieldName) => {
     return {
       ...state,
       [categoryName]: {
         ...state?.student,
         [fieldName]: {
-          pageX: e.layerX,
-          pageY: e.layerY,
+          pageX: posX,
+          pageY: posY,
         },
       },
     };
   };
 
   const handleStopDraging = (e, categoryName) => {
+    const boxRef = e.target.offsetParent as HTMLElement;
+    const transform = window.getComputedStyle(boxRef).transform;
+
+    // get x and y values from transform matrix
+    const matrix = transform.split('(')[1].split(')')[0].split(',');
+    const posX = matrix[4];
+    const posY = matrix[5];
+
     setIsStoped((oldStates) => ({ ...oldStates, [e.target.id]: true }));
-    setCertificate((old) => formatObj(e, old, categoryName, e.target.id));
+    setCertificate((old) =>
+      formatObj({ posX, posY }, old, categoryName, e.target.id),
+    );
   };
 
   const handleSizeChange = (categoryName, fieldName, value) => {
