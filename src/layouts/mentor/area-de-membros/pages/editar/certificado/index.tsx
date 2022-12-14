@@ -13,7 +13,6 @@ import {
   CheckText,
   CheckWrapper,
   DocumentText,
-  DraggableItem,
   FieldButton,
   FileWrapper,
   Label,
@@ -30,11 +29,11 @@ import { useTheme } from '@mui/material/styles';
 import DropzoneComponent from '~/components/modules/Dropzone';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import Draggable from 'react-draggable';
 import { FileType } from '../../../components/UploadFileModal';
 import { UpdateCertificate } from '~/services/certificate-upload.service';
 import { DefaultCertificate } from '~/consts/certificate';
 import { toast } from 'react-toastify';
+import { DragBox } from './components/DragBox';
 
 const PDFReader = dynamic(
   () => import('~/components/atoms/PDFReader/PDFReader'),
@@ -351,84 +350,39 @@ const Certificate = ({ id }) => {
                 <PDFReader file={(files as any)?.data} />
 
                 {show.name && (
-                  <Draggable
-                    bounds="parent"
-                    onStop={(e) => handleStopDraging(e)}
-                  >
-                    <DraggableItem
-                      sx={{
-                        border: `${isStoped.stopedName && '1px dotted black'}`,
-                      }}
-                    >
-                      {nameElement}
-                    </DraggableItem>
-                  </Draggable>
+                  <DragBox
+                    element={nameElement}
+                    showBorder={isStoped.stopedName}
+                    onStopDrag={handleStopDraging}
+                  />
                 )}
-
                 {show.document && (
-                  <Draggable
-                    bounds="parent"
-                    onStop={(e) => handleStopDraging(e)}
-                  >
-                    <DraggableItem
-                      sx={{
-                        border: `${
-                          isStoped.stopedDocument && '1px dotted black'
-                        }`,
-                      }}
-                    >
-                      {documentElement}
-                    </DraggableItem>
-                  </Draggable>
+                  <DragBox
+                    element={documentElement}
+                    showBorder={isStoped.stopedDocument}
+                    onStopDrag={handleStopDraging}
+                  />
                 )}
-
                 {show.finishedAt && (
-                  <Draggable
-                    bounds="parent"
-                    onStop={(e) => handleStopDraging(e)}
-                  >
-                    <DraggableItem
-                      sx={{
-                        border: `${
-                          isStoped.stopedFinishedAt && '1px dotted black'
-                        }`,
-                      }}
-                    >
-                      {finishedAtElement}
-                    </DraggableItem>
-                  </Draggable>
+                  <DragBox
+                    element={finishedAtElement}
+                    showBorder={isStoped.stopedFinishedAt}
+                    onStopDrag={handleStopDraging}
+                  />
                 )}
                 {show.courseName && (
-                  <Draggable
-                    bounds="parent"
-                    onStop={(e) => handleStopDraging(e)}
-                  >
-                    <DraggableItem
-                      sx={{
-                        border: `${
-                          isStoped.stopedCourseName && '1px dotted black'
-                        }`,
-                      }}
-                    >
-                      {courseNameElement}
-                    </DraggableItem>
-                  </Draggable>
+                  <DragBox
+                    element={courseNameElement}
+                    showBorder={isStoped.stopedCourseName}
+                    onStopDrag={handleStopDraging}
+                  />
                 )}
                 {show.mentorName && (
-                  <Draggable
-                    bounds="parent"
-                    onStop={(e) => handleStopDraging(e)}
-                  >
-                    <DraggableItem
-                      sx={{
-                        border: `${
-                          isStoped.stopedMentorName && '1px dotted black'
-                        }`,
-                      }}
-                    >
-                      {mentorNameElement}
-                    </DraggableItem>
-                  </Draggable>
+                  <DragBox
+                    element={mentorNameElement}
+                    showBorder={isStoped.stopedMentorName}
+                    onStopDrag={handleStopDraging}
+                  />
                 )}
               </FileWrapper>
             </Wrapper>
