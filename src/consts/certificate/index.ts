@@ -1,6 +1,6 @@
 export const DefaultCertificate = {
   url: '/default-certificate.pdf',
-  default_certificate: true,
+  default_certificate: 'true',
   student: {
     name: {
       pageX: '73',
@@ -21,4 +21,4 @@ export const DefaultCertificate = {
       pageY: '404',
     },
   },
-};
+} as ProductTypes.CertificateBuilder;

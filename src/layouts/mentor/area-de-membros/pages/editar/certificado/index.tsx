@@ -73,13 +73,12 @@ const Certificate = ({ id }) => {
     finishedAt: 14,
     courseName: 14,
     mentorName: 14,
-
   });
   const [certificate, setCertificate] =
     useState<ProductTypes.CertificateBuilder>();
 
   const [defaultCertificate, setDefaultCertificate] =
-    useState(DefaultCertificate);
+    useState<ProductTypes.Certificate>(DefaultCertificate);
 
   function BpCheckbox(props: CheckboxProps) {
     return (
