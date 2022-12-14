@@ -35,6 +35,7 @@ declare namespace ProductTypes {
   };
 
   type Certificate = {
+<<<<<<< HEAD
     product_id?: string
     default_certificate?: boolean
     title?: string
@@ -42,6 +43,46 @@ declare namespace ProductTypes {
     student?: Json | null
     course?: Json | null
   }
+=======
+    product_id?: string;
+    default_certificate?: string;
+    title?: string;
+    url?: string;
+    student?: Json | null;
+    course?: Json | null;
+  };
+
+  type CertificateBuilder = {
+    product_id: string;
+    title: string;
+    default_certificate: string;
+    url: string;
+    student: {
+      name: {
+        pageX: string;
+        pageY: string;
+      };
+      finished_at: {
+        pageX: string;
+        pageY: string;
+      };
+      document: {
+        pageX: string;
+        pageY: string;
+      };
+    };
+    course: {
+      name: {
+        pageX: string;
+        pageY: string;
+      };
+      owner: {
+        pageX: string;
+        pageY: string;
+      };
+    };
+  };
+>>>>>>> 3abc213f222e45d1e1b49b2cfb74c5751afd6bec
 
   namespace Post {
     interface Request extends ExternalModules.Next.NextApiRequest {

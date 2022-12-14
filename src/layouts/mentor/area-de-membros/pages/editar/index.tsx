@@ -4,7 +4,7 @@ import Toolbar from '~/components/modules/Toolbar';
 
 type Props = PageTypes.Props & {
   data: MentorTools.ToolData[];
-  product: any;
+  product: ProductApi.Product;
   id: string;
 };
 import ConfigPage from '~/layouts/mentor/area-de-membros/pages/editar/configuracao';
@@ -15,15 +15,16 @@ import { GetAuthSession } from '~/helpers/AuthSession';
 import Certificate from './certificado';
 import { GetProduct } from '~/services/product.service';
 
-const tabs = [
-  'Etapas',
-  'Jornada do Cliente',
-  'Configuração',
-  'Certificado',
-  'Links',
-];
-const EditarMentoria: FC<Props> = ({ id, product }) => {
-  const [tabindex, setTabindex] = useState(0);
+const EditarMentoria: FC<Props> = ({ id, product, user }) => {
+  const [tabindex, setTabindex] = useState(product.owner == user.id ? 0 : 1);
+  const [tabs] = useState([
+    'Etapas',
+    'Jornada do Cliente',
+    'Configuração',
+    'Certificado',
+    'Links',
+  ]);
+
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
       case 4:
@@ -37,14 +38,17 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
       case 0:
         return <StepsPage id={id} product={product} />;
       default:
-        return <StepsPage id={id} product={product} />;
+        return <div />;
     }
   }, [id, product, tabindex]);
 
   const MaxWidth = tabindex != 1 && tabindex != 3 && 700;
   return (
     <>
-      <Toolbar onChange={(value) => setTabindex(value)} tabs={tabs} />
+      {console.log('product', product)}
+      {product.owner == user.id && (
+        <Toolbar onChange={(value) => setTabindex(value)} tabs={tabs} />
+      )}
       {tabindex != 0 && (
         <ContentWidthLimit maxWidth={MaxWidth}>
           {SwitchTabs()}
@@ -67,9 +71,9 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const product = await GetProduct(ctx.req, ctx.query.id);
+  const response = await GetProduct(ctx.req, ctx.query.id);
 
-  if (!product)
+  if (!response)
     return {
       redirect: {
         destination: '/',
@@ -81,7 +85,7 @@ export const getProps = async (ctx) => {
     props: {
       id: ctx.query.id,
       user: session.user,
-      product,
+      product: response.product,
     },
   };
 };

@@ -14,10 +14,19 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     req.query.id !== 'undefined' &&
     req.query.id !== 'null'
   ) {
+    const { data: team_member, error: tmError } = await supabase
+      .from('team_member')
+      .select('*, team(*)')
+      .eq('profile_id', req.query.id);
+
+    const teamProducts = team_member.reduce((acc, team) => {
+      return [...acc, ...(team.team as TeamTypes.Team).products];
+    }, []);
+
     const { data: products, error } = await supabase
       .from('product')
       .select('*, member_area(*, member_area_type(*))')
-      .eq('owner', req.query.id);
+      .or('id.in.(' + teamProducts.join(',') + '), owner.eq.' + req.query.id);
 
     const { data: relations } = await supabase
       .from('client_product')
