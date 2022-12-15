@@ -25,6 +25,7 @@ const AssignClientsModal: React.FC<{
   const onChange = (event) => {
     setFormData((old) => ({
       ...old,
+      role: 'Tutor',
       [event.target.name]: event.target.value,
     }));
   };
@@ -172,7 +173,7 @@ const AssignClientsModal: React.FC<{
         </Select>
       </AcessLevelSelectField>
 
-      <AcessLevelSelectField>
+      {/* <AcessLevelSelectField>
         <InputLabel>Nível de Acesso</InputLabel>
         <Select
           label="Nível de Acesso"
@@ -189,7 +190,7 @@ const AssignClientsModal: React.FC<{
             </MenuItem>
           ))}
         </Select>
-      </AcessLevelSelectField>
+      </AcessLevelSelectField> */}
     </ModalComponent>
   );
 };
