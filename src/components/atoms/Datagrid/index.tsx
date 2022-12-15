@@ -30,6 +30,8 @@ export type DatagridProps<T> = {
   onRowsPerPageChange?: (rowsPerPage: number) => void;
   onTitleClick?: (id) => void;
   onSelectedRow?: (value: T) => void;
+  sx?: any;
+  clickable?: boolean;
 };
 
 export default function StickyHeadTable<T>({
@@ -40,6 +42,8 @@ export default function StickyHeadTable<T>({
   columns = [],
   onTitleClick,
   onSelectedRow,
+  sx,
+  clickable = true,
 }: DatagridProps<T>) {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [open, setOpen] = useState(false);
@@ -87,7 +91,7 @@ export default function StickyHeadTable<T>({
   );
 
   return (
-    <PaperWrapper sx={{ width: '100%', overflow: 'hidden' }}>
+    <PaperWrapper sx={{ ...sx, width: '100%', overflow: 'hidden' }}>
       <TableContainer>
         <Table
           sx={{
@@ -98,7 +102,7 @@ export default function StickyHeadTable<T>({
           aria-label="sticky table"
         >
           <TableHead>
-            <TableRow>
+            <TableRow sx={{}}>
               {columns.map((column, index) => (
                 <TableCell
                   key={column.id}
@@ -120,7 +124,13 @@ export default function StickyHeadTable<T>({
                 )
                 .map((row, index) => {
                   return (
-                    <CustomRow hover role="checkbox" tabIndex={-1} key={index}>
+                    <CustomRow
+                      sx={{}}
+                      clickable={clickable}
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={index}
+                    >
                       <>
                         {columns.map((column, index) => {
                           const value = row[column.id];

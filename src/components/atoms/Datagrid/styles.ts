@@ -15,11 +15,12 @@ export const PaperWrapper = styled(Paper)`
   }
 `;
 
-export const CustomRow = styled(TableRow)`
+export const CustomRow = styled(TableRow)<{ clickable }>`
   td {
     background-color: ${({ theme }) => theme.palette.primary.light};
     border-bottom: none;
-    cursor: pointer !important;
+    cursor: ${({ clickable }) =>
+      clickable ? 'pointer' : 'default'} !important;
     button {
       float: right;
       right: 20%;

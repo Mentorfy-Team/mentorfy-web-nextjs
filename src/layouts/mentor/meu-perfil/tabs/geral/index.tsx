@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-imports */
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -21,6 +21,8 @@ import { useHistory } from '~/hooks/useHistory';
 import { userStore } from '~/stores';
 import { useGetClientProducts } from '~/hooks/useGetClientProducts';
 import StatusCard from './components/StatusCard';
+import MentorClientsTable from './components/ClientsTable';
+import { useClients } from '~/hooks/useClients';
 
 const MyProfile = ({ profile, user, isViewingMentored, isViewingMentor }) => {
   const [tab, setTab] = useState(0);
@@ -41,9 +43,24 @@ const MyProfile = ({ profile, user, isViewingMentored, isViewingMentor }) => {
     profile?.id,
   );
 
+  const {
+    clients,
+    statistics,
+    mutate,
+    isLoading: isLoadingClient,
+  } = useClients(user.id, null, profile?.id);
+
   useEffect(() => {
     setLoading(isLoadingHistory || isLoadingProducts);
   }, [isLoadingHistory, setLoading, isLoadingProducts]);
+
+  const ActiveClients = useMemo(() => {
+    return clients.filter((c) => c.hasActivety).length;
+  }, [clients]);
+
+  const InactiveClients = useMemo(() => {
+    return clients.filter((c) => !c.hasActivety).length;
+  }, [clients]);
 
   return (
     <>
@@ -89,19 +106,26 @@ const MyProfile = ({ profile, user, isViewingMentored, isViewingMentor }) => {
               <Box display="flex" gap={6}>
                 <StatusCard
                   title="Clientes Ativos"
-                  value="2301"
-                  percentage={3.4}
+                  value={ActiveClients}
+                  percentage={ActiveClients / (clients?.length / 100)}
                 />
                 <StatusCard
                   title="Clientes Inativos"
-                  value="2301"
-                  percentage={11.1}
+                  value={InactiveClients}
+                  sign="-"
+                  percentage={(InactiveClients / (clients?.length / 100)) * -1}
                 />
-                <StatusCard
-                  title="Porcentagem de Conclusão"
-                  value="2000"
-                  percentage={60}
-                />
+                <Box
+                  sx={{
+                    opacity: 0.2,
+                  }}
+                >
+                  <StatusCard
+                    title="Porcentagem de Conclusão (em breve)"
+                    value="0"
+                    percentage={0}
+                  />
+                </Box>
               </Box>
             </Spacing>
           </>
@@ -150,65 +174,75 @@ const MyProfile = ({ profile, user, isViewingMentored, isViewingMentor }) => {
           </Session>
         </CardDivider>
       </Card>
-      <Card mt={3} mb={2}>
+      <Card mt={3} mb={isViewingMentor ? 0 : 2}>
         <Spacing>
           <Title pt={2} pb={1} variant="h6">
-            Últimas Atividades
+            {!isViewingMentor ? 'Últimas Atividades' : 'Histórico de Clientes'}
           </Title>
         </Spacing>
-        <Grid container spacing={6}>
-          <Grid xs={2} pl={8}>
-            <Title sx={{ float: 'left' }} variant="caption" color="gray">
-              Realizado em
-            </Title>
-          </Grid>
-          <Grid xs={2}>
-            <Title sx={{ float: 'left' }} variant="caption" color="gray">
-              Atividade
-            </Title>
-          </Grid>
-          <Grid>
-            <Title sx={{ float: 'left' }} variant="caption" color="gray">
-              Descrição
-            </Title>
-          </Grid>
-        </Grid>
-        <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
-        {history
-          .slice(0, 6)
-          .sort(
-            (a, b) =>
-              new Date(b.created_at).getTime() -
-              new Date(a.created_at).getTime(),
-          )
-          .map((item, index) => (
-            <>
-              <Grid container spacing={6}>
-                <Grid xs={2} pl={8}>
-                  <Title sx={{ float: 'left' }} variant="caption">
-                    {new Date(item.created_at).toLocaleDateString('pt-BR', {
-                      hour: 'numeric',
-                      minute: 'numeric',
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric',
-                    })}
-                  </Title>
-                </Grid>
-                <Grid xs={2}>
-                  <Title sx={{ float: 'left' }} variant="caption">
-                    {item.log_type.title}
-                  </Title>
-                </Grid>
-                <Grid>
-                  <Title sx={{ float: 'left' }} variant="caption">
-                    {'Você ' + item.description?.toLowerCase()}
-                  </Title>
-                </Grid>
+        {isViewingMentor && (
+          <Spacing>
+            <MentorClientsTable rows={clients} />
+          </Spacing>
+        )}
+        {!isViewingMentor && (
+          <>
+            <Grid container spacing={6}>
+              <Grid xs={2} pl={8}>
+                <Title sx={{ float: 'left' }} variant="caption" color="gray">
+                  Realizado em
+                </Title>
               </Grid>
-              <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
-            </>
-          ))}
+              <Grid xs={2}>
+                <Title sx={{ float: 'left' }} variant="caption" color="gray">
+                  Atividade
+                </Title>
+              </Grid>
+              <Grid>
+                <Title sx={{ float: 'left' }} variant="caption" color="gray">
+                  Descrição
+                </Title>
+              </Grid>
+            </Grid>
+            <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
+          </>
+        )}
+        {!isViewingMentor &&
+          history
+            .slice(0, 6)
+            .sort(
+              (a, b) =>
+                new Date(b.created_at).getTime() -
+                new Date(a.created_at).getTime(),
+            )
+            .map((item, index) => (
+              <>
+                <Grid container spacing={6}>
+                  <Grid xs={2} pl={8}>
+                    <Title sx={{ float: 'left' }} variant="caption">
+                      {new Date(item.created_at).toLocaleDateString('pt-BR', {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                      })}
+                    </Title>
+                  </Grid>
+                  <Grid xs={2}>
+                    <Title sx={{ float: 'left' }} variant="caption">
+                      {item.log_type.title}
+                    </Title>
+                  </Grid>
+                  <Grid>
+                    <Title sx={{ float: 'left' }} variant="caption">
+                      {'Você ' + item.description?.toLowerCase()}
+                    </Title>
+                  </Grid>
+                </Grid>
+                <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
+              </>
+            ))}
       </Card>
     </>
   );
