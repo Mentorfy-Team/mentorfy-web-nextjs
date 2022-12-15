@@ -16,13 +16,13 @@ import {
   Session,
   Spacing,
   Title,
-} from '../style';
-import GearSVG from '~/../public/svgs/gear';
+} from '../../style';
 import { useHistory } from '~/hooks/useHistory';
 import { userStore } from '~/stores';
 import { useGetClientProducts } from '~/hooks/useGetClientProducts';
+import StatusCard from './components/StatusCard';
 
-const MyProfile = ({ profile, user, isViewingMentored }) => {
+const MyProfile = ({ profile, user, isViewingMentored, isViewingMentor }) => {
   const [tab, setTab] = useState(0);
   const [error, setError] = useState<string | null>();
   const router = useRouter();
@@ -50,7 +50,7 @@ const MyProfile = ({ profile, user, isViewingMentored }) => {
       <Card>
         <Spacing>
           <Title pt={2} variant="h6">
-            Perfil do Aluno
+            {isViewingMentor ? 'Perfil do Mentor' : 'Perfil do Aluno'}
           </Title>
         </Spacing>
         <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
@@ -79,9 +79,33 @@ const MyProfile = ({ profile, user, isViewingMentored }) => {
                 </ActionButton> */}
               </BOX>
             </AvatarWrapper>
-            {isViewingMentored && <GearSVG />}
+            {/* {&& <GearSVG />} */}
           </Session>
         </Spacing>
+        {isViewingMentor && (
+          <>
+            <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
+            <Spacing>
+              <Box display="flex" gap={6}>
+                <StatusCard
+                  title="Clientes Ativos"
+                  value="2301"
+                  percentage={3.4}
+                />
+                <StatusCard
+                  title="Clientes Inativos"
+                  value="2301"
+                  percentage={11.1}
+                />
+                <StatusCard
+                  title="Porcentagem de Conclusão"
+                  value="2000"
+                  percentage={60}
+                />
+              </Box>
+            </Spacing>
+          </>
+        )}
         <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
         {product && product.length > 0 && (
           <Spacing>

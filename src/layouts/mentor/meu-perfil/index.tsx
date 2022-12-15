@@ -21,19 +21,23 @@ type props = PageTypes.Props & {
   product: ProductClient.Product;
   tab: string;
   mentored_id?: string;
+  mentor_id?: string;
   isViewingMentored: boolean;
+  isViewingMentor: boolean;
 };
 
 const MinhaConta: FC<props> = ({
   user,
   tab = tabs.Geral.toString(),
   isViewingMentored,
+  isViewingMentor,
   mentored_id,
+  mentor_id,
 }) => {
   const [tabindex, setTabindex] = useState<string>(tab);
   const {
     data: { profile, address },
-  } = useProfile(true, mentored_id || user.id);
+  } = useProfile(true, mentored_id || mentor_id || user.id);
 
   const SwitchTabs = useCallback(() => {
     if (!profile) return null;
@@ -42,6 +46,7 @@ const MinhaConta: FC<props> = ({
         return (
           <GeralPage
             isViewingMentored={isViewingMentored}
+            isViewingMentor={isViewingMentor}
             user={user}
             profile={profile}
           />
@@ -49,26 +54,28 @@ const MinhaConta: FC<props> = ({
       case tabs.Links.toString():
         return <DadosPage profile={profile} address={address} />;
       case tabs.Assinatura.toString():
-        return <Signature
-          user={user}
-          profile={profile}
-        />;
+        return <Signature user={user} profile={profile} />;
       default:
         return (
           <GeralPage
             isViewingMentored={isViewingMentored}
+            isViewingMentor={isViewingMentor}
             user={user}
             profile={profile}
           />
         );
     }
-  }, [address, isViewingMentored, profile, tabindex, user]);
+  }, [address, isViewingMentor, isViewingMentored, profile, tabindex, user]);
 
   return (
     <>
       <Toolbar
         onChange={(value) => setTabindex(value.toString())}
-        tabs={['Perfil', 'Dados de Cadastro', 'Assinatura']}
+        tabs={
+          isViewingMentor || isViewingMentored
+            ? ['Perfil']
+            : ['Perfil', 'Dados de Cadastro', 'Assinatura']
+        }
       />
       <ContentWidthLimit>
         <Box
@@ -97,7 +104,13 @@ export const getProps = async (ctx) => {
     };
 
   return {
-    props: { user: session.user, mentored_id: ctx.query.altId ?? null },
+    props: {
+      user: session.user,
+      mentored_id: ctx.query.altId ?? null,
+      mentor_id: ctx.query.id ?? null,
+      isViewingMentored: !!ctx.query.altId,
+      isViewingMentor: !!ctx.query.id,
+    },
   };
 };
 

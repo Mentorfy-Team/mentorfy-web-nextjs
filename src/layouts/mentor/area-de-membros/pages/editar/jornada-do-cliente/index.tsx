@@ -73,7 +73,7 @@ const ClientJourney: FC<props> = ({ id }) => {
 
   const handleSelectedClient = (client: ProductTypes.Client) => {
     if (!selectedTask) {
-      route.push(route.asPath + '/perfil?altId=' + client.id);
+      route.push(route.asPath + '/perfil?id=' + client.id);
     } else {
       setClientInput(() => {
         const Inputs = client.inputs?.filter(
