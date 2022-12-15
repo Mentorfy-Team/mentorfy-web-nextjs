@@ -216,9 +216,21 @@ const ClientJourney: FC<props> = ({ id }) => {
           />
           <CompletedClientsTable
             clients={clients}
-            filter={(values) =>
-              searchByName?.length > 0 ? SearchForString(values) : values
-            }
+            filter={(values) => {
+              const byName =
+                searchByName?.length > 0 ? SearchForString(values) : values;
+
+              const byStep = selectedTask?.id
+                ? byName.filter((client) => {
+                    const clientInputs = client.inputs?.filter(
+                      (input) => input.member_area_tool_id === selectedTask?.id,
+                    );
+                    return clientInputs?.length > 0;
+                  })
+                : byName;
+
+              return byStep;
+            }}
             onSelectedClient={handleSelectedClient}
           />
         </>
