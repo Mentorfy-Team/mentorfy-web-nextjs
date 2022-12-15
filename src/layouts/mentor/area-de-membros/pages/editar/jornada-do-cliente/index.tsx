@@ -37,6 +37,8 @@ const ClientJourney: FC<props> = ({ id }) => {
   const [open, setOpen] = useState(false);
   const [steps, setSteps] = useState<ProductTypes.resultJorney[]>();
 
+  const [searchByName, setSearchByName] = useState<string>();
+
   const {
     data: { clients, result: stepsData },
     isLoading,
@@ -202,6 +204,7 @@ const ClientJourney: FC<props> = ({ id }) => {
               width: isMobile ? '90vw' : '15vw',
               margin: '1rem 0',
             }}
+            onChange={(value) => setSearchByName(value)}
           />
           <CompletedClientsTable
             clients={clients}

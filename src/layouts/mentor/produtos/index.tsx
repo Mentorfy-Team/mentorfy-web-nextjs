@@ -39,6 +39,7 @@ const Produtos: FC<PageTypes.Props> = ({ user }) => {
                 sx={{
                   width: isMobile ? '90vw' : 'unset',
                 }}
+                onChange={(value) => {}}
               />
             </Box>
           </Grid>

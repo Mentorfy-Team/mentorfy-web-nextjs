@@ -26,10 +26,20 @@ export const get = async (req, res) => {
     .eq('product_id', req.query.id)
     .eq('approved', true);
 
-  const { data: team_member } = await supabase
+  const { data: teams } = await supabase
+    .from('team')
+    .select('*')
+    .eq('owner_id', user.id);
+
+  const { data: team_member, error: tmError } = await supabase
     .from('team_member')
     .select('*, team_member_client(*)')
-    .eq('profile_id', user.id);
+    .or(
+      'team_id.in.(' +
+        teams.map((t) => t.id).join(',') +
+        '), profile_id.eq.' +
+        user.id,
+    );
 
   const cIds = team_member?.reduce(
     (acc, tm) => [
