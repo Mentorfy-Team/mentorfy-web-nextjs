@@ -102,6 +102,14 @@ const ClientJourney: FC<props> = ({ id }) => {
     setOpen(true);
   };
 
+  const SearchForString = (values) => {
+    return values.filter(
+      (client) =>
+        client.name.toLowerCase().includes(searchByName.toLowerCase()) ||
+        client.email.toLowerCase().includes(searchByName.toLowerCase()),
+    );
+  };
+
   return (
     <ContentWidthLimit withoutScroll maxWidth={1900}>
       <TipWrapper>
@@ -208,6 +216,9 @@ const ClientJourney: FC<props> = ({ id }) => {
           />
           <CompletedClientsTable
             clients={clients}
+            filter={(values) =>
+              searchByName?.length > 0 ? SearchForString(values) : values
+            }
             onSelectedClient={handleSelectedClient}
           />
         </>
