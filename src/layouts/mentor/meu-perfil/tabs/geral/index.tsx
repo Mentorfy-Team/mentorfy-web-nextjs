@@ -38,10 +38,8 @@ const MyProfile = ({ profile, user, isViewingMentored, isViewingMentor }) => {
   });
   const { setLoading } = userStore();
   const { history, isLoading: isLoadingHistory } = useHistory(profile?.id);
-  const { product, isLoading: isLoadingProducts } = useGetClientProducts(
-    user?.id,
-    profile?.id,
-  );
+  const { product: products, isLoading: isLoadingProducts } =
+    useGetClientProducts(user?.id, profile?.id);
 
   const {
     clients,
@@ -131,36 +129,39 @@ const MyProfile = ({ profile, user, isViewingMentored, isViewingMentor }) => {
           </>
         )}
         <Divider sx={{ borderColor: '#272727', marginY: 2 }} />
-        {product && product.length > 0 && (
-          <Spacing>
-            <Title pb={0} variant="body1">
-              Conteúdos
-            </Title>
-            {product
-              ?.filter((p) => p.owner !== profile?.id)
-              ?.map((p) => (
-                <Session
-                  sx={{
-                    marginBottom: 2,
-                    marginTop: 2,
-                  }}
-                  key={p.id}
-                >
-                  <AvatarWrapper>
-                    <Avatar
-                      alt="foto-perfil"
-                      src={p.main_image as string}
-                      sx={{ width: 30, height: 30 }}
-                    />
-                    <Title variant="body2">{p.title}</Title>
-                  </AvatarWrapper>
-                  <Box sx={{ width: '200px' }}>
-                    <LinearProgressWithLabel value={p.progress} />
-                  </Box>
-                </Session>
-              ))}
-          </Spacing>
-        )}
+        {products &&
+          products.filter((p) => p.owner !== profile?.id).length > 0 && (
+            <Spacing>
+              <Title pb={0} variant="body1">
+                Conteúdos
+              </Title>
+              {products
+                ?.filter((p) => p.owner !== profile?.id)
+                ?.map((p) => (
+                  <Session
+                    sx={{
+                      marginBottom: 2,
+                      marginTop: 2,
+                    }}
+                    key={p.id}
+                  >
+                    <AvatarWrapper>
+                      <Avatar
+                        alt="foto-perfil"
+                        src={p.main_image as string}
+                        sx={{ width: 30, height: 30 }}
+                      />
+                      <Title variant="body2">{p.title}</Title>
+                    </AvatarWrapper>
+                    {!isViewingMentor && (
+                      <Box sx={{ width: '200px' }}>
+                        <LinearProgressWithLabel value={p.progress} />
+                      </Box>
+                    )}
+                  </Session>
+                ))}
+            </Spacing>
+          )}
         <CardDivider>
           <Session>
             <Title variant="caption">

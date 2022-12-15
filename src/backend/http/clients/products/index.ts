@@ -7,16 +7,19 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   res,
 ) => {
   const supabase = SupabaseServer(req, res);
+
+  const userId = req.query.related_id || req.query.id;
+
   let listProducts = [];
   const { data: clientProducts } = await supabase
     .from('client_product')
     .select('*, product(*)')
-    .eq('user_id', req.query.id);
+    .eq('user_id', userId);
 
   const { data: productsOwned, error: poe } = await supabase
     .from('product')
     .select('*, member_area(*, member_area_type(*))')
-    .eq('owner', req.query.id);
+    .eq('owner', userId);
 
   if (productsOwned && productsOwned.length > 0)
     listProducts = listProducts.concat(productsOwned);
@@ -50,7 +53,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   const { data: userInputs, error: erroru } = await supabase
     .from('client_input_tool')
     .select('*')
-    .eq('profile_id', req.query.id);
+    .eq('profile_id', userId);
 
   const productsWithProgress = listProducts.map((p) => {
     const anws = userInputs.filter(
@@ -72,15 +75,13 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   });
 
   // make productsWithProgress should return unique products based on id
-  const uniqueProducts = productsWithProgress.filter(
+  let uniqueProducts = productsWithProgress.filter(
     (v, i, a) => a.findIndex((t) => t.id === v.id) === i,
   );
 
-  return res
-    .status(200)
-    .json(
-      uniqueProducts.filter(
-        (p) => !req.query.related_id || p.owner === req.query.related_id,
-      ),
-    );
+  if (req.query.related_id) {
+    uniqueProducts = uniqueProducts.filter((p) => p.owner === req.query.id);
+  }
+
+  return res.status(200).json(uniqueProducts);
 };
