@@ -58,7 +58,7 @@ const ClientsTable = ({
   onClientSelected,
   actions,
 }: {
-  rows: UserClient.ClientRelation[];
+  rows: ClientTypes.Client[];
   clickSeeMore: any;
   clickRemove: any;
   onClientSelected: any;
