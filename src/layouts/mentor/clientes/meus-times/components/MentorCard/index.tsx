@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 const MentorCard = ({ name, email, activeClients, avatar, id }) => {
   const route = useRouter();
   const handleGoToProfile = useCallback(() => {
-    route.push(route.asPath + '/perfil?altId=' + id);
+    route.push(route.asPath + '/perfil?id=' + id);
   }, [id, route]);
 
   return (
