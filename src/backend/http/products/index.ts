@@ -33,7 +33,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   } = await supabase.auth.getUser();
   const { data: product, error } = await supabase
     .from('product')
-    .select('*, member_area(*, member_area_type(*))')
+    .select('*, member_area(*, member_area_type(*)), profile(id, name)')
     .eq('id', req.query.id)
     .single();
 
