@@ -8,7 +8,6 @@ export const put = async (req, res) => {
       certificate: {
         title: req.body.title,
         url: req.body.url,
-        default_certificate: req.body.default_certificate,
         student: req.body.student,
         course: req.body.course,
       },

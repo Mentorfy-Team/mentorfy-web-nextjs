@@ -7,6 +7,13 @@ export const Title = styled(Typography)`
   margin-bottom: 1rem;
 `;
 
+export const DataText = styled(Typography)`
+  color: black;
+  position: absolute;
+  font-style: italic;
+  font-weight: 600;
+`;
+
 export const FileWrapper = styled('div')`
   background-color: ${({ theme }) => theme.palette.caption.main};
   border-radius: 6px;

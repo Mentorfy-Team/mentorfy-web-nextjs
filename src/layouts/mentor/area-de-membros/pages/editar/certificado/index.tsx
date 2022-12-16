@@ -128,8 +128,9 @@ const Certificate = ({ id }) => {
     return {
       ...state,
       [categoryName]: {
-        ...state?.student,
+        ...state?.[categoryName],
         [fieldName]: {
+          ...state?.[fieldName],
           pageX: posX,
           pageY: posY,
         },
@@ -158,8 +159,9 @@ const Certificate = ({ id }) => {
       return {
         ...state,
         [categoryName]: {
-          ...state?.student,
+          ...state[categoryName],
           [fieldName]: {
+            ...state[categoryName][fieldName],
             fontSize: value,
           },
         },
@@ -168,18 +170,33 @@ const Certificate = ({ id }) => {
   };
 
   useEffect(() => {
-    if (color) {
-      setDefaultCertificate((old) => {
-        return {
-          ...old,
-          product_id: id,
-          title: title,
-        };
-      });
+    {
+      color && (
+        setDefaultCertificate((old) => {
+          return {
+            ...old,
+            product_id: id,
+            title: title,
+          };
+        })
+      );
     }
-  }, [color, id, title]);
+    {
+      !color && (
+        setCertificate((old) => {
+          return {
+            ...old,
+            url: (files as any)?.data,
+            product_id: id,
+            title: title,
+          };
+        })
+      );
+    }
+  }, [color, files, id, title]);
 
   const onSubmit = async () => {
+    console.log(certificate);
     setIsLoading(true);
     if (color) {
       await UpdateCertificate(defaultCertificate);
@@ -236,7 +253,7 @@ const Certificate = ({ id }) => {
       sx={{
         fontSize: value,
       }}
-      id="owner"
+      id="mentorName"
     >
       SEU NOME
     </DocumentText>

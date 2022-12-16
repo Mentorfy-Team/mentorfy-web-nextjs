@@ -15,6 +15,7 @@ import { useGetProduct } from '~/hooks/useGetProduct';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import { GetProduct } from '~/services/product.service';
 import CertificateModal from '../components/certificate-modal';
+import { GetProfile } from '~/services/profile.service';
 
 export type UserInput = {
   id?: string;
@@ -29,8 +30,9 @@ export const KanbanView: FC<
     memberAreaInitial: any;
     error;
     product: ProductTypes.Product;
+    user: UserTypes.ProfileWithAddress & UserTypes.User;
   }
-> = ({ member_area_id, memberAreaInitial, error, product }) => {
+> = ({ member_area_id, memberAreaInitial, error, product, user }) => {
   const { product: memberArea } = useGetProduct(
     member_area_id,
     memberAreaInitial,
@@ -208,13 +210,12 @@ export const KanbanView: FC<
                             marginLeft: '0.4rem',
                             alignSelf: 'center',
                           }}
-                          src={`/svgs/${
-                            userInput?.find(
-                              (inp) => inp.member_area_tool_id === task.id,
-                            )?.extra
-                              ? 'done'
-                              : 'done-gray'
-                          }.svg`}
+                          src={`/svgs/${userInput?.find(
+                            (inp) => inp.member_area_tool_id === task.id,
+                          )?.extra
+                            ? 'done'
+                            : 'done-gray'
+                            }.svg`}
                         />
                       </Task>
                     ))}
@@ -253,7 +254,9 @@ export const KanbanView: FC<
         <CertificateModal
           open={showCertificate}
           setOpen={setShowCertificate}
-          product={product?.certificate as any}
+          product={product}
+          certificate={product?.certificate as any}
+          user={user}
         />
       )}
     </>
@@ -277,6 +280,7 @@ export const getProps = async (ctx) => {
 
   // fetch for member area
   const response: any = await GetProduct(ctx.req, id);
+  const user = await GetProfile(ctx.req, false, session.user.id);
 
   if (!response) {
     return {
@@ -293,6 +297,7 @@ export const getProps = async (ctx) => {
         description: response.product?.description,
       },
       product: response.product,
+      user: user,
       error: null,
     },
   };

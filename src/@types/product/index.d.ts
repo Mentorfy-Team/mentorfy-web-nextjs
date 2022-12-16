@@ -52,24 +52,29 @@ declare namespace ProductTypes {
       name: {
         pageX: string;
         pageY: string;
+        fontSize: string;
       };
-      finished_at: {
+      finishedAt: {
         pageX: string;
         pageY: string;
+        fontSize: string;
       };
       document: {
         pageX: string;
         pageY: string;
+        fontSize: string;
       };
     };
     course: {
-      name: {
+      courseName: {
         pageX: string;
         pageY: string;
+        fontSize: string;
       };
-      owner: {
+      mentorName: {
         pageX: string;
         pageY: string;
+        fontSize: string;
       };
     };
   };

@@ -3,22 +3,26 @@ export const DefaultCertificate = {
   default_certificate: 'true',
   student: {
     name: {
-      pageX: '73',
-      pageY: '300',
+      pageX: '-6',
+      pageY: '289',
+      fontSize: '20',
     },
-    finished_at: {
-      pageX: '89',
-      pageY: '352',
+    finishedAt: {
+      pageX: '1',
+      pageY: '341',
+      fontSize: '14',
     },
   },
   course: {
-    name: {
-      pageX: '212',
-      pageY: '334',
+    courseName: {
+      pageX: '255',
+      pageY: '324',
+      fontSize: '14',
     },
-    owner: {
-      pageX: '63',
-      pageY: '404',
+    mentorName: {
+      pageX: '-3',
+      pageY: '395',
+      fontSize: '16',
     },
   },
 } as ProductTypes.CertificateBuilder;
