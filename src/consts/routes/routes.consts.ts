@@ -103,6 +103,7 @@ export const MentorMenu: MentorMenuProps = {
       {
         path: MentorRoutes.plans,
         name: 'Assinaturas',
+        inDevelopment: true,
       },
       {
         path: MentorRoutes.sells,
