@@ -38,7 +38,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
     .single();
 
   // Registra a visualização do produto/mentoria, contanto que o usuário não seja o dono do produto
-  if (user?.id !== product?.owner) {
+  if (user?.id !== product?.owner && product) {
     await LogHistory.Create(
       user?.id,
       100,
