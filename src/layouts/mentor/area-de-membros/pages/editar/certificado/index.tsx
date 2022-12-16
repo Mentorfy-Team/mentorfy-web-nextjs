@@ -78,22 +78,22 @@ const Certificate = ({
   });
 
   const [show, setShow] = useState<Partial<CustomInfo>>({
-    name: !!initCertificate.student.name,
-    document: !!initCertificate.student.document,
-    finishedAt: !!initCertificate.student.finishedAt,
-    course: !!initCertificate.course.name,
-    owner: !!initCertificate.course.owner,
+    name: !!initCertificate?.student?.name,
+    document: !!initCertificate?.student?.document,
+    finishedAt: !!initCertificate?.student?.finishedAt,
+    course: !!initCertificate?.course?.name,
+    owner: !!initCertificate?.course?.owner,
   });
   const [isStoped, setIsStoped] = useState<Partial<CustomInfo>>();
   const [fontSize, setFontSize] = useState<Partial<CustomInfoSize>>({
     student: {
-      name: initCertificate.student.name.fontSize || 14,
-      document: initCertificate.student.document.fontSize || 14,
-      finishedAt: initCertificate.student.finishedAt.fontSize || 14,
+      name: initCertificate?.student?.name?.fontSize || 14,
+      document: initCertificate?.student?.document?.fontSize || 14,
+      finishedAt: initCertificate?.student?.finishedAt?.fontSize || 14,
     },
     course: {
-      name: initCertificate.course.name.fontSize || 14,
-      owner: initCertificate.course.owner.fontSize || 14,
+      name: initCertificate?.course?.name?.fontSize || 14,
+      owner: initCertificate?.course?.owner?.fontSize || 14,
     },
   });
   const [certificate, setCertificate] =
