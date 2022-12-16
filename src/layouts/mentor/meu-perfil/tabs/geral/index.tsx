@@ -49,8 +49,8 @@ const MyProfile = ({ profile, user, isViewingMentored, isViewingMentor }) => {
   } = useClients(user.id, null, profile?.id);
 
   useEffect(() => {
-    setLoading(isLoadingHistory || isLoadingProducts);
-  }, [isLoadingHistory, setLoading, isLoadingProducts]);
+    setLoading(isLoadingHistory || isLoadingProducts || isLoadingClient);
+  }, [isLoadingHistory, setLoading, isLoadingProducts, isLoadingClient]);
 
   const ActiveClients = useMemo(() => {
     return clients.filter((c) => c.hasActivety).length;
@@ -105,13 +105,15 @@ const MyProfile = ({ profile, user, isViewingMentored, isViewingMentor }) => {
                 <StatusCard
                   title="Clientes Ativos"
                   value={ActiveClients}
-                  percentage={ActiveClients / (clients?.length / 100)}
+                  percentage={ActiveClients / (clients?.length / 100) || 0}
                 />
                 <StatusCard
                   title="Clientes Inativos"
                   value={InactiveClients}
                   sign="-"
-                  percentage={(InactiveClients / (clients?.length / 100)) * -1}
+                  percentage={
+                    (InactiveClients / (clients?.length / 100)) * -1 || 0
+                  }
                 />
                 <Box
                   sx={{
