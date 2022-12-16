@@ -121,7 +121,7 @@ const App = (props: MyAppProps) => {
   }, []);
 
   return (
-    <main className={MainFont.className}>
+    <main style={MainFont.style} className={MainFont.className}>
       <CacheProvider value={emotionCache}>
         <Head>
           <title>Mentorfy</title>
