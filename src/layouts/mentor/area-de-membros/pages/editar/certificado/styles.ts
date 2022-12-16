@@ -18,7 +18,8 @@ export const SizeButton = styled('button')`
   padding: 0px 0px;
   border: none;
   color: white;
-  margin: 0px 0.5rem;
+  margin: 0px 0.2rem;
+  opacity: 0.7;
 `;
 
 export const BpCheckedIcon = styled('div')`
@@ -113,8 +114,10 @@ export const DraggableItem = styled('div')`
   cursor: move;
   height: auto;
   position: absolute;
-  padding: 0.2rem;
-  border: 1px dotted red;
+  width: 0px;
+  background-color: red;
+  overflow: visible;
+  white-space: nowrap;
 `;
 
 export const FileWrapper = styled('div')`
@@ -167,6 +170,6 @@ export const DocumentText = styled(Typography)`
   color: ${({ theme }) => theme.palette.text.secondary};
   font-size: 1rem;
   font-weight: 600;
-  line-height: 1.2rem;
-  text-align: start;
+  line-height: normal;
+  align-self: center;
 `;

@@ -7,69 +7,48 @@ const PDFReader = dynamic(
 );
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
+import { SingFont } from '~/pages/_app';
 import { DataText, FileWrapper, Title } from './styles';
 
 type Props = {
   product: ProductTypes.Product;
-  certificate: ProductTypes.Certificate;
+  certificate: ProductTypes.CertificateBuilder;
   open: boolean;
   user: UserTypes.ProfileWithAddress & UserTypes.User;
   setOpen: (value: boolean) => void;
 };
-const CertificateModal = ({ open, setOpen, product, certificate, user }: Props) => {
+const CertificateModal = ({
+  open,
+  setOpen,
+  product,
+  certificate: { course, student, title, url },
+  user,
+}: Props) => {
+  const TextContent = ({ text, fontSize, position, sign = false }) => {
+    const bSize = position.boxSize; // diff de 35px botão de aumentar fonte
+    const threshold =
+      position.pageX > 0 ? parseInt(position.pageX) : parseInt(position.pageX);
+    const style = sign ? SingFont.style : {};
+    return (
+      <DataText
+        sx={{
+          fontSize: `${fontSize ? fontSize + 'px' : '14px'}`,
+          top: `${parseInt(position.pageY) + 25}px`,
+          left: `calc(50% + ${threshold}px)`,
+          overflow: 'visible',
+          width: '0px',
+          whiteSpace: 'nowrap',
+          display: 'flex',
+          placeContent: 'center',
+          lineHeight: 'normal',
+          ...style,
+        }}
+      >
+        <div>{text}</div>
+      </DataText>
+    );
+  };
 
-  const studentName = (
-    <DataText
-      sx={{
-        fontSize: `${certificate?.student?.name?.fontSize ? certificate?.student?.name?.fontSize + 'px' : '14px'}`,
-        top: `${certificate?.student?.name.pageY}px`,
-        marginLeft: `${certificate?.student?.name.pageX}px`
-      }}>
-      {user?.profile.name}
-    </DataText>
-  );
-  const studentDocument = (
-    <DataText
-      sx={{
-        fontSize: `${certificate?.student?.document?.fontSize ? certificate?.student.document?.fontSize + 'px' : '14px'}`,
-        top: `${certificate?.student?.document?.pageY}px`,
-        marginLeft: `${certificate?.student?.document?.pageX}px`
-      }}>
-      12/12/2022
-    </DataText>
-  );
-  const studentFinishDate = (
-    <DataText
-      sx={{
-        fontSize: `${certificate?.student?.finishedAt?.fontSize ? certificate?.student?.finishedAt?.fontSize + 'px' : '14px'}`,
-        top: `${certificate?.student?.finishedAt?.pageY}px`,
-        marginLeft: `${certificate?.student?.finishedAt?.pageX}px`
-      }}>
-      12/12/2022
-    </DataText>
-  );
-  const courseName = (
-    <DataText
-      sx={{
-        fontSize: `${certificate?.course?.name?.fontSize ? certificate?.course?.name?.fontSize + 'px' : '14px'}`,
-        top: `${certificate?.course?.courseName?.pageY}px`,
-        marginLeft: `${certificate?.course?.courseName?.pageX}px`
-      }}
-    >
-      {product.title}
-    </DataText>
-  );
-  const mentorName = (
-    <DataText
-      sx={{
-        fontSize: `${certificate?.course?.mentorName?.fontSize ? certificate?.course?.mentorName?.fontSize + 'px' : '14px'}`,
-        top: `${certificate?.course?.mentorName?.pageY}px`,
-        marginLeft: `${certificate?.course?.mentorName?.pageX}px`
-      }}
-    >
-      Metodologia 5 em 1
-    </DataText>
-  );
   return (
     <ModalComponent
       open={open}
@@ -77,14 +56,45 @@ const CertificateModal = ({ open, setOpen, product, certificate, user }: Props) 
       title="Certificado de Conclusão"
     >
       <ModalDialogContent sx={{ paddingTop: '0.5rem' }}>
-        <Title>{certificate?.title}</Title>
+        <Title>{title}</Title>
         <FileWrapper>
-          <PDFReader file={certificate?.url} />
-          {certificate.student?.name && studentName}
-          {certificate.student?.document && studentDocument}
-          {certificate.student?.finishedAt && studentFinishDate}
-          {certificate.course?.courseName && courseName}
-          {certificate.course?.mentorName && mentorName}
+          <PDFReader file={url} />
+          {student?.name && (
+            <TextContent
+              fontSize={student?.name?.fontSize}
+              position={student?.name}
+              text={user?.profile.name}
+            />
+          )}
+          {student?.document && (
+            <TextContent
+              fontSize={student?.document?.fontSize}
+              position={student?.document}
+              text={'012.345.678-90'}
+            />
+          )}
+          {student?.finishedAt && (
+            <TextContent
+              fontSize={student?.finishedAt?.fontSize}
+              position={student?.finishedAt}
+              text={'12/12/2022'}
+            />
+          )}
+          {course?.name && (
+            <TextContent
+              fontSize={course?.name?.fontSize}
+              position={course?.name}
+              text={product.title}
+            />
+          )}
+          {course?.owner && (
+            <TextContent
+              fontSize={course?.owner?.fontSize}
+              position={course?.owner}
+              sign
+              text={product.profile.name}
+            />
+          )}
         </FileWrapper>
       </ModalDialogContent>
     </ModalComponent>

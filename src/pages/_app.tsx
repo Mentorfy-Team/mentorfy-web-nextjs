@@ -11,7 +11,7 @@ import createEmotionCache from '~/createEmotionCache';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
 const clientSideEmotionCache = createEmotionCache();
-import { Roboto } from '@next/font/google';
+import { Corinthia, Roboto } from '@next/font/google';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from '~/@types/supabase/v2.types';
@@ -21,6 +21,12 @@ import SupabaseClient from '~/services/SupabaseClient';
 export const MainFont = Roboto({
   weight: ['300', '400', '500', '700', '900'],
   variable: '--main-font',
+  subsets: ['latin'],
+});
+
+export const SingFont = Corinthia({
+  weight: ['400', '700'],
+  variable: '--sign-font',
   subsets: ['latin'],
 });
 
@@ -115,7 +121,7 @@ const App = (props: MyAppProps) => {
   }, []);
 
   return (
-    <main className={MainFont.className}>
+    <main className={MainFont.className + ' ' + SingFont.className}>
       <CacheProvider value={emotionCache}>
         <Head>
           <title>Mentorfy</title>

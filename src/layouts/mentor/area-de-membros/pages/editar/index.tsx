@@ -4,7 +4,7 @@ import Toolbar from '~/components/modules/Toolbar';
 
 type Props = PageTypes.Props & {
   data: MentorTools.ToolData[];
-  product: ProductApi.Product;
+  product: ProductTypes.Product;
   id: string;
 };
 import ConfigPage from '~/layouts/mentor/area-de-membros/pages/editar/configuracao';
@@ -30,7 +30,7 @@ const EditarMentoria: FC<Props> = ({ id, product, user }) => {
       case 4:
         return <Links id={id} />;
       case 3:
-        return <Certificate id={id} />;
+        return <Certificate id={id} product={product} />;
       case 2:
         return <ConfigPage id={id} />;
       case 1:

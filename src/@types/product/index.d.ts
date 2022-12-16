@@ -11,6 +11,8 @@ declare namespace ProductTypes {
     member_area?: typeof Database.public.Tables.member_area.Row & {
       member_area_type: typeof Database.public.Tables.member_area_type.Row;
     };
+    profile?: typeof Database.public.Tables.profile.Row;
+    certificate?: CertificateBuilder;
   };
   type Address = typeof Database.public.Tables.address.Row;
 
@@ -46,35 +48,34 @@ declare namespace ProductTypes {
   type CertificateBuilder = {
     product_id: string;
     title: string;
-    default_certificate: string;
     url: string;
     student: {
       name: {
         pageX: string;
         pageY: string;
-        fontSize: string;
+        fontSize: number;
       };
       finishedAt: {
         pageX: string;
         pageY: string;
-        fontSize: string;
+        fontSize: number;
       };
       document: {
         pageX: string;
         pageY: string;
-        fontSize: string;
+        fontSize: number;
       };
     };
     course: {
-      courseName: {
+      name: {
         pageX: string;
         pageY: string;
-        fontSize: string;
+        fontSize: number;
       };
-      mentorName: {
+      owner: {
         pageX: string;
         pageY: string;
-        fontSize: string;
+        fontSize: number;
       };
     };
   };

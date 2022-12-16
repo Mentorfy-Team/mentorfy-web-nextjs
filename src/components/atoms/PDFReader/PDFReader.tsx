@@ -11,7 +11,7 @@ const PDFReader = ({ file }) => {
       <Document file={file}>
         <Page
           pageIndex={0}
-          width={sizeLg ? 600 : sizeSm ? 400 : 300}
+          width={600}
           renderTextLayer={false}
           renderAnnotationLayer={false}
         />
