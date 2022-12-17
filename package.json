@@ -49,6 +49,7 @@
     "immer": "^9.0.15",
     "nanoid": "^4.0.0",
     "next": "13.0.4",
+    "next-axiom": "^0.16.0",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-calendly": "^4.1.0",

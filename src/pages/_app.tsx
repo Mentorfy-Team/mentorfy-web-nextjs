@@ -17,6 +17,7 @@ import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from '~/@types/supabase/v2.types';
 import { userStore } from '~/stores';
 import SupabaseClient from '~/services/SupabaseClient';
+export { reportWebVitals } from 'next-axiom';
 
 export const MainFont = Roboto({
   weight: ['300', '400', '500', '700', '900'],

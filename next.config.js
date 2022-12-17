@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+
+const { withAxiom } = require('next-axiom');
+
+const nextConfig = withAxiom({
   reactStrictMode: true,
   swcMinify: true,
   experimental: {
@@ -27,7 +30,7 @@ const nextConfig = {
       },
     ],
   },
-};
+});
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
