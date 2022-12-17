@@ -9,5 +9,8 @@ export const SendPaymentRequest = async (card: Checkout.Card) => {
   //pClient.cards.create
 
   // Create - > Transaction - > Result
-  pClient.subscriptions.create({}, {});
+  pClient.subscriptions.create({
+    plan_id: 1537011,
+    payment_method: 'credit-card',
+  });
 };
