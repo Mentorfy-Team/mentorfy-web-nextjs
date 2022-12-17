@@ -1,12 +1,4 @@
-// handle nextjs api request
-import { log } from 'next-axiom';
+import { handler } from '~/backend/http/handler';
+import { post } from '~/backend/http/webhooks/index';
 
-import { NextApiRequest, NextApiResponse } from 'next';
-
-export default async (req: NextApiRequest, res: NextApiResponse) => {
-  log.debug('webhook request', {
-    request: req,
-  });
-
-  res.status(200).json({ message: 'ok' });
-};
+export default handler({ post });
