@@ -1,7 +1,7 @@
 declare namespace Webhook {
   namespace Integration {
     namespace Kiwify {
-      type Webhook = {
+      type ApprovedPurchase = {
         order_id: string;
         order_ref: string;
         order_status: stringa;
