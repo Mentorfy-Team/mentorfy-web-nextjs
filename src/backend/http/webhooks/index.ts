@@ -6,7 +6,8 @@ import { RouteIntegrationTarget } from '~/backend/repositories/webhooks/integrat
 
 export const post = async (req: AxiomAPIRequest, res: NextApiResponse) => {
   req.log.info('webhook request', {
-    request: req,
+    CallerHeader: req.headers,
+    CallerBody: req.body,
   });
 
   const conclusion = await RouteIntegrationTarget(req, res);
