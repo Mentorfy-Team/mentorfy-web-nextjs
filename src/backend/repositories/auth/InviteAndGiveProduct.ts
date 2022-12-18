@@ -1,5 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from '~/@types/supabase/v2.types';
+import { dateToReadable } from '~/backend/http/clients/list.api';
 import { CheckForAccount } from './CheckForAccount';
 
 type Props = {
@@ -12,7 +13,7 @@ type Props = {
   };
 };
 
-export const InviteAndCreateAccount = async ({
+export const InviteAndSubscribe = async ({
   supabase,
   data: { email, name, phone, refeerer },
 }: Props) => {
@@ -37,15 +38,28 @@ export const InviteAndCreateAccount = async ({
       },
     );
     user = data.user;
+
+    await supabase.auth.admin.updateUserById(user.id, { phone });
+
+    await supabase
+      .from('profile')
+      .update({ name, email: email, phone: phone })
+      .eq('id', user.id);
   } else {
     user = existentUser;
   }
 
-  await supabase.auth.admin.updateUserById(user.id, { phone });
+  // current data + 30 days
+  const expiration_date = new Date();
+  expiration_date.setDate(expiration_date.getDate() + 29);
 
   await supabase
     .from('profile')
-    .update({ name, email: email, phone: phone })
+    .update({
+      interval: 'monthly',
+      is_subscribed: true,
+      expiration_date: dateToReadable(expiration_date),
+    })
     .eq('id', user.id);
 
   return user;

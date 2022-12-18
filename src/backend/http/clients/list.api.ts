@@ -1,6 +1,6 @@
 import { SupabaseServer } from '~/backend/supabase';
 
-const dateToReadable = (dateObj) => {
+export const dateToReadable = (dateObj) => {
   return `${dateObj.getFullYear()}-${
     dateObj.getMonth() + 1
   }-${dateObj.getDate()}`;
