@@ -12,7 +12,7 @@ type Props = {
   };
 };
 
-export const InviteAndGiveProduct = async ({
+export const InviteAndCreateAccount = async ({
   supabase,
   data: { email, name, phone, refeerer },
 }: Props) => {
@@ -47,17 +47,6 @@ export const InviteAndGiveProduct = async ({
     .from('profile')
     .update({ name, email: email, phone: phone })
     .eq('id', user.id);
-
-  const { data } = await supabase
-    .from('product')
-    .select('id')
-    .eq('refeerer', refeerer)
-    .single();
-
-  await supabase.from('client_product').insert({
-    user_id: user.id,
-    product_id: data.id,
-  });
 
   return user;
 };

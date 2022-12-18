@@ -1,4 +1,4 @@
-import { InviteAndGiveProduct } from './../../../auth/InviteAndCreateAccount';
+import { InviteAndCreateAccount } from '../../../auth/InviteAndGiveProduct';
 import { NextApiRequest } from 'next';
 import { AuthenticateRequest } from './Validations';
 
@@ -9,7 +9,7 @@ export const KiwifyRoute = async (req: NextApiRequest, supabase: any) => {
 
   // Processa o pedido
 
-  await InviteAndGiveProduct({
+  await InviteAndCreateAccount({
     supabase,
     data: {
       email: data.Customer.email,
