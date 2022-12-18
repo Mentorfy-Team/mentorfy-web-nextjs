@@ -28,8 +28,7 @@
     "./src/@types/mui.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "node_modules/pagarme-js-types/index.d.ts"
+    ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
