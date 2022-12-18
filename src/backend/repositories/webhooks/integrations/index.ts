@@ -1,24 +1,44 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { SupabaseAdmin } from '~/backend/supabase';
 import { EduzzRoute } from './eduzz';
+import { isEduzz } from './eduzz/Validations';
 import { HotmartRoute } from './hotmart';
+import { isHotmart } from './hotmart/Validations';
 import { KiwifyRoute } from './kiwify';
+import { isKiwify } from './kiwify/Validations';
 import { PerfectPayRoute } from './perfectpay';
+import { isPerfectPay } from './perfectpay/Validations';
 
-const AvailableIntegrations = {
+export const AvailableIntegrations = {
   KIWIFY: 'kiwify',
   PERFECTPAY: 'perfectpay',
   EDUZZ: 'eduzz',
   HOTMART: 'hotmart',
 } as const;
 
-export const RouteIntegrationTarget = (
+export const RouteIntegrationTarget = async (
   req: NextApiRequest,
   res: NextApiResponse,
 ) => {
-  const host = req.headers.host;
+  const supabase = await SupabaseAdmin(req);
+  let result = null;
 
-  host.includes(AvailableIntegrations.KIWIFY) && KiwifyRoute(req, res);
-  host.includes(AvailableIntegrations.HOTMART) && HotmartRoute(req, res);
-  host.includes(AvailableIntegrations.PERFECTPAY) && PerfectPayRoute(req, res);
-  host.includes(AvailableIntegrations.EDUZZ) && EduzzRoute(req, res);
+  if (isKiwify(req.body)) {
+    result = await KiwifyRoute(req, supabase);
+  }
+  if (isHotmart(req.body)) {
+    result = await HotmartRoute(req, supabase);
+  }
+  if (isPerfectPay(req.body)) {
+    result = await PerfectPayRoute(req, supabase);
+  }
+  if (isEduzz(req.body)) {
+    result = await EduzzRoute(req, supabase);
+  }
+
+  if (result) {
+    return true;
+  } else {
+    return false;
+  }
 };

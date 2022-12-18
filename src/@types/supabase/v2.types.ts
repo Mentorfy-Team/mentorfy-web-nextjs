@@ -102,6 +102,26 @@ export interface Database {
           approved?: boolean
         }
       }
+      integration_token: {
+        Row: {
+          id: number
+          product_id: string
+          token: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: number
+          product_id: string
+          token?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: number
+          product_id?: string
+          token?: string | null
+          created_at?: string | null
+        }
+      }
       log_type: {
         Row: {
           created_at: string | null

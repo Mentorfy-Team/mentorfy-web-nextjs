@@ -1,11 +1,8 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest } from 'next';
 import { AuthenticateRequest } from './Validations';
 
-export const PerfectPayRoute = async (
-  req: NextApiRequest,
-  res: NextApiResponse,
-) => {
-  const confirmation = await AuthenticateRequest(req);
+export const PerfectPayRoute = async (req: NextApiRequest, supabase: any) => {
+  const confirmation = await AuthenticateRequest(supabase, req.query, req.body);
 
   if (!confirmation) return;
 };

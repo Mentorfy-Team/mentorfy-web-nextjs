@@ -1,11 +1,23 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { InviteAndGiveProduct } from './../../../auth/InviteAndCreateAccount';
+import { NextApiRequest } from 'next';
 import { AuthenticateRequest } from './Validations';
 
-export const KiwifyRoute = async (
-  req: NextApiRequest,
-  res: NextApiResponse,
-) => {
-  const confirmation = await AuthenticateRequest(req);
-
+export const KiwifyRoute = async (req: NextApiRequest, supabase: any) => {
+  const confirmation = await AuthenticateRequest(supabase, req.query, req.body);
+  const data = req.body as Webhook.Integration.Kiwify.ApprovedPurchase;
   if (!confirmation) return;
+
+  // Processa o pedido
+
+  await InviteAndGiveProduct({
+    supabase,
+    data: {
+      email: data.Customer.email,
+      name: data.Customer.full_name,
+      phone: data.Customer.mobile,
+      refeerer: req.query.id as string,
+    },
+  });
+
+  return true;
 };
