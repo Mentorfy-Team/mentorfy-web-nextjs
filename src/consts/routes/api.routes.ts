@@ -49,4 +49,7 @@ export enum ApiRoutes {
   //* Rotas para api de upload de arquivos
   upload = '/api/upload',
   upload_delete = '/api/upload/delete',
+
+  //* Rota para checkout
+  checkout = '/api/checkout',
 }
