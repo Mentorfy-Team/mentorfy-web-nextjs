@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
 import PixModal from '../components/PixModal';
 
-const Signature = ({ profile, user, plan }) => {
+const Signature = ({ profile, pix, plan }) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
 
@@ -64,7 +64,7 @@ const Signature = ({ profile, user, plan }) => {
           </Button>
         </PlanWrapper>
       </SignatureWrapper>
-      <PixModal open={open} setOpen={setOpen} user={user} />
+      <PixModal open={open} setOpen={setOpen} pix={pix} />
     </>
   );
 };

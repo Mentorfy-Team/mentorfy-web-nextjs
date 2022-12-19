@@ -34,6 +34,7 @@ import { useForm } from 'react-hook-form';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { GetPlans } from '~/services/checkout/plans.service';
 import { SendPayment } from '~/services/checkout/payment.service';
+import { SendPixPayment } from '~/services/checkout/pix.service';
 
 type Props = {
   product: ProductApi.Product;
@@ -115,10 +116,31 @@ const Checkout = ({ product, plan }: Props) => {
       }));
     }
   }, [plan.id, tab]);
-  console.log(data);
   const onSubmit = async () => {
     setIsLoading(true);
-    await SendPayment(data);
+    if (tab === 0) {
+      await SendPayment(data);
+    } else {
+      await SendPixPayment({
+        payment_method: 'pix',
+        pix_expiration_date: (new Date().getTime() + 1),
+        amount: plan.amount,
+        customer: {
+          external_id: 'checkouk_pix',
+          email: data.customer?.email,
+          name: data.customer?.name,
+          type: 'individual',
+          country: 'br',
+          documents: [
+            {
+              type: 'cpf',
+              number: data.customer?.document_number,
+            },
+          ],
+          phone_numbers: [data.customer?.phone?.ddd, data.customer?.phone?.number],
+        }
+      });
+    }
     setIsLoading(false);
   };
   return (
@@ -225,9 +247,8 @@ const Checkout = ({ product, plan }: Props) => {
           <CardWrapper
             onClick={() => setTab(0)}
             sx={{
-              borderColor: `${
-                tab == 0 ? theme.palette.accent.main : '#bebebe'
-              }`,
+              borderColor: `${tab == 0 ? theme.palette.accent.main : '#bebebe'
+                }`,
             }}
           >
             <CreditCard
@@ -239,11 +260,10 @@ const Checkout = ({ product, plan }: Props) => {
             />
             <MethodText
               sx={{
-                color: `${
-                  tab == 0
-                    ? theme.palette.accent.main
-                    : theme.palette.caption.main
-                }`,
+                color: `${tab == 0
+                  ? theme.palette.accent.main
+                  : theme.palette.caption.main
+                  }`,
               }}
             >
               Cartão de Crédito
@@ -252,9 +272,8 @@ const Checkout = ({ product, plan }: Props) => {
           <CardWrapper
             onClick={() => setTab(1)}
             sx={{
-              borderColor: `${
-                tab == 1 ? theme.palette.accent.main : '#bebebe'
-              }`,
+              borderColor: `${tab == 1 ? theme.palette.accent.main : '#bebebe'
+                }`,
             }}
           >
             <Pix
@@ -266,11 +285,10 @@ const Checkout = ({ product, plan }: Props) => {
             />
             <MethodText
               sx={{
-                color: `${
-                  tab == 1
-                    ? theme.palette.accent.main
-                    : theme.palette.caption.main
-                }`,
+                color: `${tab == 1
+                  ? theme.palette.accent.main
+                  : theme.palette.caption.main
+                  }`,
               }}
             >
               PIX

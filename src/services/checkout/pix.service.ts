@@ -1,11 +1,11 @@
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from '../HttpClient';
 
-export const SendPixPayment = async (profile: UserClient.User) => {
+export const SendPixPayment = async (pix: Checkout.PixRequest) => {
   try {
     const response = await HttpClient.post(
       ApiRoutes.pix,
-      profile,
+      pix,
     );
     if (response.data.error) {
       return {

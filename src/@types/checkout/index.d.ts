@@ -62,7 +62,7 @@ declare namespace Checkout {
       documents: [
         {
           type: 'cpf';
-          number: number;
+          number: string;
         },
       ];
       phone_numbers: string[];

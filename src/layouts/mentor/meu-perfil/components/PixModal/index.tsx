@@ -5,9 +5,9 @@ import { ModalDialogContent } from '~/components/modules/Modal/styles';
 type Props = {
   open: boolean;
   setOpen: (value: boolean) => void;
-  user: UserClient.User;
+  pix: Checkout.PaymentRequest;
 }
-const PixModal = ({ open, setOpen, user }) => {
+const PixModal = ({ open, setOpen, pix }: Props) => {
 
   return (
     <ModalComponent open={open} setOpen={setOpen}>

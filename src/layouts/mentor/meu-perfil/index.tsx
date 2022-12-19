@@ -9,7 +9,6 @@ import { GetAuthSession } from '~/helpers/AuthSession';
 import { useProfile } from '~/hooks/useProfile';
 import Signature from './tabs/assinaturas';
 import { GetPlans } from '~/services/checkout/plans.service';
-import { SendPixPayment } from '~/services/checkout/pix.service';
 
 const DadosPage = dynamic(() => import('./tabs/dados-cadastro'));
 
@@ -36,7 +35,8 @@ const MinhaConta: FC<props> = ({
   isViewingMentor,
   mentored_id,
   mentor_id,
-  plan
+  plan,
+  pix
 }) => {
   const [tabindex, setTabindex] = useState<string>(tab);
   const {
@@ -58,7 +58,7 @@ const MinhaConta: FC<props> = ({
       case tabs.Links.toString():
         return <DadosPage profile={profile} address={address} />;
       case tabs.Assinatura.toString():
-        return <Signature user={user} profile={profile} plan={plan} />;
+        return <Signature pix={pix} profile={profile} plan={plan} />;
       default:
         return (
           <GeralPage
@@ -106,11 +106,7 @@ export const getProps = async (ctx) => {
         permanent: false,
       },
     };
-
   const plan = await GetPlans();
-  const pix = await SendPixPayment(session.user);
-
-  console.log(pix);
 
   return {
     props: {
@@ -119,7 +115,7 @@ export const getProps = async (ctx) => {
       mentor_id: ctx.query.id ?? null,
       isViewingMentored: !!ctx.query.altId,
       isViewingMentor: !!ctx.query.id,
-      plan: plan[0]
+      plan: plan[0],
     },
   };
 };
