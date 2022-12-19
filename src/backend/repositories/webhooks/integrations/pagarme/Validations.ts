@@ -2,8 +2,8 @@ import crypto from 'crypto';
 import { GetTokenByRefeerer } from '~/backend/repositories/product/GetTokenByRefeerer';
 import { AvailableIntegrations } from '..';
 
-export const isPagarme = (data) => {
-  if (data?.current_status) return true;
+export const isPagarme = (query) => {
+  if (!query.id) return true;
 
   return false;
 };

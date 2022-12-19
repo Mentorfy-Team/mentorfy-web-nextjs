@@ -25,7 +25,7 @@ export const RouteIntegrationTarget = async (
   const supabase = await SupabaseAdmin(req);
   let result = null;
 
-  if (isPagarme(req.body)) {
+  if (isPagarme(req.query)) {
     result = await PagarmeRoute(req, supabase);
   } else if (isKiwify(req.body)) {
     result = await KiwifyRoute(req, supabase);
