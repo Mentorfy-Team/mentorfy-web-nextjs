@@ -36,7 +36,6 @@ export const InviteAndSubscribe = async ({
       },
     );
     user = data.user as any;
-    console.log(ierror);
 
     await supabase.auth.admin.updateUserById(user.id, { phone });
 

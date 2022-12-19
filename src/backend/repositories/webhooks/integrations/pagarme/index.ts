@@ -1,23 +1,25 @@
 //import { InviteAndSubscribe } from '../../../auth/InviteAndSubscribe';
 import { NextApiRequest } from 'next';
-import { AuthenticateRequest } from './Validations';
+import { InviteAndSubscribe } from '~/backend/repositories/auth/InviteAndSubscribe';
 
 export const PagarmeRoute = async (req: NextApiRequest, supabase: any) => {
-  const confirmation = await AuthenticateRequest(supabase, req.query, req.body);
-  const data = req.body;
-  if (!confirmation) return;
+  const data = req.body as Webhook.Integration.Pagarme.PagarmeResponse;
 
+  if (data.current_status === 'paid') {
+    if (data?.transaction && data.transaction.customer) {
+      const { email, name, phone_numbers } = data.transaction.customer;
+      await InviteAndSubscribe({
+        supabase,
+        data: {
+          email: email,
+          name: name,
+          phone: phone_numbers ? phone_numbers[0] : null,
+          refeerer: req.query.id as string,
+        },
+      });
+    }
+  }
   // Processa o pedido
-
-  // await InviteAndSubscribe({
-  //   supabase,
-  //   data: {
-  //     email: data.Customer.email,
-  //     name: data.Customer.full_name,
-  //     phone: data.Customer.mobile?.ddd + data.Customer.mobile?.number,
-  //     refeerer: req.query.id as string,
-  //   },
-  // });
 
   return true;
 };
