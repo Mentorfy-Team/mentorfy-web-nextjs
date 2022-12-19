@@ -2,7 +2,7 @@ import { FileToUrl } from '~/services/file-upload.service';
 import { FileType } from '..';
 
 export default async (files: FileType[], refId) => {
-  const readyFiles = [];
+  const readyFiles: FileType[] = [];
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
 

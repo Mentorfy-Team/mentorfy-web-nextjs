@@ -34,6 +34,7 @@ import { DefaultCertificate } from '~/consts/certificate';
 import { toast } from 'react-toastify';
 import { DragBox } from './components/DragBox';
 import { SingFont } from '~/pages/_app';
+import UploadToUrlFiles from '../../../components/UploadFileModal/helpers/UploadToUrlFiles';
 
 const PDFReader = dynamic(
   () => import('~/components/atoms/PDFReader/PDFReader'),
@@ -72,9 +73,13 @@ const Certificate = ({
   const [title, setTitle] = useState<string>(initCertificate.title);
   const [color, setColor] = useState(false);
   const theme = useTheme();
-  const [files, setFiles] = useState<Partial<FileType>>({
+  const [files, setFiles] = useState<FileType>({
     id: '0',
     data: initCertificate.url,
+    name: initCertificate.title,
+    type: 'pdf',
+    file: null,
+    size: null,
   });
 
   const [show, setShow] = useState<Partial<CustomInfo>>({
@@ -206,28 +211,32 @@ const Certificate = ({
     });
   };
 
+  const GetUrlAndSaveInCertificate = async () => {
+    const convertedFiles = await UploadToUrlFiles([files], id);
+    setCertificate((old) => {
+      return {
+        ...old,
+        url: convertedFiles[0].sourceUrl,
+        product_id: id,
+        title: title,
+      };
+    });
+  };
+
   useEffect(() => {
-    {
-      color &&
-        setDefaultCertificate((old) => {
-          return {
-            ...old,
-            product_id: id,
-            title: title,
-          };
-        });
+    if (color) {
+      setDefaultCertificate((old) => {
+        return {
+          ...old,
+          product_id: id,
+          title: title,
+        };
+      });
+
+      return;
     }
-    {
-      !color &&
-        setCertificate((old) => {
-          return {
-            ...old,
-            url: (files as any)?.data,
-            product_id: id,
-            title: title,
-          };
-        });
-    }
+
+    GetUrlAndSaveInCertificate();
   }, [color, files, id, title]);
 
   const onSubmit = async () => {
