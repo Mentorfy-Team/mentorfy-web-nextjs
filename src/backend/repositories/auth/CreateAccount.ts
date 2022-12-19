@@ -31,8 +31,9 @@ export const CreateAccount = async ({
   });
 
   // * Se tudo estiver certo, atualiza o perfil do usuário
+  let profile;
   if (!error) {
-    await supabase
+    const { data } = await supabase
       .from('profile')
       .update({
         name,
@@ -41,7 +42,11 @@ export const CreateAccount = async ({
         phone: user.phone,
         access_type: refeerer ? 'mentorado' : 'mentor',
       })
-      .eq('id', user.id);
+      .eq('id', user.id)
+      .select('*')
+      .single();
+
+    profile = data;
   }
 
   // * Se houver erro, retorna o erro
@@ -66,5 +71,5 @@ export const CreateAccount = async ({
     });
   }
 
-  return user;
+  return profile;
 };
