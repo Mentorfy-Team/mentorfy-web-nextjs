@@ -1,4 +1,4 @@
-import { InviteAndSubscribe } from '../../../auth/InviteAndGiveProduct';
+import { InviteAndSubscribe } from '../../../auth/InviteAndSubscribe';
 import { NextApiRequest } from 'next';
 import { AuthenticateRequest } from './Validations';
 import { GiveProductToClient } from '~/backend/repositories/product/GiveProductToClient';
