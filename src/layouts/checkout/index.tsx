@@ -37,7 +37,7 @@ import { SendPayment } from '~/services/checkout/payment.service';
 
 type Props = {
   product: ProductApi.Product;
-  plan: Checkout.Plan
+  plan: Checkout.Plan;
 };
 
 const Checkout = ({ product, plan }: Props) => {
@@ -72,7 +72,7 @@ const Checkout = ({ product, plan }: Props) => {
           [categoryName]: {
             ...stateCategory,
             [fieldName]: e.target.value,
-          }
+          },
         };
         return data;
       });
@@ -86,21 +86,24 @@ const Checkout = ({ product, plan }: Props) => {
               ...stateField,
               [subCategory]: e.target.value,
             },
-          }
+          },
         };
         return data;
       });
     }
   };
 
-  const formatExpiredDate = (date) => {
+  const formatExpiredDate = (date: string) => {
+    if (!date) return;
 
-    if (date?.length === 4) {
+    if (date.replace('/', '')?.length === 4) {
       const month = date.slice(0, 2);
       const year = date.slice(2, 4);
 
       return month + '/' + year;
     }
+
+    return date.replace('/', '');
   };
 
   useEffect(() => {
@@ -108,7 +111,7 @@ const Checkout = ({ product, plan }: Props) => {
       setData((state) => ({
         ...state,
         plan_id: plan.id,
-        payment_method: 'credit_card'
+        payment_method: 'credit_card',
       }));
     }
   }, [plan.id, tab]);
@@ -151,8 +154,7 @@ const Checkout = ({ product, plan }: Props) => {
           type="text"
           required
           placeholder="Nome Completo"
-          onChange={(e) =>
-            handleData(e, 'customer', 'name', null)}
+          onChange={(e) => handleData(e, 'customer', 'name', null)}
         />
         <Input
           type="email"
@@ -164,7 +166,11 @@ const Checkout = ({ product, plan }: Props) => {
           type="email"
           placeholder=" Confirme seu e-mail"
           onChange={(e) => setConfirmedEmail(e.target.value)}
-          error={confirmedEmail.length > 0 && confirmedEmail !== data.customer.email ? true : false}
+          error={
+            confirmedEmail.length > 0 && confirmedEmail !== data.customer.email
+              ? true
+              : false
+          }
         />
         <Input
           type="text"
@@ -189,7 +195,9 @@ const Checkout = ({ product, plan }: Props) => {
             type="text"
             required
             placeholder="Número"
-            onChange={(e) => handleData(e, 'customer', 'address', 'street_number')}
+            onChange={(e) =>
+              handleData(e, 'customer', 'address', 'street_number')
+            }
           />
           <Input
             type="text"
@@ -217,8 +225,9 @@ const Checkout = ({ product, plan }: Props) => {
           <CardWrapper
             onClick={() => setTab(0)}
             sx={{
-              borderColor: `${tab == 0 ? theme.palette.accent.main : '#bebebe'
-                }`,
+              borderColor: `${
+                tab == 0 ? theme.palette.accent.main : '#bebebe'
+              }`,
             }}
           >
             <CreditCard
@@ -230,10 +239,11 @@ const Checkout = ({ product, plan }: Props) => {
             />
             <MethodText
               sx={{
-                color: `${tab == 0
-                  ? theme.palette.accent.main
-                  : theme.palette.caption.main
-                  }`,
+                color: `${
+                  tab == 0
+                    ? theme.palette.accent.main
+                    : theme.palette.caption.main
+                }`,
               }}
             >
               Cartão de Crédito
@@ -242,8 +252,9 @@ const Checkout = ({ product, plan }: Props) => {
           <CardWrapper
             onClick={() => setTab(1)}
             sx={{
-              borderColor: `${tab == 1 ? theme.palette.accent.main : '#bebebe'
-                }`,
+              borderColor: `${
+                tab == 1 ? theme.palette.accent.main : '#bebebe'
+              }`,
             }}
           >
             <Pix
@@ -255,10 +266,11 @@ const Checkout = ({ product, plan }: Props) => {
             />
             <MethodText
               sx={{
-                color: `${tab == 1
-                  ? theme.palette.accent.main
-                  : theme.palette.caption.main
-                  }`,
+                color: `${
+                  tab == 1
+                    ? theme.palette.accent.main
+                    : theme.palette.caption.main
+                }`,
               }}
             >
               PIX
@@ -273,13 +285,13 @@ const Checkout = ({ product, plan }: Props) => {
                 type="text"
                 placeholder="Número do cartão de crédito"
                 onChange={(e) => handleData(e, 'card', 'card_number', null)}
-
               />
               <Input
                 type="text"
                 placeholder="Nome impresso no cartão"
-                onChange={(e) => handleData(e, 'card', 'card_holder_name', null)}
-
+                onChange={(e) =>
+                  handleData(e, 'card', 'card_holder_name', null)
+                }
               />
               <InputsWrapper>
                 <Input
@@ -287,36 +299,21 @@ const Checkout = ({ product, plan }: Props) => {
                   value={formatExpiredDate(data?.card?.card_expiration_date)}
                   placeholder="Data de vencimento"
                   onChange={(e) => {
-                    e.target.value.length <= 4 ? handleData(e, 'card', 'card_expiration_date', null) : null;
+                    e.target.value.length <= 4
+                      ? handleData(e, 'card', 'card_expiration_date', null)
+                      : null;
                   }}
                 />
                 <Input
                   type="text"
                   placeholder="CVV"
                   onChange={(e) => {
-                    e.target.value.length <= 3 ? handleData(e, 'card', 'card_cvv', null) : null;
+                    e.target.value.length <= 3
+                      ? handleData(e, 'card', 'card_cvv', null)
+                      : null;
                   }}
                 />
               </InputsWrapper>
-              {/* <CustomSelectField
-              >
-                <InputLabel>Parcelas</InputLabel>
-                <Select
-                  value={month}
-                  name="teams"
-                  label="Parcelas"
-                  onChange={(e) => {
-                    setSelectedMonth(e.target.value);
-                  }}
-                  sx={{ color: `${theme.palette.caption.dark}` }}
-                >
-                  {months?.map((month) => (
-                    <MenuItem key={month.id} value={month.id}>
-                      {month.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </CustomSelectField> */}
             </PaymentInfoWrapper>
             <PoliciesWrapper>
               {tab == 0 && (
@@ -414,7 +411,12 @@ const Checkout = ({ product, plan }: Props) => {
             </Box>
           </>
         )}
-        <LoadingButton loading={isLoading} variant="contained" type="submit" sx={{ width: '100%' }}>
+        <LoadingButton
+          loading={isLoading}
+          variant="contained"
+          type="submit"
+          sx={{ width: '100%' }}
+        >
           Comprar agora
         </LoadingButton>
         <Image
@@ -436,7 +438,7 @@ export const getProps = async (ctx) => {
 
   return {
     props: {
-      plan: plan[0]
+      plan: plan[0],
     },
   };
 };
