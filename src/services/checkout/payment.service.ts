@@ -2,7 +2,6 @@ import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from '../HttpClient';
 
 export const SendPayment = async (data: Checkout.PaymentRequest) => {
-  console.log(data);
   try {
     const response = await HttpClient.post(
       ApiRoutes.checkout,

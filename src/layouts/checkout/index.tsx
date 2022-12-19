@@ -26,14 +26,14 @@ import {
   Title,
 } from './styles';
 import { useTheme } from '@mui/material/styles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
-import { GetPlans } from '~/services/checkout/plans.service';
 import { useForm } from 'react-hook-form';
-import { SendPayment } from '~/services/checkout/payment.service';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { GetPlans } from '~/services/checkout/plans.service';
+import { SendPayment } from '~/services/checkout/payment.service';
 
 type Props = {
   product: ProductApi.Product;
@@ -45,7 +45,7 @@ const Checkout = ({ product, plan }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [tab, setTab] = useState<number>(0);
   const [saveToNextBuy, setSaveToNextBuy] = useState(false);
-  const [data, setData] = useState<Checkout.PaymentRequest>({});
+  const [data, setData] = useState<Checkout.PaymentRequest>();
   const [confirmedEmail, setConfirmedEmail] = useState<string>('');
   const { handleSubmit } = useForm();
 
@@ -61,19 +61,36 @@ const Checkout = ({ product, plan }: Props) => {
     return priceInReaisReadable;
   };
 
-  const handleData = (e, categoryName, subCategory, fieldName) => {
+  const handleData = (e, categoryName, fieldName, subCategory) => {
     const stateCategory = data[categoryName];
+    const stateField = stateCategory ? stateCategory[fieldName] : null;
 
-    setData((state) => {
-      const data = {
-        ...state,
-        [categoryName]: {
-          ...stateCategory,
-          [fieldName]: e.target.value,
-        }
-      };
-      return data;
-    });
+    if (subCategory === null) {
+      setData((state) => {
+        const data = {
+          ...state,
+          [categoryName]: {
+            ...stateCategory,
+            [fieldName]: e.target.value,
+          }
+        };
+        return data;
+      });
+    } else {
+      setData((state) => {
+        const data = {
+          ...state,
+          [categoryName]: {
+            ...stateCategory,
+            [fieldName]: {
+              ...stateField,
+              [subCategory]: e.target.value,
+            },
+          }
+        };
+        return data;
+      });
+    }
   };
 
   const formatExpiredDate = (date) => {
@@ -86,25 +103,20 @@ const Checkout = ({ product, plan }: Props) => {
     }
   };
 
-  // useEffect(() => {
-  //   if (saveToNextBuy) {
-  //     setData((state) => ({
-  //       ...state,
-  //       card_save: true,
-  //     }));
-  //   } else {
-  //     setData((state) => ({
-  //       ...state,
-  //       card_save: false,
-  //     }));
-  //   }
-  // }, [saveToNextBuy]);
-
+  useEffect(() => {
+    if (tab === 0) {
+      setData((state) => ({
+        ...state,
+        plan_id: plan.id,
+        payment_method: 'credit_card'
+      }));
+    }
+  }, [plan.id, tab]);
+  console.log(data);
   const onSubmit = async () => {
     setIsLoading(true);
     await SendPayment(data);
     setIsLoading(false);
-
   };
   return (
     <ContentWidthLimit withoutScroll maxWidth={600}>
@@ -140,13 +152,13 @@ const Checkout = ({ product, plan }: Props) => {
           required
           placeholder="Nome Completo"
           onChange={(e) =>
-            handleData(e, 'customer', 'name')}
+            handleData(e, 'customer', 'name', null)}
         />
         <Input
           type="email"
           required
           placeholder="E-mail"
-          onChange={(e) => handleData(e, 'customer', 'email')}
+          onChange={(e) => handleData(e, 'customer', 'email', null)}
         />
         <Input
           type="email"
@@ -158,32 +170,32 @@ const Checkout = ({ product, plan }: Props) => {
           type="text"
           required
           placeholder="CPF/CNPJ"
-          onChange={(e) => handleData(e, 'customer', 'document')}
+          onChange={(e) => handleData(e, 'customer', 'document', null)}
         />
         <Input
           type="text"
           required
           placeholder="Bairro"
-          onChange={(e) => handleData(e, 'address', 'neighborhood')}
+          onChange={(e) => handleData(e, 'customer', 'address', 'neighborhood')}
         />
         <Input
           type="text"
           required
           placeholder="Rua"
-          onChange={(e) => handleData(e, 'address', 'street')}
+          onChange={(e) => handleData(e, 'customer', 'address', 'street')}
         />
         <InputsWrapper>
           <Input
             type="text"
             required
             placeholder="Número"
-            onChange={(e) => handleData(e, 'address', 'street_number')}
+            onChange={(e) => handleData(e, 'customer', 'address', 'street_number')}
           />
           <Input
             type="text"
             required
             placeholder="CEP"
-            onChange={(e) => handleData(e, 'address', 'zipcode')}
+            onChange={(e) => handleData(e, 'customer', 'address', 'zipcode')}
           />
         </InputsWrapper>
         <InputsWrapper>
@@ -191,14 +203,14 @@ const Checkout = ({ product, plan }: Props) => {
             type="text"
             required
             placeholder="DDD"
-            onChange={(e) => handleData(e, 'phone', 'ddd')}
+            onChange={(e) => handleData(e, 'customer', 'phone', 'ddd')}
             sx={{ width: '20%' }}
           />
           <Input
             type="text"
             required
             placeholder="Número de telefone"
-            onChange={(e) => handleData(e, 'phone', 'number')}
+            onChange={(e) => handleData(e, 'customer', 'phone', 'number')}
           />
         </InputsWrapper>
         <PaymentMethWrapper>
@@ -260,13 +272,13 @@ const Checkout = ({ product, plan }: Props) => {
               <Input
                 type="text"
                 placeholder="Número do cartão de crédito"
-                onChange={(e) => handleData(e, 'card', 'card_number')}
+                onChange={(e) => handleData(e, 'card', 'card_number', null)}
 
               />
               <Input
                 type="text"
                 placeholder="Nome impresso no cartão"
-                onChange={(e) => handleData(e, 'card', 'card_holder_name')}
+                onChange={(e) => handleData(e, 'card', 'card_holder_name', null)}
 
               />
               <InputsWrapper>
@@ -275,10 +287,16 @@ const Checkout = ({ product, plan }: Props) => {
                   value={formatExpiredDate(data?.card?.card_expiration_date)}
                   placeholder="Data de vencimento"
                   onChange={(e) => {
-                    e.target.value.length <= 4 ? handleData(e, 'card', 'card_expiration_date') : null;
+                    e.target.value.length <= 4 ? handleData(e, 'card', 'card_expiration_date', null) : null;
                   }}
                 />
-                <Input type="text" placeholder="CVV" />
+                <Input
+                  type="text"
+                  placeholder="CVV"
+                  onChange={(e) => {
+                    e.target.value.length <= 3 ? handleData(e, 'card', 'card_cvv', null) : null;
+                  }}
+                />
               </InputsWrapper>
               {/* <CustomSelectField
               >
@@ -345,7 +363,7 @@ const Checkout = ({ product, plan }: Props) => {
                     />
                     <SecurityText>
                       A cobrança aparecerá na sua fatura como:{' '}
-                      <strong> PG*MENTORFY*SEJAMENTOR</strong>
+                      <strong> PG*MENTORFY*</strong>
                     </SecurityText>
                   </Box>
                 </>
