@@ -25,14 +25,11 @@ export const RouteIntegrationTarget = async (
 
   if (isKiwify(req.body)) {
     result = await KiwifyRoute(req, supabase);
-  }
-  if (isHotmart(req.body)) {
+  } else if (isHotmart(req.body)) {
     result = await HotmartRoute(req, supabase);
-  }
-  if (isPerfectPay(req.body)) {
+  } else if (isPerfectPay(req.body)) {
     result = await PerfectPayRoute(req, supabase);
-  }
-  if (isEduzz(req.body)) {
+  } else if (isEduzz(req.body)) {
     result = await EduzzRoute(req, supabase);
   }
 
