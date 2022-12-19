@@ -6,8 +6,14 @@ export const PagarmeRoute = async (req: NextApiRequest, supabase: any) => {
   const data = req.body as Webhook.Integration.Pagarme.PagarmeResponse;
 
   if (data.current_status === 'paid') {
-    if (data?.transaction && data.transaction.customer) {
-      const { email, name, phone_numbers } = data.transaction.customer;
+    if (
+      data?.['transaction[acquirer_name]'] &&
+      data['transaction[customer][email]']
+    ) {
+      const email = data['transaction[customer][email]'];
+      const name = data['transaction[customer][name]'];
+      const phone_numbers = data['transaction[customer][phone_numbers][0]'];
+
       await InviteAndSubscribe({
         supabase,
         data: {
