@@ -2,7 +2,6 @@ import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from './HttpClient';
 
 export const UpdateCertificate = async (certificate: ProductTypes.Certificate) => {
-  console.log(certificate);
   try {
     const response = await HttpClient.put(
       ApiRoutes.products_certificate,

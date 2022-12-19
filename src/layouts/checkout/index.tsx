@@ -9,11 +9,11 @@ import {
   BpCheckedIcon,
   BpIcon,
   CardWrapper,
-  CustomSelectField,
   Form,
   FormHeader,
   InfoWrapper,
   Input,
+  InputsWrapper,
   MethodText,
   PaymentInfoWrapper,
   PaymentMethWrapper,
@@ -28,36 +28,84 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
 import Box from '@mui/material/Box';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { GetProductByRef } from '~/services/product.service';
+import { GetPlans } from '~/services/checkout/plans.service';
+import { useForm } from 'react-hook-form';
+import { SendPayment } from '~/services/checkout/payment.service';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 type Props = {
   product: ProductApi.Product;
+  plan: Checkout.Plan
 };
 
-const Checkout = ({ product }: Props) => {
+const Checkout = ({ product, plan }: Props) => {
   const theme = useTheme();
+  const [isLoading, setIsLoading] = useState(false);
   const [tab, setTab] = useState<number>(0);
-  const [day, setSelectedDay] = useState('');
   const [saveToNextBuy, setSaveToNextBuy] = useState(false);
-  const [month, setSelectedMonth] = useState('');
-  const days = [
-    { id: 0, label: '1' },
-    { id: 1, label: '2' },
-    { id: 2, label: '3' },
-    { id: 3, label: '4' },
-  ];
-  const months = [
-    { id: 0, label: 'Janeiro' },
-    { id: 1, label: 'Fevereiro' },
-    { id: 2, label: 'Março' },
-    { id: 3, label: 'Abril' },
-  ];
+  const [data, setData] = useState<Checkout.PaymentRequest>({});
+  const [confirmedEmail, setConfirmedEmail] = useState<string>('');
+  const { handleSubmit } = useForm();
+
+  const FormatPrice = (price) => {
+    // convert cents to reais
+    const priceInReais = price / 100;
+    // to readable format
+    const priceInReaisReadable = priceInReais.toLocaleString('pt-br', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+
+    return priceInReaisReadable;
+  };
+
+  const handleData = (e, categoryName, subCategory, fieldName) => {
+    const stateCategory = data[categoryName];
+
+    setData((state) => {
+      const data = {
+        ...state,
+        [categoryName]: {
+          ...stateCategory,
+          [fieldName]: e.target.value,
+        }
+      };
+      return data;
+    });
+  };
+
+  const formatExpiredDate = (date) => {
+
+    if (date?.length === 4) {
+      const month = date.slice(0, 2);
+      const year = date.slice(2, 4);
+
+      return month + '/' + year;
+    }
+  };
+
+  // useEffect(() => {
+  //   if (saveToNextBuy) {
+  //     setData((state) => ({
+  //       ...state,
+  //       card_save: true,
+  //     }));
+  //   } else {
+  //     setData((state) => ({
+  //       ...state,
+  //       card_save: false,
+  //     }));
+  //   }
+  // }, [saveToNextBuy]);
+
+  const onSubmit = async () => {
+    setIsLoading(true);
+    await SendPayment(data);
+    setIsLoading(false);
+
+  };
   return (
     <ContentWidthLimit withoutScroll maxWidth={600}>
       <BannerWrapper
@@ -73,7 +121,7 @@ const Checkout = ({ product }: Props) => {
           height={250}
         />
       </BannerWrapper>
-      <Form>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <FormHeader>
           <Image
             alt="mentorfy-banner"
@@ -82,22 +130,83 @@ const Checkout = ({ product }: Props) => {
             height={80}
           />
           <InfoWrapper>
-            <Title>MentorFy</Title>
+            <Title>{plan?.name}</Title>
             <Author>Autor: MentorFy Team</Author>
-            <Price>R$897,00</Price>
+            <Price>{FormatPrice(plan.amount)}</Price>
           </InfoWrapper>
         </FormHeader>
-        <Input type="text" placeholder="Nome Completo" />
-        <Input type="email" placeholder="E-mail" />
-        <Input type="email" placeholder=" Confirme seu e-mail" />
-        <Input type="text" placeholder="CPF/CNPJ" />
+        <Input
+          type="text"
+          required
+          placeholder="Nome Completo"
+          onChange={(e) =>
+            handleData(e, 'customer', 'name')}
+        />
+        <Input
+          type="email"
+          required
+          placeholder="E-mail"
+          onChange={(e) => handleData(e, 'customer', 'email')}
+        />
+        <Input
+          type="email"
+          placeholder=" Confirme seu e-mail"
+          onChange={(e) => setConfirmedEmail(e.target.value)}
+          error={confirmedEmail.length > 0 && confirmedEmail !== data.customer.email ? true : false}
+        />
+        <Input
+          type="text"
+          required
+          placeholder="CPF/CNPJ"
+          onChange={(e) => handleData(e, 'customer', 'document')}
+        />
+        <Input
+          type="text"
+          required
+          placeholder="Bairro"
+          onChange={(e) => handleData(e, 'address', 'neighborhood')}
+        />
+        <Input
+          type="text"
+          required
+          placeholder="Rua"
+          onChange={(e) => handleData(e, 'address', 'street')}
+        />
+        <InputsWrapper>
+          <Input
+            type="text"
+            required
+            placeholder="Número"
+            onChange={(e) => handleData(e, 'address', 'street_number')}
+          />
+          <Input
+            type="text"
+            required
+            placeholder="CEP"
+            onChange={(e) => handleData(e, 'address', 'zipcode')}
+          />
+        </InputsWrapper>
+        <InputsWrapper>
+          <Input
+            type="text"
+            required
+            placeholder="DDD"
+            onChange={(e) => handleData(e, 'phone', 'ddd')}
+            sx={{ width: '20%' }}
+          />
+          <Input
+            type="text"
+            required
+            placeholder="Número de telefone"
+            onChange={(e) => handleData(e, 'phone', 'number')}
+          />
+        </InputsWrapper>
         <PaymentMethWrapper>
           <CardWrapper
             onClick={() => setTab(0)}
             sx={{
-              borderColor: `${
-                tab == 0 ? theme.palette.accent.main : '#bebebe'
-              }`,
+              borderColor: `${tab == 0 ? theme.palette.accent.main : '#bebebe'
+                }`,
             }}
           >
             <CreditCard
@@ -109,11 +218,10 @@ const Checkout = ({ product }: Props) => {
             />
             <MethodText
               sx={{
-                color: `${
-                  tab == 0
-                    ? theme.palette.accent.main
-                    : theme.palette.caption.main
-                }`,
+                color: `${tab == 0
+                  ? theme.palette.accent.main
+                  : theme.palette.caption.main
+                  }`,
               }}
             >
               Cartão de Crédito
@@ -122,9 +230,8 @@ const Checkout = ({ product }: Props) => {
           <CardWrapper
             onClick={() => setTab(1)}
             sx={{
-              borderColor: `${
-                tab == 1 ? theme.palette.accent.main : '#bebebe'
-              }`,
+              borderColor: `${tab == 1 ? theme.palette.accent.main : '#bebebe'
+                }`,
             }}
           >
             <Pix
@@ -136,11 +243,10 @@ const Checkout = ({ product }: Props) => {
             />
             <MethodText
               sx={{
-                color: `${
-                  tab == 1
-                    ? theme.palette.accent.main
-                    : theme.palette.caption.main
-                }`,
+                color: `${tab == 1
+                  ? theme.palette.accent.main
+                  : theme.palette.caption.main
+                  }`,
               }}
             >
               PIX
@@ -151,52 +257,31 @@ const Checkout = ({ product }: Props) => {
         {tab == 0 && (
           <>
             <PaymentInfoWrapper>
-              <Input type="text" placeholder="Número do cartão de crédito" />
-              <Input type="text" placeholder="Nome impresso no cartão" />
-              <Box
-                sx={{
-                  display: 'flex',
-                  gap: '0.5rem',
-                  width: '100%',
-                  alignItems: 'center',
-                }}
-              >
-                <CustomSelectField>
-                  <Select
-                    value={day}
-                    name="teams"
-                    onChange={(e) => {
-                      setSelectedDay(e.target.value);
-                    }}
-                    sx={{ color: `${theme.palette.caption.dark}` }}
-                  >
-                    {days?.map((day) => (
-                      <MenuItem key={day.id} value={day.id}>
-                        {day.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </CustomSelectField>
+              <Input
+                type="text"
+                placeholder="Número do cartão de crédito"
+                onChange={(e) => handleData(e, 'card', 'card_number')}
 
-                <CustomSelectField>
-                  <Select
-                    value={month}
-                    name="teams"
-                    onChange={(e) => {
-                      setSelectedMonth(e.target.value);
-                    }}
-                    sx={{ color: `${theme.palette.caption.dark}` }}
-                  >
-                    {months?.map((month) => (
-                      <MenuItem key={month.id} value={month.id}>
-                        {month.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </CustomSelectField>
+              />
+              <Input
+                type="text"
+                placeholder="Nome impresso no cartão"
+                onChange={(e) => handleData(e, 'card', 'card_holder_name')}
+
+              />
+              <InputsWrapper>
+                <Input
+                  type="text"
+                  value={formatExpiredDate(data?.card?.card_expiration_date)}
+                  placeholder="Data de vencimento"
+                  onChange={(e) => {
+                    e.target.value.length <= 4 ? handleData(e, 'card', 'card_expiration_date') : null;
+                  }}
+                />
                 <Input type="text" placeholder="CVV" />
-              </Box>
-              <CustomSelectField>
+              </InputsWrapper>
+              {/* <CustomSelectField
+              >
                 <InputLabel>Parcelas</InputLabel>
                 <Select
                   value={month}
@@ -213,7 +298,7 @@ const Checkout = ({ product }: Props) => {
                     </MenuItem>
                   ))}
                 </Select>
-              </CustomSelectField>
+              </CustomSelectField> */}
             </PaymentInfoWrapper>
             <PoliciesWrapper>
               {tab == 0 && (
@@ -285,7 +370,7 @@ const Checkout = ({ product }: Props) => {
                   <PixText>
                     Valor à vista: <strong>R$897,00.</strong>
                   </PixText>
-                  <PixText>Liberaçã imdeidata!</PixText>
+                  <PixText>Liberação imediata!</PixText>
                   <PixText>
                     É simples, só usar o aplicativo do seu banco para pagar PIX.
                   </PixText>
@@ -311,9 +396,9 @@ const Checkout = ({ product }: Props) => {
             </Box>
           </>
         )}
-        <Button variant="contained" type="submit" sx={{ width: '100%' }}>
+        <LoadingButton loading={isLoading} variant="contained" type="submit" sx={{ width: '100%' }}>
           Comprar agora
-        </Button>
+        </LoadingButton>
         <Image
           alt="mentorfy"
           src="/svgs/mentorfy.svg"
@@ -329,20 +414,11 @@ const Checkout = ({ product }: Props) => {
 export default Checkout;
 
 export const getProps = async (ctx) => {
-  const response = await GetProductByRef(ctx.req, ctx.query.id);
-
-  if (!response) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    };
-  }
+  const plan = await GetPlans();
 
   return {
     props: {
-      product: response.product,
+      plan: plan[0]
     },
   };
 };

@@ -81,7 +81,7 @@ export const Input = styled(InputField)`
       border-color: #bebebe;
     }
     :hover fieldset {
-      border-color: ${({ theme }) => theme.palette.accent.main};
+      border-color: ${({ theme }) => theme.palette.caption.main};
     }
     :focus fieldset {
       border-color: ${({ theme }) => theme.palette.accent.main};
@@ -92,7 +92,7 @@ export const Input = styled(InputField)`
     -webkit-box-shadow: none;
     box-shadow: none !important;
     -webkit-text-fill-color: ${({ theme }) =>
-      theme.palette.caption.dark} !important;
+    theme.palette.caption.dark} !important;
   }
 
   svg {
@@ -111,6 +111,9 @@ export const CustomSelectField = styled(SelectField)`
   .MuiInputBase-root {
     fieldset {
       border-color: #bebebe;
+    }
+    :hover fieldset {
+      border-color: ${({ theme }) => theme.palette.caption.main};
     }
   }
   .MuiFormLabel-root {
@@ -225,4 +228,11 @@ export const BpCheckedIcon = styled('div')`
   height: 18px;
   justify-content: center;
   width: 18px;
+`;
+
+export const InputsWrapper = styled('div')`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
 `;
