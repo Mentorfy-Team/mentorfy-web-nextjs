@@ -2,8 +2,8 @@ import crypto from 'crypto';
 import { GetTokenByRefeerer } from '~/backend/repositories/product/GetTokenByRefeerer';
 import { AvailableIntegrations } from '..';
 
-export const isKiwify = (data: Webhook.Integration.Kiwify.ApprovedPurchase) => {
-  if (data?.Commissions?.kiwify_fee) return true;
+export const isPagarme = (data) => {
+  if (data?.current_status) return true;
 
   return false;
 };

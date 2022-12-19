@@ -1,3 +1,5 @@
+import { PagarmeRoute } from './pagarme/index';
+import { isPagarme } from './pagarme/Validations';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { SupabaseAdmin } from '~/backend/supabase';
 import { EduzzRoute } from './eduzz';
@@ -23,7 +25,9 @@ export const RouteIntegrationTarget = async (
   const supabase = await SupabaseAdmin(req);
   let result = null;
 
-  if (isKiwify(req.body)) {
+  if (isPagarme(req.body)) {
+    result = await PagarmeRoute(req, supabase);
+  } else if (isKiwify(req.body)) {
     result = await KiwifyRoute(req, supabase);
   } else if (isHotmart(req.body)) {
     result = await HotmartRoute(req, supabase);
