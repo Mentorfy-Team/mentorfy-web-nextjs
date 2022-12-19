@@ -13,7 +13,7 @@ export const post = async (req: AxiomAPIRequest, res: NextApiResponse) => {
   const conclusion = await RouteIntegrationTarget(req, res);
 
   if (conclusion) {
-    return res.status(200).json({ info: 'ok' });
+    return res.status(200).json({ info: 'success' });
   } else {
     return res.status(400).json({ info: 'bad request' });
   }

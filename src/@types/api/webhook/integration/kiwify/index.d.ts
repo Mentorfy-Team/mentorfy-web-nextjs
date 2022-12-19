@@ -25,7 +25,10 @@ declare namespace Webhook {
         Customer: {
           full_name: string;
           email: string;
-          mobile: null;
+          mobile: {
+            ddd: string;
+            number: string;
+          };
           CPF: null;
           ip: string;
         };

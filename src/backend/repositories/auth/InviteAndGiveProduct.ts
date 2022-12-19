@@ -17,16 +17,14 @@ export const InviteAndSubscribe = async ({
   supabase,
   data: { email, name, phone, refeerer },
 }: Props) => {
-  let user;
-
-  const existentUser = CheckForAccount({
+  let user = await CheckForAccount({
     supabase,
     data: {
       email,
     },
   });
 
-  if (!existentUser) {
+  if (!user) {
     const { data, error: ierror } = await supabase.auth.admin.inviteUserByEmail(
       email,
       {
@@ -37,7 +35,7 @@ export const InviteAndSubscribe = async ({
         redirectTo: process.env.NEXT_PUBLIC_APP_URL,
       },
     );
-    user = data.user;
+    user = data.user as any;
 
     await supabase.auth.admin.updateUserById(user.id, { phone });
 
@@ -45,22 +43,29 @@ export const InviteAndSubscribe = async ({
       .from('profile')
       .update({ name, email: email, phone: phone })
       .eq('id', user.id);
-  } else {
-    user = existentUser;
   }
 
   // current data + 30 days
   const expiration_date = new Date();
-  expiration_date.setDate(expiration_date.getDate() + 29);
+  expiration_date.setDate(expiration_date.getDate() + 30);
 
-  await supabase
-    .from('profile')
-    .update({
+  let toUpdate;
+
+  if (refeerer) {
+    toUpdate = {
+      access_type: 'mentorado',
+    };
+  } else {
+    toUpdate = {
       interval: 'monthly',
       is_subscribed: true,
       expiration_date: dateToReadable(expiration_date),
-    })
-    .eq('id', user.id);
+      plan: 'pro',
+      access_type: 'mentor',
+    };
+  }
+
+  await supabase.from('profile').update(toUpdate).eq('id', user.id);
 
   return user;
 };
