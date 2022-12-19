@@ -52,4 +52,5 @@ export enum ApiRoutes {
 
   //* Rota para checkout
   checkout = '/api/checkout',
+  pix = 'api/checkout/pix'
 }

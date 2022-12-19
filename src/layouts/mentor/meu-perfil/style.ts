@@ -169,14 +169,23 @@ export const PlanText = styled(Typography)`
   line-height: 1.1rem;
 `;
 
-export const PlanValidity = styled(Typography)`
-  background-color: ${({ theme }) => theme.palette.warning.main};
+export const ActivePlan = styled(Typography)`
+  background-color: ${({ theme }) => theme.palette.success.main};
   padding: 0.2rem;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 0.7rem;
   line-height: 0.8rem;
   border-radius: 10px;
-  color: ${({ theme }) => theme.palette.caption.dark};
+  color: ${({ theme }) => theme.palette.text.primary};
+`;
+export const ExpiredPlan = styled(Typography)`
+  background-color: ${({ theme }) => theme.palette.failure.main};
+  padding: 0.2rem;
+  font-weight: 600;
+  font-size: 0.7rem;
+  line-height: 0.8rem;
+  border-radius: 10px;
+  color: ${({ theme }) => theme.palette.text.primary};
 `;
 
 export const ExpiresDateText = styled(Typography)`
