@@ -9,6 +9,7 @@ import { GetAuthSession } from '~/helpers/AuthSession';
 import { useProfile } from '~/hooks/useProfile';
 import Signature from './tabs/assinaturas';
 import { GetPlans } from '~/services/checkout/plans.service';
+import { GetCustomerPagarme } from '~/backend/repositories/user/GetCustomerPagarme';
 
 const DadosPage = dynamic(() => import('./tabs/dados-cadastro'));
 
@@ -26,7 +27,7 @@ type props = PageTypes.Props & {
   isViewingMentored: boolean;
   isViewingMentor: boolean;
   plan: Checkout.Plan;
-  pix;
+  customer: UserTypes.Profile;
 };
 
 const MinhaConta: FC<props> = ({
@@ -37,7 +38,7 @@ const MinhaConta: FC<props> = ({
   mentored_id,
   mentor_id,
   plan,
-  pix,
+  customer,
 }) => {
   const [tabindex, setTabindex] = useState<string>(tab);
   const {
@@ -59,7 +60,7 @@ const MinhaConta: FC<props> = ({
       case tabs.Links.toString():
         return <DadosPage profile={profile} address={address} />;
       case tabs.Assinatura.toString():
-        return <Signature pix={pix} profile={profile} plan={plan} />;
+        return <Signature customer={customer} profile={profile} plan={plan} />;
       default:
         return (
           <GeralPage
@@ -70,16 +71,7 @@ const MinhaConta: FC<props> = ({
           />
         );
     }
-  }, [
-    address,
-    isViewingMentor,
-    isViewingMentored,
-    pix,
-    plan,
-    profile,
-    tabindex,
-    user,
-  ]);
+  }, [address, customer, isViewingMentor, isViewingMentored, plan, profile, tabindex, user]);
 
   return (
     <>
@@ -117,6 +109,8 @@ export const getProps = async (ctx) => {
       },
     };
   const plan = await GetPlans();
+  const data = { customer_id: 382272385 };
+  const customer = await GetCustomerPagarme(data);
 
   return {
     props: {
@@ -126,6 +120,7 @@ export const getProps = async (ctx) => {
       isViewingMentored: !!ctx.query.altId,
       isViewingMentor: !!ctx.query.id,
       plan: plan[0],
+      customer: customer.data.find((cust) => cust.id === data.customer_id),
     },
   };
 };

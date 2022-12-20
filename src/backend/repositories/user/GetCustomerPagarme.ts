@@ -1,6 +1,6 @@
 import { HttpServer } from '~/backend/helpers/HttpClient';
 
-export const GetCustomerPagarme = async (data: { customer_id }) => {
+export const GetCustomerPagarme = async (data: { customer_id: number }) => {
   try {
     const params = {
       customer_id: data.customer_id,
