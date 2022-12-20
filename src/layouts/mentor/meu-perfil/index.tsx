@@ -74,6 +74,7 @@ const MinhaConta: FC<props> = ({
     address,
     isViewingMentor,
     isViewingMentored,
+    pix,
     plan,
     profile,
     tabindex,
