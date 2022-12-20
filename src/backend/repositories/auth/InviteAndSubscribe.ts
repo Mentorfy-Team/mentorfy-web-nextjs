@@ -10,12 +10,13 @@ type Props = {
     name: string;
     phone: string;
     refeerer: string;
+    customer_id?: string;
   };
 };
 
 export const InviteAndSubscribe = async ({
   supabase,
-  data: { email, name, phone, refeerer },
+  data: { email, name, phone, refeerer, customer_id },
 }: Props) => {
   let user = await CheckForAccount({
     supabase,
@@ -41,7 +42,7 @@ export const InviteAndSubscribe = async ({
 
     await supabase
       .from('profile')
-      .update({ name, email: email, phone: phone })
+      .update({ name, email: email, phone: phone, customer_id: customer_id })
       .eq('id', user.id);
   }
 

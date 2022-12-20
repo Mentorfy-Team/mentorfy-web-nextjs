@@ -21,6 +21,7 @@ export const PagarmeRoute = async (req: NextApiRequest, supabase: any) => {
           name: name,
           phone: phone_numbers ? phone_numbers[0] : null,
           refeerer: req.query.id as string,
+          customer_id: data['transaction[customer][id]'],
         },
       });
     }
