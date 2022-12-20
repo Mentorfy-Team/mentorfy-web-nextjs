@@ -127,10 +127,12 @@ const Checkout = ({ product, plan }: Props) => {
   const onSubmit = async () => {
     setIsLoading(true);
     if (tab === 0) {
-      const payment = await SendPayment(data);
-
-      if (payment.subscription) {
+      const paymentData = Object.assign(data, { save_card: saveToNextBuy });
+      const payment = await SendPayment(paymentData);
+      if (payment.customer) {
         setShowSuccess(true);
+      } else {
+        //setError();
       }
     } else {
       const expiration_date = new Date();

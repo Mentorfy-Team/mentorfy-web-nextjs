@@ -44,7 +44,8 @@ export const post = async (req: GetRequest, res: GetResponse) => {
         name: data.customer.name,
         phone: data.customer.phone.ddd + data.customer.phone.number,
         refeerer: null,
-        customer_id: paymentResult.data.subscription.customer.id,
+        customer_id: paymentResult.data.customer.id,
+        card_id: data.save_card ? paymentResult.data.card.id : null,
       },
     });
   } else {
@@ -53,9 +54,7 @@ export const post = async (req: GetRequest, res: GetResponse) => {
     });
   }
 
-  return res.status(200).json({
-    info: JSON.stringify(paymentResult),
-  });
+  return res.status(200).json(paymentResult.data);
 };
 
 export const get = async (req: GetRequest, res: GetResponse) => {

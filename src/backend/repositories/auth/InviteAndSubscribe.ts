@@ -11,12 +11,13 @@ type Props = {
     phone: string;
     refeerer: string;
     customer_id: string;
+    card_id?: string;
   };
 };
 
 export const InviteAndSubscribe = async ({
   supabase,
-  data: { email, name, phone, refeerer, customer_id },
+  data: { email, name, phone, refeerer, customer_id, card_id },
 }: Props) => {
   let user = await CheckForAccount({
     supabase,
@@ -38,11 +39,21 @@ export const InviteAndSubscribe = async ({
     );
     user = data.user as any;
 
-    await supabase.auth.admin.updateUserById(user.id, { phone });
+    try {
+      await supabase.auth.admin.updateUserById(user.id, { phone });
+    } finally {
+      // inform user that the phone number was already used
+    }
 
     await supabase
       .from('profile')
-      .update({ name, email: email, phone: phone, customer_id: customer_id })
+      .update({
+        name,
+        email: email,
+        phone: phone,
+        customer_id: customer_id,
+        card_id: card_id,
+      })
       .eq('id', user.id);
   }
 

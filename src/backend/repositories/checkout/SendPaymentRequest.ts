@@ -29,9 +29,10 @@ export const SendPaymentRequest = async (data: Checkout.PaymentRequest) => {
         },
       },
     };
-    const response = await HttpServer.post<{
-      subscription: { customer: { id: string } };
-    }>('/subscriptions', infoFormated);
+    const response = await HttpServer.post<Checkout.Subscription>(
+      '/subscriptions',
+      infoFormated,
+    );
 
     return response;
   } catch (error) {

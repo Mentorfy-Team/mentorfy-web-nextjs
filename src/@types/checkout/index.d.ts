@@ -2,6 +2,7 @@ const Database: ExternalModules.Supabase.Database;
 
 declare namespace Checkout {
   export type Customer = {
+    id: string;
     email: string;
     name: string;
     document_number: string;
@@ -18,19 +19,77 @@ declare namespace Checkout {
   };
 
   export type Card = {
-    card_number: string;
-    card_holder_name: string;
-    card_expiration_date: string;
-    card_cvv: string;
-    save_card: boolean;
+    object: 'card';
+    id: string;
+    date_created: Date;
+    date_updated: Date;
+    brand: string;
+    holder_name: string;
+    first_digits: string;
+    last_digits: string;
+    country: string;
+    fingerprint: string;
+    valid: true;
+    expiration_date: string;
   };
 
   export type PaymentRequest = {
     plan_id: number;
     card_id?: string;
-    card?: Card;
+    card?: {
+      card_number: string;
+      card_holder_name: string;
+      card_expiration_date: string;
+      card_cvv: string;
+    };
     payment_method: string;
     customer: Customer;
+    save_card?: boolean;
+  };
+
+  export type Subscription = {
+    object: 'subscription';
+    plan: Plan;
+    id: number;
+    current_transaction: any;
+    postback_url: string;
+    payment_method: 'credit_card';
+    card_brand: string;
+    card_last_digits: string;
+    current_period_start: Date;
+    current_period_end: Date;
+    charges: number;
+    soft_descriptor: any;
+    status: string;
+    date_created: Date;
+    date_updated: Date;
+    phone: {
+      object: string;
+      ddi: string;
+      ddd: string;
+      number: string;
+      id: number;
+    };
+    address: {
+      object: string;
+      street: string;
+      complementary: null;
+      street_number: string;
+      neighborhood: string;
+      city: string;
+      state: string;
+      zipcode: string;
+      country: string;
+      id: number;
+    };
+    customer: Customer;
+    card: Card;
+    metadata: null;
+    fine: any;
+    interest: any;
+    settled_charges: null;
+    manage_token: string;
+    manage_url: string;
   };
 
   export type Plan = {
@@ -112,32 +171,7 @@ declare namespace Checkout {
     subscription_id: null;
     phone: null;
     address: null;
-    customer: {
-      object: 'customer';
-      id: number;
-      external_id: string; // Profile_ID
-      type: 'individual';
-      country: 'br';
-      document_number: null;
-      document_type: 'cpf';
-      name: string;
-      email: string;
-      phone_numbers: string[];
-      born_at: null;
-      birthday: null;
-      gender: null;
-      date_created: Date;
-      documents: [
-        {
-          object: 'document';
-          id: string;
-          type: 'cpf';
-          number: string;
-        },
-      ];
-      client_since: null;
-      risk_indicator: null;
-    };
+    customer: Customer;
     billing: null;
     shipping: null;
     items: [];
@@ -161,6 +195,33 @@ declare namespace Checkout {
     pix_data: null;
     pix_qr_code: string;
     pix_expiration_date: Date;
+  };
+
+  export type Customer = {
+    object: 'customer';
+    id: number;
+    external_id: string; // Profile_ID
+    type: 'individual';
+    country: 'br';
+    document_number: null;
+    document_type: 'cpf';
+    name: string;
+    email: string;
+    phone_numbers: string[];
+    born_at: null;
+    birthday: null;
+    gender: null;
+    date_created: Date;
+    documents: [
+      {
+        object: 'document';
+        id: string;
+        type: 'cpf';
+        number: string;
+      },
+    ];
+    client_since: null;
+    risk_indicator: null;
   };
 
   namespace Post {
