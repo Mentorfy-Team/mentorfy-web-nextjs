@@ -37,6 +37,7 @@ import { SendPayment } from '~/services/checkout/payment.service';
 import { SendPixPayment } from '~/services/checkout/pix.service';
 import PixStep from './components/PixStep';
 import { dateToReadable } from '~/backend/http/clients/list.api';
+import Success from './components/Success';
 
 type Props = {
   product: ProductApi.Product;
@@ -52,6 +53,7 @@ const Checkout = ({ product, plan }: Props) => {
   const [confirmedEmail, setConfirmedEmail] = useState<string>('');
 
   const [showPix, setShowPix] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [pixQrCode, setPixQrCode] = useState('');
 
   const { handleSubmit } = useForm();
@@ -125,7 +127,11 @@ const Checkout = ({ product, plan }: Props) => {
   const onSubmit = async () => {
     setIsLoading(true);
     if (tab === 0) {
-      await SendPayment(data);
+      const payment = await SendPayment(data);
+
+      if (payment.subscription) {
+        setShowSuccess(true);
+      }
     } else {
       const expiration_date = new Date();
       expiration_date.setDate(expiration_date.getDate() + 1);
@@ -193,7 +199,8 @@ const Checkout = ({ product, plan }: Props) => {
           </InfoWrapper>
         </FormHeader>
         {showPix && <PixStep qrcode={pixQrCode} />}
-        {!showPix && (
+        {showSuccess && <Success />}
+        {!showPix && !showSuccess && (
           <>
             <Input
               type="text"
