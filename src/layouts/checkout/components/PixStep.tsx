@@ -37,11 +37,13 @@ const PixStep = ({ qrcode }: { qrcode: string }) => {
         }}
         m={2}
       >
-        <div>1- Apra o app do seu panco e entre na opção Pix.</div>
+        <div>1- Abra o app do seu banco e entre na opção Pix.</div>
         <div>2- Escolha a opção Pagar / Pix copia e cola.</div>
-        <div>3- Escaneie o QR code. Se preferir, copie e cole o</div>
-        código.
-        <div>4- Depois, confirme o pagamento</div>
+        <div>3- Escaneie o QR code. Se preferir, copie e cole o código.</div>
+        <div>4- Depois, confirme o pagamento.</div>
+        <div>
+          5- Pronto! Você receberá um email de confirmação com seu acesso.
+        </div>
       </Typography>
       <Typography fontWeight="bold" mb={6}>
         A aprovação leva no máximo 2 minutos
