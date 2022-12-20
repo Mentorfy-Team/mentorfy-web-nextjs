@@ -518,7 +518,7 @@ export const getProps = async (ctx) => {
   const id = ctx.query.id;
 
   const plan = await GetPlan(id);
-
+  console.log(plan);
   const plans = await GetPlans();
 
   return {
