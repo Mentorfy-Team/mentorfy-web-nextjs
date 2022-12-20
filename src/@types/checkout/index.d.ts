@@ -67,6 +67,7 @@ declare namespace Checkout {
       ];
       phone_numbers: string[];
     };
+    postback_url: string;
   };
 
   export type PixResponse = {

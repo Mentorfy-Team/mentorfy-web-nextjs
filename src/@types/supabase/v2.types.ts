@@ -350,6 +350,7 @@ export interface Database {
           email: string | null
           phone: string | null
           expiration_date: string | null
+          customer_id: string | null
         }
         Insert: {
           id: string
@@ -363,6 +364,7 @@ export interface Database {
           email?: string | null
           phone?: string | null
           expiration_date?: string | null
+          customer_id?: string | null
         }
         Update: {
           id?: string
@@ -376,6 +378,7 @@ export interface Database {
           email?: string | null
           phone?: string | null
           expiration_date?: string | null
+          customer_id?: string | null
         }
       }
       profile_history: {
