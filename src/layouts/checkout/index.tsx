@@ -523,7 +523,7 @@ export const getProps = async (ctx) => {
 
   return {
     props: {
-      plan: plan ?? plans[0],
+      plan: plan ?? plans.find((p) => !p.name.toLowerCase().includes('test')),
     },
   };
 };
