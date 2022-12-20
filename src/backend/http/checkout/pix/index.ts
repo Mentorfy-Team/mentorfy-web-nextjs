@@ -1,30 +1,13 @@
-import { CheckForAccount } from '~/backend/repositories/auth/CheckForAccount';
 import { GetPixRequest } from '~/backend/repositories/checkout/GetPixRequest';
-import { SupabaseAdmin } from '~/backend/supabase';
 
 type GetRequest = Checkout.Pix.Post.Request;
 type GetResponse = Checkout.Post.Response;
 
 export const post = async (req: GetRequest, res: GetResponse) => {
   const data = req.body;
-  const supabase = SupabaseAdmin(req);
 
-  const user = await CheckForAccount({
-    supabase,
-    data: { email: data.customer.email },
-  });
-
-  if (user) {
-    if (
-      user.is_subscribed &&
-      user.expiration_date &&
-      new Date(user.expiration_date).getTime() > Date.now()
-    ) {
-      return res.status(400).json({
-        info: 'Assinatura já encontrada. Faça login para continuar.',
-      });
-    }
-  }
+  // * Não é necessário verificar se já possui assinatura em ativa.
+  // * Consideramos uma compra incremental
 
   const conclusion = await GetPixRequest(data);
 

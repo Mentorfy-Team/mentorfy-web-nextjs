@@ -109,9 +109,12 @@ declare namespace Checkout {
   };
 
   export type PixRequest = {
+    plan_id: number;
     payment_method: 'pix';
     pix_expiration_date: date;
     amount: number;
+    subscription_id?: number;
+    items?: item[];
     customer: {
       external_id: string;
       email: string;
@@ -127,6 +130,17 @@ declare namespace Checkout {
       phone_numbers: string[];
     };
     postback_url: string;
+  };
+
+  export type Item = {
+    id: string;
+    title: string;
+    unit_price: number;
+    quantity: number;
+    tangible: boolean;
+    category?: string;
+    venue?: string;
+    date?: string;
   };
 
   export type PixResponse = {
@@ -174,7 +188,7 @@ declare namespace Checkout {
     customer: Customer;
     billing: null;
     shipping: null;
-    items: [];
+    items?: Item[];
     card: null;
     split_rules: null;
     metadata: any;

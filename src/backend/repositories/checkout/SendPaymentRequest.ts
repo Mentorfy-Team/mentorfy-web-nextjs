@@ -1,10 +1,10 @@
 import { HttpServer } from '~/backend/helpers/HttpClient';
+import { GetPlan } from './GetPlan';
 
 export const SendPaymentRequest = async (data: Checkout.PaymentRequest) => {
-  // salvar cartão
-  //pClient.cards.create
+  const plan = await GetPlan(data.plan_id);
+  const category = plan.days === 30 ? 'monthly' : 'yearly';
 
-  // Create - > Transaction - > Result
   try {
     const infoFormated = {
       plan_id: data.plan_id,
@@ -13,6 +13,16 @@ export const SendPaymentRequest = async (data: Checkout.PaymentRequest) => {
       card_holder_name: data.card.card_holder_name,
       card_expiration_date: data.card.card_expiration_date,
       payment_method: data.payment_method,
+      items: [
+        {
+          id: data.plan_id,
+          title: 'subscription',
+          unit_price: plan.amount,
+          quantity: plan.days,
+          tangible: false,
+          category: category,
+        },
+      ],
       customer: {
         email: data.customer.email,
         name: data.customer.name,

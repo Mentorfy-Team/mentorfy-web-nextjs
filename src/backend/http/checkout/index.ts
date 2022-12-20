@@ -7,6 +7,9 @@ import { SupabaseAdmin } from '../../supabase';
 type GetRequest = Checkout.Post.Request;
 type GetResponse = Checkout.Post.Response;
 
+// * Esse processo considera apenas pagamento com cartão
+// * Pois pix retorna a confirmação via webhook
+
 export const post = async (req: GetRequest, res: GetResponse) => {
   const supabase = SupabaseAdmin(req);
   const data = req.body;

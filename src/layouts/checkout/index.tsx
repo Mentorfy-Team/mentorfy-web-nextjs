@@ -144,6 +144,7 @@ const Checkout = ({ product, plan }: Props) => {
 
       setIsLoading(true);
       const response = await SendPixPayment({
+        plan_id: plan.id,
         payment_method: 'pix',
         pix_expiration_date: dateToReadable(expiration_date),
         amount: plan.amount,
