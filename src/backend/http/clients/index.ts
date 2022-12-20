@@ -1,16 +1,22 @@
 import { SupabaseAdmin, SupabaseServer } from '~/backend/supabase';
 import { LogHistory } from '~/backend/helpers/LogHistory';
+import { CreateCustomerPagarme } from '~/backend/repositories/user/CreateCustomerPagarme';
 type Request = UserClient.Post.Request;
 type Response = UserClient.Post.Response;
 
 export const post: Handler.Callback<Request, Response> = async (req, res) => {
-  const { email, phone, product, name } = req.body;
+  const { email, phone, product, name, document } = req.body;
   if (!email || !product || !name) {
     return res.status(400).json({
       error: 'Dados inválidos',
     });
   }
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  if (!document) {
+    return res.status(400).json({
+      error: 'Documento inválido',
+    });
+  }
+
   const supabaseAdmin = SupabaseAdmin();
 
   const { data: existentUser, error: existentError } = await supabaseAdmin
@@ -53,9 +59,29 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
         'Usuário convidado, porém esse telefone já está cadastrado em outro usuário, por isso esse numero foi ignorado.';
     }
 
+    const response = await CreateCustomerPagarme({
+      email: email,
+      name: name,
+      country: 'br',
+      phone_numbers: [phone],
+      type: 'individual',
+      external_id: user.id,
+      documents: [
+        {
+          type: 'cpf',
+          number: document,
+        },
+      ],
+    });
+
     await supabaseAdmin
       .from('profile')
-      .update({ name, email: email, phone: data?.user?.phone })
+      .update({
+        name,
+        email: email,
+        phone: data?.user?.phone,
+        customer_id: response.data.id,
+      })
       .eq('id', user.id);
 
     userRef = user;

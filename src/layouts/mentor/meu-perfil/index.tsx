@@ -26,6 +26,7 @@ type props = PageTypes.Props & {
   isViewingMentored: boolean;
   isViewingMentor: boolean;
   plan: Checkout.Plan;
+  pix;
 };
 
 const MinhaConta: FC<props> = ({
@@ -36,7 +37,7 @@ const MinhaConta: FC<props> = ({
   mentored_id,
   mentor_id,
   plan,
-  pix
+  pix,
 }) => {
   const [tabindex, setTabindex] = useState<string>(tab);
   const {
@@ -69,7 +70,15 @@ const MinhaConta: FC<props> = ({
           />
         );
     }
-  }, [address, isViewingMentor, isViewingMentored, plan, profile, tabindex, user]);
+  }, [
+    address,
+    isViewingMentor,
+    isViewingMentored,
+    plan,
+    profile,
+    tabindex,
+    user,
+  ]);
 
   return (
     <>

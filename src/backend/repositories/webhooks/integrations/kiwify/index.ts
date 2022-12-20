@@ -2,6 +2,7 @@ import { InviteAndSubscribe } from '../../../auth/InviteAndSubscribe';
 import { NextApiRequest } from 'next';
 import { AuthenticateRequest } from './Validations';
 import { GiveProductToClient } from '~/backend/repositories/product/GiveProductToClient';
+import { CreateCustomerPagarme } from '~/backend/repositories/user/CreateCustomerPagarme';
 
 export const KiwifyRoute = async (req: NextApiRequest, supabase: any) => {
   const confirmation = await AuthenticateRequest(supabase, req.query, req.body);
@@ -9,14 +10,31 @@ export const KiwifyRoute = async (req: NextApiRequest, supabase: any) => {
   if (!confirmation) return;
 
   // Processa o pedido
+  const phone = data.Customer.mobile?.ddd + data.Customer.mobile?.number;
+
+  const response = await CreateCustomerPagarme({
+    email: data.Customer.email,
+    name: data.Customer.full_name,
+    country: 'br',
+    phone_numbers: [phone],
+    type: 'individual',
+    external_id: 'webhook api',
+    documents: [
+      {
+        type: 'cpf',
+        number: data.Customer.CPF,
+      },
+    ],
+  });
 
   const user = await InviteAndSubscribe({
     supabase,
     data: {
       email: data.Customer.email,
       name: data.Customer.full_name,
-      phone: data.Customer.mobile?.ddd + data.Customer.mobile?.number,
+      phone: phone,
       refeerer: req.query.id as string,
+      customer_id: response.data.id,
     },
   });
 

@@ -17,6 +17,7 @@ declare namespace UserClient {
 
   type CreateClient = Pick<SignUp, 'name' | 'email' | 'phone'> & {
     product: string;
+    document: string;
   };
 
   type ClientRelation = Pick<Profile, 'name' | 'email' | 'phone' | 'id'> & {

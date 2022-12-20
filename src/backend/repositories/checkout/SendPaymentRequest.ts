@@ -1,7 +1,6 @@
 import { HttpServer } from '~/backend/helpers/HttpClient';
 
 export const SendPaymentRequest = async (data: Checkout.PaymentRequest) => {
-
   // salvar cartão
   //pClient.cards.create
 
@@ -22,19 +21,20 @@ export const SendPaymentRequest = async (data: Checkout.PaymentRequest) => {
           street: data.customer.address.street,
           street_number: data.customer.address.street_number,
           neighborhood: data.customer.address.neighborhood,
-          zipcode: data.customer.address.zipcode
+          zipcode: data.customer.address.zipcode,
         },
         phone: {
           ddd: data.customer.phone.ddd,
-          number: data.customer.phone.number
-        }
-      }
+          number: data.customer.phone.number,
+        },
+      },
     };
-    const response = await HttpServer.post('/subscriptions', infoFormated);
+    const response = await HttpServer.post<{
+      subscription: { customer: { id: string } };
+    }>('/subscriptions', infoFormated);
 
-    return true;
+    return response;
   } catch (error) {
     return null;
   }
-
 };

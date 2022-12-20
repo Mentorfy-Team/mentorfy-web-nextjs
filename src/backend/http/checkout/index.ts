@@ -44,6 +44,7 @@ export const post = async (req: GetRequest, res: GetResponse) => {
         name: data.customer.name,
         phone: data.customer.phone.ddd + data.customer.phone.number,
         refeerer: null,
+        customer_id: paymentResult.data.subscription.customer.id,
       },
     });
   } else {

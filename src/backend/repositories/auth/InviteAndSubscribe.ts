@@ -10,7 +10,7 @@ type Props = {
     name: string;
     phone: string;
     refeerer: string;
-    customer_id?: string;
+    customer_id: string;
   };
 };
 

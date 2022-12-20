@@ -27,11 +27,11 @@ declare namespace UserTypes {
     gender: string;
     date_created: string;
     documents: {
-      object: string;
-      id: string;
+      object?: string;
+      id?: string;
       type: string;
       number: string;
-    };
+    }[];
     addresses: string[];
     phones: string[];
   };
