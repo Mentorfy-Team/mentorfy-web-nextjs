@@ -146,7 +146,7 @@ const Checkout = ({ product, plan }: Props) => {
       const response = await SendPixPayment({
         payment_method: 'pix',
         pix_expiration_date: dateToReadable(expiration_date),
-        amount: 1, //plan.amount,
+        amount: plan.amount,
         customer: {
           external_id: 'checkouk_pix',
           email: data.customer?.email,
