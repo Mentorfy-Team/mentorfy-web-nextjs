@@ -8,7 +8,7 @@ export const GetPixRequest = async (data: Checkout.PixRequest) => {
   const body = Object.assign(data, {
     items: [
       {
-        id: data.plan_id,
+        id: data.plan_id + '',
         title: 'subscription',
         unit_price: plan.amount,
         quantity: plan.days,
@@ -17,7 +17,7 @@ export const GetPixRequest = async (data: Checkout.PixRequest) => {
       },
     ],
   });
-
+  JSON.stringify(body);
   try {
     const response = await HttpServer.post<Checkout.PixResponse>(
       '/transactions',

@@ -15,7 +15,7 @@ export const SendPaymentRequest = async (data: Checkout.PaymentRequest) => {
       payment_method: data.payment_method,
       items: [
         {
-          id: data.plan_id,
+          id: data.plan_id + '',
           title: 'subscription',
           unit_price: plan.amount,
           quantity: plan.days,
