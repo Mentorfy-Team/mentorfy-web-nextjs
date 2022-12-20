@@ -38,6 +38,7 @@ import { SendPixPayment } from '~/services/checkout/pix.service';
 import PixStep from './components/PixStep';
 import { dateToReadable } from '~/backend/http/clients/list.api';
 import Success from './components/Success';
+import { GetPlan } from '~/backend/repositories/checkout/GetPlan';
 
 type Props = {
   product: ProductApi.Product;
@@ -514,11 +515,15 @@ const Checkout = ({ product, plan }: Props) => {
 export default Checkout;
 
 export const getProps = async (ctx) => {
-  const plan = await GetPlans();
+  const id = ctx.query.id;
+
+  const plan = await GetPlan(id);
+
+  const plans = await GetPlans();
 
   return {
     props: {
-      plan: plan[0],
+      plan: plan ?? plans[0],
     },
   };
 };
