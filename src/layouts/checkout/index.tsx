@@ -104,8 +104,12 @@ const Checkout = ({ product, plan }: Props) => {
 
   const formatExpiredDate = (date: string) => {
     if (!date) return;
+    console.log(date);
+    if (date.length >= 5) {
+      return date;
+    }
 
-    if (date.replace('/', '')?.length === 4) {
+    if (date.replace('/', '')?.length >= 4) {
       const month = date.slice(0, 2);
       const year = date.slice(2, 4);
 
@@ -365,7 +369,7 @@ const Checkout = ({ product, plan }: Props) => {
                       )}
                       placeholder="Data de vencimento"
                       onChange={(e) => {
-                        e.target.value.length <= 4
+                        e.target.value.length <= 5
                           ? handleData(e, 'card', 'card_expiration_date', null)
                           : null;
                       }}
