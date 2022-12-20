@@ -24,6 +24,7 @@ export const SendPaymentRequest = async (data: Checkout.PaymentRequest) => {
         },
       ],
       customer: {
+        external_id: data.plan_id,
         email: data.customer.email,
         name: data.customer.name,
         document_number: data.customer.document_number,

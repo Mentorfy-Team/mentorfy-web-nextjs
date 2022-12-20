@@ -150,7 +150,6 @@ const Checkout = ({ product, plan }: Props) => {
         pix_expiration_date: dateToReadable(expiration_date),
         amount: plan.amount,
         customer: {
-          external_id: 'checkouk_pix',
           email: data.customer?.email,
           name: data.customer?.name,
           type: 'individual',

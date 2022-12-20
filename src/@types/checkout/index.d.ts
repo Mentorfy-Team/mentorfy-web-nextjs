@@ -116,7 +116,7 @@ declare namespace Checkout {
     subscription_id?: number;
     items?: item[];
     customer: {
-      external_id: string;
+      external_id?: string;
       email: string;
       name: string;
       type: 'individual';
