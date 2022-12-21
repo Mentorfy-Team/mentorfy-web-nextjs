@@ -43,9 +43,10 @@ const EditarMentoria: FC<Props> = ({ id, product, user }) => {
   }, [id, product, tabindex]);
 
   const MaxWidth = tabindex != 1 && tabindex != 3 && 700;
+  console.log(product.owner, user.id);
   return (
     <>
-      {product.owner == user.id && (
+      {(!product.owner || product.owner == user.id) && (
         <Toolbar onChange={(value) => setTabindex(value)} tabs={tabs} />
       )}
       {tabindex != 0 && (
@@ -71,7 +72,6 @@ export const getProps = async (ctx) => {
     };
 
   const response = await GetProduct(ctx.req, ctx.query.id);
-
   if (!response)
     return {
       redirect: {
