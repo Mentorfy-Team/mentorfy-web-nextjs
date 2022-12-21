@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Save from '@mui/icons-material/Save';
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import InputField from '~/components/atoms/InputField';
 import HandleFileUpload from '~/helpers/HandleFileUpload';
 import { useForm } from 'react-hook-form';
@@ -73,6 +73,7 @@ const Certificate = ({
   const [title, setTitle] = useState<string>(initCertificate?.title);
   const [color, setColor] = useState(false);
   const theme = useTheme();
+
   const [files, setFiles] = useState<FileType>({
     id: '0',
     data: initCertificate?.url,
@@ -213,7 +214,9 @@ const Certificate = ({
     });
   };
 
-  const GetUrlAndSaveInCertificate = async () => {
+  const GetUrlAndSaveInCertificate = useCallback(async () => {
+    if (files && (files.sourceUrl || !files.data)) return;
+
     const convertedFiles = await UploadToUrlFiles([files], id);
     setCertificate((old) => {
       return {
@@ -223,7 +226,7 @@ const Certificate = ({
         title: title,
       };
     });
-  };
+  }, [files, id, title]);
 
   useEffect(() => {
     if (color) {
@@ -237,11 +240,10 @@ const Certificate = ({
 
       return;
     }
-
-    GetUrlAndSaveInCertificate();
   }, [color, files, id, title]);
 
   const onSubmit = async () => {
+    await GetUrlAndSaveInCertificate();
     setIsLoading(true);
     if (color) {
       await UpdateCertificate(defaultCertificate);
