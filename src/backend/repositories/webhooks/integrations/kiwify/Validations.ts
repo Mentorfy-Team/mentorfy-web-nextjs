@@ -12,12 +12,19 @@ export const AuthenticateRequest = async (
   supabase,
   query: any,
   order: Webhook.Integration.Kiwify.ApprovedPurchase,
+  isMentorFy = false,
 ) => {
-  const { token } = await GetTokenByRefeerer(
-    supabase,
-    query.id,
-    AvailableIntegrations.KIWIFY,
-  );
+  let token;
+  if (isMentorFy) {
+    token = 'fx61ww84mni';
+  } else {
+    const data = await GetTokenByRefeerer(
+      supabase,
+      query.id,
+      AvailableIntegrations.KIWIFY,
+    );
+    token = data?.token;
+  }
 
   if (!token) return false;
   const calculatedSignature = crypto

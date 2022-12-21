@@ -5,8 +5,21 @@ import { GiveProductToClient } from '~/backend/repositories/product/GiveProductT
 import { CreateCustomerPagarme } from '~/backend/repositories/user/CreateCustomerPagarme';
 
 export const KiwifyRoute = async (req: NextApiRequest, supabase: any) => {
-  const confirmation = await AuthenticateRequest(supabase, req.query, req.body);
+  const MentorFy = (req.query.id as string) + '' === '256525';
+
+  let confirmation;
+  if (MentorFy) {
+    confirmation = await AuthenticateRequest(
+      supabase,
+      req.query,
+      req.body,
+      true,
+    );
+  } else {
+    confirmation = await AuthenticateRequest(supabase, req.query, req.body);
+  }
   const data = req.body as Webhook.Integration.Kiwify.ApprovedPurchase;
+
   if (!confirmation) return;
 
   // Processa o pedido
@@ -33,15 +46,16 @@ export const KiwifyRoute = async (req: NextApiRequest, supabase: any) => {
       email: data.Customer.email,
       name: data.Customer.full_name,
       phone: phone,
-      refeerer: req.query.id as string,
+      refeerer: MentorFy ? null : req.query.id,
       customer_id: response.data.id,
     },
   });
 
-  await GiveProductToClient(supabase, {
-    user_id: user.id,
-    refeerer: req.query.id as string,
-  });
+  if (!MentorFy)
+    await GiveProductToClient(supabase, {
+      user_id: user.id,
+      refeerer: req.query.id as string,
+    });
 
   return true;
 };
