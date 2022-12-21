@@ -42,8 +42,9 @@ const ContinuosMentoring: FC<
   }>();
 
   useEffect(() => {
-    setUserInput(inputData);
-  }, [inputData]);
+    if (inputData && userInput?.length != inputData?.length)
+      setUserInput(inputData);
+  }, [inputData, userInput?.length]);
 
   useEffect(() => {
     if (stepsData) setSteps(JSON.parse(JSON.stringify(stepsData)));
