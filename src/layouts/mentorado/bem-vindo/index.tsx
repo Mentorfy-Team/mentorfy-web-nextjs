@@ -257,7 +257,17 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
         </Box>
 
         <SliderWrapper>
-          {RenderPopular(products.filter((p) => p.banner_image))}
+          {RenderPopular(
+            products.filter(
+              (p) =>
+                p.banner_image &&
+                [
+                  'c38b2a17-38e7-4fdc-acad-6c76f59bd62d',
+                  'c27f7a0f-e885-469e-9dcf-1f0e84fca9bd',
+                  '728df140-04ed-4caa-bc0d-41c32c3e1f76',
+                ].includes(p.id),
+            ),
+          )}
         </SliderWrapper>
 
         {clientProducts?.length === 0 && <Box height="14rem" />}
