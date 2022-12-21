@@ -7,7 +7,7 @@ export default async (files: FileType[], refId) => {
     const file = files[i];
 
     if (!file?.sourceUrl) {
-      const url = await FileToUrl(file.file, refId);
+      const url = await FileToUrl(file?.file, refId);
       file.sourceUrl = url as string;
       delete file.data;
       delete file.file;

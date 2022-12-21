@@ -147,7 +147,7 @@ const VerticalKanban: FC<
         input={userInput}
         activeid={task_id}
         activeStepId={ActiveStepId}
-        onGoTo={() => {}}
+        onGoTo={() => { }}
       />
       <ContentWidthLimit maxWidth={900}>
         {(!steps || steps.length == 0) && (
@@ -211,13 +211,12 @@ const VerticalKanban: FC<
                             marginLeft: '0.4rem',
                             alignSelf: 'center',
                           }}
-                          src={`/svgs/${
-                            userInput?.find(
-                              (inp) => inp.member_area_tool_id === task.id,
-                            )?.extra
+                          src={`/svgs/${userInput?.find(
+                            (inp) => inp.member_area_tool_id === task.id,
+                          )?.extra
                               ? 'done'
                               : 'done-gray'
-                          }.svg`}
+                            }.svg`}
                         />
                       </Task>
                     ))}
@@ -251,6 +250,15 @@ const VerticalKanban: FC<
         </ScrollArea>
       </ContentWidthLimit>
       {open && ModalComponent()}
+      {/* {isDone && (
+        <CertificateModal
+          open={showCertificate}
+          setOpen={setShowCertificate}
+          product={product}
+          certificate={product?.certificate as any}
+          user={user}
+        />
+      )} */}
     </>
   );
 };

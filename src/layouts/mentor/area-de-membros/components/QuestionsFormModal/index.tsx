@@ -59,7 +59,7 @@ const QuestionFormModal = ({
       onSave={() => handleSave()}
       onDelete={() => handleSave(true)}
     >
-      <>
+      <div>
         <InputField
           label="Título"
           placeholder="Digite o título da etapa"
@@ -110,7 +110,7 @@ const QuestionFormModal = ({
             </AddQButton>
           </Box>
         </ContentBox>
-      </>
+      </div>
     </ModalComponent>
   );
 };

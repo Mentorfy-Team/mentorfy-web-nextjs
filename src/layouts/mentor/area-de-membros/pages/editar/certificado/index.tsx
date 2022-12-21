@@ -70,13 +70,13 @@ const Certificate = ({
 }: Props) => {
   const { handleSubmit } = useForm();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>(initCertificate.title);
+  const [title, setTitle] = useState<string>(initCertificate?.title);
   const [color, setColor] = useState(false);
   const theme = useTheme();
   const [files, setFiles] = useState<FileType>({
     id: '0',
-    data: initCertificate.url,
-    name: initCertificate.title,
+    data: initCertificate?.url,
+    name: initCertificate?.title,
     type: 'pdf',
     file: null,
     size: null,
@@ -103,6 +103,8 @@ const Certificate = ({
   });
   const [certificate, setCertificate] =
     useState<ProductTypes.CertificateBuilder>(initCertificate);
+
+  console.log(certificate);
 
   const [defaultCertificate, setDefaultCertificate] =
     useState<ProductTypes.Certificate>(DefaultCertificate);
@@ -344,7 +346,7 @@ const Certificate = ({
 
       {!color && (
         <>
-          {files && (
+          {files && certificate?.url && (
             <Wrapper>
               <div>
                 <UsageText>
@@ -463,7 +465,7 @@ const Certificate = ({
               </FileWrapper>
             </Wrapper>
           )}
-          {!files && (
+          {!files && !certificate?.url && (
             <DropzoneComponent onDrop={(_files) => handleUpload(_files)}>
               <UploadField>
                 <Label>
