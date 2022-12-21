@@ -7,10 +7,7 @@ export const GetCustomerPagarme = async (data: { customer_id: number }) => {
     };
 
     const response = await HttpServer.get<UserTypes.PagarmeCustomer>(
-      '/customers',
-      {
-        params,
-      },
+      `/customers/${data.customer_id}`,
     );
 
     return response;

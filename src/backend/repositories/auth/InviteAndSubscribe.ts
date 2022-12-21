@@ -9,7 +9,7 @@ type Props = {
     email: string;
     name: string;
     phone: string;
-    refeerer: string;
+    refeerer: string | string[];
     customer_id: string;
     card_id?: string;
   };

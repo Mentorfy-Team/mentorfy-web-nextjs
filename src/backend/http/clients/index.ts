@@ -80,7 +80,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
         name,
         email: email,
         phone: data?.user?.phone,
-        customer_id: response.data.id,
+        customer_id: response.data.id + '',
       })
       .eq('id', user.id);
 
