@@ -200,3 +200,36 @@ export const ExpiresDate = styled(Typography)`
   font-size: 0.8rem;
   line-height: 1.1rem;
 `;
+
+export const Input = styled(InputField)`
+  input {
+    color: ${({ theme }) => theme.palette.caption.light};
+    height: 1.5rem;
+  }
+  .Mui-focused {
+    border-color: ${({ theme }) => theme.palette.accent.main};
+  }
+  .MuiInputBase-root {
+    fieldset {
+      border-color: #bebebe;
+    }
+  }
+
+  & :-webkit-autofill {
+    -webkit-box-shadow: none;
+    box-shadow: none !important;
+    -webkit-text-fill-color: ${({ theme }) =>
+    theme.palette.caption.dark} !important;
+  }
+
+  svg {
+    fill: gray;
+  }
+`;
+
+export const InputsWrapper = styled('div')`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+`;
