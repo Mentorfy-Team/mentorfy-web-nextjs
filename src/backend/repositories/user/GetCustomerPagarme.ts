@@ -10,7 +10,7 @@ export const GetCustomerPagarme = async (data: { customer_id: number }) => {
       `/customers/${data.customer_id}`,
     );
 
-    return response;
+    return response.data;
   } catch (error) {
     return null;
   }

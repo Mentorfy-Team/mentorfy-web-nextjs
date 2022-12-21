@@ -119,7 +119,7 @@ export const getProps = async (ctx) => {
     };
   const plan = await GetPlans();
   const data = { customer_id: 382272385 };
-  const customer = await GetCustomerPagarme(data);
+  const customer = (await GetCustomerPagarme(data)) || null;
 
   return {
     props: {
