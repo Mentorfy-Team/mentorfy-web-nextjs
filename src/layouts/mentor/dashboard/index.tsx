@@ -4,10 +4,19 @@ import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Finances from './components/finance';
 import Indicators from './components/Indicators';
-import { BannerWrapper, DescriptionText, ImagesBox, MentorName, NameWrapper, TextsWrapper, WelcomeText } from './styles';
+import {
+  BannerWrapper,
+  DescriptionText,
+  ImagesBox,
+  MentorName,
+  NameWrapper,
+  TextsWrapper,
+  WelcomeText,
+} from './styles';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import Mountain from '~/../public/svgs/favicon';
 import { GetProfile } from '~/services/profile.service';
+import Soon from '~/components/atoms/Soon';
 
 const Dashboard: FC<PageTypes.Props> = ({ user, profile }) => {
   const ref = useRef(null);
@@ -26,22 +35,20 @@ const Dashboard: FC<PageTypes.Props> = ({ user, profile }) => {
         withoutScroll={true}
         maxWidth={1900}
       >
-        <BannerWrapper
-        >
+        <BannerWrapper>
           <TextsWrapper>
             <NameWrapper>
               <Mountain />
               <MentorName>Olá, {profile?.name}</MentorName>
             </NameWrapper>
-            <WelcomeText>
-              Seja bem-vindo(a) ao Mentorfy
-            </WelcomeText>
+            <WelcomeText>Seja bem-vindo(a) ao Mentorfy</WelcomeText>
             <DescriptionText>
-              Mais que uma plataforma dedicada a mentores, somos um caminho. Acreditamos que o
-              papel de um mentor é descobrir soluções e caminhos que ainda não existem na realidade
-              humana, mas quando criados e mapeados, podem dar nomes às montanhas assim como
-              foi com George EVEREST.
-              Mentor, essa é a sua jornada, bem vindo ao caminho que vai te transformar em uma lenda!
+              Mais que uma plataforma dedicada a mentores, somos um caminho.
+              Acreditamos que o papel de um mentor é descobrir soluções e
+              caminhos que ainda não existem na realidade humana, mas quando
+              criados e mapeados, podem dar nomes às montanhas assim como foi
+              com George EVEREST. Mentor, essa é a sua jornada, bem vindo ao
+              caminho que vai te transformar em uma lenda!
             </DescriptionText>
           </TextsWrapper>
           <Image
@@ -64,6 +71,7 @@ const Dashboard: FC<PageTypes.Props> = ({ user, profile }) => {
           }}
         >
           <ImagesBox>
+            <Soon>Em breve</Soon>
             <Image
               alt="banner"
               width={310}
@@ -75,6 +83,7 @@ const Dashboard: FC<PageTypes.Props> = ({ user, profile }) => {
             />
           </ImagesBox>
           <ImagesBox>
+            <Soon>Em breve</Soon>
             <Image
               alt="banner"
               width={302}
@@ -91,8 +100,10 @@ const Dashboard: FC<PageTypes.Props> = ({ user, profile }) => {
               height: '282px',
               cursor: 'pointer',
               flex: 1,
+              position: 'relative',
             }}
           >
+            <Soon>Em breve</Soon>
             <Image
               alt="banner"
               width={490}

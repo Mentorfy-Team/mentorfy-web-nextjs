@@ -11,7 +11,6 @@ import {
 } from './styles';
 
 const Wallet = () => {
-
   return (
     <Wrapper>
       <Box>
@@ -21,20 +20,15 @@ const Wallet = () => {
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
         <Box>
-          <AvailableAmount>
-            Disponível para Transferência:
-          </AvailableAmount>
+          <AvailableAmount>Disponível para Transferência:</AvailableAmount>
 
-          <WalletAmount>R$1.256,89</WalletAmount>
-
+          <WalletAmount>R$00,00</WalletAmount>
         </Box>
 
         <Box>
-          <AvailableAmount>
-            Disponível para Antecipar:
-          </AvailableAmount>
+          <AvailableAmount>Disponível para Antecipar:</AvailableAmount>
 
-          <WalletAmount>R$956,45</WalletAmount>
+          <WalletAmount>R$00,00</WalletAmount>
         </Box>
       </Box>
 

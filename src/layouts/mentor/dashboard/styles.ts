@@ -28,7 +28,7 @@ export const IndicatorValue = styled(Typography)`
   line-height: 110.52%;
 `;
 
-export const IndicatorPercent = styled(Typography) <Props>`
+export const IndicatorPercent = styled(Typography)<Props>`
   color: ${({ theme }) => theme.palette.failure.main};
   font-size: 16px;
   font-weight: 700;
@@ -41,14 +41,14 @@ export const IndicatorPercent = styled(Typography) <Props>`
     `}
 `;
 
-export const IndicatorTitle = styled(Typography) <Props>`
+export const IndicatorTitle = styled(Typography)<Props>`
   color: ${({ theme }) => theme.palette.caption.main};
   font-size: 18px;
   font-weight: 500;
   line-height: 110.52%;
 `;
 
-export const ImagesBox = styled(Box) <Props>`
+export const ImagesBox = styled(Box)<Props>`
   background-color: ${({ theme }) => theme.palette.primary.light};
   border-radius: 4px;
   cursor: pointer;
@@ -57,6 +57,7 @@ export const ImagesBox = styled(Box) <Props>`
   gap: 0.5rem;
   height: 282px;
   max-width: 310px;
+  position: relative;
 `;
 
 export const BannerWrapper = styled(Box)`
@@ -64,7 +65,7 @@ export const BannerWrapper = styled(Box)`
   height: 300px;
   background-color: ${({ theme }) => theme.palette.primary.light};
   border-radius: 10px;
-  background-image: url("/images/montanha.png");
+  background-image: url('/images/montanha.png');
   background-size: cover;
   padding: 2.5rem 3rem 0;
   display: flex;
@@ -94,7 +95,6 @@ export const WelcomeText = styled(Typography)`
   font-weight: 700;
   line-height: 110.52%;
   margin: 0.7rem 0 2rem;
-
 `;
 
 export const DescriptionText = styled(Typography)`
