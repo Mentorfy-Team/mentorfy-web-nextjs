@@ -39,7 +39,7 @@ export const GetProduct = async (req, id): Promise<ProductApi.Product> => {
     if (response.data.error || !response.data.product) {
       throw new Error(response.data.error);
     }
-    return response.data;
+    return response?.data?.product ? response.data.product : response.data;
   } catch (error: any) {
     return {
       error: error.message,
