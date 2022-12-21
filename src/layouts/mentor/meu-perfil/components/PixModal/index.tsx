@@ -10,19 +10,28 @@ type Props = {
   open: boolean;
   setOpen: (value: boolean) => void;
   qrCode: string;
-
-}
+};
 const PixModal = ({ open, setOpen, qrCode }: Props) => {
   const [showCopied, setShowCopied] = useState(false);
 
   return (
-    <ModalComponent open={open} setOpen={setOpen} title='Pagar Fatura'>
+    <ModalComponent open={open} setOpen={setOpen} title="Pagar Fatura">
       <ModalDialogContent>
-        <Typography sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '1rem' }}>
-          Pague sua fatura pelo PIX. Leia o QR code ou copie e cole o código pix e atualize sua página assim que realizar o pagamento
+        <Typography
+          sx={{ fontWeight: 'bold', textAlign: 'center', fontSize: '1rem' }}
+        >
+          Pague sua fatura pelo PIX. Leia o QR code ou copie e cole o código pix
+          e atualize sua página assim que realizar o pagamento
         </Typography>
 
-        <Typography sx={{ textAlign: 'center', fontSize: '0.9rem', color: 'gray', marginTop: '0.8rem' }}>
+        <Typography
+          sx={{
+            textAlign: 'center',
+            fontSize: '0.9rem',
+            color: 'gray',
+            marginTop: '0.8rem',
+          }}
+        >
           A aprovação leva no máximo 2 minutos.
         </Typography>
 
@@ -32,7 +41,8 @@ const PixModal = ({ open, setOpen, qrCode }: Props) => {
             height: 'auto',
             maxWidth: '100%',
             width: '100%',
-            maxHeight: '256',
+            maxHeight: '256px',
+            minHeight: '256px',
             margin: '1.5rem 0',
           }}
           value={qrCode}
@@ -47,7 +57,7 @@ const PixModal = ({ open, setOpen, qrCode }: Props) => {
             padding: '8px 32px',
             marginBottom: 2,
             overflowWrap: 'anywhere',
-            textAlign: 'center'
+            textAlign: 'center',
           })}
         >
           <p>
@@ -59,7 +69,10 @@ const PixModal = ({ open, setOpen, qrCode }: Props) => {
         <LoadingButton
           variant="contained"
           type="button"
-          sx={(theme) => ({ width: '100%', backgroundColor: `${showCopied ? theme.palette.success.main : ''}` })}
+          sx={(theme) => ({
+            width: '100%',
+            backgroundColor: `${showCopied ? theme.palette.success.main : ''}`,
+          })}
           onClick={() => {
             navigator.clipboard.writeText(qrCode);
             setShowCopied(true);

@@ -89,7 +89,7 @@ const MinhaConta: FC<props> = ({
         tabs={
           isViewingMentor || isViewingMentored
             ? ['Perfil']
-            : ['Perfil', 'Dados de Cadastro']
+            : ['Perfil', 'Dados de Cadastro', 'Assinatura']
         }
       />
       <ContentWidthLimit>
