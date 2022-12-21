@@ -182,10 +182,10 @@ export const getProps = async (ctx) => {
     props: {
       member_area_id: id,
       memberArea: {
-        id: response.product.id,
-        title: response.product.title,
-        description: response.product.description,
-        extra_image: response.product.extra_image,
+        id: response.id,
+        title: response.title,
+        description: response.description,
+        extra_image: response.extra_image,
       },
     },
   };
