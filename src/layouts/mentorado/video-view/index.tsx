@@ -470,8 +470,11 @@ export const VideoView = ({
 // * ServerSideRender (SSR)
 export const getProps = async (ctx) => {
   const { session } = await GetAuthSession(ctx);
+  let id = ctx.query.id as string;
 
-  if (!session)
+  if (id.includes('pdf')) id = null;
+
+  if (!session || !id)
     return {
       redirect: {
         destination: '/',
@@ -479,21 +482,26 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const id = ctx.query.id as string;
   const video_id = (ctx.query.v || 0) as string;
 
   // fetch for member area
-  const memberArea = await GetProduct(ctx.req, id);
+  const response = await GetProduct(ctx.req, id);
   const profile = await GetProfile(ctx.req);
+
+  if (!response) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
       member_area_id: id,
       video_id,
       memberArea: {
-        id: memberArea.id,
-        title: memberArea.title,
-        description: memberArea.description,
+        id: response.product.id,
+        title: response.product.title,
+        description: response.product.description,
       },
       profile,
     },

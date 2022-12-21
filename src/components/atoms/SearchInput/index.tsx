@@ -3,7 +3,7 @@ import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
 
-export default function SearchInput({ sx }: any) {
+export default function SearchInput({ sx, onChange }: any) {
   return (
     <Paper
       component="form"
@@ -18,7 +18,8 @@ export default function SearchInput({ sx }: any) {
       <InputBase
         sx={{ ml: 1, flex: 1, fontSize: '0.9rem' }}
         placeholder="Procurar pelo nome"
-        inputProps={{ 'aria-label': 'search google maps' }}
+        inputProps={{ 'aria-label': 'search' }}
+        onChange={(e) => onChange(e.target.value)}
       />
       <IconButton type="button" sx={{ p: '0px' }} aria-label="search">
         <SearchIcon fontSize="small" color="info" />

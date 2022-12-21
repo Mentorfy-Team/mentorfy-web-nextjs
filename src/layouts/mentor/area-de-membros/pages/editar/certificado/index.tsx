@@ -13,11 +13,9 @@ import {
   CheckText,
   CheckWrapper,
   DocumentText,
-  DraggableItem,
   FieldButton,
   FileWrapper,
   Label,
-  NameText,
   P,
   SaveButton,
   SvgWrapper,
@@ -30,11 +28,13 @@ import { useTheme } from '@mui/material/styles';
 import DropzoneComponent from '~/components/modules/Dropzone';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import Draggable from 'react-draggable';
 import { FileType } from '../../../components/UploadFileModal';
 import { UpdateCertificate } from '~/services/certificate-upload.service';
 import { DefaultCertificate } from '~/consts/certificate';
 import { toast } from 'react-toastify';
+import { DragBox } from './components/DragBox';
+import { SingFont } from '~/pages/_app';
+import UploadToUrlFiles from '../../../components/UploadFileModal/helpers/UploadToUrlFiles';
 
 const PDFReader = dynamic(
   () => import('~/components/atoms/PDFReader/PDFReader'),
@@ -43,60 +43,69 @@ const PDFReader = dynamic(
   },
 );
 
-const Certificate = ({ id }) => {
+type CustomInfo = {
+  name: boolean;
+  document: boolean;
+  finishedAt: boolean;
+  course: boolean;
+  owner: boolean;
+};
+
+type CustomInfoSize = {
+  student: { name: number; document: number; finishedAt: number };
+  course: {
+    name: number;
+    owner: number;
+  };
+};
+
+type Props = {
+  id: string;
+  product: ProductTypes.Product;
+};
+
+const Certificate = ({
+  id,
+  product: { title: productTitle, profile, certificate: initCertificate },
+}: Props) => {
   const { handleSubmit } = useForm();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>('');
+  const [title, setTitle] = useState<string>(initCertificate.title);
   const [color, setColor] = useState(false);
   const theme = useTheme();
-  const [files, setFiles] = useState<FileType[]>([]);
-  const [show, setShow] = useState({
-    showName: false,
-    showDocument: false,
-    showFinishedAt: false,
-    showCourseName: false,
-    showMentorName: false,
-  });
-  const [isStoped, setIsStoped] = useState({
-    stopedName: false,
-    stopedDocument: false,
-    stopedFinishedAt: false,
-    stopedCourseName: false,
-    stopedMentorName: false,
-  });
-  const [certificate, setCertificate] = useState({
-    product_id: id,
-    title: '',
-    default_certificate: '',
-    url: '',
-    student: {
-      name: {
-        pageX: '',
-        pageY: '',
-      },
-      finished_at: {
-        pageX: '',
-        pageY: '',
-      },
-      document: {
-        pageX: '',
-        pageY: '',
-      },
-    },
-    course: {
-      name: {
-        pageX: '',
-        pageY: '',
-      },
-      owner: {
-        pageX: '',
-        pageY: '',
-      },
-    },
+  const [files, setFiles] = useState<FileType>({
+    id: '0',
+    data: initCertificate.url,
+    name: initCertificate.title,
+    type: 'pdf',
+    file: null,
+    size: null,
   });
 
+  const [show, setShow] = useState<Partial<CustomInfo>>({
+    name: !!initCertificate?.student?.name,
+    document: !!initCertificate?.student?.document,
+    finishedAt: !!initCertificate?.student?.finishedAt,
+    course: !!initCertificate?.course?.name,
+    owner: !!initCertificate?.course?.owner,
+  });
+  const [isStoped, setIsStoped] = useState<Partial<CustomInfo>>();
+  const [fontSize, setFontSize] = useState<Partial<CustomInfoSize>>({
+    student: {
+      name: initCertificate?.student?.name?.fontSize || 14,
+      document: initCertificate?.student?.document?.fontSize || 14,
+      finishedAt: initCertificate?.student?.finishedAt?.fontSize || 14,
+    },
+    course: {
+      name: initCertificate?.course?.name?.fontSize || 14,
+      owner: initCertificate?.course?.owner?.fontSize || 14,
+    },
+  });
+  const [certificate, setCertificate] =
+    useState<ProductTypes.CertificateBuilder>(initCertificate);
+
   const [defaultCertificate, setDefaultCertificate] =
-    useState(DefaultCertificate);
+    useState<ProductTypes.Certificate>(DefaultCertificate);
 
   function BpCheckbox(props: CheckboxProps) {
     return (
@@ -115,7 +124,6 @@ const Certificate = ({ id }) => {
       />
     );
   }
-  console.log(defaultCertificate);
   const handleUpload = (_files: any) => {
     HandleFileUpload(_files, (file) => {
       setFiles(file);
@@ -123,145 +131,96 @@ const Certificate = ({ id }) => {
   };
 
   const handleShowStates = (e) => {
-    if (e.target.getAttribute('name') === 'name') {
-      setShow((oldStates) => {
-        const newState = { ...oldStates, showName: true };
-        return newState;
-      });
-    }
-    if (e.target.getAttribute('name') === 'document') {
-      setShow((oldStates) => {
-        const newState = { ...oldStates, showDocument: true };
-        return newState;
-      });
-    }
-    if (e.target.getAttribute('name') === 'finishedAt') {
-      setShow((oldStates) => {
-        const newState = { ...oldStates, showFinishedAt: true };
-        return newState;
-      });
-    }
-    if (e.target.getAttribute('name') === 'courseName') {
-      setShow((oldStates) => {
-        const newState = { ...oldStates, showCourseName: true };
-        return newState;
-      });
-    }
-    if (e.target.getAttribute('name') === 'mentorName') {
-      setShow((oldStates) => {
-        const newState = { ...oldStates, showMentorName: true };
-        return newState;
-      });
-    }
+    // * dinamicamente seta o nome do atributo dentro do state com status true
+    setShow((oldStates) => ({
+      ...oldStates,
+      [e.target.getAttribute('name')]: true,
+    }));
+
     if (e.target.innerHTML === 'Usar certificado padrão Mentorfy') {
       setShow({
-        showName: false,
-        showDocument: false,
-        showFinishedAt: false,
-        showCourseName: false,
-        showMentorName: false,
+        name: false,
+        document: false,
+        finishedAt: false,
+        course: false,
+        owner: false,
       });
       setColor(!color);
-      setFiles([]);
+      setFiles(null);
       setTitle('');
     }
   };
 
-  const handleStopDraging = (e) => {
-    if (e.target.innerHTML === 'NOME DO CLIENTE') {
-      setIsStoped((oldStates) => {
-        const newState = { ...oldStates, stopedName: true };
-        return newState;
-      });
-      setCertificate((old) => {
-        return {
-          ...old,
-          title: title,
-          default_certificate: null,
-          url: (files as any).data,
-          student: {
-            ...old?.student,
-            name: {
-              pageX: e.layerX,
-              pageY: e.layerY,
-            },
-          },
-        };
-      });
-    }
+  const formatObj = (
+    { pageX, pageY, boxSize },
+    state,
+    categoryName,
+    fieldName,
+  ) => {
+    const stateCategory = state[categoryName];
+    const stateField = stateCategory ? stateCategory[fieldName] : null;
+    return {
+      ...state,
+      [categoryName]: {
+        ...stateCategory,
+        [fieldName]: {
+          ...stateField,
+          pageX,
+          pageY,
+          boxSize,
+        },
+      },
+    };
+  };
 
-    if (e.target.innerHTML === 'DOCUMENTO DO ALUNO') {
-      setIsStoped((oldStates) => {
-        const newState = { ...oldStates, stopedDocument: true };
-        return newState;
-      });
-      setCertificate((old) => {
-        return {
-          ...old,
-          student: {
-            ...old?.student,
-            document: {
-              pageX: e.layerX,
-              pageY: e.layerY,
-            },
+  const handleStopDraging = (e, categoryName, fieldName) => {
+    const boxRef = e.target.offsetParent as HTMLElement;
+    const transform = window.getComputedStyle(boxRef).transform;
+    if (!transform.split('(') || transform.split('(').length < 2) return;
+    // get x and y values from transform matrix
+    const matrix = transform.split('(')[1].split(')')[0].split(',');
+    const pageX = matrix[4];
+    const pageY = matrix[5];
+    const boxSize = boxRef.getBoundingClientRect().width;
+
+    setIsStoped((oldStates) => ({ ...oldStates, [fieldName]: true }));
+    setCertificate((state) =>
+      formatObj({ pageX, pageY, boxSize }, state, categoryName, fieldName),
+    );
+  };
+
+  const handleSizeChange = (categoryName, fieldName, value) => {
+    setFontSize((old) => ({
+      ...old,
+      [categoryName]: { ...old[categoryName], [fieldName]: value },
+    }));
+    const stateCategory = certificate[categoryName];
+    const stateField = stateCategory ? stateCategory[fieldName] : null;
+    setCertificate((state) => {
+      const format = {
+        ...state,
+        [categoryName]: {
+          ...stateCategory,
+          [fieldName]: {
+            ...stateField,
+            fontSize: value,
           },
-        };
-      });
-    }
-    if (e.target.innerHTML === 'DATA DE TÉRMINO') {
-      setIsStoped((oldStates) => {
-        const newState = { ...oldStates, stopedFinishedAt: true };
-        return newState;
-      });
-      setCertificate((old) => {
-        return {
-          ...old,
-          student: {
-            ...old?.student,
-            finished_at: {
-              pageX: e.layerX,
-              pageY: e.layerY,
-            },
-          },
-        };
-      });
-    }
-    if (e.target.innerHTML === 'NOME DO CURSO') {
-      setIsStoped((oldStates) => {
-        const newState = { ...oldStates, stopedCourseName: true };
-        return newState;
-      });
-      setCertificate((old) => {
-        return {
-          ...old,
-          course: {
-            ...old?.course,
-            name: {
-              pageX: e.layerX,
-              pageY: e.layerY,
-            },
-          },
-        };
-      });
-    }
-    if (e.target.innerHTML === 'SEU NOME') {
-      setIsStoped((oldStates) => {
-        const newState = { ...oldStates, stopedMentorName: true };
-        return newState;
-      });
-      setCertificate((old) => {
-        return {
-          ...old,
-          course: {
-            ...old?.course,
-            owner: {
-              pageX: e.layerX,
-              pageY: e.layerY,
-            },
-          },
-        };
-      });
-    }
+        },
+      };
+      return format;
+    });
+  };
+
+  const GetUrlAndSaveInCertificate = async () => {
+    const convertedFiles = await UploadToUrlFiles([files], id);
+    setCertificate((old) => {
+      return {
+        ...old,
+        url: convertedFiles[0].sourceUrl,
+        product_id: id,
+        title: title,
+      };
+    });
   };
 
   useEffect(() => {
@@ -273,8 +232,12 @@ const Certificate = ({ id }) => {
           title: title,
         };
       });
+
+      return;
     }
-  }, [color, id, title]);
+
+    GetUrlAndSaveInCertificate();
+  }, [color, files, id, title]);
 
   const onSubmit = async () => {
     setIsLoading(true);
@@ -288,11 +251,57 @@ const Certificate = ({ id }) => {
     setIsLoading(false);
   };
 
-  const nameElement = <NameText>NOME DO CLIENTE</NameText>;
-  const documentElement = <DocumentText>DOCUMENTO DO ALUNO</DocumentText>;
-  const finishedAtElement = <DocumentText>DATA DE TÉRMINO</DocumentText>;
-  const courseNameElement = <DocumentText>NOME DO CURSO</DocumentText>;
-  const mentorNameElement = <DocumentText>SEU NOME</DocumentText>;
+  const nameElement = (value) => (
+    <DocumentText
+      sx={{
+        fontSize: value,
+      }}
+      id="name"
+    >
+      [ Nome do Aluno ]
+    </DocumentText>
+  );
+  const documentElement = (value) => (
+    <DocumentText
+      sx={{
+        fontSize: value,
+      }}
+      id="document"
+    >
+      [ DOCUMENTO DO ALUNO ]
+    </DocumentText>
+  );
+  const finishedAtElement = (value) => (
+    <DocumentText
+      sx={{
+        fontSize: value,
+      }}
+      id="finishedAt"
+    >
+      [ Data de Término ]
+    </DocumentText>
+  );
+  const courseNameElement = (value) => (
+    <DocumentText
+      sx={{
+        fontSize: value,
+      }}
+      id="course"
+    >
+      {productTitle}
+    </DocumentText>
+  );
+  const mentorNameElement = (value) => (
+    <DocumentText
+      sx={{
+        fontSize: value,
+        ...SingFont.style,
+      }}
+      id="owner"
+    >
+      {profile.name}
+    </DocumentText>
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -335,7 +344,7 @@ const Certificate = ({ id }) => {
 
       {!color && (
         <>
-          {files && files?.length !== 0 && (
+          {files && (
             <Wrapper>
               <div>
                 <UsageText>
@@ -370,14 +379,14 @@ const Certificate = ({ id }) => {
                     Data de Término
                   </FieldButton>
                   <FieldButton
-                    name="courseName"
+                    name="course"
                     variant="outlined"
                     onClick={(e) => handleShowStates(e)}
                   >
                     Nome do Curso
                   </FieldButton>
                   <FieldButton
-                    name="mentorName"
+                    name="owner"
                     variant="outlined"
                     onClick={(e) => handleShowStates(e)}
                   >
@@ -387,87 +396,74 @@ const Certificate = ({ id }) => {
               </div>
               <FileWrapper id="dragRef">
                 <PDFReader file={(files as any)?.data} />
-
-                {show.showName && (
-                  <Draggable
-                    bounds="parent"
-                    onStop={(e) => handleStopDraging(e)}
-                  >
-                    <DraggableItem
-                      sx={{
-                        border: `${isStoped.stopedName && '1px dotted black'}`,
-                      }}
-                    >
-                      {nameElement}
-                    </DraggableItem>
-                  </Draggable>
+                {show?.name && (
+                  <DragBox
+                    position={initCertificate.student.name}
+                    fontSize={fontSize.student.name}
+                    onSizeChange={(value) =>
+                      handleSizeChange('student', 'name', value)
+                    }
+                    element={nameElement}
+                    showBorder={isStoped?.name}
+                    onStopDrag={(e) => handleStopDraging(e, 'student', 'name')}
+                  />
                 )}
-
-                {show.showDocument && (
-                  <Draggable
-                    bounds="parent"
-                    onStop={(e) => handleStopDraging(e)}
-                  >
-                    <DraggableItem
-                      sx={{
-                        border: `${isStoped.stopedDocument && '1px dotted black'
-                          }`,
-                      }}
-                    >
-                      {documentElement}
-                    </DraggableItem>
-                  </Draggable>
+                {show?.document && (
+                  <DragBox
+                    position={initCertificate.student.document}
+                    fontSize={fontSize.student.document}
+                    onSizeChange={(value) =>
+                      handleSizeChange('student', 'document', value)
+                    }
+                    element={documentElement}
+                    showBorder={isStoped?.document}
+                    onStopDrag={(e) =>
+                      handleStopDraging(e, 'student', 'document')
+                    }
+                  />
                 )}
-
-                {show.showFinishedAt && (
-                  <Draggable
-                    bounds="parent"
-                    onStop={(e) => handleStopDraging(e)}
-                  >
-                    <DraggableItem
-                      sx={{
-                        border: `${isStoped.stopedFinishedAt && '1px dotted black'
-                          }`,
-                      }}
-                    >
-                      {finishedAtElement}
-                    </DraggableItem>
-                  </Draggable>
+                {show?.finishedAt && (
+                  <DragBox
+                    position={initCertificate.student.finishedAt}
+                    fontSize={fontSize.student.finishedAt}
+                    onSizeChange={(value) =>
+                      handleSizeChange('student', 'finishedAt', value)
+                    }
+                    element={finishedAtElement}
+                    showBorder={isStoped?.finishedAt}
+                    onStopDrag={(e) =>
+                      handleStopDraging(e, 'student', 'finishedAt')
+                    }
+                  />
                 )}
-                {show.showCourseName && (
-                  <Draggable
-                    bounds="parent"
-                    onStop={(e) => handleStopDraging(e)}
-                  >
-                    <DraggableItem
-                      sx={{
-                        border: `${isStoped.stopedCourseName && '1px dotted black'
-                          }`,
-                      }}
-                    >
-                      {courseNameElement}
-                    </DraggableItem>
-                  </Draggable>
+                {show?.course && (
+                  <DragBox
+                    position={initCertificate.course.name}
+                    fontSize={fontSize.course.name}
+                    onSizeChange={(value) =>
+                      handleSizeChange('course', 'name', value)
+                    }
+                    element={courseNameElement}
+                    showBorder={isStoped?.course}
+                    onStopDrag={(e) => handleStopDraging(e, 'course', 'name')}
+                  />
                 )}
-                {show.showMentorName && (
-                  <Draggable
-                    bounds="parent"
-                    onStop={(e) => handleStopDraging(e)}
-                  >
-                    <DraggableItem
-                      sx={{
-                        border: `${isStoped.stopedMentorName && '1px dotted black'
-                          }`,
-                      }}
-                    >
-                      {mentorNameElement}
-                    </DraggableItem>
-                  </Draggable>
+                {show?.owner && (
+                  <DragBox
+                    position={initCertificate.course.owner}
+                    fontSize={fontSize.course.owner}
+                    onSizeChange={(value) =>
+                      handleSizeChange('course', 'owner', value)
+                    }
+                    element={mentorNameElement}
+                    showBorder={isStoped?.owner}
+                    onStopDrag={(e) => handleStopDraging(e, 'course', 'owner')}
+                  />
                 )}
               </FileWrapper>
             </Wrapper>
           )}
-          {files?.length === 0 && (
+          {!files && (
             <DropzoneComponent onDrop={(_files) => handleUpload(_files)}>
               <UploadField>
                 <Label>

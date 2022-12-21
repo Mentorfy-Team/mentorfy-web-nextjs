@@ -51,6 +51,9 @@ export const AdvanceButton = styled(Button)`
   font-weight: 500;
   line-height: 110.52%;
   padding: 0;
+  :hover {
+    background-color: transparent !important;
+  }
 `;
 
 export const TransferButton = styled(Button)`

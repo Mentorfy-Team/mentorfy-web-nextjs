@@ -12,6 +12,7 @@ import {
   NumbersWrapper,
   Wrapper,
 } from './styles';
+import Soon from '~/components/atoms/Soon';
 
 const Indicators = () => {
   const [red, setRed] = useState(false);
@@ -20,12 +21,12 @@ const Indicators = () => {
   return (
     <Wrapper container spacing={2}>
       <Indicator xs={12} md={6} lg={3}>
+        <Soon>Em breve</Soon>
         <Card>
-          <NumbersWrapper
-          >
+          <NumbersWrapper>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <IndicatorValue>R$12.34</IndicatorValue>
-              <IndicatorPercent>+3.42%</IndicatorPercent>
+              <IndicatorValue>R$00.00</IndicatorValue>
+              <IndicatorPercent>+0.00%</IndicatorPercent>
             </Box>
             <IndicatorTitle>Faturamento</IndicatorTitle>
           </NumbersWrapper>
@@ -35,18 +36,18 @@ const Indicators = () => {
               alt="arrow"
               width={14}
               height={14}
-              src='/svgs/diagonal-green-arrow.svg'
+              src="/svgs/diagonal-green-arrow.svg"
             />
           </ArrowBox>
         </Card>
       </Indicator>
       <Indicator xs={12} md={6} lg={3}>
+        <Soon>Em breve</Soon>
         <Card>
-          <NumbersWrapper
-          >
+          <NumbersWrapper>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <IndicatorValue>R$12.34</IndicatorValue>
-              <IndicatorPercent>+3.42%</IndicatorPercent>
+              <IndicatorValue>R$00.00</IndicatorValue>
+              <IndicatorPercent>+0.00%</IndicatorPercent>
             </Box>
             <IndicatorTitle>Ganhos</IndicatorTitle>
           </NumbersWrapper>
@@ -56,18 +57,18 @@ const Indicators = () => {
               alt="arrow"
               width={14}
               height={14}
-              src='/svgs/diagonal-green-arrow.svg'
+              src="/svgs/diagonal-green-arrow.svg"
             />
           </ArrowBox>
         </Card>
       </Indicator>
       <Indicator xs={12} md={6} lg={3}>
+        <Soon>Em breve</Soon>
         <Card>
-          <NumbersWrapper
-          >
+          <NumbersWrapper>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <IndicatorValue>R$12.34</IndicatorValue>
-              <IndicatorPercent>+3.42%</IndicatorPercent>
+              <IndicatorValue>0000</IndicatorValue>
+              <IndicatorPercent>+0.00%</IndicatorPercent>
             </Box>
             <IndicatorTitle>Clientes Ativos</IndicatorTitle>
           </NumbersWrapper>
@@ -77,18 +78,18 @@ const Indicators = () => {
               alt="arrow"
               width={14}
               height={14}
-              src='/svgs/diagonal-green-arrow.svg'
+              src="/svgs/diagonal-green-arrow.svg"
             />
           </ArrowBox>
         </Card>
       </Indicator>
       <Indicator xs={12} md={6} lg={3}>
+        <Soon>Em breve</Soon>
         <Card>
-          <NumbersWrapper
-          >
+          <NumbersWrapper>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <IndicatorValue>R$12.34</IndicatorValue>
-              <IndicatorPercent>+3.42%</IndicatorPercent>
+              <IndicatorValue>R$00.00</IndicatorValue>
+              <IndicatorPercent>+0.00%</IndicatorPercent>
             </Box>
             <IndicatorTitle>Conversão checkout</IndicatorTitle>
           </NumbersWrapper>

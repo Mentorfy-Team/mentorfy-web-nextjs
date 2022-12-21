@@ -2,6 +2,7 @@ import { AdminUserAttributes } from '@supabase/supabase-js';
 import { nanoid } from 'nanoid';
 import UpdateCookies from '~/backend/helpers/UpdateCookies';
 import { fixBase64 } from '~/backend/http/products';
+import { GetCustomerPagarme } from '~/backend/repositories/user/GetCustomerPagarme';
 import { SupabaseAdmin, SupabaseServer } from '~/backend/supabase';
 type GetRequest = ProfileApi.Get.Request;
 type GetResponse = ProfileApi.Get.Response | any;
@@ -37,6 +38,16 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
 
   result['profile'] = profile;
   result['user'] = user;
+
+  if (profile.customer_id) {
+    const response = await GetCustomerPagarme({
+      customer_id: profile.customer_id ? parseInt(profile.customer_id) : 0,
+    });
+
+    if (response?.data) {
+      result['customer'] = response.data;
+    }
+  }
 
   if (req.query?.withAddress) {
     const { data: address, error } = await supabase

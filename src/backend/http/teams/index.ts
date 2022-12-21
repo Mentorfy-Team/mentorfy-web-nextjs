@@ -18,10 +18,7 @@ export const get = async (req, res) => {
   const { data: team_members } = await supabase
     .from('team_member')
     .select('*, profile(*), team_member_client(*)')
-    .in(
-      'team_id',
-      teams.map((team) => team.id),
-    );
+    .in('team_id', teams.map((team) => team.id) || []);
 
   res.status(200).json({ teams, team_members });
 };
@@ -64,17 +61,11 @@ export const del = async (req, res) => {
   await supabase
     .from('team_member_client')
     .delete()
-    .in(
-      'team_member_id',
-      data.map((item) => item.id),
-    );
+    .in('team_member_id', data.map((item) => item.id) || []);
   await supabase
     .from('team_member')
     .delete()
-    .in(
-      'id',
-      data.map((item) => item.id),
-    );
+    .in('id', data.map((item) => item.id) || []);
   await supabase.from('team').delete().eq('id', req.body.team_id);
 
   res.status(200).json({});

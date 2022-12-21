@@ -102,6 +102,29 @@ export interface Database {
           approved?: boolean
         }
       }
+      integration_token: {
+        Row: {
+          id: string
+          product_id: string
+          type: string
+          created_at: string | null
+          token: string
+        }
+        Insert: {
+          id?: string
+          product_id: string
+          type: string
+          created_at?: string | null
+          token: string
+        }
+        Update: {
+          id?: string
+          product_id?: string
+          type?: string
+          created_at?: string | null
+          token?: string
+        }
+      }
       log_type: {
         Row: {
           created_at: string | null
@@ -326,6 +349,8 @@ export interface Database {
           access_type: string | null
           email: string | null
           phone: string | null
+          expiration_date: string | null
+          customer_id: string | null
         }
         Insert: {
           id: string
@@ -338,6 +363,8 @@ export interface Database {
           access_type?: string | null
           email?: string | null
           phone?: string | null
+          expiration_date?: string | null
+          customer_id?: string | null
         }
         Update: {
           id?: string
@@ -350,6 +377,8 @@ export interface Database {
           access_type?: string | null
           email?: string | null
           phone?: string | null
+          expiration_date?: string | null
+          customer_id?: string | null
         }
       }
       profile_history: {

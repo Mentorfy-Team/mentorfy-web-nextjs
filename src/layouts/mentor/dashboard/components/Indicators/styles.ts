@@ -8,7 +8,9 @@ export const Wrapper = styled(Grid)`
   margin-top: 1rem;
 `;
 
-export const Indicator = styled(Grid)``;
+export const Indicator = styled(Grid)`
+  position: relative;
+`;
 
 export const Card = styled(Box)`
   background-color: ${({ theme }) => theme.palette.primary.light};
@@ -35,7 +37,6 @@ export const IndicatorPercent = styled(Typography)`
   font-weight: 700;
   line-height: 110.52%;
   color: #00d75b;
-
 `;
 
 export const IndicatorTitle = styled(Typography)`

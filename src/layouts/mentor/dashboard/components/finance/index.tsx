@@ -31,11 +31,11 @@ const Finances = () => {
           <Box sx={{ display: 'flex', gap: '2rem' }}>
             <Box>
               <TextAmount>Ganhos como produtor</TextAmount>
-              <Amount>R$12.340,00</Amount>
+              <Amount>R$00.000,00</Amount>
             </Box>
             <Box>
               <TextAmount>Ganhos como co-produtor</TextAmount>
-              <Amount>R$12.340,00</Amount>
+              <Amount>R$00.000,00</Amount>
             </Box>
           </Box>
 
@@ -89,11 +89,11 @@ const Finances = () => {
                 <MountainName>K2</MountainName>
               </TheMountainWrapper>
             </MountainsWrapper>
-            <ProgressBar variant="determinate" value={40} />
+            <ProgressBar variant="determinate" value={5} />
 
             <Box sx={{ textAlign: 'right' }}>
               <TextAmount>Total de Ganhos</TextAmount>
-              <Amount>R$24.680,00</Amount>
+              <Amount>R$00.000,00</Amount>
             </Box>
           </BarWrapper>
         </Revenue>

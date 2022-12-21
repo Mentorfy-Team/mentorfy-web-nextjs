@@ -11,7 +11,7 @@ type Props = {
 export const CheckForAccount = async ({ supabase, data: { email } }: Props) => {
   const { data: user } = await supabase
     .from('profile')
-    .select('id')
+    .select('*')
     .eq('email', email)
     .single();
 

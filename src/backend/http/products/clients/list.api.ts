@@ -5,6 +5,15 @@ export const get = async (req, res) => {
   await new Promise((resolve) => setTimeout(resolve, 2000));
 
   const supabase = SupabaseServer(req, res);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user?.id) {
+    return res.status(401).json({
+      error: 'Unauthorized',
+    });
+  }
 
   const { data: tools, error: errorTools } = await supabase
     .from('member_area_tool')
@@ -17,27 +26,42 @@ export const get = async (req, res) => {
     .eq('product_id', req.query.id)
     .eq('approved', true);
 
-  const { data: clients } = await supabase
+  const { data: teams } = await supabase
+    .from('team')
+    .select('*')
+    .eq('owner_id', user.id);
+
+  const { data: team_member, error: tmError } = await supabase
+    .from('team_member')
+    .select('*, team_member_client(*)')
+    .or(
+      'team_id.in.(' +
+        teams.map((t) => t.id).join(',') +
+        '), profile_id.eq.' +
+        user.id,
+    );
+
+  const cIds = team_member?.reduce(
+    (acc, tm) => [
+      ...acc,
+      ...(tm.team_member_client as any).map((tmc) => tmc.profile_id),
+    ],
+    [],
+  );
+
+  const { data: clients, error } = await supabase
     .from('profile')
     .select('*')
-    .in(
-      'id',
-      relations.map((relation) => relation.user_id),
-    );
+    .in('id', relations.map((relation) => relation.user_id) || [])
+    .in('id', cIds || []);
 
   const { data: userInputs, error: erroru } = await supabase
     .from('client_input_tool')
     .select('*')
-    .in(
-      'profile_id',
-      clients?.map((cl) => cl.id),
-    )
-    .in(
-      'member_area_tool_id',
-      tools?.map((tool) => tool.id),
-    );
+    .in('profile_id', clients?.map((cl) => cl.id) || [])
+    .in('member_area_tool_id', tools?.map((tool) => tool.id) || []);
 
-  const clientWithInputs = clients.map((cl) => {
+  const clientWithInputs = clients?.map((cl) => {
     return {
       ...cl,
       since: relations.find((rel) => rel.user_id === cl.id).created_at,

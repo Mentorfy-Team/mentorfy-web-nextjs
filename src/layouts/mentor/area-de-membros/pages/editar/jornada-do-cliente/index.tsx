@@ -36,10 +36,14 @@ const ClientJourney: FC<props> = ({ id }) => {
   const [clientInput, setClientInput] = useState<any>();
   const [open, setOpen] = useState(false);
   const [steps, setSteps] = useState<ProductTypes.resultJorney[]>();
+
+  const [searchByName, setSearchByName] = useState<string>();
+
   const {
     data: { clients, result: stepsData },
     isLoading,
   } = useListOfClientsInProduct(id);
+
   const { setLoading } = userStore();
   const route = useRouter();
 
@@ -69,7 +73,7 @@ const ClientJourney: FC<props> = ({ id }) => {
 
   const handleSelectedClient = (client: ProductTypes.Client) => {
     if (!selectedTask) {
-      route.push(route.asPath + '/perfil?altId=' + client.id);
+      route.push(route.asPath + '/perfil?id=' + client.id);
     } else {
       setClientInput(() => {
         const Inputs = client.inputs?.filter(
@@ -98,14 +102,21 @@ const ClientJourney: FC<props> = ({ id }) => {
     setOpen(true);
   };
 
+  const SearchForString = (values) => {
+    return values.filter(
+      (client) =>
+        client.name.toLowerCase().includes(searchByName.toLowerCase()) ||
+        client.email.toLowerCase().includes(searchByName.toLowerCase()),
+    );
+  };
+
   return (
     <ContentWidthLimit withoutScroll maxWidth={1900}>
       <TipWrapper>
         <Image alt="tip-icon" src="/svgs/tip-icon.svg" width={22} height={22} />
         <TipText>
-          Clique em uma etapa para
-          <span>filtrar a lista de mentorados</span>
-          que concluíram a etapa. Clique novamente para cancelar.
+          Clique em uma etapa e selecione um cliente para
+          <span>visualizar suas respostas e progressões</span>.
         </TipText>
       </TipWrapper>
 
@@ -201,9 +212,25 @@ const ClientJourney: FC<props> = ({ id }) => {
               width: isMobile ? '90vw' : '15vw',
               margin: '1rem 0',
             }}
+            onChange={(value) => setSearchByName(value)}
           />
           <CompletedClientsTable
             clients={clients}
+            filter={(values) => {
+              const byName =
+                searchByName?.length > 0 ? SearchForString(values) : values;
+
+              const byStep = selectedTask?.id
+                ? byName.filter((client) => {
+                    const clientInputs = client.inputs?.filter(
+                      (input) => input.member_area_tool_id === selectedTask?.id,
+                    );
+                    return clientInputs?.length > 0;
+                  })
+                : byName;
+
+              return byStep;
+            }}
             onSelectedClient={handleSelectedClient}
           />
         </>

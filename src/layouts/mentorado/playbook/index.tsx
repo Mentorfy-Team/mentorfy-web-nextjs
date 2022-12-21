@@ -171,9 +171,9 @@ export const getProps = async (ctx) => {
   const id = ctx.query.id as string;
 
   // fetch for member area
-  const memberArea = await GetProduct(ctx.req, id);
+  const response = await GetProduct(ctx.req, id);
 
-  if (!memberArea) {
+  if (!response) {
     return {
       notFound: true,
     };
@@ -182,10 +182,10 @@ export const getProps = async (ctx) => {
     props: {
       member_area_id: id,
       memberArea: {
-        id: memberArea.id,
-        title: memberArea.title,
-        description: memberArea.description,
-        extra_image: memberArea.extra_image,
+        id: response.product.id,
+        title: response.product.title,
+        description: response.product.description,
+        extra_image: response.product.extra_image,
       },
     },
   };

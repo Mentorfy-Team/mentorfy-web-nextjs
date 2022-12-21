@@ -2,7 +2,34 @@
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from './HttpClient';
 
-export const GetProduct = async (req, id): Promise<ProductApi.Product> => {
+export const GetProductByRef = async (
+  req,
+  refId,
+): Promise<{ product: ProductApi.Product }> => {
+  try {
+    const response = await HttpClient.get<any>(ApiRoutes.products, {
+      // * Passa a autenticação para frente
+      headers: req.headers,
+      params: {
+        refId,
+      },
+    });
+
+    if (response.data.error || !response.data.product) {
+      throw new Error(response.data.error);
+    }
+    return response.data as { product: ProductApi.Product };
+  } catch (error: any) {
+    return {
+      error: error.message,
+    } as any;
+  }
+};
+
+export const GetProduct = async (
+  req,
+  id,
+): Promise<{ product: ProductApi.Product }> => {
   try {
     const response = await HttpClient.get<any>(ApiRoutes.products, {
       // * Passa a autenticação para frente
@@ -15,7 +42,7 @@ export const GetProduct = async (req, id): Promise<ProductApi.Product> => {
     if (response.data.error || !response.data.product) {
       throw new Error(response.data.error);
     }
-    return response.data as ProductApi.Product;
+    return response.data as { product: ProductApi.Product };
   } catch (error: any) {
     return {
       error: error.message,

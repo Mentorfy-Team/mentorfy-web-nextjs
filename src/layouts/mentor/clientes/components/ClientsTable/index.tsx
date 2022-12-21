@@ -16,6 +16,7 @@ const columns: Column[] = [
   {
     id: 'name',
     label: 'NOME',
+    minWidth: 150,
   },
   {
     id: 'email',
@@ -32,6 +33,7 @@ const columns: Column[] = [
   {
     id: 'date',
     label: 'ÚLTIMA COMPRA',
+    minWidth: 250,
   },
   {
     id: 'actions',
@@ -56,7 +58,7 @@ const ClientsTable = ({
   onClientSelected,
   actions,
 }: {
-  rows: UserClient.ClientRelation[];
+  rows: ClientTypes.Client[];
   clickSeeMore: any;
   clickRemove: any;
   onClientSelected: any;

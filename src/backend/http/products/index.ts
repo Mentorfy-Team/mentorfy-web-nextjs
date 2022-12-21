@@ -33,12 +33,12 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   } = await supabase.auth.getUser();
   const { data: product, error } = await supabase
     .from('product')
-    .select('*, member_area(*, member_area_type(*))')
+    .select('*, member_area(*, member_area_type(*)), profile(id, name)')
     .eq('id', req.query.id)
     .single();
 
   // Registra a visualização do produto/mentoria, contanto que o usuário não seja o dono do produto
-  if (user?.id !== product?.owner) {
+  if (user?.id !== product?.owner && product) {
     await LogHistory.Create(
       user?.id,
       100,
@@ -92,10 +92,7 @@ export const del: Handler.Callback<GetRequest, GetResponse> = async (
       await supabase
         .from('client_product')
         .delete()
-        .in(
-          'id',
-          relations.map((r) => r.id),
-        );
+        .in('id', relations.map((r) => r.id) || []);
     }
   }
 
@@ -111,10 +108,7 @@ export const del: Handler.Callback<GetRequest, GetResponse> = async (
   await supabase
     .from('client_input_tool')
     .delete()
-    .in(
-      'member_area_tool_id',
-      data.map((d) => d.id),
-    );
+    .in('member_area_tool_id', data.map((d) => d.id) || []);
 
   await supabase
     .from('member_area_tool')

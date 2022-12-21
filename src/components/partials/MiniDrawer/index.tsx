@@ -1,16 +1,12 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useRouter } from 'next/router';
 import { MentorMenu } from '~/consts/routes/routes.consts';
 import { userStore } from '~/stores';
 import { AnimatedBox, Drawer, DrawerHeader } from './styles';
+import MenuItens from './components/MenuItens';
 
 type props = {
   children?: JSX.Element;
@@ -22,24 +18,31 @@ const MiniDrawer: React.FC<props> = ({ children }) => {
   const [open, setOpen] = React.useState(isMobile ? false : true);
   const router = useRouter();
   const { isLoading, setLoading } = userStore();
+  const [selectedRoute, setSelectedRoute] = React.useState<string>(
+    router.pathname,
+  );
 
-  const getIcon = (component, path, subpaths = []) => {
-    const props: any = {};
+  const pathsList = React.useMemo(() => {
+    // reduce root and children paths
+    return Object.values(MentorMenu).reduce((acc, route) => {
+      if (route.children) {
+        return [
+          ...acc,
+          ...route.children.map((child) => child.path),
+          route.path,
+        ];
+      }
+      return [...acc, route.path];
+    }, []);
+  }, []);
 
-    if (IsActiveValidator(path, subpaths))
-      props.fill = theme.palette.accent.main;
-
-    return component(props);
-  };
-
-  const IsActiveValidator = (path, subpaths = []) => {
-    if (router.pathname.includes(path)) return true;
-
-    if (subpaths.find((subpath) => router.pathname.includes(subpath)))
-      return true;
-
-    return false;
-  };
+  const ActivePaths = React.useMemo(() => {
+    return pathsList.filter((route) => {
+      if (selectedRoute.split('/')?.length < 4) return route === selectedRoute;
+      const twoFirsts = selectedRoute.split('/').slice(0, 3).join('/');
+      return route.includes(twoFirsts);
+    });
+  }, [pathsList, selectedRoute]);
 
   return (
     <Box
@@ -69,8 +72,31 @@ const MiniDrawer: React.FC<props> = ({ children }) => {
             </Box>
           </Box>
         </UserField> */}
-        <List>
-          {Object.keys(MentorMenu).map((route, index) => (
+        <Box p="1rem 0" height="100%">
+          <MenuItens
+            selectedRoute={[...ActivePaths, selectedRoute]}
+            onSelectedRoute={async (route) => {
+              const hasChildren = Object.values(MentorMenu).find(
+                (item) => item.path === route,
+              )?.children;
+              if (ActivePaths.includes(route) || hasChildren) {
+                setSelectedRoute((old) => old);
+
+                if (!hasChildren) {
+                  await router.prefetch(route);
+                  await router.push(route);
+                }
+                return;
+              }
+              setSelectedRoute(route);
+              await router.prefetch(route);
+              await router.push(route);
+            }}
+            routes={Object.keys(MentorMenu)}
+            routesData={MentorMenu}
+          />
+        </Box>
+        {/* {Object.keys(MentorMenu).map((route, index) => (
             <ListItem
               key={MentorMenu[route].name}
               disablePadding
@@ -81,48 +107,19 @@ const MiniDrawer: React.FC<props> = ({ children }) => {
                   : 'transparent',
               }}
             >
-              <ListItemButton
-                sx={{
-                  minHeight: 40,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2,
-                  cursor: 'pointer',
-                }}
-                onClick={async () => {
-                  await router.prefetch(MentorMenu[route].path);
-                  await router.push(MentorMenu[route].path);
-                }}
-              >
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center',
-                  }}
+              {!MentorMenu[route].children && MenuItem({ route })}
+              {MentorMenu[route].children && (
+                <ColapseMenu
+                  id="ColapseMenu"
+                  label="ColapseMenu"
+                  model={MenuItem({ route, rootWithLink: false })}
+                  key={MentorMenu[route].name}
                 >
-                  {getIcon(
-                    MentorMenu[route].component,
-                    MentorMenu[route].path,
-                    MentorMenu[route].subpaths,
-                  )}
-                </ListItemIcon>
-                <ListItemText
-                  primary={MentorMenu[route].name}
-                  sx={{
-                    opacity: open ? 1 : 0,
-                    paddingTop: 0.5,
-                    color: IsActiveValidator(
-                      MentorMenu[route].path,
-                      MentorMenu[route].subpaths,
-                    )
-                      ? theme.palette.accent.main
-                      : theme.palette.text.primary,
-                  }}
-                />
-              </ListItemButton>
+                  {MentorMenu[route].children}
+                </ColapseMenu>
+              )}
             </ListItem>
-          ))}
-        </List>
+          ))} */}
       </Drawer>
       <Box
         component="main"

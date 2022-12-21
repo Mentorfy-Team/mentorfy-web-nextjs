@@ -11,6 +11,8 @@ declare namespace ProductTypes {
     member_area?: typeof Database.public.Tables.member_area.Row & {
       member_area_type: typeof Database.public.Tables.member_area_type.Row;
     };
+    profile?: typeof Database.public.Tables.profile.Row;
+    certificate?: CertificateBuilder;
   };
   type Address = typeof Database.public.Tables.address.Row;
 
@@ -35,13 +37,48 @@ declare namespace ProductTypes {
   };
 
   type Certificate = {
-    product_id?: string
-    default_certificate?: string
-    title?: string
-    url?: string
-    student?: Json | null
-    course?: Json | null
-  }
+    product_id?: string;
+    default_certificate?: string;
+    title?: string;
+    url?: string;
+    student?: Json | null;
+    course?: Json | null;
+  };
+
+  type CertificateBuilder = {
+    product_id: string;
+    title: string;
+    url: string;
+    student: {
+      name: {
+        pageX: string;
+        pageY: string;
+        fontSize: number;
+      };
+      finishedAt: {
+        pageX: string;
+        pageY: string;
+        fontSize: number;
+      };
+      document: {
+        pageX: string;
+        pageY: string;
+        fontSize: number;
+      };
+    };
+    course: {
+      name: {
+        pageX: string;
+        pageY: string;
+        fontSize: number;
+      };
+      owner: {
+        pageX: string;
+        pageY: string;
+        fontSize: number;
+      };
+    };
+  };
 
   namespace Post {
     interface Request extends ExternalModules.Next.NextApiRequest {

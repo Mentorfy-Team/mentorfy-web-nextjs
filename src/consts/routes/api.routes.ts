@@ -20,6 +20,7 @@ export enum ApiRoutes {
 
   //* Rotas para api de usuários
   products = '/api/products',
+  products_checkout = '/api/products/checkout',
   products_image = '/api/products/image',
   products_list = '/api/products/list',
   products_update = '/api/products/update',
@@ -48,4 +49,8 @@ export enum ApiRoutes {
   //* Rotas para api de upload de arquivos
   upload = '/api/upload',
   upload_delete = '/api/upload/delete',
+
+  //* Rota para checkout
+  checkout = '/api/checkout',
+  pix = 'api/checkout/pix'
 }

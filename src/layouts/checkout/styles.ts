@@ -20,7 +20,6 @@ export const Form = styled('form')`
   padding: 2rem;
   padding-bottom: 0.5rem;
 
-
   .submit-button {
     align-self: flex-end;
     height: 2rem;
@@ -33,12 +32,12 @@ export const Form = styled('form')`
 `;
 
 export const FormHeader = styled(Box)`
-  border-bottom: 1px solid #D9D9D9;
+  border-bottom: 1px solid #d9d9d9;
   display: flex;
   width: 100%;
   align-items: center;
   gap: 1rem;
-  padding-bottom: 1.5rem ;
+  padding-bottom: 1.5rem;
 `;
 
 export const InfoWrapper = styled(Box)`
@@ -70,26 +69,33 @@ export const Price = styled(Box)`
 `;
 
 export const Input = styled(InputField)`
-  
-    input { 
-      color: ${({ theme }) => theme.palette.caption.dark};
-      height: 1.5rem;
+  input {
+    color: ${({ theme }) => theme.palette.caption.dark};
+    height: 1.5rem;
+  }
+  .Mui-focused {
+    border-color: ${({ theme }) => theme.palette.accent.main};
+  }
+  .MuiInputBase-root {
+    fieldset {
+      border-color: #bebebe;
     }
-    .MuiInputBase-root { 
-
-      fieldset { 
-        border-color: #bebebe;
-      }
+    :hover fieldset {
+      border-color: ${({ theme }) => theme.palette.caption.main};
     }
-    
-  
-   & :-webkit-autofill {
-    -webkit-box-shadow: none;
-    box-shadow: none !important;
-    -webkit-text-fill-color: ${({ theme }) => theme.palette.caption.dark} !important;
+    :focus fieldset {
+      border-color: ${({ theme }) => theme.palette.accent.main};
+    }
   }
 
-  svg { 
+  & :-webkit-autofill {
+    -webkit-box-shadow: none;
+    box-shadow: none !important;
+    -webkit-text-fill-color: ${({ theme }) =>
+    theme.palette.caption.dark} !important;
+  }
+
+  svg {
     fill: gray;
   }
 `;
@@ -102,13 +108,15 @@ export const CustomSelectField = styled(SelectField)`
     height: 0.625rem;
     color: ${({ theme }) => theme.palette.caption.dark};
   }
-  .MuiInputBase-root { 
-
-fieldset { 
-  border-color: #bebebe;
-}
-}
-  .MuiFormLabel-root { 
+  .MuiInputBase-root {
+    fieldset {
+      border-color: #bebebe;
+    }
+    :hover fieldset {
+      border-color: ${({ theme }) => theme.palette.caption.main};
+    }
+  }
+  .MuiFormLabel-root {
     color: ${({ theme }) => theme.palette.caption.main};
   }
   .MuiOutlinedInput-input {
@@ -131,11 +139,15 @@ export const CardWrapper = styled(Box)`
   align-items: center;
   gap: 0.8rem;
   padding: 1.2rem;
-  border: 1px solid #D9D9D9;
+  border: 1px solid #d9d9d9;
   border-radius: 5px;
   width: 100%;
   justify-content: center;
   cursor: pointer;
+  // scale x
+  svg {
+    transform: scaleX(0.8);
+  }
 `;
 
 export const MethodText = styled(Typography)`
@@ -147,7 +159,7 @@ export const MethodText = styled(Typography)`
 export const PaymentInfoWrapper = styled(Box)`
   display: flex;
   padding: 1rem 1.5rem;
-  border: 1px solid #D9D9D9;
+  border: 1px solid #d9d9d9;
   flex-direction: column;
   width: 100%;
   border-radius: 5px;
@@ -156,7 +168,7 @@ export const PaymentInfoWrapper = styled(Box)`
 export const PixInfoWrapper = styled(Box)`
   display: flex;
   padding: 1.5rem;
-  background-color: #E9E7E7;
+  background-color: #e9e7e7;
   flex-direction: column;
   width: 100%;
   border-radius: 5px;
@@ -199,7 +211,6 @@ export const SaveDataText = styled(Typography)`
   font-size: 0.9rem;
   line-height: 1rem;
   color: ${({ theme }) => theme.palette.text.secondary};
-
 `;
 
 export const BpIcon = styled('span')`
@@ -219,3 +230,9 @@ export const BpCheckedIcon = styled('div')`
   width: 18px;
 `;
 
+export const InputsWrapper = styled('div')`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+`;

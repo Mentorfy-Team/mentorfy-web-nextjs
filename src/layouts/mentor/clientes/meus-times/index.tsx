@@ -99,7 +99,6 @@ const Teams: FC<{ user }> = ({ user }) => {
 
   useEffect(() => {
     setMyTeams(teamsData || []);
-    console.log('teamsData', teamsData);
     setHasMentors(
       teamsData?.some((team) => team.team_member?.length > 0) || false,
     );

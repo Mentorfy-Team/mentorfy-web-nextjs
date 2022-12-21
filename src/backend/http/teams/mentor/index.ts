@@ -81,7 +81,7 @@ export const del = async (req, res) => {
   const { data: teams, error } = await supabase
     .from('team')
     .select('*, team_member(*)')
-    .in('id', req.body.teams);
+    .in('id', req.body.teams || []);
 
   if (
     !teams ||
@@ -99,7 +99,7 @@ export const del = async (req, res) => {
     .from('team_member')
     .delete()
     .eq('profile_id', req.body.profile_id)
-    .in('team_id', req.body.teams);
+    .in('team_id', req.body.teams || []);
 
   // TODO: Log the reason for the deletion
 

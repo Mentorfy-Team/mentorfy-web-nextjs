@@ -32,10 +32,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
   const { data: userInputs, error: erroru } = await supabase
     .from('client_input_tool')
     .select('*')
-    .in(
-      'member_area_tool_id',
-      tools?.map((tool) => tool.id),
-    )
+    .in('member_area_tool_id', tools?.map((tool) => tool.id) || [])
     .match({
       profile_id: user.id,
     });

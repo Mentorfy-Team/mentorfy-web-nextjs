@@ -1,0 +1,97 @@
+declare namespace Webhook {
+  namespace Integration {
+    namespace Pagarme {
+      export interface PagarmeResponse {
+        current_status: string;
+        desired_status: string;
+        event: string;
+        fingerprint: string;
+        id: string;
+        object: string;
+        old_status: string;
+        'transaction[acquirer_id]': string;
+        'transaction[acquirer_name]': string;
+        'transaction[acquirer_response_code]': string;
+        'transaction[acquirer_response_message]': string;
+        'transaction[addition]': string;
+        'transaction[address]': string;
+        'transaction[amount]': string;
+        'transaction[antifraud_score]': string;
+        'transaction[authorization_code]': string;
+        'transaction[authorized_amount]': string;
+        'transaction[billing]': string;
+        'transaction[boleto]': string;
+        'transaction[boleto_barcode]': string;
+        'transaction[boleto_expiration_date]': string;
+        'transaction[boleto_url]': string;
+        'transaction[capture_method]': string;
+        'transaction[card]': string;
+        'transaction[card_brand]': string;
+        'transaction[card_first_digits]': string;
+        'transaction[card_holder_name]': string;
+        'transaction[card_last_digits]': string;
+        'transaction[card_magstripe_fallback]': string;
+        'transaction[card_pin_mode]': string;
+        'transaction[cost]': string;
+        'transaction[customer][birthday]': string;
+        'transaction[customer][born_at]': string;
+        'transaction[customer][client_since]': string;
+        'transaction[customer][country]': string;
+        'transaction[customer][date_created]': string;
+        'transaction[customer][document_number]': string;
+        'transaction[customer][document_type]': string;
+        'transaction[customer][documents][0][id]': string;
+        'transaction[customer][documents][0][number]': string;
+        'transaction[customer][documents][0][object]': string;
+        'transaction[customer][documents][0][type]': string;
+        'transaction[customer][email]': string;
+        'transaction[customer][external_id]': string;
+        'transaction[customer][gender]': string;
+        'transaction[customer][id]': string;
+        'transaction[customer][name]': string;
+        'transaction[customer][object]': string;
+        'transaction[customer][phone_numbers][0]': string;
+        'transaction[customer][phone_numbers][1]': string;
+        'transaction[customer][risk_indicator]': string;
+        'transaction[customer][type]': string;
+        'transaction[cvm_pin]': string;
+        'transaction[date_created]': string;
+        'transaction[date_updated]': string;
+        'transaction[device]': string;
+        'transaction[discount]': string;
+        'transaction[fraud_covered]': string;
+        'transaction[fraud_reimbursed]': string;
+        'transaction[id]': string;
+        'transaction[installments]': string;
+        'transaction[ip]': string;
+        'transaction[local_time]': string;
+        'transaction[local_transaction_id]': string;
+        'transaction[nsu]': string;
+        'transaction[object]': string;
+        'transaction[order_id]': string;
+        'transaction[paid_amount]': string;
+        'transaction[payment]': string;
+        'transaction[payment_method]': string;
+        'transaction[phone]': string;
+        'transaction[pix_data]': string;
+        'transaction[pix_expiration_date]': string;
+        'transaction[pix_qr_code]': string;
+        'transaction[postback_url]': string;
+        'transaction[private_label]': string;
+        'transaction[receipt_url]': string;
+        'transaction[reference_key]': string;
+        'transaction[referer]': string;
+        'transaction[refunded_amount]': string;
+        'transaction[refuse_reason]': string;
+        'transaction[risk_level]': string;
+        'transaction[shipping]': string;
+        'transaction[soft_descriptor]': string;
+        'transaction[split_rules]': string;
+        'transaction[status]': string;
+        'transaction[status_reason]': string;
+        'transaction[subscription_id]': string;
+        'transaction[tid]': string;
+      }
+    }
+  }
+}
