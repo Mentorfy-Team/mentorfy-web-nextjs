@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 
 export const Title = styled(Typography)`
   font-weight: 600;
@@ -23,4 +24,9 @@ export const FileWrapper = styled('div')`
   max-width: 900px;
   margin-bottom: 1rem;
   position: relative;
+`;
+export const ForwardButton = styled(Button)`
+  background-color: ${({ theme }) => theme.palette.primary.light};
+  color: ${({ theme }) => theme.palette.accent.main};
+  width: 200px;
 `;
