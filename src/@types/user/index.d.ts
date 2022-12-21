@@ -11,9 +11,9 @@ declare namespace UserTypes {
     address?: Address;
   };
 
-  type PagarmeCustomer = {
+  type PagarmeCustomer = [{
     object: string;
-    id: string;
+    id: number;
     external_id: string;
     type: string;
     country: string;
@@ -34,7 +34,7 @@ declare namespace UserTypes {
     }[];
     addresses: string[];
     phones: string[];
-  };
+  }];
 
   namespace Post {
     interface Request extends ExternalModules.Next.NextApiRequest {
@@ -51,7 +51,7 @@ declare namespace UserTypes {
   }
 }
 
-declare namespace MentorComponents {}
+declare namespace MentorComponents { }
 
 declare namespace MentoredComponents {
   type Props<

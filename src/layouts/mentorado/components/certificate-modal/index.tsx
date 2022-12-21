@@ -8,7 +8,12 @@ const PDFReader = dynamic(
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import { SingFont } from '~/pages/_app';
-import { DataText, FileWrapper, Title } from './styles';
+import { DataText, FileWrapper, ForwardButton, Title } from './styles';
+import CircularProgress from '@mui/material/CircularProgress';
+
+const PDFDownload = dynamic(() => import('~/components/atoms/PDFDownload'), {
+  ssr: false,
+});
 
 type Props = {
   product: ProductTypes.Product;
@@ -57,45 +62,55 @@ const CertificateModal = ({
     >
       <ModalDialogContent sx={{ paddingTop: '0.5rem' }}>
         <Title>{title}</Title>
-        <FileWrapper>
-          <PDFReader file={url} />
-          {student?.name && (
-            <TextContent
-              fontSize={student?.name?.fontSize}
-              position={student?.name}
-              text={user?.profile.name}
-            />
-          )}
-          {student?.document && (
-            <TextContent
-              fontSize={student?.document?.fontSize}
-              position={student?.document}
-              text={'012.345.678-90'}
-            />
-          )}
-          {student?.finishedAt && (
-            <TextContent
-              fontSize={student?.finishedAt?.fontSize}
-              position={student?.finishedAt}
-              text={'12/12/2022'}
-            />
-          )}
-          {course?.name && (
-            <TextContent
-              fontSize={course?.name?.fontSize}
-              position={course?.name}
-              text={product.title}
-            />
-          )}
-          {course?.owner && (
-            <TextContent
-              fontSize={course?.owner?.fontSize}
-              position={course?.owner}
-              sign
-              text={product.profile.name}
-            />
-          )}
+        <FileWrapper >
+          <div id="certificate_id">
+            <PDFReader file={url} />
+            {student?.name && (
+              <TextContent
+                fontSize={student?.name?.fontSize}
+                position={student?.name}
+                text={user?.profile.name}
+              />
+            )}
+            {student?.document && (
+              <TextContent
+                fontSize={student?.document?.fontSize}
+                position={student?.document}
+                text={'012.345.678-90'}
+              />
+            )}
+            {student?.finishedAt && (
+              <TextContent
+                fontSize={student?.finishedAt?.fontSize}
+                position={student?.finishedAt}
+                text={'12/12/2022'}
+              />
+            )}
+            {course?.name && (
+              <TextContent
+                fontSize={course?.name?.fontSize}
+                position={course?.name}
+                text={product.title}
+              />
+            )}
+            {course?.owner && (
+              <TextContent
+                fontSize={course?.owner?.fontSize}
+                position={course?.owner}
+                sign
+                text={product.profile.name}
+              />
+            )}
+          </div>
         </FileWrapper>
+        <PDFDownload
+          fileName="certificate.pdf"
+          pageStyles={{}}
+          loadingComponent={<CircularProgress color="success" />}
+          template_id="certificate_id"
+        >
+          <ForwardButton variant="contained">Download</ForwardButton>
+        </PDFDownload>
       </ModalDialogContent>
     </ModalComponent>
   );
