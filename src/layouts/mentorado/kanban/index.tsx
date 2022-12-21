@@ -14,7 +14,6 @@ import TipBar from '~/components/modules/TipBar';
 import { useGetProduct } from '~/hooks/useGetProduct';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import { GetProduct } from '~/services/product.service';
-import CertificateModal from '../components/certificate-modal';
 import { GetProfile } from '~/services/profile.service';
 
 export type UserInput = {
@@ -210,12 +209,13 @@ export const KanbanView: FC<
                             marginLeft: '0.4rem',
                             alignSelf: 'center',
                           }}
-                          src={`/svgs/${userInput?.find(
-                            (inp) => inp.member_area_tool_id === task.id,
-                          )?.extra
-                            ? 'done'
-                            : 'done-gray'
-                            }.svg`}
+                          src={`/svgs/${
+                            userInput?.find(
+                              (inp) => inp.member_area_tool_id === task.id,
+                            )?.extra
+                              ? 'done'
+                              : 'done-gray'
+                          }.svg`}
                         />
                       </Task>
                     ))}
@@ -250,7 +250,7 @@ export const KanbanView: FC<
       </ContentWidthLimit>
 
       {open && ModalComponent()}
-      {isDone && (
+      {/* {isDone && (
         <CertificateModal
           open={showCertificate}
           setOpen={setShowCertificate}
@@ -258,7 +258,7 @@ export const KanbanView: FC<
           certificate={product?.certificate as any}
           user={user}
         />
-      )}
+      )} */}
     </>
   );
 };
@@ -280,7 +280,12 @@ export const getProps = async (ctx) => {
 
   // fetch for member area
   const response: any = await GetProduct(ctx.req, id);
-  const user = await GetProfile(ctx.req, false, session.user.id);
+  let user = {};
+  try {
+    user = await GetProfile(ctx.req, false, session.user.id);
+  } catch (error) {
+    //
+  }
 
   if (!response) {
     return {
@@ -293,10 +298,10 @@ export const getProps = async (ctx) => {
       member_area_id: id,
       memberAreaInitial: {
         id: id,
-        title: response.product?.title,
-        description: response.product?.description,
+        title: response?.title,
+        description: response?.description,
       },
-      product: response.product,
+      product: response,
       user: user,
       error: null,
     },

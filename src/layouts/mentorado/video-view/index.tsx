@@ -470,7 +470,7 @@ export const VideoView = ({
 // * ServerSideRender (SSR)
 export const getProps = async (ctx) => {
   const { session } = await GetAuthSession(ctx);
-  let id = ctx.query.id as string;
+  let id = ctx.query?.id as string;
 
   if (id.includes('pdf')) id = null;
 
@@ -499,9 +499,9 @@ export const getProps = async (ctx) => {
       member_area_id: id,
       video_id,
       memberArea: {
-        id: response.product.id,
-        title: response.product.title,
-        description: response.product.description,
+        id: response.id,
+        title: response.title,
+        description: response.description,
       },
       profile,
     },

@@ -84,7 +84,7 @@ export const getProps = async (ctx) => {
     props: {
       id: ctx.query.id,
       user: session.user,
-      product: response.product,
+      product: response,
     },
   };
 };

@@ -293,9 +293,9 @@ export const getProps = async (ctx) => {
       member_area_id: id,
       task_id,
       memberArea: {
-        id: response.product.id,
-        title: response.product.title,
-        description: response.product.description,
+        id: response.id,
+        title: response.title,
+        description: response.description,
       },
     },
   };

@@ -26,10 +26,7 @@ export const GetProductByRef = async (
   }
 };
 
-export const GetProduct = async (
-  req,
-  id,
-): Promise<{ product: ProductApi.Product }> => {
+export const GetProduct = async (req, id): Promise<ProductApi.Product> => {
   try {
     const response = await HttpClient.get<any>(ApiRoutes.products, {
       // * Passa a autenticação para frente
@@ -42,7 +39,7 @@ export const GetProduct = async (
     if (response.data.error || !response.data.product) {
       throw new Error(response.data.error);
     }
-    return response.data as { product: ProductApi.Product };
+    return response?.data?.product ? response.data.product : response.data;
   } catch (error: any) {
     return {
       error: error.message,

@@ -44,8 +44,8 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
       customer_id: profile.customer_id ? parseInt(profile.customer_id) : 0,
     });
 
-    if (response?.data) {
-      result['customer'] = response.data;
+    if (response) {
+      result['customer'] = response;
     }
   }
 

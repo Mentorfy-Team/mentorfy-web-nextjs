@@ -89,7 +89,7 @@ const MinhaConta: FC<props> = ({
         tabs={
           isViewingMentor || isViewingMentored
             ? ['Perfil']
-            : ['Perfil', 'Dados de Cadastro', 'Assinatura']
+            : ['Perfil', 'Dados de Cadastro']
         }
       />
       <ContentWidthLimit>
@@ -129,7 +129,7 @@ export const getProps = async (ctx) => {
       isViewingMentored: !!ctx.query.altId,
       isViewingMentor: !!ctx.query.id,
       plan: plan[0],
-      customer: customer.data,
+      customer: customer,
     },
   };
 };
