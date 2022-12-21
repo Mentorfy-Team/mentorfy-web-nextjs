@@ -255,7 +255,7 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
         <Box sx={{ display: 'flex', margin: '0.5rem 0 0.5rem 0' }}>
           <Typography variant="h5">Populares na Mentorfy</Typography>
         </Box>
-
+        {console.log(products)}
         <SliderWrapper>
           {RenderPopular(
             products.filter(

@@ -47,7 +47,7 @@ export const KiwifyRoute = async (req: NextApiRequest, supabase: any) => {
       name: data.Customer.full_name,
       phone: phone,
       refeerer: MentorFy ? null : req.query.id,
-      customer_id: response.data.id,
+      customer_id: response.data.id + '',
     },
   });
 
