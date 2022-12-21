@@ -36,6 +36,7 @@ const Signature = ({ profile, customer, plan }) => {
     expiration_date.setDate(expiration_date.getDate() + 1);
 
     const response = await SendPixPayment({
+      plan_id: plan.id,
       payment_method: 'pix',
       pix_expiration_date: dateToReadable(expiration_date),
       amount: plan.amount,

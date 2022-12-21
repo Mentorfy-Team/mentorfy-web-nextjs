@@ -74,6 +74,7 @@ const PaymentChangeModal = ({ open, setOpen, plan }: Props) => {
 
       setIsLoading(true);
       const response = await SendPixPayment({
+        plan_id: plan.id,
         payment_method: 'pix',
         pix_expiration_date: dateToReadable(expiration_date),
         amount: plan.amount,
@@ -135,7 +136,7 @@ const PaymentChangeModal = ({ open, setOpen, plan }: Props) => {
           <>
             <Typography sx={{ textAlign: 'center', fontSize: '1.2rem', margin: '1rem 0' }}>
               A partir de agora, você será notificado quando sua assinatura vencer.
-              Para efetuar o pagamento, venha a essa tela e clique no botão "Pagar Fatura" e siga as intruções.
+              Para efetuar o pagamento, venha a essa tela e clique no botão `${'Pagar Fatura'}` e siga as intruções.
             </Typography>
 
             <LoadingButton
