@@ -19,4 +19,5 @@ export const betaEmailAccess = [
   'gestao@mentorfy.io',
   'crissmelek@gmail.com',
   'sandrowow@gmail.com',
+  'damaressm@gmail.com',
 ];
