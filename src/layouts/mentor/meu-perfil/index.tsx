@@ -27,7 +27,7 @@ type props = PageTypes.Props & {
   isViewingMentored: boolean;
   isViewingMentor: boolean;
   plan: Checkout.Plan;
-  customer: UserTypes.Profile;
+  customer: UserTypes.PagarmeCustomer;
 };
 
 const MinhaConta: FC<props> = ({
@@ -71,7 +71,16 @@ const MinhaConta: FC<props> = ({
           />
         );
     }
-  }, [address, customer, isViewingMentor, isViewingMentored, plan, profile, tabindex, user]);
+  }, [
+    address,
+    customer,
+    isViewingMentor,
+    isViewingMentored,
+    plan,
+    profile,
+    tabindex,
+    user,
+  ]);
 
   return (
     <>
@@ -120,7 +129,7 @@ export const getProps = async (ctx) => {
       isViewingMentored: !!ctx.query.altId,
       isViewingMentor: !!ctx.query.id,
       plan: plan[0],
-      customer: customer.data.find((cust) => cust.id === data.customer_id),
+      customer: customer,
     },
   };
 };

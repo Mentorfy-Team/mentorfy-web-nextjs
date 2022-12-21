@@ -41,7 +41,7 @@ export const get: Handler.Callback<GetRequest, GetResponse> = async (
 
   if (profile.customer_id) {
     const response = await GetCustomerPagarme({
-      customer_id: profile.customer_id,
+      customer_id: profile.customer_id ? parseInt(profile.customer_id) : 0,
     });
 
     if (response?.data) {
