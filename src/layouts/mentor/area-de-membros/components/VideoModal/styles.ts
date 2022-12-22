@@ -58,7 +58,7 @@ export const LinkInputWrapper = styled(Box)`
   flex-direction: column;
   display: flex;
   width: 100%;
-  
+  margin-bottom: 1rem;
 `;
 
 export const AcceptedLinksText = styled(Typography)`

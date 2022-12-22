@@ -29,10 +29,18 @@ import {
 } from './styles';
 import TipBar from '~/components/modules/TipBar';
 import HorizontalProgressBar from '~/components/modules/HorizontalProgressBar';
+import CertificateModal from '../components/certificate-modal';
+import { GetProfile } from '~/services/profile.service';
 
 const VerticalKanban: FC<
-  PageTypes.Props & { member_area_id: string; memberArea: any; task_id: string }
-> = ({ member_area_id, memberArea, task_id }) => {
+  PageTypes.Props & {
+    member_area_id: string;
+    memberArea: any;
+    task_id: string,
+    product: ProductTypes.Product,
+    user: UserTypes.ProfileWithAddress & UserTypes.User;
+  }
+> = ({ member_area_id, memberArea, task_id, product, user }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const [stepId, setStepId] = useState<string>();
 
@@ -42,6 +50,7 @@ const VerticalKanban: FC<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
   const [open, setOpen] = useState(false);
+  const [showCertificate, setShowCertificate] = useState(true);
 
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
@@ -135,6 +144,22 @@ const VerticalKanban: FC<
     return unlocked;
   }, [steps, userInput]);
 
+  const getProgress = (ids) => {
+    let progress = 0;
+    ids.forEach((id) => {
+      const inputDone = userInput.find((i) => i.member_area_tool_id === id);
+      if (inputDone) progress++;
+    });
+    return ids.length > 0 ? (progress / ids.length) * 100 : 0;
+  };
+
+  const getProgressByStep = (step: GroupTools) => {
+    const ids = step.rows.map((r) => r.id);
+    return getProgress(ids);
+  };
+
+  const isDone = steps.every((step) => getProgressByStep(step) == 100);
+
   return (
     <>
       <Toolbar
@@ -147,7 +172,7 @@ const VerticalKanban: FC<
         input={userInput}
         activeid={task_id}
         activeStepId={ActiveStepId}
-        onGoTo={() => {}}
+        onGoTo={() => { }}
       />
       <ContentWidthLimit maxWidth={900}>
         {(!steps || steps.length == 0) && (
@@ -211,13 +236,12 @@ const VerticalKanban: FC<
                             marginLeft: '0.4rem',
                             alignSelf: 'center',
                           }}
-                          src={`/svgs/${
-                            userInput?.find(
-                              (inp) => inp.member_area_tool_id === task.id,
-                            )?.extra
-                              ? 'done'
-                              : 'done-gray'
-                          }.svg`}
+                          src={`/svgs/${userInput?.find(
+                            (inp) => inp.member_area_tool_id === task.id,
+                          )?.extra
+                            ? 'done'
+                            : 'done-gray'
+                            }.svg`}
                         />
                       </Task>
                     ))}
@@ -251,6 +275,15 @@ const VerticalKanban: FC<
         </ScrollArea>
       </ContentWidthLimit>
       {open && ModalComponent()}
+      {isDone && (
+        <CertificateModal
+          open={showCertificate}
+          setOpen={setShowCertificate}
+          product={product}
+          certificate={product?.certificate as any}
+          user={user}
+        />
+      )}
     </>
   );
 };
@@ -280,6 +313,13 @@ export const getProps = async (ctx) => {
       notFound: true,
     };
   }
+
+  let user = {};
+  try {
+    user = await GetProfile(ctx.req, false, session.user.id);
+  } catch (error) {
+    //
+  }
   return {
     props: {
       member_area_id: id,
@@ -289,6 +329,8 @@ export const getProps = async (ctx) => {
         title: response.title,
         description: response.description,
       },
+      product: response,
+      user: user,
     },
   };
 };

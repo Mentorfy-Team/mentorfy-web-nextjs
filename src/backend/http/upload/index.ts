@@ -24,16 +24,15 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
     // eslint-disable-next-line
     return new Promise<{ success: boolean } | string>((resolve, reject) => {
       form.parse(req, async function (err, fields, files) {
-        file_name = (files.file as any).originalFilename;
-        let filepath = `${req.query.id}/${(files.file as any).newFilename}${
-          (files.file as any).originalFilename
-        }`;
+        file_name = (files.file as any)?.originalFilename;
+        let filepath = `${req.query.id}/${(files.file as any)?.newFilename}${(files.file as any)?.originalFilename
+          }`;
         filepath = filepath.replace(/\s/g, '-');
-        const rawData = fs.readFileSync((files.file as any).filepath);
+        const rawData = fs.readFileSync((files.file as any)?.filepath);
         const { data, error } = await supabase.storage
           .from('images')
           .upload(filepath, rawData, {
-            contentType: (files.file as any).mimetype,
+            contentType: (files.file as any)?.mimetype,
           });
 
         if (error || err) {

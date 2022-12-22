@@ -109,6 +109,7 @@ const VideoModal = ({
       title="Upload de Vídeo"
     >
       <>
+        <Box sx={{ width: '100vw' }} />
         <InputField
           label="Título"
           value={title}

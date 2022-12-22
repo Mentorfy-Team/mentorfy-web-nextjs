@@ -84,6 +84,7 @@ function StyledTreeItem(props: StyledTreeItemProps) {
             pr: 0,
             gap: 2,
             height: '45px',
+            width: '200px'
           }}
         >
           {LabelIcon ? (

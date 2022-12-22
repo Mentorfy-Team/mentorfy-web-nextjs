@@ -114,7 +114,8 @@ const ChecklistModal = ({
       onDelete={() => handleSave(true)}
       title="Checklist"
     >
-      <Box sx={{ width: '100%' }}>
+      <>
+        <Box sx={{ width: '100vw' }} />
         <InputField
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -152,7 +153,7 @@ const ChecklistModal = ({
             </AddTaskButton>
           </Box>
         </ContentBox>
-      </Box>
+      </>
     </ModalComponent>
   );
 };
