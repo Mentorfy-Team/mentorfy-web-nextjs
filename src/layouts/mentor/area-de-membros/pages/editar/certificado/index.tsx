@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Save from '@mui/icons-material/Save';
 import Checkbox, { CheckboxProps } from '@mui/material/Checkbox';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import InputField from '~/components/atoms/InputField';
 import HandleFileUpload from '~/helpers/HandleFileUpload';
 import { useForm } from 'react-hook-form';
@@ -29,12 +29,12 @@ import DropzoneComponent from '~/components/modules/Dropzone';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
 import { FileType } from '../../../components/UploadFileModal';
-import { UpdateCertificate } from '~/services/certificate-upload.service';
 import { DefaultCertificate } from '~/consts/certificate';
 import { toast } from 'react-toastify';
 import { DragBox } from './components/DragBox';
 import { SingFont } from '~/pages/_app';
 import UploadToUrlFiles from '../../../components/UploadFileModal/helpers/UploadToUrlFiles';
+import { UpdateCertificate } from '~/services/certificate-upload.service';
 
 const PDFReader = dynamic(
   () => import('~/components/atoms/PDFReader/PDFReader'),
@@ -70,7 +70,7 @@ const Certificate = ({
 }: Props) => {
   const { handleSubmit } = useForm();
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>(initCertificate?.title);
+  const [title, setTitle] = useState<string>(initCertificate?.title || '');
   const [color, setColor] = useState(false);
   const theme = useTheme();
 
@@ -103,9 +103,7 @@ const Certificate = ({
     },
   });
   const [certificate, setCertificate] =
-    useState<ProductTypes.CertificateBuilder>(initCertificate);
-
-  console.log(certificate);
+    useState<ProductTypes.CertificateBuilder>(initCertificate || {} as any);
 
   const [defaultCertificate, setDefaultCertificate] =
     useState<ProductTypes.Certificate>(DefaultCertificate);
@@ -151,6 +149,7 @@ const Certificate = ({
       setColor(!color);
       setFiles(null);
       setTitle('');
+      setCertificate({} as any);
     }
   };
 
@@ -214,19 +213,20 @@ const Certificate = ({
     });
   };
 
-  const GetUrlAndSaveInCertificate = useCallback(async () => {
-    if (files && (files.sourceUrl || !files.data)) return;
+  const GetUrlAndSaveInCertificate = async () => {
+    if (!files && (!files?.sourceUrl || !files?.data)) return;
 
     const convertedFiles = await UploadToUrlFiles([files], id);
     setCertificate((old) => {
-      return {
+      const updatedCertificate = {
         ...old,
         url: convertedFiles[0].sourceUrl,
         product_id: id,
         title: title,
       };
+      return updatedCertificate;
     });
-  }, [files, id, title]);
+  };
 
   useEffect(() => {
     if (color) {
@@ -237,20 +237,18 @@ const Certificate = ({
           title: title,
         };
       });
-
       return;
     }
   }, [color, files, id, title]);
 
   const onSubmit = async () => {
     await GetUrlAndSaveInCertificate();
-    setIsLoading(true);
+
     if (color) {
       await UpdateCertificate(defaultCertificate);
     }
-    if (!color) {
-      await UpdateCertificate(certificate);
-    }
+    await UpdateCertificate(certificate);
+
     toast.success('Certificado salvo com sucesso');
     setIsLoading(false);
   };
@@ -344,11 +342,12 @@ const Certificate = ({
         <CheckText sx={{ color: `${color && '#7DDC51'}` }}>
           Usar certificado padrão Mentorfy
         </CheckText>
+        <p style={{ color: 'gray', fontSize: '0.8rem' }}>(AO CLICAR, QUALQUER CERTIFICADO ANTERIOR SERÁ APAGADO!)</p>
       </CheckWrapper>
 
       {!color && (
         <>
-          {files && certificate?.url && (
+          {files?.data && (
             <Wrapper>
               <div>
                 <UsageText>
@@ -402,7 +401,7 @@ const Certificate = ({
                 <PDFReader file={(files as any)?.data} />
                 {show?.name && (
                   <DragBox
-                    position={initCertificate.student.name}
+                    position={initCertificate?.student.name}
                     fontSize={fontSize.student.name}
                     onSizeChange={(value) =>
                       handleSizeChange('student', 'name', value)
@@ -414,7 +413,7 @@ const Certificate = ({
                 )}
                 {show?.document && (
                   <DragBox
-                    position={initCertificate.student.document}
+                    position={initCertificate?.student.document}
                     fontSize={fontSize.student.document}
                     onSizeChange={(value) =>
                       handleSizeChange('student', 'document', value)
@@ -428,7 +427,7 @@ const Certificate = ({
                 )}
                 {show?.finishedAt && (
                   <DragBox
-                    position={initCertificate.student.finishedAt}
+                    position={initCertificate?.student.finishedAt}
                     fontSize={fontSize.student.finishedAt}
                     onSizeChange={(value) =>
                       handleSizeChange('student', 'finishedAt', value)
@@ -442,7 +441,7 @@ const Certificate = ({
                 )}
                 {show?.course && (
                   <DragBox
-                    position={initCertificate.course.name}
+                    position={initCertificate?.course.name}
                     fontSize={fontSize.course.name}
                     onSizeChange={(value) =>
                       handleSizeChange('course', 'name', value)
@@ -454,7 +453,7 @@ const Certificate = ({
                 )}
                 {show?.owner && (
                   <DragBox
-                    position={initCertificate.course.owner}
+                    position={initCertificate?.course.owner}
                     fontSize={fontSize.course.owner}
                     onSizeChange={(value) =>
                       handleSizeChange('course', 'owner', value)
@@ -467,7 +466,7 @@ const Certificate = ({
               </FileWrapper>
             </Wrapper>
           )}
-          {!files && !certificate?.url && (
+          {!files?.data && (
             <DropzoneComponent onDrop={(_files) => handleUpload(_files)}>
               <UploadField>
                 <Label>

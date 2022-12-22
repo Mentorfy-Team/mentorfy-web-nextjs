@@ -15,6 +15,7 @@ import { useGetProduct } from '~/hooks/useGetProduct';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import { GetProduct } from '~/services/product.service';
 import { GetProfile } from '~/services/profile.service';
+import CertificateModal from '../components/certificate-modal';
 
 export type UserInput = {
   id?: string;
@@ -209,13 +210,12 @@ export const KanbanView: FC<
                             marginLeft: '0.4rem',
                             alignSelf: 'center',
                           }}
-                          src={`/svgs/${
-                            userInput?.find(
-                              (inp) => inp.member_area_tool_id === task.id,
-                            )?.extra
-                              ? 'done'
-                              : 'done-gray'
-                          }.svg`}
+                          src={`/svgs/${userInput?.find(
+                            (inp) => inp.member_area_tool_id === task.id,
+                          )?.extra
+                            ? 'done'
+                            : 'done-gray'
+                            }.svg`}
                         />
                       </Task>
                     ))}
@@ -250,7 +250,7 @@ export const KanbanView: FC<
       </ContentWidthLimit>
 
       {open && ModalComponent()}
-      {/* {isDone && (
+      {isDone && (
         <CertificateModal
           open={showCertificate}
           setOpen={setShowCertificate}
@@ -258,7 +258,7 @@ export const KanbanView: FC<
           certificate={product?.certificate as any}
           user={user}
         />
-      )} */}
+      )}
     </>
   );
 };
