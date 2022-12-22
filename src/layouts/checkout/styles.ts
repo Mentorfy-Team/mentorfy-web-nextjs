@@ -10,7 +10,7 @@ export const BannerWrapper = styled(Box)`
   margin-bottom: 1rem;
 `;
 
-export const Form = styled('form')`
+export const Form = styled('div')`
   align-items: flex-start;
   background-color: ${({ theme }) => theme.palette.text.primary};
   border-radius: 10px;
@@ -76,6 +76,9 @@ export const Input = styled(InputField)`
   .Mui-focused {
     border-color: ${({ theme }) => theme.palette.accent.main};
   }
+  .MuiFormLabel-root {
+    color: ${({ theme }) => theme.palette.caption.main};
+  }
   .MuiInputBase-root {
     fieldset {
       border-color: #bebebe;
@@ -92,7 +95,7 @@ export const Input = styled(InputField)`
     -webkit-box-shadow: none;
     box-shadow: none !important;
     -webkit-text-fill-color: ${({ theme }) =>
-    theme.palette.caption.dark} !important;
+      theme.palette.caption.dark} !important;
   }
 
   svg {

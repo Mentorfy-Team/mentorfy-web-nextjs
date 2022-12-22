@@ -1,6 +1,6 @@
 import { HttpPagarme } from '~/backend/helpers/HttpPagarme';
 
-export const GetPlan = async (id: number) => {
+export const DeleteSubscription = async (id: number) => {
   try {
     const response = await HttpPagarme.get<Checkout.Plan>(`/plans/${id}`);
 

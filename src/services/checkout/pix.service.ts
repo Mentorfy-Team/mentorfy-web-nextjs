@@ -1,11 +1,9 @@
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { HttpClient } from '../HttpClient';
 
-export const SendPixPayment = async (
-  pix: Checkout.PixRequest,
-): Promise<Checkout.PixResponse> => {
+export const SendPixPayment = async (pix: Pagarme.Pix.Request) => {
   try {
-    const response = await HttpClient.post<Checkout.PixResponse>(
+    const response = await HttpClient.post<Pagarme.Pix.Response>(
       ApiRoutes.pix,
       pix,
     );

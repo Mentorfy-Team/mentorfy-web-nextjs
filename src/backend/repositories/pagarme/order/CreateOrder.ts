@@ -1,8 +1,8 @@
 import { HttpPagarme } from '~/backend/helpers/HttpPagarme';
 
-export const GetPlan = async (id: number) => {
+export const CreateOrder = async (data: Pagarme.OrderRequest) => {
   try {
-    const response = await HttpPagarme.get<Checkout.Plan>(`/plans/${id}`);
+    const response = await HttpPagarme.post<Checkout.Plan>('/orders', data);
 
     return response.data as Checkout.Plan;
   } catch (error) {

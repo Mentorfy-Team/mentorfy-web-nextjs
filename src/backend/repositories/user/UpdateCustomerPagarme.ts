@@ -1,4 +1,4 @@
-import { HttpServer } from '~/backend/helpers/HttpClient';
+import { HttpPagarme } from '~/backend/helpers/HttpPagarme';
 
 export const UpdateCustomerPagarme = async (data: {
   name: string;
@@ -15,7 +15,7 @@ export const UpdateCustomerPagarme = async (data: {
       customer_id: data.customer_id,
     };
 
-    const response = await HttpServer.put<
+    const response = await HttpPagarme.put<
       Pick<Checkout.Customer, 'name' | 'email'>
     >('/customers', body, {
       params,
