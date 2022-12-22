@@ -15,7 +15,7 @@ const nextConfig = withAxiom({
         transform: '@mui/icons-material/{{member}}',
       },
     },
-    appDir: false,
+    appDir: true,
   },
   eslint: {
     // Warning: This allows production builds to successfully complete even if

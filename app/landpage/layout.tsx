@@ -1,4 +1,4 @@
-import EmotionRootStyleRegistry from './EmotionRootStyleRegistry';
+import EmotionRootStyleRegistry from '../EmotionRootStyleRegistry';
 
 export default function RootLayout({ children }: { children: JSX.Element }) {
   return (
