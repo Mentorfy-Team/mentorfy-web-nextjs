@@ -17,11 +17,12 @@ import { GetAuthSession } from '~/helpers/AuthSession';
 import HandleToolModal from '../helpers/HandleToolModal';
 import { GetTypeName } from '../helpers/SaveClientInput';
 import Toolbar from '~/components/modules/Toolbar';
-import { GetProduct } from '~/services/product.service';
 import { ProgressBarWrapper } from '../video-view/styles';
 import ProgressBar from '~/components/modules/ProgressBar';
 import TipBar from '~/components/modules/TipBar';
 import NextImage from 'next/image';
+import { SupabaseServer } from '~/backend/supabase';
+import { GetProductById } from '~/backend/repositories/product/GetProductById';
 
 export const Playbook: FC<
   PageTypes.Props & { member_area_id: string; memberArea: any }
@@ -170,10 +171,12 @@ export const getProps = async (ctx) => {
 
   const id = ctx.query.id as string;
 
-  // fetch for member area
-  const response = await GetProduct(ctx.req, id);
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const product = await GetProductById(supabase, {
+    id: ctx.query.id,
+  });
 
-  if (!response) {
+  if (!product) {
     return {
       notFound: true,
     };
@@ -182,10 +185,10 @@ export const getProps = async (ctx) => {
     props: {
       member_area_id: id,
       memberArea: {
-        id: response.id,
-        title: response.title,
-        description: response.description,
-        extra_image: response.extra_image,
+        id: product.id,
+        title: product.title,
+        description: product.description,
+        extra_image: product.extra_image,
       },
     },
   };

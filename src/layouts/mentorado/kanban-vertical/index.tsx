@@ -16,7 +16,6 @@ import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
 import { GetAuthSession } from '~/helpers/AuthSession';
-import { GetProduct } from '~/services/product.service';
 import {
   Bundle,
   BundleDescription,
@@ -30,14 +29,16 @@ import {
 import TipBar from '~/components/modules/TipBar';
 import HorizontalProgressBar from '~/components/modules/HorizontalProgressBar';
 import CertificateModal from '../components/certificate-modal';
-import { GetProfile } from '~/services/profile.service';
+import { SupabaseServer } from '~/backend/supabase';
+import { GetProductById } from '~/backend/repositories/product/GetProductById';
+import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
 
 const VerticalKanban: FC<
   PageTypes.Props & {
     member_area_id: string;
     memberArea: any;
-    task_id: string,
-    product: ProductTypes.Product,
+    task_id: string;
+    product: ProductTypes.Product;
     user: UserTypes.ProfileWithAddress & UserTypes.User;
   }
 > = ({ member_area_id, memberArea, task_id, product, user }) => {
@@ -172,7 +173,7 @@ const VerticalKanban: FC<
         input={userInput}
         activeid={task_id}
         activeStepId={ActiveStepId}
-        onGoTo={() => { }}
+        onGoTo={() => {}}
       />
       <ContentWidthLimit maxWidth={900}>
         {(!steps || steps.length == 0) && (
@@ -236,12 +237,13 @@ const VerticalKanban: FC<
                             marginLeft: '0.4rem',
                             alignSelf: 'center',
                           }}
-                          src={`/svgs/${userInput?.find(
-                            (inp) => inp.member_area_tool_id === task.id,
-                          )?.extra
-                            ? 'done'
-                            : 'done-gray'
-                            }.svg`}
+                          src={`/svgs/${
+                            userInput?.find(
+                              (inp) => inp.member_area_tool_id === task.id,
+                            )?.extra
+                              ? 'done'
+                              : 'done-gray'
+                          }.svg`}
                         />
                       </Task>
                     ))}
@@ -305,32 +307,32 @@ export const getProps = async (ctx) => {
 
   const task_id = (ctx.query.task_id || 0) as string;
 
-  // fetch for member area
-  const response = await GetProduct(ctx.req, id);
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const product = await GetProductById(supabase, {
+    id: ctx.query.id,
+  });
 
-  if (!response) {
+  if (!product) {
     return {
       notFound: true,
     };
   }
 
-  let user = {};
-  try {
-    user = await GetProfile(ctx.req, false, session.user.id);
-  } catch (error) {
-    //
-  }
+  const userData = await GetProfileById(supabase, {
+    id: session.user.id,
+  });
+
   return {
     props: {
       member_area_id: id,
       task_id,
       memberArea: {
-        id: response.id,
-        title: response.title,
-        description: response.description,
+        id: product.id,
+        title: product.title,
+        description: product.description,
       },
-      product: response,
-      user: user,
+      product: product,
+      user: userData,
     },
   };
 };
