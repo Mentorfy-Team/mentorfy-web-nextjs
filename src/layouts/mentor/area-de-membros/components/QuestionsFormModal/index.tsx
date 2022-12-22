@@ -59,7 +59,9 @@ const QuestionFormModal = ({
       onSave={() => handleSave()}
       onDelete={() => handleSave(true)}
     >
-      <div>
+      <>
+        <Box sx={{ width: '100vw' }} />
+
         <InputField
           label="Título"
           placeholder="Digite o título da etapa"
@@ -110,7 +112,7 @@ const QuestionFormModal = ({
             </AddQButton>
           </Box>
         </ContentBox>
-      </div>
+      </>
     </ModalComponent>
   );
 };
