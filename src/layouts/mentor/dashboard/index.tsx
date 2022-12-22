@@ -15,8 +15,9 @@ import {
 } from './styles';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import Mountain from '~/../public/svgs/favicon';
-import { GetProfile } from '~/services/profile.service';
 import Soon from '~/components/atoms/Soon';
+import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
+import { SupabaseServer } from '~/backend/supabase';
 
 const Dashboard: FC<PageTypes.Props> = ({ user, profile }) => {
   const ref = useRef(null);
@@ -131,11 +132,14 @@ export const getProps = async (ctx) => {
         permanent: false,
       },
     };
-  const profile = await GetProfile(ctx.req, false, session.user.id);
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const userData = await GetProfileById(supabase, {
+    id: session.user.id,
+  });
   return {
     props: {
       user: session.user,
-      profile: profile.profile,
+      profile: userData.profile,
     },
   };
 };

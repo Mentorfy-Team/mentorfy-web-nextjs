@@ -4,10 +4,11 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import dynamic from 'next/dynamic';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
-import { GetProduct } from '~/services/product.service';
 
 import GeralPage from './tabs/geral';
 import { GetAuthSession } from '~/helpers/AuthSession';
+import { SupabaseServer } from '~/backend/supabase';
+import { GetProductById } from '~/backend/repositories/product/GetProductById';
 
 const LinksPage = dynamic(() => import('./tabs/links'));
 
@@ -72,7 +73,10 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const product = await GetProduct(ctx.req, ctx.params.id);
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const product = await GetProductById(supabase, {
+    id: ctx.query.id,
+  });
 
   return {
     props: {

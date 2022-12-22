@@ -13,9 +13,10 @@ import HandleToolModal from '../helpers/HandleToolModal';
 import TipBar from '~/components/modules/TipBar';
 import { useGetProduct } from '~/hooks/useGetProduct';
 import { GetAuthSession } from '~/helpers/AuthSession';
-import { GetProduct } from '~/services/product.service';
-import { GetProfile } from '~/services/profile.service';
 import CertificateModal from '../components/certificate-modal';
+import { SupabaseServer } from '~/backend/supabase';
+import { GetProductById } from '~/backend/repositories/product/GetProductById';
+import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
 
 export type UserInput = {
   id?: string;
@@ -210,12 +211,13 @@ export const KanbanView: FC<
                             marginLeft: '0.4rem',
                             alignSelf: 'center',
                           }}
-                          src={`/svgs/${userInput?.find(
-                            (inp) => inp.member_area_tool_id === task.id,
-                          )?.extra
-                            ? 'done'
-                            : 'done-gray'
-                            }.svg`}
+                          src={`/svgs/${
+                            userInput?.find(
+                              (inp) => inp.member_area_tool_id === task.id,
+                            )?.extra
+                              ? 'done'
+                              : 'done-gray'
+                          }.svg`}
                         />
                       </Task>
                     ))}
@@ -278,16 +280,16 @@ export const getProps = async (ctx) => {
       },
     };
 
-  // fetch for member area
-  const response: any = await GetProduct(ctx.req, id);
-  let user = {};
-  try {
-    user = await GetProfile(ctx.req, false, session.user.id);
-  } catch (error) {
-    //
-  }
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const product = await GetProductById(supabase, {
+    id: ctx.query.id,
+  });
 
-  if (!response) {
+  const userData = await GetProfileById(supabase, {
+    id: session.user.id,
+  });
+
+  if (!product) {
     return {
       notFound: true,
     };
@@ -298,11 +300,11 @@ export const getProps = async (ctx) => {
       member_area_id: id,
       memberAreaInitial: {
         id: id,
-        title: response?.title,
-        description: response?.description,
+        title: product?.title,
+        description: product?.description,
       },
-      product: response,
-      user: user,
+      product: product,
+      user: userData,
       error: null,
     },
   };

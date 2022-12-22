@@ -1,5 +1,7 @@
 import Image from 'next/image';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import { GetProductById } from '~/backend/repositories/product/GetProductById';
+import { SupabaseServer } from '~/backend/supabase';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { GroupTools } from '~/components/modules/DragNDrop';
 import HorizontalProgressBar from '~/components/modules/HorizontalProgressBar';
@@ -8,7 +10,6 @@ import Toolbar from '~/components/modules/Toolbar';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import { useUserInputs } from '~/hooks/useUserInputs';
-import { GetProduct } from '~/services/product.service';
 import HandleToolModal from '../helpers/HandleToolModal';
 import SaveClientInput, { GetTypeName } from '../helpers/SaveClientInput';
 import {
@@ -264,9 +265,12 @@ export const getProps = async (ctx) => {
   const task_id = (ctx.query.task_id || 0) as string;
 
   // fetch for member area
-  const response = await GetProduct(ctx.req, id);
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const product = await GetProductById(supabase, {
+    id: ctx.query.id,
+  });
 
-  if (!response) {
+  if (!product) {
     return {
       notFound: true,
     };
@@ -276,9 +280,9 @@ export const getProps = async (ctx) => {
       member_area_id: id,
       task_id,
       memberArea: {
-        id: response.id,
-        title: response.title,
-        description: response.description,
+        id: product.id,
+        title: product.title,
+        description: product.description,
       },
     },
   };

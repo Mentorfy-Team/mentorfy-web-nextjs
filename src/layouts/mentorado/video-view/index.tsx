@@ -28,10 +28,11 @@ import {
 import TipBar from '~/components/modules/TipBar';
 import Comments from './components/comments';
 import { GetAuthSession } from '~/helpers/AuthSession';
-import { GetProduct } from '~/services/product.service';
-import { GetProfile } from '~/services/profile.service';
 import { FindNextVideo, FindNotWatchedVideo } from './helpers/FindNextVideo';
 import { FindVideoById } from './helpers/FindVideoById';
+import { SupabaseServer } from '~/backend/supabase';
+import { GetProductById } from '~/backend/repositories/product/GetProductById';
+import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
 
 type VideoModuleType = {
   id: string;
@@ -484,11 +485,16 @@ export const getProps = async (ctx) => {
 
   const video_id = (ctx.query.v || 0) as string;
 
-  // fetch for member area
-  const response = await GetProduct(ctx.req, id);
-  const profile = await GetProfile(ctx.req);
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const product = await GetProductById(supabase, {
+    id: ctx.query.id,
+  });
 
-  if (!response) {
+  const { profile } = await GetProfileById(supabase, {
+    id: session.user.id,
+  });
+
+  if (!product) {
     return {
       notFound: true,
     };
@@ -499,9 +505,9 @@ export const getProps = async (ctx) => {
       member_area_id: id,
       video_id,
       memberArea: {
-        id: response.id,
-        title: response.title,
-        description: response.description,
+        id: product.id,
+        title: product.title,
+        description: product.description,
       },
       profile,
     },
