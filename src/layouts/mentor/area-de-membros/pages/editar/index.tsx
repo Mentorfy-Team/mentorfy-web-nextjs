@@ -13,7 +13,8 @@ import ClientJourney from './jornada-do-cliente';
 import Links from './links';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import Certificate from './certificado';
-import { GetProduct } from '~/services/product.service';
+import { GetProductById } from '~/backend/repositories/product/GetProductById';
+import { SupabaseServer } from '~/backend/supabase';
 
 const EditarMentoria: FC<Props> = ({ id, product, user }) => {
   const [tabindex, setTabindex] = useState(product.owner == user.id ? 0 : 1);
@@ -43,10 +44,10 @@ const EditarMentoria: FC<Props> = ({ id, product, user }) => {
   }, [id, product, tabindex]);
 
   const MaxWidth = tabindex != 1 && tabindex != 3 && 700;
-  console.log(product.owner, user.id);
+
   return (
     <>
-      {(!product.owner || product.owner == user.id) && (
+      {product.owner == user.id && (
         <Toolbar onChange={(value) => setTabindex(value)} tabs={tabs} />
       )}
       {tabindex != 0 && (
@@ -63,16 +64,19 @@ const EditarMentoria: FC<Props> = ({ id, product, user }) => {
 export const getProps = async (ctx) => {
   const { session } = await GetAuthSession(ctx);
 
-  if (!session)
+  if (!session || !ctx.query.id)
     return {
       redirect: {
         destination: '/',
         permanent: false,
       },
     };
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const product = await GetProductById(supabase, {
+    id: ctx.query.id,
+  });
 
-  const response = await GetProduct(ctx.req, ctx.query.id);
-  if (!response)
+  if (!product)
     return {
       redirect: {
         destination: '/',
@@ -84,7 +88,7 @@ export const getProps = async (ctx) => {
     props: {
       id: ctx.query.id,
       user: session.user,
-      product: response,
+      product,
     },
   };
 };
