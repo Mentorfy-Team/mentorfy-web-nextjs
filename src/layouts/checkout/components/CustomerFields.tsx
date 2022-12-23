@@ -2,29 +2,34 @@ import FormInput from '~/components/atoms/FormInput';
 import MaxCharacters from '~/helpers/MaxCharacters';
 import { InputsWrapper } from '~/layouts/mentor/meu-perfil/style';
 
-const CustomerFields = () => {
+const CustomerFields = ({ onlyAddress = false }) => {
   return (
     <>
-      <FormInput
-        name="customer.name"
-        type="text"
-        required
-        placeholder="João da Silva"
-        label="Nome Completo"
-      />
-      <FormInput
-        name="customer.email"
-        type="email"
-        required
-        placeholder="abc@email.com"
-        label="E-mail"
-      />
-      <FormInput
-        name="customer.email_confirmation"
-        type="email"
-        placeholder="abc@email.com"
-        label="Confirme seu e-mail"
-      />
+      {!onlyAddress && (
+        <>
+          <FormInput
+            name="customer.name"
+            type="text"
+            required
+            placeholder="João da Silva"
+            label="Nome Completo"
+          />
+          <FormInput
+            name="customer.email"
+            type="email"
+            required
+            placeholder="abc@email.com"
+            label="E-mail"
+          />
+          <FormInput
+            name="customer.email_confirmation"
+            type="email"
+            required
+            placeholder="abc@email.com"
+            label="Confirme seu e-mail"
+          />
+        </>
+      )}
       <FormInput type="text" required label="CPF" name="customer.document" />
       <FormInput
         name="customer.address.neighborhood"

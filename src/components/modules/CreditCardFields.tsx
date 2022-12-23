@@ -1,7 +1,7 @@
 import FormInput from '~/components/atoms/FormInput';
 import MaxCharacters from '~/helpers/MaxCharacters';
 import { InputsWrapper } from '~/layouts/mentor/meu-perfil/style';
-import { PaymentInfoWrapper } from '../styles';
+import { PaymentInfoWrapper } from '../../layouts/checkout/styles';
 
 const CreditCardFields = () => {
   return (
@@ -43,7 +43,7 @@ const CreditCardFields = () => {
             name="card.cvv"
             type="number"
             placeholder="000"
-            label="CVV"
+            label="Cvv"
             required
             onInput={(e) => MaxCharacters(e, 4)}
           />

@@ -351,6 +351,9 @@ export interface Database {
           phone: string | null
           expiration_date: string | null
           customer_id: string | null
+          card_id: string | null
+          plan_id: string | null
+          subscription_id: string | null
         }
         Insert: {
           id: string
@@ -365,6 +368,9 @@ export interface Database {
           phone?: string | null
           expiration_date?: string | null
           customer_id?: string | null
+          card_id?: string | null
+          plan_id?: string | null
+          subscription_id?: string | null
         }
         Update: {
           id?: string
@@ -379,6 +385,9 @@ export interface Database {
           phone?: string | null
           expiration_date?: string | null
           customer_id?: string | null
+          card_id?: string | null
+          plan_id?: string | null
+          subscription_id?: string | null
         }
       }
       profile_history: {

@@ -23,9 +23,11 @@ declare namespace Pagarme {
     currency: string;
     created_at: string;
     updated_at: string;
+    items: Item[];
   };
 
   export type Card = {
+    id?: string;
     holder_name: string;
     number: string;
     exp_month: number;
@@ -35,23 +37,25 @@ declare namespace Pagarme {
 
   export type Phones = {
     home_phone?: {
-      country_code: string;
-      number: string;
-      area_code: string;
+      country_code?: string;
+      number?: string;
+      area_code?: string;
     };
     mobile_phone?: {
-      country_code: string;
-      number: string;
-      area_code: string;
+      country_code?: string;
+      number?: string;
+      area_code?: string;
     };
   };
 
   export type Customer = {
+    id?: string;
     name: string;
     email: string;
     type: 'individual' | 'company';
     code?: string;
-    document: string;
+    document?: string;
     phones?: Phones;
+    address: Address;
   };
 }

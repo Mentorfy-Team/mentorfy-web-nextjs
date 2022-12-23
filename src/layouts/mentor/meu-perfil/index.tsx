@@ -8,8 +8,10 @@ import GeralPage from './tabs/geral';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import { useProfile } from '~/hooks/useProfile';
 import Signature from './tabs/assinaturas';
-import { GetPlans } from '~/services/checkout/plans.service';
-import { GetCustomerPagarme } from '~/backend/repositories/user/GetCustomerPagarme';
+import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
+import { SupabaseServer } from '~/backend/supabase';
+import { GetCustomer } from '~/backend/repositories/pagarme/customer/GetCustomer';
+import { GetPlan } from '~/backend/repositories/pagarme/plan/GetPlan';
 
 const DadosPage = dynamic(() => import('./tabs/dados-cadastro'));
 
@@ -26,8 +28,8 @@ type props = PageTypes.Props & {
   mentor_id?: string;
   isViewingMentored: boolean;
   isViewingMentor: boolean;
-  plan: Checkout.Plan;
-  customer: UserTypes.PagarmeCustomer;
+  plan: Pagarme.Plan;
+  customer: Pagarme.Customer;
 };
 
 const MinhaConta: FC<props> = ({
@@ -89,7 +91,7 @@ const MinhaConta: FC<props> = ({
         tabs={
           isViewingMentor || isViewingMentored
             ? ['Perfil']
-            : ['Perfil', 'Dados de Cadastro']
+            : ['Perfil', 'Dados de Cadastro', 'assinatura']
         }
       />
       <ContentWidthLimit>
@@ -117,9 +119,15 @@ export const getProps = async (ctx) => {
         permanent: false,
       },
     };
-  const plan = await GetPlans();
-  const data = { customer_id: 382272385 };
-  const customer = (await GetCustomerPagarme(data)) || null;
+
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const { profile } = await GetProfileById(supabase, {
+    id: session.user.id,
+  });
+  let customer: Pagarme.Customer = null;
+  customer = await GetCustomer(profile.customer_id);
+
+  const plan = await GetPlan(profile.plan_id);
 
   return {
     props: {
@@ -128,8 +136,8 @@ export const getProps = async (ctx) => {
       mentor_id: ctx.query.id ?? null,
       isViewingMentored: !!ctx.query.altId,
       isViewingMentor: !!ctx.query.id,
-      plan: plan[0],
       customer: customer,
+      plan: plan,
     },
   };
 };

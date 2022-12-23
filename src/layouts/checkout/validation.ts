@@ -21,7 +21,7 @@ export const checkoutCardSchema = object({
     exp_month: preprocess(Number, number()),
     exp_year: preprocess(Number, number()),
     cvv: string().min(1, 'Card CVV is required'),
-  }),
+  }).required(),
 
   save_card: literal(true).optional(),
 });

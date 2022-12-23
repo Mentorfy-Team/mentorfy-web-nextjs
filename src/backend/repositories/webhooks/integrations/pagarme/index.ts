@@ -4,25 +4,31 @@ import { InviteAndSubscribe } from '~/backend/repositories/auth/InviteAndSubscri
 import { UpdateExpiration } from '~/backend/repositories/subscription/UpdateExpiration';
 
 export const PagarmeRoute = async (req: NextApiRequest, supabase: any) => {
-  const data = req.body as Webhook.Integration.Pagarme.PagarmeResponse;
+  const { data, account } =
+    req.body as Webhook.Integration.Pagarme.PagarmeResponse;
 
-  if (data.data.status === 'paid') {
-    if (
-      data?.['transaction[acquirer_name]'] &&
-      data['transaction[customer][email]']
-    ) {
-      const email = data['transaction[customer][email]'];
-      const name = data['transaction[customer][name]'];
-      const phone_numbers = data['transaction[customer][phone_numbers][0]'];
+  if (data.status === 'paid') {
+    if (data.customer.email && account.id) {
+      const email = data.customer.email;
+      const name = data.customer.name;
+      let phone = null;
+      if (data.customer.phones?.mobile_phone) {
+        const {
+          mobile_phone: { area_code, country_code, number },
+        } = data.customer.phones;
+        phone = `${country_code}${area_code}${number}`;
+      }
+      //const phone_numbers =
 
       const user = await InviteAndSubscribe({
         supabase,
         data: {
           email: email,
           name: name,
-          phone: phone_numbers ? phone_numbers : null,
+          phone: phone,
           refeerer: req.query.id as string,
-          customer_id: data['transaction[customer][id]'],
+          customer_id: data.customer.id,
+          plan_id: data.items[0].description,
         },
       });
 
