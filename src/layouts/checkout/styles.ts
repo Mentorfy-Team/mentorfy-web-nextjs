@@ -10,7 +10,7 @@ export const BannerWrapper = styled(Box)`
   margin-bottom: 1rem;
 `;
 
-export const Form = styled('div')`
+export const Form = styled(Box)`
   align-items: flex-start;
   background-color: ${({ theme }) => theme.palette.text.primary};
   border-radius: 10px;

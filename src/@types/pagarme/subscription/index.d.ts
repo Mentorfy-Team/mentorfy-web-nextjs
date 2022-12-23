@@ -74,10 +74,11 @@ declare namespace Pagarme {
     export type Request = {
       plan_id: string;
       payment_method: string;
-      customer: Pick<Customer, 'name' | 'email' | 'phones'>;
-      card: Card;
-      card_id: string;
-      metadata: {
+      customer_id?: string;
+      customer?: Pick<Customer, 'name' | 'email' | 'phones'>;
+      card?: Card;
+      card_id?: string;
+      metadata?: {
         id: string;
       };
     };

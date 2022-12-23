@@ -35,11 +35,21 @@ import PixStep from './components/PixStep';
 import Success from './components/Success';
 import { GetPlan } from '~/backend/repositories/pagarme/plan/GetPlan';
 import { ListPlan } from '~/backend/repositories/pagarme/plan/ListPlan';
-import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
+import {
+  FormProvider,
+  SubmitErrorHandler,
+  SubmitHandler,
+  useForm,
+} from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CreditCardFields from './components/CreditCardFields';
 import CustomerFields from './components/CustomerFields';
-import { ICheckoutCard, checkoutCardSchema } from './validation';
+import {
+  ICheckoutCard,
+  ICheckoutPix,
+  checkoutCardSchema,
+  checkoutPixSchema,
+} from './validation';
 
 type Props = {
   product: ProductApi.Product;
@@ -55,13 +65,10 @@ const Checkout = ({ product, plan }: Props) => {
   const [data, setData] = useState<
     Pagarme.Subscription.Request | Pagarme.Pix.Request
   >();
-  const [confirmedEmail, setConfirmedEmail] = useState<string>('');
 
   const [showPix, setShowPix] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [pixQrCode, setPixQrCode] = useState('');
-
-  const { handleSubmit } = useForm();
 
   const FormatPrice = (price) => {
     // convert cents to reais
@@ -75,65 +82,16 @@ const Checkout = ({ product, plan }: Props) => {
     return priceInReaisReadable;
   };
 
-  const onSubmitHandler: SubmitHandler<ICheckoutCard> = (
-    values: ICheckoutCard,
+  const onSubmitHandler: SubmitHandler<ICheckoutCard | ICheckoutPix> = async (
+    values: ICheckoutCard | ICheckoutPix,
   ) => {
-    console.log(values);
-  };
-
-  const SubscriptionData = useMemo(() => {
-    return data as Pagarme.Subscription.Request;
-  }, [data]);
-
-  const PixData = useMemo(() => {
-    return data as Pagarme.Pix.Request;
-  }, [data]);
-
-  const handleData = (value, categoryName, fieldName, subCategory) => {
-    const stateCategory = data[categoryName];
-    const stateField = stateCategory ? stateCategory[fieldName] : null;
-
-    if (subCategory === null) {
-      setData((state) => {
-        const data = {
-          ...state,
-          [categoryName]: {
-            ...stateCategory,
-            [fieldName]: value,
-          },
-        };
-        return data;
-      });
-    } else {
-      setData((state) => {
-        const data = {
-          ...state,
-          [categoryName]: {
-            ...stateCategory,
-            [fieldName]: {
-              ...stateField,
-              [subCategory]: value,
-            },
-          },
-        };
-        return data;
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (tab === 0) {
-      setData((state) => ({
-        ...state,
-        plan_id: plan.id,
-        payment_method: 'credit_card',
-      }));
-    }
-  }, [plan.id, tab]);
-  const onSubmit = async () => {
     setIsLoading(true);
     if (tab === 0) {
-      const paymentData = Object.assign(data, { save_card: saveToNextBuy });
+      const paymentData = Object.assign(values, {
+        save_card: saveToNextBuy,
+        plan_id: plan.id,
+        payment_method: 'credit_card',
+      });
       const payment = await SendPayment(
         paymentData as Pagarme.Subscription.Request,
       );
@@ -145,7 +103,6 @@ const Checkout = ({ product, plan }: Props) => {
     } else {
       const expiration_date = new Date();
       expiration_date.setDate(expiration_date.getDate() + 1);
-
       setIsLoading(true);
 
       const response = await SendPixPayment({
@@ -157,39 +114,51 @@ const Checkout = ({ product, plan }: Props) => {
             code: plan.items[0].id + '',
           },
         ],
-        customer: {
-          name: PixData.customer.name,
-          email: PixData.customer.email,
-          type: 'individual',
-          document: PixData.customer.document,
-          phones: {
-            mobile_phone: {
-              country_code: '55',
-              number: PixData.customer.phones.mobile_phone.number,
-              area_code: PixData.customer.phones.mobile_phone.area_code,
-            },
-          },
-        },
+        customer: values.customer,
         payments: [
           {
             payment_method: 'pix',
             pix: {
-              expires_in: 52134613, // 52134613 seconds = 1 day
+              expires_in: parseInt((86400 / 24).toFixed(0)),
             },
           },
         ],
-      });
+      } as Pagarme.Pix.Request);
       setIsLoading(false);
-      if (response.acquirer_name) {
+      if (response.charges[0].status === 'pending') {
         setShowPix(true);
-        setPixQrCode(response.pix_qr_code);
+        setPixQrCode(response.charges[0].last_transaction.qr_code);
       }
     }
     setIsLoading(false);
   };
 
-  const methods = useForm<ICheckoutCard>({
+  const onInvalid: SubmitErrorHandler<ICheckoutCard | ICheckoutPix> = (
+    values,
+  ) => {
+    console.log(values);
+  };
+
+  const PixData = useMemo(() => {
+    return data as Pagarme.Pix.Request;
+  }, [data]);
+
+  useEffect(() => {
+    if (tab === 0) {
+      setData((state) => ({
+        ...state,
+        plan_id: plan.id,
+        payment_method: 'credit_card',
+      }));
+    }
+  }, [plan.id, tab]);
+
+  const methodsCard = useForm<ICheckoutCard>({
     resolver: zodResolver(checkoutCardSchema),
+  });
+
+  const methodsPix = useForm<ICheckoutPix>({
+    resolver: zodResolver(checkoutPixSchema),
   });
 
   return (
@@ -207,8 +176,14 @@ const Checkout = ({ product, plan }: Props) => {
           height={250}
         />
       </BannerWrapper>
-      <FormProvider {...methods}>
-        <Form>
+      <FormProvider {...(tab == 0 ? methodsCard : methodsPix)}>
+        <Form
+          component="form"
+          onSubmit={(tab == 0 ? methodsCard : methodsPix).handleSubmit(
+            onSubmitHandler,
+            onInvalid,
+          )}
+        >
           <FormHeader>
             <Image
               alt="mentorfy-banner"
@@ -289,6 +264,7 @@ const Checkout = ({ product, plan }: Props) => {
                           onClick={() => setSaveToNextBuy(!saveToNextBuy)}
                         >
                           <Checkbox
+                            name="save_card"
                             sx={{
                               padding: '0',
                               color: 'red',

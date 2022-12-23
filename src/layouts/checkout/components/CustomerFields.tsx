@@ -1,4 +1,5 @@
 import FormInput from '~/components/atoms/FormInput';
+import MaxCharacters from '~/helpers/MaxCharacters';
 import { InputsWrapper } from '~/layouts/mentor/meu-perfil/style';
 
 const CustomerFields = () => {
@@ -24,22 +25,16 @@ const CustomerFields = () => {
         placeholder="abc@email.com"
         label="Confirme seu e-mail"
       />
+      <FormInput type="text" required label="CPF" name="customer.document" />
       <FormInput
-        type="text"
-        required
-        placeholder="CPF/CNPJ"
-        label="CPF/CNPJ"
-        name="customer.document"
-      />
-      <FormInput
-        name="address.neighborhood"
+        name="customer.address.neighborhood"
         type="text"
         required
         placeholder="Centro..."
         label="Bairro"
       />
       <FormInput
-        name="address.street"
+        name="customer.address.street"
         type="text"
         required
         label="Rua"
@@ -51,32 +46,35 @@ const CustomerFields = () => {
           required
           label="Número"
           placeholder="000"
-          name="address.number"
+          name="customer.address.number"
         />
 
         <FormInput
-          name="address.cep"
-          type="number"
+          name="customer.address.zipcode"
+          type="text"
           required
           label="CEP"
           placeholder="00000000"
+          onInput={(e) => MaxCharacters(e, 8)}
         />
       </InputsWrapper>
       <InputsWrapper>
         <FormInput
-          name="customer.phone.ddd"
-          type="number"
+          name="customer.phones.mobile_phone.area_code"
+          type="text"
           required
           placeholder="00"
           label="DDD"
-          sx={{ width: '20%' }}
+          style={{ width: '20%' }}
+          onInput={(e) => MaxCharacters(e, 2)}
         />
         <FormInput
-          name="customer.phone.number"
-          type="number"
+          name="customer.phones.mobile_phone.number"
+          type="tel"
           required
           label="Número de telefone"
           placeholder="000000000"
+          onInput={(e) => MaxCharacters(e, 9)}
         />
       </InputsWrapper>
     </>
