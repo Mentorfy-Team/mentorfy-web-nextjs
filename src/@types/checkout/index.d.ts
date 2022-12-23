@@ -240,7 +240,9 @@ declare namespace Checkout {
 
   namespace Post {
     interface Request extends ExternalModules.Next.NextApiRequest {
-      body: PaymentRequest;
+      body: Pagarme.Subscription.Request & {
+        save_card: boolean;
+      };
     }
     interface Response extends ExternalModules.Next.NextApiResponse {
       info: string;

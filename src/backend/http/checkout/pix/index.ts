@@ -1,4 +1,4 @@
-import { GetPixRequest } from '~/backend/repositories/checkout/GetPixRequest';
+import { CreateOrder } from '~/backend/repositories/pagarme/order/CreateOrder';
 
 type GetRequest = Checkout.Pix.Post.Request;
 type GetResponse = Checkout.Post.Response;
@@ -9,7 +9,7 @@ export const post = async (req: GetRequest, res: GetResponse) => {
   // * Não é necessário verificar se já possui assinatura em ativa.
   // * Consideramos uma compra incremental
 
-  const conclusion = await GetPixRequest(data);
+  const conclusion = await CreateOrder(data);
 
   if (!conclusion) {
     return res.status(503).json({
@@ -17,5 +17,5 @@ export const post = async (req: GetRequest, res: GetResponse) => {
     });
   }
 
-  return res.status(200).json(conclusion.data);
+  return res.status(200).json(conclusion);
 };

@@ -1,7 +1,7 @@
-import { HttpServer } from '~/backend/helpers/HttpClient';
+import { HttpPagarme } from '~/backend/helpers/HttpPagarme';
 import { CheckForAccount } from '~/backend/repositories/auth/CheckForAccount';
 import { InviteAndSubscribe } from '~/backend/repositories/auth/InviteAndSubscribe';
-import { SendPaymentRequest } from '~/backend/repositories/checkout/SendPaymentRequest';
+import { CreateSubscription } from '~/backend/repositories/pagarme/subscription/CreateSubscription';
 import { SupabaseAdmin } from '../../supabase';
 
 type GetRequest = Checkout.Post.Request;
@@ -37,18 +37,21 @@ export const post = async (req: GetRequest, res: GetResponse) => {
     }
   }
 
-  const paymentResult = await SendPaymentRequest(data);
+  const paymentResult = await CreateSubscription(data);
 
   if (paymentResult) {
+    const phone =
+      paymentResult.customer.phones?.mobile_phone?.area_code +
+      paymentResult.customer.phones?.mobile_phone?.number;
     await InviteAndSubscribe({
       supabase,
       data: {
-        email: data.customer.email,
-        name: data.customer.name,
-        phone: data.customer.phone.ddd + data.customer.phone.number,
+        email: paymentResult.customer.email,
+        name: paymentResult.customer.name,
+        phone: paymentResult.customer.phones?.mobile_phone ? phone : null,
         refeerer: null,
-        customer_id: paymentResult.data.customer.id,
-        card_id: data.save_card ? paymentResult.data.card.id : null,
+        customer_id: paymentResult.customer.id,
+        card_id: data.save_card ? paymentResult.card.id : null,
       },
     });
   } else {
@@ -57,11 +60,11 @@ export const post = async (req: GetRequest, res: GetResponse) => {
     });
   }
 
-  return res.status(200).json(paymentResult.data);
+  return res.status(200).json(paymentResult);
 };
 
 export const get = async (req: GetRequest, res: GetResponse) => {
-  const response = await HttpServer.get('/plans');
+  const response = await HttpPagarme.get('/plans');
 
   return res.status(200).json(response.data);
 };

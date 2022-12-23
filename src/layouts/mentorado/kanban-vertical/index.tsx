@@ -28,7 +28,6 @@ import {
 } from './styles';
 import TipBar from '~/components/modules/TipBar';
 import HorizontalProgressBar from '~/components/modules/HorizontalProgressBar';
-import CertificateModal from '../components/certificate-modal';
 import { SupabaseServer } from '~/backend/supabase';
 import { GetProductById } from '~/backend/repositories/product/GetProductById';
 import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
@@ -277,7 +276,7 @@ const VerticalKanban: FC<
         </ScrollArea>
       </ContentWidthLimit>
       {open && ModalComponent()}
-      {isDone && (
+      {/* {isDone && (
         <CertificateModal
           open={showCertificate}
           setOpen={setShowCertificate}
@@ -285,7 +284,7 @@ const VerticalKanban: FC<
           certificate={product?.certificate as any}
           user={user}
         />
-      )}
+      )} */}
     </>
   );
 };

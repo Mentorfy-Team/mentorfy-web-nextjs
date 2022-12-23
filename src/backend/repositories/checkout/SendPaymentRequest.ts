@@ -1,4 +1,4 @@
-import { HttpServer } from '~/backend/helpers/HttpClient';
+import { HttpPagarme } from '~/backend/helpers/HttpPagarme';
 import { GetPlan } from './GetPlan';
 
 export const SendPaymentRequest = async (data: Checkout.PaymentRequest) => {
@@ -40,7 +40,7 @@ export const SendPaymentRequest = async (data: Checkout.PaymentRequest) => {
         },
       },
     };
-    const response = await HttpServer.post<Checkout.Subscription>(
+    const response = await HttpPagarme.post<Checkout.Subscription>(
       '/subscriptions',
       infoFormated,
     );

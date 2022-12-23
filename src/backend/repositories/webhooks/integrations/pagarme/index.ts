@@ -6,7 +6,7 @@ import { UpdateExpiration } from '~/backend/repositories/subscription/UpdateExpi
 export const PagarmeRoute = async (req: NextApiRequest, supabase: any) => {
   const data = req.body as Webhook.Integration.Pagarme.PagarmeResponse;
 
-  if (data.current_status === 'paid') {
+  if (data.data.status === 'paid') {
     if (
       data?.['transaction[acquirer_name]'] &&
       data['transaction[customer][email]']

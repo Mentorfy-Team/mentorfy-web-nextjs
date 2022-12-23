@@ -1,4 +1,4 @@
-import { HttpServer } from '~/backend/helpers/HttpClient';
+import { HttpPagarme } from '~/backend/helpers/HttpPagarme';
 
 export const GetCustomerPagarme = async (data: { customer_id: number }) => {
   try {
@@ -6,7 +6,7 @@ export const GetCustomerPagarme = async (data: { customer_id: number }) => {
       customer_id: data.customer_id,
     };
 
-    const response = await HttpServer.get<UserTypes.PagarmeCustomer>(
+    const response = await HttpPagarme.get<UserTypes.PagarmeCustomer>(
       `/customers/${data.customer_id}`,
     );
 

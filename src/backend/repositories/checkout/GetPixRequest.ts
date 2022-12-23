@@ -1,4 +1,4 @@
-import { HttpServer } from '~/backend/helpers/HttpClient';
+import { HttpPagarme } from '~/backend/helpers/HttpPagarme';
 import { GetPlan } from './GetPlan';
 
 export const GetPixRequest = async (data: Checkout.PixRequest) => {
@@ -19,7 +19,7 @@ export const GetPixRequest = async (data: Checkout.PixRequest) => {
   });
   JSON.stringify(body);
   try {
-    const response = await HttpServer.post<Checkout.PixResponse>(
+    const response = await HttpPagarme.post<Checkout.PixResponse>(
       '/transactions',
       body,
     );

@@ -13,7 +13,6 @@ import HandleToolModal from '../helpers/HandleToolModal';
 import TipBar from '~/components/modules/TipBar';
 import { useGetProduct } from '~/hooks/useGetProduct';
 import { GetAuthSession } from '~/helpers/AuthSession';
-import CertificateModal from '../components/certificate-modal';
 import { SupabaseServer } from '~/backend/supabase';
 import { GetProductById } from '~/backend/repositories/product/GetProductById';
 import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
@@ -252,7 +251,7 @@ export const KanbanView: FC<
       </ContentWidthLimit>
 
       {open && ModalComponent()}
-      {isDone && (
+      {/* {isDone && (
         <CertificateModal
           open={showCertificate}
           setOpen={setShowCertificate}
@@ -260,7 +259,7 @@ export const KanbanView: FC<
           certificate={product?.certificate as any}
           user={user}
         />
-      )}
+      )} */}
     </>
   );
 };

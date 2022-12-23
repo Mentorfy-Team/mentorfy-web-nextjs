@@ -1,4 +1,4 @@
-import { HttpServer } from '~/backend/helpers/HttpClient';
+import { HttpPagarme } from '~/backend/helpers/HttpPagarme';
 
 type Customer = Pick<
   UserTypes.PagarmeCustomer,
@@ -13,7 +13,7 @@ type Customer = Pick<
 
 export const CreateCustomerPagarme = async (data: Customer) => {
   try {
-    const response = await HttpServer.post<UserTypes.PagarmeCustomer>(
+    const response = await HttpPagarme.post<UserTypes.PagarmeCustomer>(
       '/customers',
       data,
     );

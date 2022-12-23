@@ -22,7 +22,6 @@ const EditarMentoria: FC<Props> = ({ id, product, user }) => {
     'Etapas',
     'Jornada do Cliente',
     'Configuração',
-    'Certificado',
     'Links',
   ]);
 
