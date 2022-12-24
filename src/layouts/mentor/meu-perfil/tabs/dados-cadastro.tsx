@@ -121,7 +121,7 @@ const MyProfile = ({ profile, address }) => {
 
   return (
     <>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form bgwhite={true} onSubmit={handleSubmit(onSubmit)}>
         <AvatarWrapper>
           <Avatar
             alt="foto-perfil"
@@ -202,7 +202,7 @@ const MyProfile = ({ profile, address }) => {
           Para entrega das suas premiações
         </CustomTypography>
       </Header>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form bgwhite={true} onSubmit={handleSubmit(onSubmit)}>
         <InputField
           defaultValue={data?.address?.zipcode}
           label="CEP"
