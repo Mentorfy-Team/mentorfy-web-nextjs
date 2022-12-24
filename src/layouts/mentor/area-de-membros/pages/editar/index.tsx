@@ -27,9 +27,9 @@ const EditarMentoria: FC<Props> = ({ id, product, user }) => {
 
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
-      case 4:
-        return <Links id={id} />;
       case 3:
+        return <Links id={id} />;
+      case 4:
         return <Certificate id={id} product={product} />;
       case 2:
         return <ConfigPage id={id} />;
