@@ -1,6 +1,6 @@
 declare namespace Pagarme {
   export type Address = {
-    country?: 'br';
+    country?: string;
     state?: string;
     city?: string;
     zip_code?: string;
