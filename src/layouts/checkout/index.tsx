@@ -1,20 +1,15 @@
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import CreditCard from '~/../public/svgs/credit-card';
-import Pix from '~/../public/svgs/pix';
 import {
   AboutPix,
   Author,
   BannerWrapper,
   BpCheckedIcon,
   BpIcon,
-  CardWrapper,
   Form,
   FormHeader,
   InfoWrapper,
-  MethodText,
   PaymentInfoWrapper,
-  PaymentMethWrapper,
   PixInfoWrapper,
   PixText,
   PoliciesWrapper,
@@ -42,7 +37,7 @@ import {
   useForm,
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import CreditCardFields from './components/CreditCardFields';
+import CreditCardFields from '../../components/modules/CreditCardFields';
 import CustomerFields from './components/CustomerFields';
 import {
   ICheckoutCard,
@@ -50,6 +45,7 @@ import {
   checkoutCardSchema,
   checkoutPixSchema,
 } from './validation';
+import PaymentMethPicker from '~/components/modules/PaymentMethPicker/index.';
 
 type Props = {
   product: ProductApi.Product;
@@ -108,7 +104,7 @@ const Checkout = ({ product, plan }: Props) => {
       const response = await SendPixPayment({
         items: [
           {
-            description: plan.name,
+            description: plan.items[0].id + '',
             amount: plan.items[0].pricing_scheme.price_brackets[0].price,
             quantity: 1,
             code: plan.items[0].id + '',
@@ -206,50 +202,7 @@ const Checkout = ({ product, plan }: Props) => {
           {!showPix && !showSuccess && (
             <>
               <CustomerFields />
-              <PaymentMethWrapper>
-                <CardWrapper
-                  onClick={() => setTab(0)}
-                  sx={{
-                    borderColor: `${
-                      tab == 0 ? palette.accent.main : '#bebebe'
-                    }`,
-                  }}
-                >
-                  <CreditCard
-                    fill={tab == 0 ? palette.accent.main : palette.caption.main}
-                  />
-                  <MethodText
-                    sx={{
-                      color: `${
-                        tab == 0 ? palette.accent.main : palette.caption.main
-                      }`,
-                    }}
-                  >
-                    Cartão de Crédito
-                  </MethodText>
-                </CardWrapper>
-                <CardWrapper
-                  onClick={() => setTab(1)}
-                  sx={{
-                    borderColor: `${
-                      tab == 1 ? palette.accent.main : '#bebebe'
-                    }`,
-                  }}
-                >
-                  <Pix
-                    fill={tab == 1 ? palette.accent.main : palette.caption.main}
-                  />
-                  <MethodText
-                    sx={{
-                      color: `${
-                        tab == 1 ? palette.accent.main : palette.caption.main
-                      }`,
-                    }}
-                  >
-                    PIX
-                  </MethodText>
-                </CardWrapper>
-              </PaymentMethWrapper>
+              <PaymentMethPicker tab={tab} setTab={setTab} />
 
               {tab == 0 && (
                 <>
@@ -323,7 +276,14 @@ const Checkout = ({ product, plan }: Props) => {
                       </Typography>
                       <AboutPix>
                         <PixText>
-                          Valor à vista: <strong>R$897,00.</strong>
+                          Valor à vista:{' '}
+                          <strong>
+                            {FormatPrice(
+                              plan.items[0].pricing_scheme.price_brackets[0]
+                                .price,
+                            )}
+                            .
+                          </strong>
                         </PixText>
                         <PixText>Liberação imediata!</PixText>
                         <PixText>
@@ -385,9 +345,23 @@ export default Checkout;
 export const getProps = async (ctx) => {
   const id = ctx.query.id;
 
-  const plan = id
-    ? await GetPlan(id)
-    : (await ListPlan()).find((p) => !p.name.toLowerCase().includes('test'));
+  let plan;
+  if (id) {
+    plan = await GetPlan(id);
+  } else {
+    const plans = await ListPlan();
+    plan = plans.data?.find((p) => !p.name.toLowerCase().includes('abc'));
+  }
+
+  // without plan, redirect to home
+  if (!plan) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    };
+  }
 
   return {
     props: {

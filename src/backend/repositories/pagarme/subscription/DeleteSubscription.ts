@@ -1,10 +1,14 @@
 import { HttpPagarme } from '~/backend/helpers/HttpPagarme';
 
-export const DeleteSubscription = async (id: number) => {
+export const DeleteSubscription = async (
+  subscription_id: number,
+): Promise<Pagarme.Subscription.Response> => {
   try {
-    const response = await HttpPagarme.get<Checkout.Plan>(`/plans/${id}`);
+    const response = await HttpPagarme.delete<Pagarme.Subscription.Response>(
+      `subscriptions/${subscription_id}`,
+    );
 
-    return response.data as Checkout.Plan;
+    return response.data;
   } catch (error) {
     return null;
   }

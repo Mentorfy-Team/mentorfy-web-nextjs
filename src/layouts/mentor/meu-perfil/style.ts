@@ -112,15 +112,14 @@ export const Buttons = styled(LoadingButton)`
   text-transform: none;
 `;
 
-export const Form = styled('form')`
+export const Form = styled(Box)<{ bgwhite }>`
   align-items: flex-start;
-  background-color: ${({ theme }) => theme.palette.primary.light};
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  background-color: ${({ bgwhite }) => (bgwhite ? 'white' : 'unset')};
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 2rem;
+  padding-bottom: 2rem;
 
   .submit-button {
     align-self: flex-end;
@@ -155,12 +154,11 @@ export const SignatureText = styled(Typography)`
 
 export const PlanWrapper = styled(Box)`
   background-color: ${({ theme }) => theme.palette.primary.dark};
-  padding:  1.5rem;
+  padding: 0.8rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-radius: 10px;
-
 `;
 
 export const PlanText = styled(Typography)`
@@ -171,18 +169,18 @@ export const PlanText = styled(Typography)`
 
 export const ActivePlan = styled(Typography)`
   background-color: ${({ theme }) => theme.palette.success.main};
-  padding: 0.2rem;
+  padding: 0.2rem 1rem;
   font-weight: 600;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   line-height: 0.8rem;
   border-radius: 10px;
   color: ${({ theme }) => theme.palette.text.primary};
 `;
 export const ExpiredPlan = styled(Typography)`
   background-color: ${({ theme }) => theme.palette.failure.main};
-  padding: 0.2rem;
+  padding: 0.2rem 1rem;
   font-weight: 600;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   line-height: 0.8rem;
   border-radius: 10px;
   color: ${({ theme }) => theme.palette.text.primary};
@@ -219,7 +217,7 @@ export const Input = styled(InputField)`
     -webkit-box-shadow: none;
     box-shadow: none !important;
     -webkit-text-fill-color: ${({ theme }) =>
-    theme.palette.caption.dark} !important;
+      theme.palette.caption.dark} !important;
   }
 
   svg {

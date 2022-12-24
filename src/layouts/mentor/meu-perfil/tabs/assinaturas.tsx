@@ -15,8 +15,17 @@ import { useState } from 'react';
 import PixModal from '../components/PixModal';
 import LoadingButton from '@mui/lab/LoadingButton';
 import PaymentChangeModal from '../components/ChangePayment';
+import { useRouter } from 'next/router';
+import Typography from '@mui/material/Typography';
+import { SendPixPayment } from '~/services/checkout/pix.service';
 
-const Signature = ({ profile, customer, plan }) => {
+type Props = {
+  profile: ClientTypes.Profile;
+  customer: Pagarme.Customer;
+  plan: Pagarme.Plan;
+};
+
+const Signature = ({ profile, customer, plan }: Props) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
@@ -24,6 +33,8 @@ const Signature = ({ profile, customer, plan }) => {
   const [showPix, setShowPix] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [pixQrCode, setPixQrCode] = useState('');
+
+  const router = useRouter();
 
   const FormatPrice = (price) => {
     // convert cents to reais
@@ -42,101 +53,154 @@ const Signature = ({ profile, customer, plan }) => {
     const expiration_date = new Date();
     expiration_date.setDate(expiration_date.getDate() + 1);
 
-    // const response = await SendPixPayment({
-    //   plan_id: plan.id,
-    //   payment_method: 'pix',
-    //   pix_expiration_date: dateToReadable(expiration_date),
-    //   amount: plan.amount,
-    //   customer: {
-    //     external_id: 'checkouk_pix',
-    //     email: customer?.email,
-    //     name: customer?.name,
-    //     type: 'individual',
-    //     country: 'br',
-    //     documents: [
-    //       {
-    //         type: 'cpf',
-    //         number: customer?.documents[0].number,
-    //       },
-    //     ],
-    //     phone_numbers: customer?.phone_numbers,
-    //   },
-    //   postback_url: process.env.NEXT_PUBLIC_BASE_URL + '/api/webhooks',
-    // });
+    const response = await SendPixPayment({
+      items: [
+        {
+          description: plan.id + '',
+          amount: plan.items[0].pricing_scheme.price_brackets[0].price,
+          quantity: 1,
+          code: plan.id + '',
+        },
+      ],
+      customer_id: customer.id,
+      payments: [
+        {
+          payment_method: 'pix',
+          pix: {
+            expires_in: parseInt((86400 / 24).toFixed(0)),
+          },
+        },
+      ],
+    } as Pagarme.Pix.Request);
     setIsLoading(false);
-    // if (response.acquirer_name) {
-    //   setOpen(true);
-    //   // setShowPix(true);
-    //   setPixQrCode(response.pix_qr_code);
-    // }
+    if (response.charges && response.charges[0].last_transaction.qr_code) {
+      setOpen(true);
+      // setShowPix(true);
+      setPixQrCode(response.charges[0].last_transaction.qr_code);
+    }
+  };
+
+  const isActive = (date) => {
+    const expiration_date = new Date(date);
+    const today = new Date();
+    return expiration_date > today;
   };
 
   return (
     <>
       <SignatureWrapper>
-        <SignatureText>Assinatura :</SignatureText>
-        <PlanWrapper>
-          <Box sx={{ display: 'flex', gap: '1rem' }}>
-            <PlanText>{plan?.name}</PlanText>
-            {profile.is_subscribed && <ActivePlan>Ativo</ActivePlan>}
-            {!profile.is_subscribed && <ExpiredPlan>Expirado</ExpiredPlan>}
-          </Box>
+        {!plan && (
           <Box
             sx={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              gap: '1rem',
             }}
           >
-            <ExpiresDateText>Vencimento</ExpiresDateText>
-            <ExpiresDate>
-              {new Date(profile.expiration_date).toLocaleDateString('pt-BR', {
-                day: 'numeric',
-                month: 'numeric',
-                year: 'numeric',
-              })}
-            </ExpiresDate>
-          </Box>
-
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <ExpiresDateText>Valor Total</ExpiresDateText>
-            <ExpiresDate>{FormatPrice(plan.amount)}</ExpiresDate>
-          </Box>
-
-          <Button
-            sx={{ textTransfor: 'uppercase' }}
-            onClick={() => setOpenPaymentModal(true)}
-          >
-            Alterar Pagamento
-          </Button>
-
-          {!profile.card_id && (
-            <LoadingButton
-              loading={isLoading}
-              variant="outlined"
-              onClick={() => handlePixRequest()}
-              sx={{
-                background: 'none',
-                border: `1px solid ${theme.palette.accent.main}`,
-                textTransform: 'none',
+            <Typography>
+              Você ainda{' '}
+              <b
+                style={{
+                  color: theme.palette.accent.main,
+                }}
+              >
+                não possui uma assinatura
+              </b>{' '}
+              ativa. Assine agora para não perdeu o seu acesso.
+            </Typography>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={async () => {
+                await router.prefetch('/checkout/plan_oEA3dQ4SOztv6bVe');
+                await router.push('/checkout/plan_oEA3dQ4SOztv6bVe');
               }}
             >
-              Pagar Fatura
-            </LoadingButton>
-          )}
-        </PlanWrapper>
+              Assinar agora
+            </Button>
+          </Box>
+        )}
+        {plan && (
+          <>
+            <SignatureText>Assinatura :</SignatureText>
+            <PlanWrapper>
+              <Box sx={{ display: 'flex', gap: '1rem' }}>
+                <PlanText>{plan?.name}</PlanText>
+                {isActive(profile.expiration_date) && (
+                  <ActivePlan>Ativo</ActivePlan>
+                )}
+                {!isActive(profile.expiration_date) && (
+                  <ExpiredPlan>Expirado</ExpiredPlan>
+                )}
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <ExpiresDateText>Vencimento</ExpiresDateText>
+                <ExpiresDate>
+                  {new Date(profile.expiration_date).toLocaleDateString(
+                    'pt-BR',
+                    {
+                      day: 'numeric',
+                      month: 'numeric',
+                      year: 'numeric',
+                    },
+                  )}
+                </ExpiresDate>
+              </Box>
+
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <ExpiresDateText>Valor Total</ExpiresDateText>
+                <ExpiresDate>
+                  {FormatPrice(
+                    plan?.items[0].pricing_scheme.price_brackets[0].price,
+                  )}
+                </ExpiresDate>
+              </Box>
+
+              <Button
+                sx={{ textTransfor: 'uppercase' }}
+                onClick={() => setOpenPaymentModal(true)}
+              >
+                Alterar Pagamento
+              </Button>
+
+              {!profile.card_id && (
+                <LoadingButton
+                  loading={isLoading}
+                  variant="outlined"
+                  onClick={() => handlePixRequest()}
+                  sx={{
+                    background: 'none',
+                    border: `1px solid ${theme.palette.accent.main}`,
+                    textTransform: 'none',
+                  }}
+                >
+                  Pagar Fatura
+                </LoadingButton>
+              )}
+            </PlanWrapper>
+          </>
+        )}
       </SignatureWrapper>
       <PixModal open={open} setOpen={setOpen} qrCode={pixQrCode} />
       <PaymentChangeModal
         open={openPaymentModal}
         setOpen={setOpenPaymentModal}
         plan={plan}
+        customer={customer}
+        profile={profile}
       />
     </>
   );

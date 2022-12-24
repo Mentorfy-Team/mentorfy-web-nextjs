@@ -52,5 +52,9 @@ export enum ApiRoutes {
 
   //* Rota para checkout
   checkout = '/api/checkout',
-  pix = 'api/checkout/pix'
+  pix = 'api/checkout/pix',
+
+  //* Rota para subscriptions
+  subscription = '/api/subscription',
+  subscription_pix = '/api/subscription/pix',
 }

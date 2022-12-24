@@ -38,6 +38,15 @@ declare namespace Pagarme {
     description: string;
     quantity: number;
     code: string;
+    pricing_scheme: {
+      price_brackets: {
+        end_quantity: number;
+        price: number;
+        start_quantity: number;
+        average_price: number;
+      }[];
+      scheme_type: 'tier';
+    };
   };
 
   export type OrderRequest = {

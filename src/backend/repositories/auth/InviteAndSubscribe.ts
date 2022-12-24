@@ -12,12 +12,23 @@ type Props = {
     refeerer: string | string[];
     customer_id: string;
     card_id?: string;
+    plan_id?: string;
+    subscription_id?: string;
   };
 };
 
 export const InviteAndSubscribe = async ({
   supabase,
-  data: { email, name, phone, refeerer, customer_id, card_id },
+  data: {
+    email,
+    name,
+    phone,
+    refeerer,
+    customer_id,
+    card_id,
+    plan_id,
+    subscription_id,
+  },
 }: Props) => {
   let user = await CheckForAccount({
     supabase,
@@ -51,8 +62,6 @@ export const InviteAndSubscribe = async ({
         name,
         email: email,
         phone: phone,
-        customer_id: customer_id,
-        card_id: card_id,
       })
       .eq('id', user.id);
   }
@@ -74,6 +83,10 @@ export const InviteAndSubscribe = async ({
       expiration_date: dateToReadable(expiration_date),
       plan: 'pro',
       access_type: 'mentor',
+      customer_id: customer_id,
+      card_id: card_id,
+      plan_id: plan_id,
+      subscription_id: subscription_id,
     };
   }
 

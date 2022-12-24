@@ -1,11 +1,11 @@
 declare namespace Pagarme {
   export type Address = {
-    country: 'br';
-    state: string;
-    city: string;
-    zipcode: string;
-    line_1: string;
-    line_2: string;
+    country?: 'br';
+    state?: string;
+    city?: string;
+    zipcode?: string;
+    line_1?: string;
+    line_2?: string;
   };
 
   export type Plan = {
@@ -23,35 +23,39 @@ declare namespace Pagarme {
     currency: string;
     created_at: string;
     updated_at: string;
+    items: Item[];
   };
 
   export type Card = {
-    holder_name: string;
-    number: string;
-    exp_month: number;
-    exp_year: number;
-    cvv: string;
+    id?: string;
+    holder_name?: string;
+    number?: string;
+    exp_month?: number;
+    exp_year?: number;
+    cvv?: string;
   };
 
   export type Phones = {
     home_phone?: {
-      country_code: string;
-      number: string;
-      area_code: string;
+      country_code?: string;
+      number?: string;
+      area_code?: string;
     };
     mobile_phone?: {
-      country_code: string;
-      number: string;
-      area_code: string;
+      country_code?: string;
+      number?: string;
+      area_code?: string;
     };
   };
 
   export type Customer = {
-    name: string;
-    email: string;
-    type: 'individual' | 'company';
+    id?: string;
+    name?: string;
+    email?: string;
+    type?: 'individual' | 'company';
     code?: string;
-    document: string;
+    document?: string;
     phones?: Phones;
+    address?: Address;
   };
 }

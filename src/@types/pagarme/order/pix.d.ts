@@ -2,7 +2,8 @@ declare namespace Pagarme {
   declare namespace Pix {
     export type Request = {
       items: Item[];
-      customer: Customer;
+      customer?: Customer;
+      customer_id?: string;
       payments: [
         {
           payment_method: string;

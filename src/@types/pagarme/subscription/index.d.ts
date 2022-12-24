@@ -73,6 +73,7 @@ declare namespace Pagarme {
 
     export type Request = {
       plan_id: string;
+      start_at?: string;
       payment_method: string;
       customer_id?: string;
       customer?: Pick<Customer, 'name' | 'email' | 'phones'>;

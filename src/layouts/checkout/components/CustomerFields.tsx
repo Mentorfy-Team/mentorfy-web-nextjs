@@ -2,55 +2,61 @@ import FormInput from '~/components/atoms/FormInput';
 import MaxCharacters from '~/helpers/MaxCharacters';
 import { InputsWrapper } from '~/layouts/mentor/meu-perfil/style';
 
-const CustomerFields = () => {
+const CustomerFields = ({ onlyAddress = false }) => {
   return (
     <>
-      <FormInput
-        name="customer.name"
-        type="text"
-        required
-        placeholder="João da Silva"
-        label="Nome Completo"
-      />
-      <FormInput
-        name="customer.email"
-        type="email"
-        required
-        placeholder="abc@email.com"
-        label="E-mail"
-      />
-      <FormInput
-        name="customer.email_confirmation"
-        type="email"
-        placeholder="abc@email.com"
-        label="Confirme seu e-mail"
-      />
+      {!onlyAddress && (
+        <>
+          <FormInput
+            name="customer.name"
+            type="text"
+            required
+            placeholder="João da Silva"
+            label="Nome Completo"
+          />
+          <FormInput
+            name="customer.email"
+            type="email"
+            required
+            placeholder="abc@email.com"
+            label="E-mail"
+          />
+          <FormInput
+            name="customer.email_confirmation"
+            type="email"
+            required
+            placeholder="abc@email.com"
+            label="Confirme seu e-mail"
+          />
+        </>
+      )}
       <FormInput type="text" required label="CPF" name="customer.document" />
       <FormInput
-        name="customer.address.neighborhood"
+        name="customer.address.line_1"
         type="text"
         required
         placeholder="Centro..."
-        label="Bairro"
+        label="Endereço"
       />
       <FormInput
-        name="customer.address.street"
+        name="customer.address.state"
         type="text"
         required
-        label="Rua"
-        placeholder="Av. Paulista..."
+        placeholder="SP"
+        label="Estado"
+        onInput={(e) => MaxCharacters(e, 2)}
       />
       <InputsWrapper>
         <FormInput
           type="text"
           required
-          label="Número"
+          label="Cidade"
           placeholder="000"
-          name="customer.address.number"
+          name="customer.address.city"
         />
 
         <FormInput
-          name="customer.address.zipcode"
+          name="customer.address.zip_code"
           type="text"
           required
           label="CEP"
