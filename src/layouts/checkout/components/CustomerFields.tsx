@@ -32,30 +32,31 @@ const CustomerFields = ({ onlyAddress = false }) => {
       )}
       <FormInput type="text" required label="CPF" name="customer.document" />
       <FormInput
-        name="customer.address.neighborhood"
+        name="customer.address.line_1"
         type="text"
         required
         placeholder="Centro..."
-        label="Bairro"
+        label="Endereço"
       />
       <FormInput
-        name="customer.address.street"
+        name="customer.address.state"
         type="text"
         required
-        label="Rua"
-        placeholder="Av. Paulista..."
+        placeholder="SP"
+        label="Estado"
+        onInput={(e) => MaxCharacters(e, 2)}
       />
       <InputsWrapper>
         <FormInput
           type="text"
           required
-          label="Número"
+          label="Cidade"
           placeholder="000"
-          name="customer.address.number"
+          name="customer.address.city"
         />
 
         <FormInput
-          name="customer.address.zipcode"
+          name="customer.address.zip_code"
           type="text"
           required
           label="CEP"

@@ -199,6 +199,8 @@ const Signature = ({ profile, customer, plan }: Props) => {
         open={openPaymentModal}
         setOpen={setOpenPaymentModal}
         plan={plan}
+        customer={customer}
+        profile={profile}
       />
     </>
   );

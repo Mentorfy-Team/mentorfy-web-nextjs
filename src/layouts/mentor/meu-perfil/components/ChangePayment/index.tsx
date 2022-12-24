@@ -27,7 +27,7 @@ type Props = {
   setOpen: (value: boolean) => void;
   plan: Pagarme.Plan;
   customer?: Pagarme.Customer;
-  card_id?: string;
+  profile?: UserTypes.Profile;
   subscription_id?: string;
 };
 
@@ -35,8 +35,7 @@ const PaymentChangeModal = ({
   open,
   setOpen,
   customer,
-  card_id,
-  subscription_id,
+  profile,
   plan,
 }: Props) => {
   const [showOption, setOption] = useState<'Card' | 'Pix'>();
@@ -46,10 +45,10 @@ const PaymentChangeModal = ({
     values: ICheckoutCard,
   ) => {
     setIsLoading(true);
-    if (card_id) {
+    if (profile.card_id) {
       // Possui cartão de crédito cadastrado e quer alterar o cartão
       if (showOption === 'Card') {
-        await UpdateSubscriptionService(subscription_id, values);
+        await UpdateSubscriptionService(profile.subscription_id, values);
 
         toast.success('Cartão alterado com sucesso.', {
           autoClose: 10000,
@@ -57,7 +56,7 @@ const PaymentChangeModal = ({
         setOpen(false);
       } else {
         // Possui cartão de crédito cadastrado e quer alterar para Pix
-        await ChangeSubscriptionToPixService(subscription_id);
+        await ChangeSubscriptionToPixService(profile.subscription_id);
 
         toast.success('Alterado forma de pagamento para Pix.', {
           autoClose: 10000,
@@ -69,8 +68,8 @@ const PaymentChangeModal = ({
       // Não possui cartão de crédito cadastrado ainda
       if (showOption === 'Card') {
         await CreateSubscriptionService({
-          customer_id: customer.address?.city ? customer.id : null,
-          customer: customer.address?.city ? null : customer,
+          customer_id: customer?.address?.city ? customer.id : null,
+          customer: customer?.address?.city ? null : customer,
           card: values.card,
           plan_id: plan.id,
           payment_method: 'credit_card',
@@ -149,7 +148,6 @@ const PaymentChangeModal = ({
           </LoadingButton>
         </>
       )}
-
       {showOption == 'Card' && (
         <FormProvider {...methodsCard}>
           <Form

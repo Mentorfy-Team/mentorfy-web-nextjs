@@ -6,6 +6,15 @@ export const checkoutCardSchema = object({
     document: string().min(1, 'Document is required'),
     type: literal('individual').optional().default('individual'),
 
+    address: object({
+      line_1: string().min(1, 'Address is required'),
+      line_2: string().optional(),
+      city: string().min(1, 'City is required'),
+      state: string().min(1, 'State is required'),
+      country: string().optional().default('BR'),
+      zip_code: string().min(1, 'Zip code is required'),
+    }).optional(),
+
     phones: object({
       mobile_phone: object({
         area_code: string().min(1, 'DDD is required'),
@@ -13,7 +22,7 @@ export const checkoutCardSchema = object({
         country_code: string().optional().default('55'),
       }),
     }).optional(),
-  }),
+  }).optional(),
 
   card: object({
     number: string().min(1, 'Card number is required'),
