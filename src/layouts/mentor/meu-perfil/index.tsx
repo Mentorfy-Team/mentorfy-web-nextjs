@@ -94,7 +94,7 @@ const MinhaConta: FC<props> = ({
             : [
                 'Perfil',
                 'Dados de Cadastro',
-                profile.access_type === 'mentor' ? 'Assinatura' : '',
+                profile?.access_type === 'mentor' ? 'Assinatura' : '',
               ]
         }
       />
