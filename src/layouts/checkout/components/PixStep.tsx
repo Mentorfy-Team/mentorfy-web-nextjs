@@ -4,6 +4,7 @@ import React from 'react';
 import QRCode from 'react-qr-code';
 import NextImage from 'next/image';
 import Typography from '@mui/material/Typography';
+import Link from 'next/link';
 // import { Container } from './styles';
 
 const PixStep = ({ qrcode }: { qrcode: string }) => {
@@ -74,7 +75,7 @@ const PixStep = ({ qrcode }: { qrcode: string }) => {
         })}
       >
         <p>
-          <strong>Chave Pix:</strong>
+          <strong>Pix Copia e Cola:</strong>
           <div>{qrcode}</div>
         </p>
       </Box>
@@ -89,6 +90,16 @@ const PixStep = ({ qrcode }: { qrcode: string }) => {
       >
         COPIAR CÓDIGO PIX
       </LoadingButton>
+      <div
+        style={{
+          fontSize: '0.8rem',
+          textAlign: 'center',
+          marginTop: '16px',
+        }}
+      >
+        * Caso você já tenha um cadastro, basta{' '}
+        <Link href="/">acessar sua conta.</Link>.
+      </div>
     </Box>
   );
 };

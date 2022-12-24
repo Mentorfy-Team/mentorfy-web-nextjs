@@ -14,6 +14,7 @@ type Props = {
     card_id?: string;
     plan_id?: string;
     subscription_id?: string;
+    address?: Pagarme.Address;
   };
 };
 
@@ -28,6 +29,7 @@ export const InviteAndSubscribe = async ({
     card_id,
     plan_id,
     subscription_id,
+    address,
   },
 }: Props) => {
   let user = await CheckForAccount({
@@ -71,6 +73,24 @@ export const InviteAndSubscribe = async ({
   expiration_date.setDate(expiration_date.getDate() + 30);
 
   let toUpdate;
+
+  if (address) {
+    // find number from address
+    const number = address.line_2?.match(/\d+/g)?.[0];
+
+    await supabase
+      .from('address')
+      .upsert({
+        id: user.id,
+        zipcode: address.zip_code,
+        street: address.line_1,
+        number: number ? parseInt(number) : null,
+        neighborhood: address.line_2,
+        city: address.city,
+        state: address.state,
+      })
+      .eq('id', user.id);
+  }
 
   if (refeerer) {
     toUpdate = {

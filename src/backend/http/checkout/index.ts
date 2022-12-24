@@ -54,6 +54,7 @@ export const post = async (req: GetRequest, res: GetResponse) => {
         card_id: data.save_card ? paymentResult.card.id : null,
         plan_id: paymentResult.plan.id,
         subscription_id: paymentResult.id,
+        address: data.customer.address,
       },
     });
   } else {

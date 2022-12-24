@@ -348,9 +348,11 @@ export const getProps = async (ctx) => {
   let plan;
   if (id) {
     plan = await GetPlan(id);
-  } else {
+  }
+
+  if (!plan) {
     const plans = await ListPlan();
-    plan = plans.data?.find((p) => !p.name.toLowerCase().includes('abc'));
+    plan = plans?.data?.find((p) => !p.name.toLowerCase().includes('teste'));
   }
 
   // without plan, redirect to home

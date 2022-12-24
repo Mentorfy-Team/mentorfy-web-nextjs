@@ -112,7 +112,7 @@ export const Buttons = styled(LoadingButton)`
   text-transform: none;
 `;
 
-export const Form = styled(Box)<{ bgwhite }>`
+export const Form = styled(Box)<{ bgwhite? }>`
   align-items: flex-start;
   background-color: ${({ bgwhite }) => (bgwhite ? 'white' : 'unset')};
   border-radius: 5px;

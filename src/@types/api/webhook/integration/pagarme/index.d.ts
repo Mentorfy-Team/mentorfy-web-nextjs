@@ -36,6 +36,7 @@ declare namespace Webhook {
             created_at: string;
             updated_at: string;
             phones: any;
+            address?: Address;
           };
           shipping: {
             amount: number;

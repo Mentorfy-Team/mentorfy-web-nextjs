@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import React from 'react';
 import Typography from '@mui/material/Typography';
+import Link from 'next/link';
 // import { Container } from './styles';
 
 const Success = () => {
@@ -34,6 +35,24 @@ const Success = () => {
         }}
         m={2}
       >
+        <div
+          style={{
+            fontSize: '0.8rem',
+            textAlign: 'center',
+            marginBottom: '16px',
+          }}
+        >
+          * Caso você já tenha um cadastro, basta{' '}
+          <Link href="/">acessar sua conta.</Link>.
+        </div>
+        <div
+          style={{
+            fontWeight: '900',
+            marginBottom: '8px',
+          }}
+        >
+          Próximas etapas:{' '}
+        </div>
         <div>1- Abra seu email.</div>
         <div>2- Acesse o link e crie uma senha segura.</div>
         <div>3- Pronto! Agora é só começar a sua jornada. 🚀</div>
