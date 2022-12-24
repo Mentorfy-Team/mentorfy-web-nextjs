@@ -352,7 +352,7 @@ export const getProps = async (ctx) => {
 
   if (!plan) {
     const plans = await ListPlan();
-    plan = plans.data?.find((p) => !p.name.toLowerCase().includes('teste'));
+    plan = plans?.data?.find((p) => !p.name.toLowerCase().includes('teste'));
   }
 
   // without plan, redirect to home
