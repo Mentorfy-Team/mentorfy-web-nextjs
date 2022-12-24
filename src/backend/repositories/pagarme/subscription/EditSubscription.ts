@@ -2,13 +2,13 @@ import { HttpPagarme } from '~/backend/helpers/HttpPagarme';
 
 export const EditSubscription = async (
   subscription_id,
-  card_id,
+  card,
 ): Promise<Checkout.Subscription> => {
   try {
     const response = await HttpPagarme.patch<Checkout.Subscription>(
       `/subscriptions/${subscription_id}/card`,
       {
-        card_id,
+        card,
       },
     );
 

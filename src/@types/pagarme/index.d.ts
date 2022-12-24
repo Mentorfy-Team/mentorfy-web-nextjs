@@ -1,11 +1,11 @@
 declare namespace Pagarme {
   export type Address = {
-    country: 'br';
-    state: string;
-    city: string;
-    zipcode: string;
-    line_1: string;
-    line_2: string;
+    country?: 'br';
+    state?: string;
+    city?: string;
+    zipcode?: string;
+    line_1?: string;
+    line_2?: string;
   };
 
   export type Plan = {
@@ -28,11 +28,11 @@ declare namespace Pagarme {
 
   export type Card = {
     id?: string;
-    holder_name: string;
-    number: string;
-    exp_month: number;
-    exp_year: number;
-    cvv: string;
+    holder_name?: string;
+    number?: string;
+    exp_month?: number;
+    exp_year?: number;
+    cvv?: string;
   };
 
   export type Phones = {
@@ -50,12 +50,12 @@ declare namespace Pagarme {
 
   export type Customer = {
     id?: string;
-    name: string;
-    email: string;
-    type: 'individual' | 'company';
+    name?: string;
+    email?: string;
+    type?: 'individual' | 'company';
     code?: string;
     document?: string;
     phones?: Phones;
-    address: Address;
+    address?: Address;
   };
 }

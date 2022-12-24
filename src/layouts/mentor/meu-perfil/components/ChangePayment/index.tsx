@@ -17,12 +17,11 @@ import {
 } from '~/layouts/checkout/validation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import PaymentMethPicker from '~/components/modules/PaymentMethPicker/index.';
-import { CreateCardService } from '~/services/subscription/CreateCard.service';
-import { UpdateSubscriptionService } from '~/services/subscription/UpdateSubscription.service';
 import { toast } from 'react-toastify';
+import CustomerFields from '~/layouts/checkout/components/CustomerFields';
+import { UpdateSubscriptionService } from '~/services/subscription/UpdateSubscription.service';
 import { ChangeSubscriptionToPixService } from '~/services/subscription/ChangeSubscriptionToPix.service';
 import { CreateSubscriptionService } from '~/services/subscription/CreateSubscription.service';
-import CustomerFields from '~/layouts/checkout/components/CustomerFields';
 type Props = {
   open: boolean;
   setOpen: (value: boolean) => void;
@@ -50,9 +49,7 @@ const PaymentChangeModal = ({
     if (card_id) {
       // Possui cartão de crédito cadastrado e quer alterar o cartão
       if (showOption === 'Card') {
-        const card = await CreateCardService(customer.id, values.card);
-
-        await UpdateSubscriptionService(subscription_id, card.id);
+        await UpdateSubscriptionService(subscription_id, values);
 
         toast.success('Cartão alterado com sucesso.', {
           autoClose: 10000,
@@ -71,11 +68,10 @@ const PaymentChangeModal = ({
     {
       // Não possui cartão de crédito cadastrado ainda
       if (showOption === 'Card') {
-        const card = await CreateCardService(customer.id, values.card);
-
         await CreateSubscriptionService({
-          customer_id: customer.id,
-          card_id: card.id,
+          customer_id: customer.address?.city ? customer.id : null,
+          customer: customer.address?.city ? null : customer,
+          card: values.card,
           plan_id: plan.id,
           payment_method: 'credit_card',
         });
@@ -85,8 +81,8 @@ const PaymentChangeModal = ({
         });
         setOpen(false);
       } else {
-        // Não possui cartão de crédito cadastrado ainda e quer alterar para Pix
-        toast.success('Alterado forma de pagamento atualizado para Pix.', {
+        // Não possui cartão de crédito cadastrado ainda e quer manter no Pix
+        toast.success('Mantido forma de pagamento em Pix.', {
           autoClose: 10000,
         });
         setOpen(false);
@@ -160,7 +156,7 @@ const PaymentChangeModal = ({
             component="form"
             onSubmit={methodsCard.handleSubmit(onSubmitHandler, onInvalid)}
           >
-            {!customer.document ||
+            {!customer?.document ||
               (!customer.address?.city && <CustomerFields />)}
             <CreditCardFields />
             <LoadingButton

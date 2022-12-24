@@ -36,12 +36,12 @@ export const patch = async (req, res) => {
     return res.status(400).json({ error: 'Bad request' });
   }
 
-  await EditSubscription(body.subscription_id, body.card_id);
+  const sub = await EditSubscription(body.subscription_id, body.card);
 
   await supabase
     .from('profile')
     .update({
-      card_id: body.card_id,
+      card_id: sub.card.id,
     })
     .eq('id', user.id);
 

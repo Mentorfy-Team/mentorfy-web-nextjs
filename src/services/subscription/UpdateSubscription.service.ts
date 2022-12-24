@@ -3,12 +3,12 @@ import { HttpClient } from '../HttpClient';
 
 export const UpdateSubscriptionService = async (
   subscription_id: string,
-  card_id: string,
+  data: Pick<Pagarme.Subscription.Request, 'card' | 'customer'>,
 ): Promise<Pagarme.Pix.Response> => {
   try {
-    const response = await HttpClient.put(ApiRoutes.subscription, {
+    const response = await HttpClient.patch(ApiRoutes.subscription, {
       subscription_id,
-      card_id,
+      data,
     });
     return response.data;
   } catch (error) {

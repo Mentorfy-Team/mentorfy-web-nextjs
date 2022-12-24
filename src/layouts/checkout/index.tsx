@@ -354,7 +354,6 @@ export const getProps = async (ctx) => {
   }
 
   // without plan, redirect to home
-  console.log(plan, id);
   if (!plan) {
     return {
       redirect: {
