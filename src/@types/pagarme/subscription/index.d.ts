@@ -76,7 +76,7 @@ declare namespace Pagarme {
       start_at?: string;
       payment_method: string;
       customer_id?: string;
-      customer?: Pick<Customer, 'name' | 'email' | 'phones'>;
+      customer?: Pick<Customer, 'name' | 'email' | 'phones' | 'address'>;
       card?: Card;
       card_id?: string;
       metadata?: {

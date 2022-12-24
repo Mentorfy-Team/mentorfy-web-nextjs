@@ -28,6 +28,7 @@ export const PagarmeRoute = async (req: NextApiRequest, supabase: any) => {
           phone: phone,
           refeerer: req.query.id as string,
           customer_id: data.customer.id,
+          address: data.customer.address,
           plan_id: data.items[0].description,
         },
       });
