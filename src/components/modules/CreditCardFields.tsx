@@ -3,10 +3,11 @@ import MaxCharacters from '~/helpers/MaxCharacters';
 import { InputsWrapper } from '~/layouts/mentor/meu-perfil/style';
 import { PaymentInfoWrapper } from '../../layouts/checkout/styles';
 
-const CreditCardFields = () => {
+const CreditCardFields = ({ extra = null }) => {
   return (
     <>
       <PaymentInfoWrapper>
+        {extra}
         <FormInput
           name="card.number"
           type="number"

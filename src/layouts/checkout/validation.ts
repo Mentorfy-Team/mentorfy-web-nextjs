@@ -1,8 +1,11 @@
 import { TypeOf, literal, number, object, preprocess, string } from 'zod';
 export const checkoutCardSchema = object({
   customer: object({
-    email: string().min(1, 'Email is required').email('Email is invalid'),
-    name: string().min(1, 'Name is required'),
+    email: string()
+      .min(1, 'Email is required')
+      .email('Email is invalid')
+      .optional(),
+    name: string().min(1, 'Name is required').optional(),
     document: string().min(1, 'Document is required'),
     type: literal('individual').optional().default('individual'),
 

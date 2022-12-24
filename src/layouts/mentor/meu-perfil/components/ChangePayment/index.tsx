@@ -63,13 +63,14 @@ const PaymentChangeModal = ({
         });
         setOpen(false);
       }
-    }
-    {
+    } else {
       // Não possui cartão de crédito cadastrado ainda
       if (showOption === 'Card') {
         await CreateSubscriptionService({
           customer_id: customer?.address?.city ? customer.id : null,
-          customer: customer?.address?.city ? null : customer,
+          customer: customer?.address?.city
+            ? null
+            : { ...customer, ...values.customer },
           card: values.card,
           plan_id: plan.id,
           payment_method: 'credit_card',
@@ -98,6 +99,8 @@ const PaymentChangeModal = ({
     resolver: zodResolver(checkoutCardSchema),
   });
 
+  const methodsPix = useForm<ICheckoutCard>({});
+
   return (
     <ModalComponent open={open} setOpen={setOpen} title="Alterar Pagamento">
       <Typography
@@ -122,41 +125,55 @@ const PaymentChangeModal = ({
       </Box>
 
       {showOption == 'Pix' && (
-        <>
-          <Typography
-            sx={{ textAlign: 'center', fontSize: '1.0rem', margin: '1rem 0' }}
+        <FormProvider {...methodsPix}>
+          <Form
+            bgwhite={false}
+            component="form"
+            onSubmit={methodsPix.handleSubmit(onSubmitHandler, onInvalid)}
           >
-            Com essa opção, você será notificado quando sua assinatura vencer.
-            Para efetuar o pagamento, venha a essa tela e clique em{' '}
-            <b
-              style={{
-                color: '#e27c1c',
+            <Typography
+              sx={{
+                textAlign: 'center',
+                fontSize: '1.0rem',
+                margin: '1rem 0',
               }}
             >
-              Pagar Fatura
-            </b>{' '}
-            e siga as instruções.
-          </Typography>
+              Com essa opção, você será notificado quando sua assinatura vencer.
+              Para efetuar o pagamento, venha a essa tela e clique em{' '}
+              <b
+                style={{
+                  color: '#e27c1c',
+                }}
+              >
+                Pagar Fatura
+              </b>{' '}
+              e siga as instruções.
+            </Typography>
 
-          <LoadingButton
-            variant="contained"
-            type="button"
-            sx={{ width: '40%', alignSelf: 'center' }}
-            onClick={() => setOpen(false)}
-          >
-            SALVAR ALTERAÇÃO
-          </LoadingButton>
-        </>
+            <LoadingButton
+              variant="contained"
+              type="submit"
+              sx={{ width: '40%', alignSelf: 'center' }}
+            >
+              SALVAR ALTERAÇÃO
+            </LoadingButton>
+          </Form>
+        </FormProvider>
       )}
       {showOption == 'Card' && (
         <FormProvider {...methodsCard}>
           <Form
+            bgwhite={true}
             component="form"
             onSubmit={methodsCard.handleSubmit(onSubmitHandler, onInvalid)}
           >
-            {!customer?.document ||
-              (!customer.address?.city && <CustomerFields />)}
-            <CreditCardFields />
+            <CreditCardFields
+              extra={
+                !customer?.document || !customer.address?.city ? (
+                  <CustomerFields onlyAddress />
+                ) : null
+              }
+            />
             <LoadingButton
               variant="contained"
               type="submit"

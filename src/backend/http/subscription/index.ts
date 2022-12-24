@@ -32,11 +32,11 @@ export const patch = async (req, res) => {
   }
   const body = req.body;
 
-  if (!body.subscription_id || !body.card_id) {
+  if (!body.subscription_id || !body.data.card) {
     return res.status(400).json({ error: 'Bad request' });
   }
 
-  const sub = await EditSubscription(body.subscription_id, body.card);
+  const sub = await EditSubscription(body.subscription_id, body.data.card);
 
   await supabase
     .from('profile')
@@ -99,6 +99,7 @@ export const del = async (req, res) => {
     .from('profile')
     .update({
       subscription_id: null,
+      card_id: null,
     })
     .eq('id', user.id);
 
