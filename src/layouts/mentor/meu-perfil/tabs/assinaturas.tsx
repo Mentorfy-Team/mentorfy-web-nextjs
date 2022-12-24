@@ -113,8 +113,8 @@ const Signature = ({ profile, customer, plan }: Props) => {
               variant="contained"
               color="primary"
               onClick={async () => {
-                await router.prefetch('/checkout/plan_oEA3dQ4SOztv6bVe');
-                await router.push('/checkout/plan_oEA3dQ4SOztv6bVe');
+                await router.prefetch('/checkout/plan_YPpMGKptgmIrM8gv');
+                await router.push('/checkout/plan_YPpMGKptgmIrM8gv');
               }}
             >
               Assinar agora
