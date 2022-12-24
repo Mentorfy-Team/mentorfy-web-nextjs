@@ -83,5 +83,22 @@ declare namespace Pagarme {
         id: string;
       };
     };
+    export type DataError = {
+      errors?: {
+        [key: string]: [string];
+      };
+    };
+    export type errors = {
+      code?: string;
+      config?: any;
+      message?: string;
+      name?: string;
+      request?: any;
+      response?: {
+        data?: DataError;
+        status?: number;
+        statusText?: string;
+      };
+    };
   }
 }

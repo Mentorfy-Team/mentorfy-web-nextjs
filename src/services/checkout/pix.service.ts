@@ -8,8 +8,7 @@ export const SendPixPayment = async (
     const response = await HttpClient.post(ApiRoutes.pix, pix);
     return response.data;
   } catch (error) {
-    return {
-      error: 'Erro ao efetuar o pagamento',
-    } as any;
+    // TODO notify error
+    return error as any;
   }
 };

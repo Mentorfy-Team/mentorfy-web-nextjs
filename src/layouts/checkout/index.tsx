@@ -46,6 +46,7 @@ import {
   checkoutPixSchema,
 } from './validation';
 import PaymentMethPicker from '~/components/modules/PaymentMethPicker/index.';
+import { toast } from 'react-toastify';
 
 type Props = {
   product: ProductApi.Product;
@@ -56,6 +57,7 @@ const Checkout = ({ product, plan }: Props) => {
   const { palette } = useTheme();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: [string] }>({});
   const [tab, setTab] = useState<number>(0);
   const [saveToNextBuy, setSaveToNextBuy] = useState(false);
   const [data, setData] = useState<
@@ -91,10 +93,29 @@ const Checkout = ({ product, plan }: Props) => {
       const payment = await SendPayment(
         paymentData as Pagarme.Subscription.Request,
       );
-      if (payment.customer) {
+      console.log('payment', payment);
+      if (!payment.errors && payment.id) {
+        toast.success('Compra efetuada com sucesso.');
         setShowSuccess(true);
       } else {
-        //setError();
+        if (payment.errors) {
+          toast.error('Erro na efetuação da compra, revise seus dados.', {
+            autoClose: 10000,
+          });
+          setErrors(payment.errors);
+        } else {
+          toast.error(
+            (payment as any).message || 'Erro no pagamento, revise seus dados.',
+            {
+              autoClose: 10000,
+            },
+          );
+          setErrors({
+            'subscription.card': [
+              'Erro na efetuação da compra, revise seus dados.',
+            ],
+          });
+        }
       }
     } else {
       const expiration_date = new Date();
@@ -194,6 +215,7 @@ const Checkout = ({ product, plan }: Props) => {
                 {FormatPrice(
                   plan.items[0].pricing_scheme.price_brackets[0].price,
                 )}
+                /mês
               </Price>
             </InfoWrapper>
           </FormHeader>
@@ -206,7 +228,7 @@ const Checkout = ({ product, plan }: Props) => {
 
               {tab == 0 && (
                 <>
-                  <CreditCardFields />
+                  <CreditCardFields errors={errors} />
                   <PoliciesWrapper>
                     {tab == 0 && (
                       <>

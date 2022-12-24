@@ -32,38 +32,40 @@ export const post = async (req: GetRequest, res: GetResponse) => {
       new Date(user.expiration_date).getTime() > Date.now()
     ) {
       return res.status(400).json({
-        info: 'Assinatura já encontrada. Faça login para continuar.',
-      });
+        errors: {
+          'subscription.expiration_date': [
+            'Você já possui uma assinatura ativa.',
+          ],
+        },
+      } as Pagarme.Subscription.DataError);
     }
   }
 
-  const paymentResult = await CreateSubscription(data);
+  const result = await CreateSubscription(data);
 
-  if (paymentResult) {
+  if (!result.errors && !(result as any).message) {
     const phone =
-      paymentResult.customer.phones?.mobile_phone?.area_code +
-      paymentResult.customer.phones?.mobile_phone?.number;
+      result.customer.phones?.mobile_phone?.area_code +
+      result.customer.phones?.mobile_phone?.number;
     await InviteAndSubscribe({
       supabase,
       data: {
-        email: paymentResult.customer.email,
-        name: paymentResult.customer.name,
-        phone: paymentResult.customer.phones?.mobile_phone ? phone : null,
+        email: result.customer.email,
+        name: result.customer.name,
+        phone: result.customer.phones?.mobile_phone ? phone : null,
         refeerer: null,
-        customer_id: paymentResult.customer.id,
-        card_id: data.save_card ? paymentResult.card.id : null,
-        plan_id: paymentResult.plan.id,
-        subscription_id: paymentResult.id,
+        customer_id: result.customer.id,
+        card_id: data.save_card ? result.card.id : null,
+        plan_id: result.plan.id,
+        subscription_id: result.id,
         address: data.customer.address,
       },
     });
   } else {
-    return res.status(503).json({
-      info: 'Não foi possível concluir o pagamento. Revise os dados do cartão.',
-    });
+    return res.status(400).json(result);
   }
 
-  return res.status(200).json(paymentResult);
+  return res.status(200).json(result);
 };
 
 export const get = async (req: GetRequest, res: GetResponse) => {
