@@ -32,11 +32,7 @@ export const post = async (req: GetRequest, res: GetResponse) => {
       new Date(user.expiration_date).getTime() > Date.now()
     ) {
       return res.status(400).json({
-        errors: {
-          'subscription.expiration_date': [
-            'Você já possui uma assinatura ativa.',
-          ],
-        },
+        message: 'Você já possui uma assinatura ativa.',
       } as Pagarme.Subscription.DataError);
     }
   }
