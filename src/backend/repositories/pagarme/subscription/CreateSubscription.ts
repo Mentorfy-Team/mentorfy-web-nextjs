@@ -12,7 +12,9 @@ export const CreateSubscription = async (
       '/subscriptions',
       info,
     );
-
+    if (response.data.status === 'failed') {
+      throw new Error('Falha ao tentar aprovar o pagamento.');
+    }
     return response.data;
   } catch (error) {
     const { response } = error as Pagarme.Subscription.errors;

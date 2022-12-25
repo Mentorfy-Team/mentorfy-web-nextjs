@@ -104,6 +104,7 @@ const Checkout = ({ product, plan }: Props) => {
             toast.error((payment as any).message, {
               autoClose: 10000,
             });
+            return;
           } else {
             toast.error('Erro na efetuação da compra, revise seus dados.', {
               autoClose: 10000,
