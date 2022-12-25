@@ -18,6 +18,7 @@ import {
   SecurityText,
   Title,
 } from './styles';
+import { log } from 'next-axiom';
 import { useTheme } from '@mui/material/styles';
 import { useEffect, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
@@ -47,7 +48,6 @@ import {
 } from './validation';
 import PaymentMethPicker from '~/components/modules/PaymentMethPicker/index.';
 import { toast } from 'react-toastify';
-
 type Props = {
   product: ProductApi.Product;
   plan: Pagarme.Plan.Response;
@@ -93,12 +93,13 @@ const Checkout = ({ product, plan }: Props) => {
       const payment = await SendPayment(
         paymentData as Pagarme.Subscription.Request,
       );
-      console.log('payment', payment);
+
       if (!payment.errors && payment.id) {
         toast.success('Compra efetuada com sucesso.');
         setShowSuccess(true);
       } else {
         if (payment.errors) {
+          log.error(JSON.stringify(payment.errors));
           toast.error('Erro na efetuação da compra, revise seus dados.', {
             autoClose: 10000,
           });
