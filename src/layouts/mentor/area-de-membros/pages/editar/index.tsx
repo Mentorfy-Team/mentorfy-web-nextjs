@@ -23,6 +23,7 @@ const EditarMentoria: FC<Props> = ({ id, product, user }) => {
     'Jornada do Cliente',
     'Configuração',
     'Links',
+    'Certificado',
   ]);
 
   const SwitchTabs = useCallback(() => {
@@ -42,7 +43,7 @@ const EditarMentoria: FC<Props> = ({ id, product, user }) => {
     }
   }, [id, product, tabindex]);
 
-  const MaxWidth = tabindex != 1 && tabindex != 3 && 700;
+  const MaxWidth = tabindex != 1 && tabindex != 4 && 700;
 
   return (
     <>

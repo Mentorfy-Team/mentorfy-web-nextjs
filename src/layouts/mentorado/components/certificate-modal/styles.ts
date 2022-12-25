@@ -20,8 +20,8 @@ export const FileWrapper = styled('div')`
   border-radius: 6px;
   display: flex;
   justify-content: center;
-  aspect-ratio: 16/9;
-  max-width: 900px;
+  aspect-ratio: 16/10;
+  max-width: 90vw;
   margin-bottom: 1rem;
   position: relative;
 `;

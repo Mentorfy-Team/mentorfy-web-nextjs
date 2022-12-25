@@ -10,6 +10,7 @@ import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import { SingFont } from '~/pages/_app';
 import { DataText, FileWrapper, ForwardButton, Title } from './styles';
 import CircularProgress from '@mui/material/CircularProgress';
+import Image from 'next/image';
 
 const PDFDownload = dynamic(() => import('~/components/atoms/PDFDownload'), {
   ssr: false,
@@ -62,9 +63,9 @@ const CertificateModal = ({
     >
       <ModalDialogContent sx={{ paddingTop: '0.5rem' }}>
         <Title>{title}</Title>
-        <FileWrapper >
+        <FileWrapper>
           <div id="certificate_id">
-            <PDFReader file={url} />
+            <Image src={url} width={900} height={600} alt="certificado" />
             {student?.name && (
               <TextContent
                 fontSize={student?.name?.fontSize}
@@ -106,6 +107,7 @@ const CertificateModal = ({
         <PDFDownload
           fileName="certificate.pdf"
           pageStyles={{}}
+          size={{ width: 1600, height: 1000 }}
           loadingComponent={<CircularProgress color="success" />}
           template_id="certificate_id"
         >
