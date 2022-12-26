@@ -168,5 +168,58 @@ export const VideoSection = styled('section')`
   position: relative;
 `;
 
-export const FAQ = styled('article')``;
+export const FAQ = styled('article')`
+  position: relative;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+`;
+
+export const FAQText = styled(Typography)`
+  font-weight: 800;
+  font-size: 8rem;
+  line-height: 2.8rem;
+  opacity: 0.2;
+  z-index: 1;
+  margin-top: -40px;
+`;
+
+export const QuestionsWrapper = styled('div')`
+  border: 1px solid rgba(96, 96, 96, 0.5);
+  border-radius: 28px;
+  margin: 0 auto;
+  width: 70%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+
+export const QuestionsHolder = styled('div')`
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 4rem;
+  width: 100%;
+`;
+
+export const Question = styled('div')`
+  background-color: ${({ theme }) => theme.palette.primary.light};
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.25);
+  border-radius: 5px 5px 0px 0px;
+  z-index: 3;
+  width: 100%;
+  padding: 1rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const AnswerWrapper = styled('div')`
+  background-color: ${({ theme }) => theme.palette.primary.dark};
+  border-radius: 0px 0px 5px 5px ;
+  width: 100%;
+  padding: 1rem 3rem;
+  text-align: left;
+`;
 

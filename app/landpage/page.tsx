@@ -1,14 +1,28 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 
-import { ActionButton, ClientSupport, Container, FeatureText, FeatureWrapper, Features, FeaturesContainer, IconWrapper, Integrations, Introduction, MainText, OrangeGradient, SecodaryText, SecondSection, SecondSectionText, VideoSection, Wrapper } from './styles';
+import { ActionButton, AnswerWrapper, ClientSupport, Container, FAQ, FAQText, FeatureText, FeatureWrapper, Features, FeaturesContainer, IconWrapper, Integrations, Introduction, MainText, OrangeGradient, Question, QuestionsHolder, QuestionsWrapper, SecodaryText, SecondSection, SecondSectionText, VideoSection, Wrapper } from './styles';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import CssBaseline from '@mui/material/CssBaseline';
 import Image from 'next/image';
 import Box from '@mui/material/Box';
-import { MainFeatures, MentorFeatures, SalesFeatures } from './helpers/FeaturesList';
+import { FAQList, MainFeatures, MentorFeatures, SalesFeatures } from './helpers/FeaturesList';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Collapse from '@mui/material/Collapse';
 export default function Page() {
+  const [collapse, setCollapse] = useState(false);
+  const [questionId, setQuestionId] = useState<string>();
+
+  const handleCollapse = (question) => {
+    setQuestionId(question);
+    console.log(questionId);
+
+    if (question === questionId) {
+      setCollapse(!collapse);
+    }
+  };
 
   return (
     <ThemeProvider>
@@ -257,7 +271,7 @@ export default function Page() {
             <SecondSectionText sx={{ margin: '2rem 0' }}>
               Hotmart, Eduzz, D. Manager Guru, Abmex, Appmax, Asaas,
               Blitz Pay, Braip, Chegow, Doppus, Kiwify, Monetizze, Perfect Pay, Proluno, Stripe, Ticto, Yampi
-              <strong>  Alô Não encontrou o seu Gateway? Nós integramos para você!</strong>
+              <strong> Não encontrou o seu Gateway? Nós integramos para você!</strong>
             </SecondSectionText>
             <ActionButton sx={{ width: '30%', marginBottom: '4rem' }}>Ver demonstração</ActionButton>
           </Box>
@@ -291,7 +305,38 @@ export default function Page() {
           <Box sx={{ background: 'gray', aspectRatio: '16/9', width: '60%', zIndex: '3' }}></Box>
           <ActionButton sx={{ margin: '3rem 0', width: '20%', zIndex: '3' }}> Ver demonstração</ActionButton>
         </VideoSection>
-
+        <FAQ>
+          <QuestionsWrapper>
+            <MainText sx={{ marginTop: '-28px' }}>Perguntas Frequentes</MainText>
+            <FAQText>F.A.Q</FAQText>
+            <QuestionsHolder>
+              {FAQList.map((question) => (
+                <div key={question.question} style={{ display: 'flex', flexDirection: 'column' }}>
+                  <Question>
+                    <Typography color='accent.main' fontWeight={700} fontSize='1.5rem'>{question.question}</Typography>
+                    <IconButton sx={{ color: 'accent.main' }} onClick={() => {
+                      setQuestionId(question.question);
+                      handleCollapse(question.question);
+                    }}>
+                      +
+                    </IconButton>
+                  </Question>
+                  <Collapse
+                    in={collapse}
+                    timeout={300}
+                    sx={{ marginBottom: '2rem' }}
+                  >
+                    <AnswerWrapper>
+                      <SecondSectionText>
+                        {question.answer}
+                      </SecondSectionText>
+                    </AnswerWrapper>
+                  </Collapse>
+                </div>
+              ))}
+            </QuestionsHolder>
+          </QuestionsWrapper>
+        </FAQ>
       </Wrapper >
     </ThemeProvider >
   );
