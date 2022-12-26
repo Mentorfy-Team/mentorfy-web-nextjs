@@ -1,12 +1,45 @@
-import { styled } from '@mui/material/styles';
+import { css, styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+
+type Props = {
+  noreverse?: string;
+  features?: string;
+}
 
 export const Wrapper = styled('div')`
   background-color: ${({ theme }) => theme.palette.primary.main};
   min-height: 100vh;
   overflow: hidden;
-  z-index: 1;
+`;
+
+export const ContentHolder = styled(Box) <Props>`
+  max-width: 1380px;
+  display: flex;
+  gap: 2rem;
+  overflow-x: visible;
+  @media(max-width: 1200px) { 
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  ${({ noreverse }) =>
+    noreverse &&
+    css`
+      @media(max-width: 1200px) { 
+        flex-direction: column;
+        align-items: center;
+      }
+    `}
+  ${({ features }) =>
+    features &&
+    css`
+      flex-direction: column;
+      align-items: center;
+
+      @media(max-width: 1200px) { 
+      flex-direction: column;
+    }
+    `}
 `;
 
 export const OrangeGradient = styled(Box)`
@@ -25,6 +58,7 @@ export const Introduction = styled('main')`
   display: flex;
   gap: 1rem;
   position: relative;
+  justify-content: center;
 `;
 
 export const SecodaryText = styled(Typography)`
@@ -46,7 +80,7 @@ export const MainText = styled(Typography)`
 
 export const ActionButton = styled('a')`
   background-color: ${({ theme }) => theme.palette.accent.main};
-  width: 60%;
+  width: 300px;
   padding: 0.5rem 1rem;
   display: flex;
   justify-content: center;
@@ -69,6 +103,7 @@ export const SecondSection = styled('section')`
   display: flex;
   gap: 4rem;
   position: relative;
+  justify-content: center;
 `;
 
 export const SecondSectionText = styled(Typography)`
@@ -76,6 +111,7 @@ export const SecondSectionText = styled(Typography)`
   font-size: 1.3rem;
   line-height: 1.8rem;
   margin: 1.3rem 0; 
+
 
   span { 
     display: inline-block; 
@@ -93,6 +129,8 @@ export const ClientSupport = styled('section')`
   margin-top: 9rem;
   display: flex;
   gap: 4rem;
+  justify-content: center;
+
 `;
 
 export const Container = styled('div')`
@@ -102,6 +140,12 @@ export const Container = styled('div')`
   backdrop-filter: blur(22.5px);
   padding: 5rem 7rem 0rem 5rem;
   display: flex;
+  justify-content: space-between;
+  @media(max-width: 1200px) { 
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+
 `;
 
 export const Features = styled('section')`
@@ -110,8 +154,8 @@ export const Features = styled('section')`
   display: flex;
   position: relative;
   flex-direction: column;
+  align-items: center;
   gap: 3rem;
-  max-width: 100%;
 `;
 
 export const FeaturesContainer = styled('div')`
@@ -158,6 +202,8 @@ export const Integrations = styled('section')`
   display: flex;
   gap: 4rem;
   position: relative;
+  justify-content: center;
+
 `;
 
 export const VideoSection = styled('section')`
@@ -197,7 +243,6 @@ export const QuestionsWrapper = styled('div')`
 export const QuestionsHolder = styled('div')`
   z-index: 2;
   display: flex;
-  align-items: center;
   flex-direction: column;
   padding: 4rem;
   width: 100%;
@@ -213,6 +258,7 @@ export const Question = styled('div')`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const AnswerWrapper = styled('div')`
