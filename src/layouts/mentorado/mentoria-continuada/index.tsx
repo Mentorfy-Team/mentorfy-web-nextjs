@@ -1,3 +1,4 @@
+import { DocumentScanner } from '@mui/icons-material';
 import Image from 'next/image';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetProductById } from '~/backend/repositories/product/GetProductById';
@@ -10,6 +11,8 @@ import Toolbar from '~/components/modules/Toolbar';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import { useUserInputs } from '~/hooks/useUserInputs';
+import CertificateModal from '../components/certificate-modal';
+import { getProgressByStep } from '../helpers/GetProgress';
 import HandleToolModal from '../helpers/HandleToolModal';
 import SaveClientInput, { GetTypeName } from '../helpers/SaveClientInput';
 import {
@@ -25,7 +28,7 @@ import {
 
 const ContinuosMentoring: FC<
   PageTypes.Props & { member_area_id: string; memberArea: any; task_id: string }
-> = ({ member_area_id, memberArea, task_id }) => {
+> = ({ member_area_id, memberArea, task_id, user }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<GroupTools[]>([]);
@@ -33,6 +36,7 @@ const ContinuosMentoring: FC<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
   const [open, setOpen] = useState(false);
+  const [showCertificate, setShowCertificate] = useState(false);
 
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
@@ -128,12 +132,20 @@ const ContinuosMentoring: FC<
     return unlocked;
   }, [steps, userInput]);
 
+  const isDone = useMemo(() => {
+    return steps.every((step) => getProgressByStep(step, userInput) == 100);
+  }, [steps, userInput]);
+
   return (
     <>
       <Toolbar
         initialTab={1}
         breadcrumbs={['Minhas mentorias', memberArea.title]}
         contact={memberArea?.contact}
+        actionClick={() => setShowCertificate(true)}
+        actionTitle="Ver Certificado"
+        actionIcon={<DocumentScanner fontSize="small" />}
+        actionVisible={isDone}
       />
       <ContentWidthLimit maxWidth={1900}>
         {(!steps || steps.length == 0) && (
@@ -243,6 +255,13 @@ const ContinuosMentoring: FC<
         </ScrollArea>
       </ContentWidthLimit>
       {open && ModalComponent()}
+      {showCertificate && (
+        <CertificateModal
+          open={showCertificate}
+          setOpen={setShowCertificate}
+          product={memberArea}
+        />
+      )}
     </>
   );
 };

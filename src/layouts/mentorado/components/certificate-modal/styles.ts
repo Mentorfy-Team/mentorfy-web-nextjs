@@ -1,6 +1,7 @@
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 export const Title = styled(Typography)`
   font-weight: 600;
@@ -13,6 +14,13 @@ export const DataText = styled(Typography)`
   position: absolute;
   font-style: italic;
   font-weight: 600;
+`;
+
+export const PDFButton = styled(Box)<{ href }>`
+  font-size: 1rem !important;
+  padding: 0.4rem 0.8rem;
+  align-self: center;
+  background-color: ${({ theme }) => theme.palette.accent.main};
 `;
 
 export const FileWrapper = styled('div')`

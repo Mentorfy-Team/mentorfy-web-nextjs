@@ -41,8 +41,45 @@ declare namespace ProductTypes {
     default_certificate?: string;
     title?: string;
     url?: string;
-    student?: Json | null;
-    course?: Json | null;
+    student?: {
+      name?: {
+        text?: string;
+        pageX?: string;
+        pageY?: string;
+        boxSize?: number;
+        fontSize?: number;
+      };
+      document?: {
+        text?: string;
+        pageX?: string;
+        pageY?: string;
+        boxSize?: number;
+        fontSize?: number;
+      };
+      finishedAt?: {
+        text?: string;
+        pageX?: string;
+        pageY?: string;
+        boxSize?: number;
+        fontSize?: number;
+      };
+    };
+    course?: {
+      name?: {
+        text?: string;
+        pageX?: string;
+        pageY?: string;
+        boxSize?: number;
+        fontSize?: number;
+      };
+      owner?: {
+        text?: string;
+        pageX?: string;
+        pageY?: string;
+        boxSize?: number;
+        fontSize?: number;
+      };
+    };
   };
 
   type CertificateBuilder = {

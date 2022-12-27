@@ -4,9 +4,8 @@ import { useTheme } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 import Tabbar from '../Tabbar';
 import { TabItem } from '../Tabbar/styles';
-import Box from '@mui/material/Box';
 import Link from 'next/link';
-import { LinkWrapper } from './styles';
+import { ActionButton, LinkWrapper, WhatsAppButton } from './styles';
 
 type Props = {
   onChange?: (value: number) => void;
@@ -14,6 +13,10 @@ type Props = {
   breadcrumbs?: string[];
   initialTab?: number;
   contact?: number | string;
+  actionClick?: () => void;
+  actionTitle?: string;
+  actionIcon?: React.ReactNode;
+  actionVisible?: boolean;
 };
 
 const Toolbar: React.FC<Props> = ({
@@ -22,6 +25,10 @@ const Toolbar: React.FC<Props> = ({
   breadcrumbs = [],
   initialTab = 0,
   contact = null,
+  actionClick,
+  actionTitle,
+  actionIcon,
+  actionVisible,
 }) => {
   const [tabindex, setTabindex] = React.useState(initialTab);
   const [hasmargintop, setHasMarginTop] = useState<boolean | null>(null);
@@ -95,39 +102,38 @@ const Toolbar: React.FC<Props> = ({
             </div>,
           ])}
       </Tabbar>
-      {contact && (
-        <LinkWrapper>
-          <Link
-            href={`https://api.whatsapp.com/send?phone=${(contact + '').replace(
-              '+',
-              '',
-            )}`}
-          >
-            <Box
-              sx={{
-                position: 'absolute',
-                right: 35,
-                top: 6,
-                cursor: 'pointer',
-                backgroundColor: '#098624',
-                color: '#fff',
-                padding: '0.3rem 0.8rem',
-                borderRadius: '0.5rem',
-                '&:hover': {
-                  backgroundColor: '#076b1d',
-                },
-                // center
-                display: 'flex',
-                alignItems: 'center',
-                gap: 1,
-              }}
+      <div
+        style={{
+          position: 'absolute',
+          display: 'flex',
+          flexDirection: 'row-reverse',
+          gap: '1rem',
+          top: 0,
+          right: 0,
+          paddingRight: '1rem',
+        }}
+      >
+        {true && (
+          <LinkWrapper>
+            <Link
+              href={`https://api.whatsapp.com/send?phone=${(
+                contact + ''
+              ).replace('+', '')}`}
             >
-              <WhatsApp fontSize="small" />
-              Ajuda / Contato
-            </Box>
-          </Link>
-        </LinkWrapper>
-      )}
+              <WhatsAppButton>
+                <WhatsApp fontSize="small" />
+                Ajuda / Contato
+              </WhatsAppButton>
+            </Link>
+          </LinkWrapper>
+        )}
+        {actionVisible && (
+          <ActionButton onClick={actionClick}>
+            {actionIcon}
+            {actionTitle}
+          </ActionButton>
+        )}
+      </div>
     </div>
   );
 };

@@ -33,6 +33,9 @@ import { FindVideoById } from './helpers/FindVideoById';
 import { SupabaseServer } from '~/backend/supabase';
 import { GetProductById } from '~/backend/repositories/product/GetProductById';
 import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
+import CertificateModal from '../components/certificate-modal';
+import { DocumentScanner } from '@mui/icons-material';
+import { getProgressByStep } from '../helpers/GetProgress';
 
 type VideoModuleType = {
   id: string;
@@ -50,6 +53,7 @@ export const VideoView = ({
 }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
+  const [showCertificate, setShowCertificate] = useState(false);
 
   const [steps, setSteps] = useState<GroupTools[]>([]);
   const [userInput, setUserInput] = useState<
@@ -310,12 +314,20 @@ export const VideoView = ({
     return unlocked;
   }, [steps, userInput]);
 
+  const isDone = useMemo(() => {
+    return steps.every((step) => getProgressByStep(step, userInput) == 100);
+  }, [steps, userInput]);
+
   return (
     <>
       <Toolbar
         initialTab={1}
         breadcrumbs={['Minhas mentorias', memberArea.title]}
         contact={memberArea?.contact}
+        actionClick={() => setShowCertificate(true)}
+        actionTitle="Ver Certificado"
+        actionIcon={<DocumentScanner fontSize="small" />}
+        actionVisible={isDone}
       />
       <ContentWidthLimit maxWidth={1900}>
         {(!steps || steps.length == 0) && (
@@ -464,6 +476,13 @@ export const VideoView = ({
         </Wrapper>
       </ContentWidthLimit>
       <HandleModal />
+      {showCertificate && (
+        <CertificateModal
+          open={showCertificate}
+          setOpen={setShowCertificate}
+          product={memberArea}
+        />
+      )}
     </>
   );
 };

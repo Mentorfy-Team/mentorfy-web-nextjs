@@ -82,6 +82,7 @@ export interface Database {
           subscription: boolean | null
           interval: string | null
           approved: boolean
+          finishedAt: string | null
         }
         Insert: {
           user_id: string
@@ -91,6 +92,7 @@ export interface Database {
           subscription?: boolean | null
           interval?: string | null
           approved?: boolean
+          finishedAt?: string | null
         }
         Update: {
           user_id?: string
@@ -100,6 +102,7 @@ export interface Database {
           subscription?: boolean | null
           interval?: string | null
           approved?: boolean
+          finishedAt?: string | null
         }
       }
       integration_token: {

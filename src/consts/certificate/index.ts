@@ -1,27 +1,32 @@
 export const DefaultCertificate = {
-  url: '/default-certificate.pdf',
+  url: '/default-certificate.pjg',
   student: {
     name: {
-      pageX: ' 3',
-      pageY: ' 262',
-      fontSize: 26,
+      pageX: '-134',
+      pageY: '373',
+      fontSize: 21,
     },
     finishedAt: {
-      pageX: ' 8',
-      pageY: ' 321',
-      fontSize: 12,
+      pageX: '9',
+      pageY: '429',
+      fontSize: 14,
+    },
+    document: {
+      pageX: '268',
+      pageY: '215',
+      fontSize: 14,
     },
   },
   course: {
     name: {
-      pageX: ' 129',
-      pageY: ' 302',
+      pageX: ' 203',
+      pageY: ' 408',
       fontSize: 14,
     },
     owner: {
-      pageX: ' -1',
-      pageY: ' 362',
-      fontSize: 35,
+      pageX: '6',
+      pageY: '502',
+      fontSize: 25,
     },
   },
 } as ProductTypes.CertificateBuilder;

@@ -1,15 +1,16 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 
-const DropzoneComponent: React.FC<{ onDrop; children }> = ({
+const DropzoneComponent: React.FC<{ onDrop; children; accepts? }> = ({
   onDrop,
   children,
+  accepts = {
+    'application/pdf': ['.pdf'],
+  },
 }) => {
   return (
     <Dropzone
-      accept={{
-        'application/pdf': ['.pdf'],
-      }}
+      accept={accepts}
       multiple={false}
       onDrop={(acceptedFiles) => onDrop(acceptedFiles)}
     >
