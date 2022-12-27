@@ -37,7 +37,7 @@ export default function Page() {
             <Box sx={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '2rem',
+              gap: '1.5rem',
             }}>
               <Image
                 alt='mentor-fy-logo'
@@ -57,7 +57,7 @@ export default function Page() {
                 <strong>Become a Legend</strong>
               </SecodaryText>
 
-              <ActionButton>
+              <ActionButton style={{ marginTop: '0' }}>
                 Quero conhecer a ferramenta
               </ActionButton>
             </Box>
@@ -147,7 +147,7 @@ export default function Page() {
                   left: '4%',
                 }}
               />
-              <Box sx={{ width: '50%' }}>
+              <Box sx={{ width: `${isMobile ? '100%' : '50%'}` }}>
                 <MainText mb={4}>
                   Conte com o melhor suporte
                   que você jamais imaginou existir.
@@ -179,7 +179,7 @@ export default function Page() {
             }}
           />
           <ContentHolder features='features'>
-            <Box sx={{ width: '75%', margin: '0 auto', textAlign: 'center' }}>
+            <Box sx={{ textAlign: 'center' }}>
               <MainText>
                 Funcionalidades que entregam a melhor experiência
                 e aumentam o engajamento dos seus mentorados.
@@ -283,12 +283,12 @@ export default function Page() {
                 src='/images/integrations.png'
                 quality={100}
                 width={isMobile ? 284 : 500}
-                height={isMobile ? 284 : 500}
+                height={isMobile ? 320 : 500}
               />
             </Box>
             <Box sx={{ alignSelf: 'end' }}>
-              <MainText sx={{ maxWidth: '80%' }}>
-                Integração Simples com Platafomras de Pagamentos.
+              <MainText>
+                Integração Simples com Plataformas de Pagamentos.
               </MainText>
               <SecondSectionText sx={{ margin: '2rem 0' }}>
                 Hotmart, Eduzz, D. Manager Guru, Abmex, Appmax, Asaas,
@@ -303,7 +303,7 @@ export default function Page() {
           <OrangeGradient id='orange'
             sx={{
               left: '12%',
-              top: '0',
+              top: `${isMobile ? '20%' : '0'}`,
               zIndex: '0',
             }}
           />
@@ -322,7 +322,7 @@ export default function Page() {
           <MainText color='accent.main'>
             Não fique na curiosidade.
           </MainText>
-          <SecondSectionText>
+          <SecondSectionText sx={{ zIndex: '1', textAlign: 'center' }}>
             Inspire-se nos exemplos de áreas de mentoria pré configuradas que deixamos criados para você.
           </SecondSectionText>
           <Box sx={{ background: 'gray', aspectRatio: '16/9', width: '60%', zIndex: '3' }}></Box>
@@ -336,7 +336,7 @@ export default function Page() {
               {FAQList.map((question) => (
                 <div key={question.question} style={{ display: 'flex', flexDirection: 'column' }}>
                   <Question onClick={() => handleCollapse(question.question)}>
-                    <Typography color='accent.main' fontWeight={700} fontSize='1.5rem'>{question.question}</Typography>
+                    <Typography color='accent.main' fontWeight={700} fontSize={`${isMobile ? '1.2rem' : '1.5rem'}`}>{question.question}</Typography>
                     <IconButton sx={{ color: 'accent.main' }} >
                       {questionId === question.question && collapse ? '-' : '+'}
                     </IconButton>
