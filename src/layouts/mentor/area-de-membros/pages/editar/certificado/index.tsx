@@ -403,6 +403,7 @@ const Certificate = ({
               <Button
                 sx={{
                   color: 'red',
+                  padding: '0.5rem 1rem',
                 }}
                 onClick={() => setFiles(null)}
               >
