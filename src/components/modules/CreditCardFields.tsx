@@ -3,7 +3,9 @@ import MaxCharacters from '~/helpers/MaxCharacters';
 import { InputsWrapper } from '~/layouts/mentor/meu-perfil/style';
 import { PaymentInfoWrapper } from '../../layouts/checkout/styles';
 
-const CreditCardFields = ({ extra = null }) => {
+const CreditCardFields = ({ extra = null, errors = {} }) => {
+  console.log(errors);
+
   return (
     <>
       <PaymentInfoWrapper>
@@ -15,6 +17,9 @@ const CreditCardFields = ({ extra = null }) => {
           placeholder="0000000000000000"
           required
           onInput={(e) => MaxCharacters(e, 16)}
+          error={
+            errors['subscription.card.number'] || errors['subscription.card']
+          }
         />
         <FormInput
           name="card.holder_name"
@@ -22,6 +27,10 @@ const CreditCardFields = ({ extra = null }) => {
           label="Nome impresso no cartão"
           placeholder="João da Silva..."
           required
+          error={
+            errors['subscription.card.holder_name'] ||
+            errors['subscription.card']
+          }
         />
         <InputsWrapper>
           <FormInput
@@ -31,6 +40,10 @@ const CreditCardFields = ({ extra = null }) => {
             label="Mês"
             placeholder="00"
             onInput={(e) => MaxCharacters(e, 2)}
+            error={
+              errors['subscription.card.exp_month'] ||
+              errors['subscription.card']
+            }
           />
           <FormInput
             name="card.exp_year"
@@ -39,6 +52,10 @@ const CreditCardFields = ({ extra = null }) => {
             label="Ano"
             placeholder="00"
             onInput={(e) => MaxCharacters(e, 2)}
+            error={
+              errors['subscription.card.exp_year'] ||
+              errors['subscription.card']
+            }
           />
           <FormInput
             name="card.cvv"
@@ -47,6 +64,9 @@ const CreditCardFields = ({ extra = null }) => {
             label="Cvv"
             required
             onInput={(e) => MaxCharacters(e, 4)}
+            error={
+              errors['subscription.card.cvv'] || errors['subscription.card']
+            }
           />
         </InputsWrapper>
       </PaymentInfoWrapper>

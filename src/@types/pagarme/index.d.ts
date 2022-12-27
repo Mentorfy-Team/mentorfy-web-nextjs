@@ -17,6 +17,13 @@ declare namespace Pagarme {
     interval: string;
     interval_count: number;
     billing_type: string;
+    billing_address: {
+      zip_code: string;
+      city: string;
+      state: string;
+      country: string;
+      line_1: string;
+    };
     payment_methods: string[]; // 'credit_card', 'debit_card'
     installments: [number];
     status: string;
@@ -33,6 +40,13 @@ declare namespace Pagarme {
     exp_month?: number;
     exp_year?: number;
     cvv?: string;
+    billing_address?: {
+      zip_code?: string;
+      city?: string;
+      state?: string;
+      country?: string;
+      line_1?: string;
+    };
   };
 
   export type Phones = {

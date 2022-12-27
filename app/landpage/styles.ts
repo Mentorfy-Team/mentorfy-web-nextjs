@@ -5,7 +5,7 @@ import Box from '@mui/material/Box';
 type Props = {
   noreverse?: string;
   features?: string;
-}
+};
 
 export const Wrapper = styled('div')`
   background-color: ${({ theme }) => theme.palette.primary.main};
@@ -13,19 +13,19 @@ export const Wrapper = styled('div')`
   overflow: hidden;
 `;
 
-export const ContentHolder = styled(Box) <Props>`
+export const ContentHolder = styled(Box)<Props>`
   max-width: 1380px;
   display: flex;
   gap: 2rem;
   overflow-x: visible;
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     flex-direction: column-reverse;
     align-items: center;
   }
   ${({ noreverse }) =>
     noreverse &&
     css`
-      @media(max-width: 1200px) { 
+      @media (max-width: 1200px) {
         flex-direction: column;
         align-items: center;
       }
@@ -36,14 +36,18 @@ export const ContentHolder = styled(Box) <Props>`
       flex-direction: column;
       align-items: center;
 
-      @media(max-width: 1200px) { 
-      flex-direction: column;
-    }
+      @media (max-width: 1200px) {
+        flex-direction: column;
+      }
     `}
 `;
 
 export const OrangeGradient = styled(Box)`
-  background: radial-gradient(50% 50% at 50% 50%, #FE7D22 -50%, rgba(254, 125, 34, 0) 100%);
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    #fe7d22 -50%,
+    rgba(254, 125, 34, 0) 100%
+  );
   width: 700px;
   height: 700px;
   opacity: 0.8;
@@ -51,7 +55,7 @@ export const OrangeGradient = styled(Box)`
   z-index: 2;
   top: 5%;
   right: -25%;
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     width: 350px;
     height: 350px;
   }
@@ -64,7 +68,7 @@ export const Introduction = styled('main')`
   position: relative;
   justify-content: center;
 
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     padding: 0 1rem;
   }
 `;
@@ -74,7 +78,7 @@ export const SecodaryText = styled(Typography)`
   font-size: 1.3rem;
   line-height: 1.8rem;
 
-  strong { 
+  strong {
     display: block;
     margin-top: 0.5rem;
   }
@@ -85,7 +89,7 @@ export const MainText = styled(Typography)`
   font-size: 2.5rem;
   line-height: 2.8rem;
 
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     font-size: 2rem;
   }
 `;
@@ -101,10 +105,10 @@ export const ActionButton = styled('a')`
   cursor: pointer;
   margin-top: 0.5rem;
 
-  &:hover { 
+  &:hover {
     opacity: 0.9;
   }
-  &:active { 
+  &:active {
     transform: scale(0.99);
   }
 `;
@@ -117,7 +121,7 @@ export const SecondSection = styled('section')`
   position: relative;
   justify-content: center;
 
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     margin-top: 5rem;
   }
 `;
@@ -126,14 +130,14 @@ export const SecondSectionText = styled(Typography)`
   font-weight: 300;
   font-size: 1.3rem;
   line-height: 1.8rem;
-  margin: 1.3rem 0; 
+  margin: 1.3rem 0;
 
-  span { 
-    display: inline-block; 
+  span {
+    display: inline-block;
     margin: 1rem 0;
   }
-  strong { 
-    display: inline-block; 
+  strong {
+    display: inline-block;
     margin: 1rem 0;
   }
 `;
@@ -144,25 +148,29 @@ export const ClientSupport = styled('section')`
   display: flex;
   gap: 4rem;
   justify-content: center;
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     margin-top: 5rem;
   }
 `;
 
 export const Container = styled('div')`
-  background: linear-gradient(102deg, rgba(30, 30, 30, 0.2) 0%, rgba(49, 44, 44, 0.2) 88.63%);
+  background: linear-gradient(
+    102deg,
+    rgba(30, 30, 30, 0.2) 0%,
+    rgba(49, 44, 44, 0.2) 88.63%
+  );
   border: 2px solid rgba(98, 98, 98, 0.6);
+  border-radius: 10px;
   box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(22.5px);
   padding: 5rem 7rem 0rem 5rem;
   display: flex;
   justify-content: space-between;
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     flex-direction: column-reverse;
     align-items: center;
     padding: 1rem;
   }
-
 `;
 
 export const Features = styled('section')`
@@ -173,7 +181,7 @@ export const Features = styled('section')`
   flex-direction: column;
   align-items: center;
   gap: 3rem;
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     margin-top: 5rem;
   }
 `;
@@ -223,7 +231,6 @@ export const Integrations = styled('section')`
   gap: 4rem;
   position: relative;
   justify-content: center;
-
 `;
 
 export const VideoSection = styled('section')`
@@ -232,7 +239,7 @@ export const VideoSection = styled('section')`
   flex-direction: column;
   margin-top: 5rem;
   position: relative;
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     margin-top: 2.5rem;
   }
 `;
@@ -250,7 +257,7 @@ export const FAQText = styled(Typography)`
   opacity: 0.2;
   z-index: 1;
   margin-top: -40px;
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     font-size: 6rem;
     margin-top: -50px;
   }
@@ -265,7 +272,7 @@ export const QuestionsWrapper = styled('div')`
   display: flex;
   align-items: center;
   flex-direction: column;
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     width: 90%;
   }
 `;
@@ -276,7 +283,7 @@ export const QuestionsHolder = styled('div')`
   flex-direction: column;
   padding: 4rem;
   width: 100%;
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     padding: 2rem;
   }
 `;
@@ -292,19 +299,18 @@ export const Question = styled('div')`
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     padding: 1rem 1.5rem;
   }
 `;
 
 export const AnswerWrapper = styled('div')`
   background-color: ${({ theme }) => theme.palette.primary.dark};
-  border-radius: 0px 0px 5px 5px ;
+  border-radius: 0px 0px 5px 5px;
   width: 100%;
   padding: 1rem 3rem;
   text-align: left;
-  @media(max-width: 1200px) { 
+  @media (max-width: 1200px) {
     padding: 1rem 1.5rem;
   }
 `;
-

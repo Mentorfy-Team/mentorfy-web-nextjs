@@ -23,10 +23,10 @@ const FormInput: FC<FormInputProps> = ({ name, ...otherProps }) => {
       render={({ field }) => (
         <CssTextField
           {...field}
-          {...otherProps}
           variant="outlined"
           sx={{ m: '0.5rem 0' }}
           error={!!errors[name]}
+          {...otherProps}
           helperText={
             errors[name] ? (errors[name]?.message as unknown as string) : ''
           }
