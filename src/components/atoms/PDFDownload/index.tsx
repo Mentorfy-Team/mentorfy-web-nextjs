@@ -15,6 +15,12 @@ type Props = {
   fileName: string;
   children: React.ReactNode;
   loadingComponent?: any;
+  size?:
+    | 'A4'
+    | {
+        width: string | number;
+        height: string | number;
+      };
 };
 
 export default ({
@@ -22,6 +28,7 @@ export default ({
   children,
   pageStyles,
   fileName,
+  size = 'A4',
   loadingComponent,
 }: Props): JSX.Element => {
   const [pdfDocument, setPdfDocument] = useState<any>();
@@ -36,7 +43,7 @@ export default ({
     toPng(document.getElementById(template_id)).then((dataUrl) => {
       setPdfDocument(
         <Document>
-          <Page size="A4" style={pageStyles}>
+          <Page size={size} style={pageStyles}>
             <ImageRP src={dataUrl} />
           </Page>
         </Document>,

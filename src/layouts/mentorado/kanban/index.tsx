@@ -16,6 +16,7 @@ import { GetAuthSession } from '~/helpers/AuthSession';
 import { SupabaseServer } from '~/backend/supabase';
 import { GetProductById } from '~/backend/repositories/product/GetProductById';
 import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
+import CertificateModal from '../components/certificate-modal';
 
 export type UserInput = {
   id?: string;
@@ -115,21 +116,29 @@ export const KanbanView: FC<
     return unlocked;
   }, [steps, userInput]);
 
-  const getProgress = (ids) => {
-    let progress = 0;
-    ids.forEach((id) => {
-      const inputDone = userInput.find((i) => i.member_area_tool_id === id);
-      if (inputDone) progress++;
-    });
-    return ids.length > 0 ? (progress / ids.length) * 100 : 0;
-  };
+  const getProgress = useCallback(
+    (ids) => {
+      let progress = 0;
+      ids.forEach((id) => {
+        const inputDone = userInput.find((i) => i.member_area_tool_id === id);
+        if (inputDone) progress++;
+      });
+      return ids.length > 0 ? (progress / ids.length) * 100 : 0;
+    },
+    [userInput],
+  );
 
-  const getProgressByStep = (step: GroupTools) => {
-    const ids = step.rows.map((r) => r.id);
-    return getProgress(ids);
-  };
+  const getProgressByStep = useCallback(
+    (step: GroupTools) => {
+      const ids = step.rows.map((r) => r.id);
+      return getProgress(ids);
+    },
+    [getProgress],
+  );
 
-  const isDone = steps.every((step) => getProgressByStep(step) == 100);
+  const isDone = useMemo(() => {
+    return true; //steps.every((step) => getProgressByStep(step) == 100);
+  }, [getProgressByStep, steps]);
 
   return (
     <>
@@ -251,7 +260,7 @@ export const KanbanView: FC<
       </ContentWidthLimit>
 
       {open && ModalComponent()}
-      {/* {isDone && (
+      {isDone && (
         <CertificateModal
           open={showCertificate}
           setOpen={setShowCertificate}
@@ -259,7 +268,7 @@ export const KanbanView: FC<
           certificate={product?.certificate as any}
           user={user}
         />
-      )} */}
+      )}
     </>
   );
 };

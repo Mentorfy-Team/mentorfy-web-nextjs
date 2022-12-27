@@ -12,7 +12,7 @@ export const put = async (req, res) => {
         course: req.body.course,
       },
     })
-    .eq('id', req.body.product_id);
+    .eq('id', req.body.id);
 
   if (error) {
     return res.status(400).json({

@@ -103,7 +103,7 @@ const Certificate = ({
     },
   });
   const [certificate, setCertificate] =
-    useState<ProductTypes.CertificateBuilder>(initCertificate || {} as any);
+    useState<ProductTypes.CertificateBuilder>(initCertificate || ({} as any));
 
   const [defaultCertificate, setDefaultCertificate] =
     useState<ProductTypes.Certificate>(DefaultCertificate);
@@ -214,7 +214,7 @@ const Certificate = ({
   };
 
   const GetUrlAndSaveInCertificate = async () => {
-    if (!files && (!files?.sourceUrl || !files?.data)) return;
+    if (!files || !files?.sourceUrl || !files?.data) return;
 
     const convertedFiles = await UploadToUrlFiles([files], id);
     setCertificate((old) => {
@@ -233,8 +233,6 @@ const Certificate = ({
       setDefaultCertificate((old) => {
         return {
           ...old,
-          product_id: id,
-          title: title,
         };
       });
       return;
@@ -245,9 +243,9 @@ const Certificate = ({
     await GetUrlAndSaveInCertificate();
 
     if (color) {
-      await UpdateCertificate(defaultCertificate);
+      await UpdateCertificate(defaultCertificate, title, id);
     }
-    await UpdateCertificate(certificate);
+    await UpdateCertificate(certificate, title, id);
 
     toast.success('Certificado salvo com sucesso');
     setIsLoading(false);
@@ -342,7 +340,9 @@ const Certificate = ({
         <CheckText sx={{ color: `${color && '#7DDC51'}` }}>
           Usar certificado padrão Mentorfy
         </CheckText>
-        <p style={{ color: 'gray', fontSize: '0.8rem' }}>(AO CLICAR, QUALQUER CERTIFICADO ANTERIOR SERÁ APAGADO!)</p>
+        <p style={{ color: 'gray', fontSize: '0.8rem' }}>
+          (AO CLICAR, QUALQUER CERTIFICADO ANTERIOR SERÁ APAGADO!)
+        </p>
       </CheckWrapper>
 
       {!color && (
