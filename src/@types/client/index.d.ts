@@ -6,10 +6,11 @@ declare namespace ClientTypes {
   type Address = typeof Database.public.Tables.address.Row;
 
   type Client = Pick<Profile, 'name' | 'email' | 'phone' | 'id'> & {
-    products: Pick<Product, 'title' | 'id' | 'created_at'> &
-      {
-        subscribed_at: string;
-      }[];
+    products: (Pick<Product, 'title' | 'id' | 'created_at'> & {
+      subscribed_at: string;
+    })[];
+    mentors: TeamMemberClient[];
+    hasActivety: boolean;
   };
 
   namespace Get {

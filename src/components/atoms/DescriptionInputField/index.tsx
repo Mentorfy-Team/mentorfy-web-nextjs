@@ -10,7 +10,7 @@ const DescriptionInputField: FC<
 > = (props) => {
   return (
     <TextField
-      minRows={5}
+      minRows={1}
       multiline
       maxRows={100}
       color="secondary"

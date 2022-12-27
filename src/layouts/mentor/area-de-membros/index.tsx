@@ -17,9 +17,7 @@ import CreateProductDialog from './components/CreateProductDialog';
 import { DeleteText } from './components/GroupModal/styles';
 import {
   AbsoluteBottomBox,
-  AbsoluteTopBox,
   AreaWrapper,
-  CollorFullMentorfy,
   CreateAreaButton,
   DeleteAreaButton,
   EmptyBox,
@@ -29,6 +27,7 @@ import {
 } from './styles';
 import PlusSvg from '~/../public/svgs/plus';
 import { GetAuthSession } from '~/helpers/AuthSession';
+import RatioSize from '~/helpers/RatioSize';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   const { products, mutate } = useProducts(user.id);
@@ -39,11 +38,6 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   const [productId, setProductId] = useState('');
   const [open, setOpen] = useState(false);
 
-  const handleDeleteProduct = async (id: string) => {
-    setProductId(id);
-    setShowConfirmDelete(true);
-  };
-
   const confirmDeleteProduct = async () => {
     if (!showConfirmDelete) {
       setShowConfirmDelete(true);
@@ -51,7 +45,6 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
       const res = await fetch(`/api/products?id=${productId}`, {
         method: 'DELETE',
       });
-      console.log('res', res.status);
       if (res.status === 200) {
         toast.success('Alterações salvas com sucesso.');
       } else if (res.status === 400) {
@@ -112,10 +105,22 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
             gap: '2rem',
           }}
         >
+          {products.length === 0 && (
+            <Box
+              sx={{
+                color: '#d2d2d222',
+              }}
+            >
+              * Você ainda não criou uma mentoria.
+            </Box>
+          )}
           {products?.map((area, index) => (
             <AreaWrapper
               onClick={
-                () => {
+                async () => {
+                  await router.prefetch(
+                    MentorRoutes.members_area_editar + '/' + area.id,
+                  );
                   router.push(MentorRoutes.members_area_editar + '/' + area.id);
                 }
                 // router.push(MentorRoutes.members_area_editar + '/' + area.id)
@@ -130,26 +135,30 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
                     objectFit: 'cover',
                     borderRadius: '0.5rem',
                   }}
-                  width={300}
-                  height={400}
+                  width={RatioSize('w', 3)}
+                  height={RatioSize('h', 3)}
                 />
               )}
               {!area.main_image && (
                 <Box
                   sx={{
-                    // gradiente azul e laranja
-                    background:
-                      'linear-gradient(180deg, #464646 0%, #161616 100%)',
+                    border: `1px solid ${theme.palette.accent.dark}`,
+                    borderRadius: '10px',
                   }}
-                  width={300}
-                  height={400}
-                />
+                >
+                  <Image
+                    alt=""
+                    src={area.member_area?.member_area_type.image}
+                    style={{
+                      objectFit: 'cover',
+                      borderRadius: '0.5rem',
+                    }}
+                    width={RatioSize('w', 3)}
+                    height={RatioSize('h', 3)}
+                  />
+                </Box>
               )}
-              <AbsoluteTopBox>
-                <CollorFullMentorfy>
-                  Mentor<span>fy</span>
-                </CollorFullMentorfy>
-              </AbsoluteTopBox>
+
               {!area?.banner_image && (
                 <AbsoluteBottomBox>
                   <ProductTitle>{area?.title}</ProductTitle>
@@ -162,27 +171,15 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
         <Box sx={{ display: 'flex' }}>
           <Typography sx={{ mb: '1.5rem' }}>Modelos Prontos</Typography>
         </Box>
-        <EmptyBox sx={{ backgroundColor: '#36353a50' }}>
+        <EmptyBox
+          sx={{
+            backgroundColor: '#36353a50',
+            width: RatioSize('w', 3),
+            height: RatioSize('h', 3),
+          }}
+        >
           <ImageButton>Em breve</ImageButton>
         </EmptyBox>
-        {/* <Box sx={{ display: 'flex', flexDirection: 'row', overflow: 'auto' }}>
-          {['more-options'].map((index) =>
-            index === 'more-options' ? (
-              <EmptyBox>
-                <ImageButton>+ Ver mais opções</ImageButton>
-              </EmptyBox>
-            ) : (
-              <Box minWidth={300} mr={4} key={index} sx={{ cursor: 'pointer' }}>
-                <Image
-                  alt=""
-                  src="/images/area-de-membros.png"
-                  width={246}
-                  height={244}
-                />
-              </Box>
-            ),
-          )}
-        </Box> */}
       </ContentWidthLimit>
       <CreateProductDialog open={openCreatePage} setOpen={setOpenCreatePage} />
       <ModalComponent
@@ -204,7 +201,7 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
             </DeleteText>
           </Box>
         ) : (
-          <Box>
+          <Box sx={{ width: '100%' }}>
             <DeleteText>Escolha qual produto deseja excluir</DeleteText>
             <ProductsSelectField
               required

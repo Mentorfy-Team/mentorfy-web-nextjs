@@ -14,7 +14,13 @@ type Props = {
   pageStyles: Style;
   fileName: string;
   children: React.ReactNode;
-  loadingComponent?: React.ReactNode;
+  loadingComponent?: any;
+  size?:
+    | 'A4'
+    | {
+        width: string | number;
+        height: string | number;
+      };
 };
 
 export default ({
@@ -22,6 +28,7 @@ export default ({
   children,
   pageStyles,
   fileName,
+  size = 'A4',
   loadingComponent,
 }: Props): JSX.Element => {
   const [pdfDocument, setPdfDocument] = useState<any>();
@@ -36,7 +43,7 @@ export default ({
     toPng(document.getElementById(template_id)).then((dataUrl) => {
       setPdfDocument(
         <Document>
-          <Page size="A4" style={pageStyles}>
+          <Page size={size} style={pageStyles}>
             <ImageRP src={dataUrl} />
           </Page>
         </Document>,
@@ -47,14 +54,13 @@ export default ({
   // monitora e atualiza/roda a função de geração do pdf
   useEffect(() => {
     GenerateDocument(template_id, pageStyles);
-  }, [template_id, pageStyles]);
+  });
 
   return (
     <PDFDownloadLink document={pdfDocument} fileName={fileName}>
       {({ blob, url, loading, error }) => {
-        // TODO: handle error
         // TODO: handle doc ready
-        return loading ? loadingComponent || 'Carregando...' : children;
+        return children;
       }}
     </PDFDownloadLink>
   );

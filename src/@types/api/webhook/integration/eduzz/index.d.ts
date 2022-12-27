@@ -1,0 +1,116 @@
+declare namespace Webhook {
+  namespace Integration {
+    namespace Hotmart {
+      type ApprovedPurchase = {
+        api_key: string;
+        pro_cod: string;
+        pro_name: string;
+        pro_email: string;
+        pro_document_number: string;
+        pro_value: string;
+        trans_cod: string;
+        trans_checkoutid: string;
+        trans_value: string;
+        trans_paid: string;
+        trans_status: string;
+        trans_paymentmethod: string;
+        trans_createdate: string;
+        trans_paiddate: string;
+        trans_duedate: string;
+        trans_createtime: string;
+        trans_paidtime: string;
+        trans_duetime: string;
+        trans_items_quantity: string;
+        trans_key: string;
+        recurrence_cod: string;
+        recurrence_type: string;
+        recurrence_plan: string;
+        product_cod: string;
+        product_name: string;
+        product_parent_cod: string;
+        product_refund: string;
+        product_sku: string;
+        discount_coupon_code: string;
+        cus_cod: string;
+        cus_taxnumber: string;
+        cus_name: string;
+        cus_email: string;
+        cus_tel: string;
+        cus_tel2: string;
+        cus_cel: string;
+        cus_apikey: string;
+        cus_address: string;
+        refund_type: string;
+        student_cod: string;
+        student_taxnumber: string;
+        student_name: string;
+        student_email: string;
+        student_tel: string;
+        student_tel2: string;
+        student_cel: string;
+        cus_address_number: string;
+        cus_address_country: string;
+        cus_address_district: string;
+        cus_address_comp: string;
+        cus_address_city: string;
+        cus_address_state: string;
+        cus_address_zip_code: string;
+        recurrence_startdate: string;
+        recurrence_status: string;
+        recurrence_status_name: string;
+        recurrence_interval: string;
+        recurrence_interval_type: string;
+        recurrence_count: string;
+        recurrence_first_payment: string;
+        aff_cod: string;
+        aff_name: string;
+        aff_email: string;
+        aff_document_number: string;
+        aff_value: string;
+        tracker_trk: string;
+        tracker_trk2: string;
+        tracker_trk3: string;
+        tracker_utm_source: string;
+        tracker_utm_content: string;
+        tracker_utm_medium: string;
+        tracker_utm_campaign: string;
+        utm_source: string;
+        utm_content: string;
+        utm_medium: string;
+        utm_campaign: string;
+        sku_reference: string;
+        eduzz_value: string;
+        other_values: string;
+        trans_items: [
+          {
+            item_id: string;
+            item_name: string;
+            item_value: string;
+            item_coupon_code: string;
+            item_coupon_value: string;
+            item_product_id: string;
+            item_product_name: string;
+            item_product_refund: string;
+            item_product_sku_reference: string;
+            item_product_partner_cod: string;
+            item_product_partner_co: string;
+            item_product_chargetype: string;
+          },
+        ];
+        trans_barcode: string;
+        trans_orderid: string;
+        trans_currency: string;
+        trans_job_id: string;
+        trans_job_status: string;
+        request_token: string;
+        billet_url: string;
+        page_checkout_url: string;
+        type: string;
+        trans_bankslip: string;
+        recurrence_canceled_at: string;
+        product_chargetype: string;
+        refund_date: string;
+      };
+    }
+  }
+}

@@ -130,6 +130,7 @@ export default function CreateClientDialog({ open, setOpen, onUpdate, user }) {
               disabled={isLoading}
               type="submit"
               variant="contained"
+              sx={{ width: '30%' }}
             >
               Salvar
             </LoadingButton>

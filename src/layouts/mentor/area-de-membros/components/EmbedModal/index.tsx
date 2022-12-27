@@ -48,7 +48,7 @@ const EmbedModal = ({
           label="Campo de Texto Aberto"
           placeholder=""
         />
-        <Box sx={{ position: 'relative' }}>
+        <Box sx={{ position: 'relative', width: '100%' }}>
           {display && (!embed || embed?.length === 0) && (
             <PlaceHolderBox>
               <Image
@@ -71,7 +71,7 @@ const EmbedModal = ({
             className="text-field"
             label="Embed Code"
             multiline
-            maxRows={20}
+            minRows={5}
             color="secondary"
             InputLabelProps={{
               shrink: true,

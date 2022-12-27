@@ -3,15 +3,13 @@ import Image from 'next/image';
 import Description from '~/components/atoms/ModalDescription';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
-import { CloseButton} from './styles';
+import TipBar from '~/components/modules/TipBar';
+import { CloseButton } from './styles';
 
 type InputProps = { id: string; value: boolean }[];
 type ExtraProps = boolean;
 
-type ToolData = {
-  id: string;
-  title: string;
-};
+type ToolData = string;
 
 const OpenText = ({
   open,
@@ -19,11 +17,15 @@ const OpenText = ({
   data: { data: taskData, title: titleData, description: descriptionData },
   onChange,
   userInput,
-}: MentoredComponents.Props<ToolData[], InputProps, ExtraProps>) => {
+}: MentoredComponents.Props<ToolData, InputProps, ExtraProps>) => {
   const handleFinish = () => {
-    onChange({ data: {}, extra: {
-      finished: true
-    } });
+    if (taskData)
+      onChange({
+        data: {},
+        extra: {
+          finished: true,
+        },
+      });
     setOpen(false);
   };
 
@@ -41,7 +43,20 @@ const OpenText = ({
   return (
     <ModalComponent open={open} setOpen={setOpen} title={HeadText} isMentorado>
       <ModalDialogContent isMentorado>
-        <Description>{descriptionData}</Description>
+        {!taskData && (
+          <TipBar>
+            Ainda não há <span>nenhum conteúdo disponível</span> nossa etapa. Em
+            caso de dúvidas, entre em contato com o suporte da mentoria.
+          </TipBar>
+        )}
+        {taskData && <Description>{descriptionData}</Description>}
+        {taskData && (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: taskData,
+            }}
+          />
+        )}
 
         <Box>{/* // TODO: show txt */}</Box>
         <CloseButton onClick={handleFinish}>Fechar</CloseButton>

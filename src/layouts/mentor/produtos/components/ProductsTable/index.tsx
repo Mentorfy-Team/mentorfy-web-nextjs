@@ -56,7 +56,7 @@ interface Data {
   id: string;
 }
 
-const ProductsTable = ({ rows }: { rows: ProductClient.Product[] }) => {
+const ProductsTable = ({ rows }: { rows: ProductTypes.Product[] }) => {
   const [page, setPage] = useState(1);
   const [selectedRow, setSelectedRow] = useState<any>({});
   const route = useRouter();
@@ -72,7 +72,7 @@ const ProductsTable = ({ rows }: { rows: ProductClient.Product[] }) => {
       access_link,
       status,
       id,
-    }: ProductClient.Product): Data => {
+    }: ProductTypes.Product): Data => {
       const link = access_link
         ? access_link
         : MentorRoutes.members_area_editar + '/' + id;
@@ -180,7 +180,8 @@ const ProductsTable = ({ rows }: { rows: ProductClient.Product[] }) => {
     setAnchorEl(null);
   };
 
-  const handleEdit = (id) => {
+  const handleEdit = async (id) => {
+    await route.prefetch(MentorRoutes.products_edit + '/' + id);
     route.push(MentorRoutes.products_edit + '/' + id);
   };
   return (

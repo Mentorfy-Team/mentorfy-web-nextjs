@@ -1,5 +1,5 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { CreateSupabaseWithAdmin } from '~/backend/supabase';
+import { SupabaseAdmin } from '~/backend/supabase';
 
 export class LogHistory {
   constructor() {
@@ -30,7 +30,7 @@ export class LogHistory {
     visibility = 0,
     extra?: any,
   ) {
-    const supabase = CreateSupabaseWithAdmin();
+    const supabase = SupabaseAdmin();
 
     // Para ser logado, deve passar nas regras.
     if (!(await this.CodeRules(code, supabase))) {

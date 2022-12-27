@@ -12,7 +12,9 @@ import {
   CommentInput,
   CompleteButton,
   SendButton,
+  VideoWrapper,
 } from './styles';
+import TipBar from '~/components/modules/TipBar';
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
 type InputProps = {
@@ -70,6 +72,7 @@ const VideoViewModal = ({
 
   const handleComment = () => {
     const comment = commentRef.current.value;
+    let lastComments = [];
     if (comment) {
       setInput((inp) => {
         const newInput = { ...inp };
@@ -81,23 +84,20 @@ const VideoViewModal = ({
           created_at: new Date().toString(),
         });
         newInput.comments = comments;
+
+        lastComments = comments;
         return newInput;
       });
       commentRef.current.value = '';
+    } else {
+      lastComments = input.comments || [];
     }
 
     onChange({
       data: {},
       extra: {
         ...extra,
-        comments: [
-          ...(input.comments || []),
-          {
-            user_id: data.profile.id,
-            comment,
-            created_at: new Date().toString(),
-          },
-        ],
+        comments: lastComments,
       },
     });
   };
@@ -110,9 +110,20 @@ const VideoViewModal = ({
   );
   return (
     <ModalComponent title={HeadText} setOpen={setOpen} open={open} isMentorado>
-      <ModalDialogContent isMentorado>
-        <Description>{descriptionData}</Description>
-        <Box sx={{ width: '100%', height: '463px'}}>
+      <ModalDialogContent
+        sx={{
+          minHeight: '750px',
+        }}
+        isMentorado
+      >
+        {!taskData && (
+          <TipBar>
+            Ainda não há <span>nenhum conteúdo disponível</span> nossa etapa. Em
+            caso de dúvidas, entre em contato com o suporte da mentoria.
+          </TipBar>
+        )}
+        {taskData && <Description>{descriptionData}</Description>}
+        <VideoWrapper>
           {taskData?.link && (
             <ReactPlayer
               id="goto"
@@ -132,83 +143,91 @@ const VideoViewModal = ({
               }}
             />
           )}
-        </Box>
-        <CompleteButton variant="contained" onClick={handleFinish}>
-          Concluír
-        </CompleteButton>
-
-        <Typography variant="body1" sx={{ margin: '2.8rem 0 0.8rem 0' }}>
-          Enviar mensagem ao Mentor
-        </Typography>
-        <Box
-          sx={{
-            width: '100%',
-            display: 'flex',
-            gap: '0.5rem',
-            marginBottom: '2rem',
-          }}
-        >
-          <CommentInput ref={commentRef} placeholder="Deixe sua mensagem" />
-          <SendButton onClick={() => handleComment()} variant="contained">
-            Enviar
-          </SendButton>
-        </Box>
-        {input.comments && input.comments?.length > 0 && (
-          <Box
-            sx={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '2rem',
-            }}
-          >
-            {input.comments
-              .sort((a, b) => {
-                return (
-                  new Date(b.created_at).getTime() -
-                  new Date(a.created_at).getTime()
-                );
-              })
-              .map(({ comment, created_at }, index) => (
-                <>
-                  <Box sx={{ width: '100%', display: 'flex', gap: '1rem' }}>
-                    <Avatar src={data.profile.avatar} />
-                    <Box
-                      sx={{
-                        width: '100%',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '0.5rem',
-                      }}
-                    >
-                      <Typography
-                        key={index}
-                        variant="body2"
-                        sx={{ marginTop: '-0.2rem' }}
-                      >
-                        {profile.name}
-                        <Typography ml={3} color="gray" variant="caption">
-                          {new Date(created_at).toLocaleString('pt-BR', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            hour: 'numeric',
-                            minute: 'numeric',
-                          })}
-                        </Typography>
-                      </Typography>
-                      <Typography
-                        key={index}
-                        variant="body1"
-                        sx={{ marginTop: '-0.3rem' }}
-                      >
-                        {comment}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </>
-              ))}
-          </Box>
+        </VideoWrapper>
+        {taskData && (
+          <CompleteButton variant="contained" onClick={handleFinish}>
+            Concluír
+          </CompleteButton>
+        )}
+        {taskData && (
+          <>
+            <Typography
+              variant="body1"
+              sx={{ margin: '1rem 0 0.8rem 0', alignSelf: 'self-start' }}
+            >
+              Enviar mensagem ao Mentor
+            </Typography>
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                gap: '0.5rem',
+              }}
+            >
+              <CommentInput ref={commentRef} placeholder="Deixe sua mensagem" />
+              <SendButton onClick={() => handleComment()} variant="contained">
+                Enviar
+              </SendButton>
+            </Box>
+            {input.comments && input.comments?.length > 0 && (
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '2rem',
+                  marginTop: '2rem',
+                }}
+              >
+                {input.comments
+                  .sort((a, b) => {
+                    return (
+                      new Date(b.created_at).getTime() -
+                      new Date(a.created_at).getTime()
+                    );
+                  })
+                  .map(({ comment, created_at }, index) => (
+                    <>
+                      <Box sx={{ width: '100%', display: 'flex', gap: '1rem' }}>
+                        <Avatar src={data.profile.avatar} />
+                        <Box
+                          sx={{
+                            width: '100%',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '0.5rem',
+                          }}
+                        >
+                          <Typography
+                            key={index}
+                            variant="body2"
+                            sx={{ marginTop: '-0.2rem' }}
+                          >
+                            {profile.name}
+                            <Typography ml={3} color="gray" variant="caption">
+                              {new Date(created_at).toLocaleString('pt-BR', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: 'numeric',
+                                minute: 'numeric',
+                              })}
+                            </Typography>
+                          </Typography>
+                          <Typography
+                            key={index}
+                            variant="body1"
+                            sx={{ marginTop: '-0.3rem' }}
+                          >
+                            {comment}
+                          </Typography>
+                        </Box>
+                      </Box>
+                    </>
+                  ))}
+              </Box>
+            )}
+          </>
         )}
       </ModalDialogContent>
     </ModalComponent>

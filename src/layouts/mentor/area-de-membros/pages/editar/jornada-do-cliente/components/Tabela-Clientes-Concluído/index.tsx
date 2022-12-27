@@ -45,17 +45,19 @@ interface Data {
 const CompletedClientsTable = ({
   clients = [],
   onSelectedClient,
+  filter = (clients) => clients,
 }: {
   clients: ProductTypes.Client[];
   onSelectedClient: (client: ProductTypes.Client) => void;
+  filter?: (clients: ProductTypes.Client[]) => ProductTypes.Client[];
 }) => {
   return (
     <Datagrid
       columns={columns}
       onSelectedRow={(row) =>
-        onSelectedClient(clients.find((c) => c.id === row.id))
+        onSelectedClient(filter(clients).find((c) => c.id === row.id))
       }
-      rows={clients.map((client) => {
+      rows={filter(clients).map((client) => {
         return {
           id: client.id,
           name: client.name,

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   DndContext,
+  DragOverlay,
   KeyboardSensor,
   PointerSensor,
   closestCenter,
@@ -8,39 +9,23 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
-import {
-  SortableContext,
-  arrayMove,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable';
+import { arrayMove, sortableKeyboardCoordinates } from '@dnd-kit/sortable';
+import Box from '@mui/material/Box';
 
-export type DnDObject = {
-  id: string;
-  title: string;
-  description?: string;
-  data?: any;
-  extra?: any;
-  rows?: MentorTools.ToolData[];
-  delete?: boolean;
+export type GroupTools = MentorTools.ToolData & {
+  rows?: (MentorTools.ToolData & { rows?: any[] })[];
 };
 
 type Props = {
-  model: (element_id: MentorTools.ToolData, group_id?) => JSX.Element;
-  groupModel: (group_id, child) => JSX.Element;
-  elements: {
-    id: string;
-    rows?: MentorTools.ToolData[];
-    delete?: boolean;
-  }[];
+  elements: any;
   setElements: (elements: any) => void;
+  allowOverlay?: boolean;
 };
 
 export default function DragNDrop({
-  model,
   elements,
   setElements,
-  groupModel,
+  allowOverlay = false,
 }: Props) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -57,15 +42,54 @@ export default function DragNDrop({
   function handleDragEnd(event) {
     setActiveId(null);
     const { active, over } = event;
-    if (active.id !== over?.id) {
-      const index = elements.findIndex(
-        (i) => i.rows.findIndex((j) => j.id === active.id) !== -1,
-      );
-      setElements((steps: { rows: any[] }[]) => {
-        const oldIndex = steps[index].rows.findIndex((i) => i.id === active.id);
-        const newIndex = steps[index].rows.findIndex((i) => i.id === over.id);
+    const tool: GroupTools = active?.data?.current;
+
+    if (active.id !== over?.id && tool) {
+      setElements((steps: GroupTools[]) => {
         const newItens = [...steps];
-        newItens[index].rows = arrayMove(steps[index].rows, oldIndex, newIndex);
+
+        // Se o pai tiver um pai, é porque tool é filho de uma categoria.
+        if (tool.parent_tool?.parent) {
+          const granFatherIndex = newItens.findIndex((i) =>
+            i.rows.find((j) => j.id === tool.parent),
+          );
+          const fatherIndex = newItens[granFatherIndex].rows.findIndex(
+            (i) => i.id === tool.parent,
+          );
+          const rowsToOrganize =
+            newItens[granFatherIndex].rows[fatherIndex].rows;
+
+          const oldIndex = rowsToOrganize.findIndex((i) => i.id === active.id);
+          const newIndex = rowsToOrganize.findIndex((i) => i.id === over.id);
+
+          newItens[granFatherIndex].rows = newItens[granFatherIndex].rows.map(
+            (father, index) => {
+              const newFather = { ...father };
+
+              if (index === fatherIndex) {
+                newFather.rows = arrayMove(rowsToOrganize, oldIndex, newIndex);
+              }
+
+              return newFather;
+            },
+          );
+        } else {
+          // move etapa
+          const granFatherIndex = newItens.findIndex(
+            (i) => i.id === tool.parent,
+          );
+          const rowsToOrganize = newItens[granFatherIndex].rows;
+
+          const oldIndex = rowsToOrganize.findIndex((i) => i.id === active.id);
+          const newIndex = rowsToOrganize.findIndex((i) => i.id === over.id);
+
+          newItens[granFatherIndex].rows = arrayMove(
+            rowsToOrganize,
+            oldIndex,
+            newIndex,
+          );
+        }
+
         return newItens;
       });
     }
@@ -79,33 +103,22 @@ export default function DragNDrop({
       onDragEnd={handleDragEnd}
       modifiers={[restrictToParentElement]}
     >
-      {elements
-        .filter((i) => !i.delete)
-        .map((group, groupIndex) => {
-          const itens = group.rows.filter((i) => !i.delete);
-          return groupModel(
-            group.id,
-            <SortableContext
-              items={itens.map((item) => item.id)}
-              strategy={verticalListSortingStrategy}
+      {elements}
+      {allowOverlay && (
+        <DragOverlay modifiers={[restrictToParentElement]}>
+          {activeId ? (
+            <Box
+              sx={{
+                backgroundColor: 'green',
+                padding: '10px',
+                opacity: 0.8,
+              }}
             >
-              {itens.map((item) => model(item))}
-            </SortableContext>,
-          );
-        })}
-      {/* <DragOverlay modifiers={[restrictToParentElement]}>
-        {activeId ? (
-          <Box
-            sx={{
-              backgroundColor: 'red',
-              padding: '10px',
-              opacity: 0.1,
-            }}
-          >
-            helloworld
-          </Box>
-        ) : null}
-      </DragOverlay> */}
+              Solte na nova posição
+            </Box>
+          ) : null}
+        </DragOverlay>
+      )}
     </DndContext>
   );
 }

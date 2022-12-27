@@ -14,28 +14,31 @@ type props = {
   image?: string;
   title?: JSX.Element | string;
   stepType?: JSX.Element | string | number;
-  onEdit?: () => void;
-  id?: string;
+  onEdit?: (id) => void;
+  step: any;
   isHeader?: boolean;
+  productType?: boolean;
 };
 const EditMembersAreaSteps: FC<props> = ({
   image,
   title,
   stepType,
   onEdit,
-  id,
+  step,
   isHeader = false,
+  productType,
 }) => {
   const theme = useTheme();
 
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: id });
+    useSortable({ id: step.id, data: step });
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
   const typeToScreen = (typeTool: number) => {
+    const name = productType ? 'Módulo de Padrão' : 'Módulo de Etapas';
     switch (typeTool) {
       case ToolListNames.QuestionsForm.id:
         return ToolListNames.QuestionsForm.name;
@@ -52,14 +55,20 @@ const EditMembersAreaSteps: FC<props> = ({
       case ToolListNames.WheelOfLifeModal.id:
         return ToolListNames.WheelOfLifeModal.name;
       case 0:
-        return 'Agrupador de Etapa';
+        return name;
       default:
         return 'Tipo não encontrado';
     }
   };
 
   return (
-    <div id={id + ''} key={id} ref={setNodeRef} style={style} {...attributes}>
+    <div
+      id={step.id + ''}
+      key={step.id}
+      ref={setNodeRef}
+      style={{ ...style, margin: !isHeader ? '8px' : 'unset' }}
+      {...attributes}
+    >
       <Step
         sx={{
           borderRadious: isHeader ? '0px' : '1.2rem 1.2rem 0 0',
@@ -73,6 +82,7 @@ const EditMembersAreaSteps: FC<props> = ({
                   color: `${theme.palette.tertiary.main}`,
                   cursor: 'pointer',
                   marginBottom: '0.5rem',
+                  margin: '0.2rem',
                 }}
                 {...listeners}
               />
@@ -112,7 +122,7 @@ const EditMembersAreaSteps: FC<props> = ({
             </Box>
           </Box>
           <Button
-            onClick={() => onEdit()}
+            onClick={() => onEdit(step)}
             sx={{ textTransform: 'none', marginBottom: '0.2rem' }}
           >
             Editar

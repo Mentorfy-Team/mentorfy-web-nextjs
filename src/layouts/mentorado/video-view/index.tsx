@@ -1,15 +1,14 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import { DnDObject } from '~/components/modules/DragNDrop';
+import { GroupTools } from '~/components/modules/DragNDrop';
 import ProgressBar from '~/components/modules/ProgressBar';
 import Toolbar from '~/components/modules/Toolbar';
 import { MentoredRoutes } from '~/consts';
-import { OrganizeTools } from '~/helpers/OrganizeTools';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
 import { useUserInputs } from '~/hooks/useUserInputs';
 import { InputUserMemberArea } from '~/services/member-area.service';
@@ -26,21 +25,44 @@ import {
   VideoWrapper,
   Wrapper,
 } from './styles';
+import TipBar from '~/components/modules/TipBar';
+import Comments from './components/comments';
 import { GetAuthSession } from '~/helpers/AuthSession';
-import { GetProduct } from '~/services/product.service';
+import { FindNextVideo, FindNotWatchedVideo } from './helpers/FindNextVideo';
+import { FindVideoById } from './helpers/FindVideoById';
+import { SupabaseServer } from '~/backend/supabase';
+import { GetProductById } from '~/backend/repositories/product/GetProductById';
+import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
+import CertificateModal from '../components/certificate-modal';
+import { DocumentScanner } from '@mui/icons-material';
+import { getProgressByStep } from '../helpers/GetProgress';
 
-export const VideoView = ({ member_area_id, video_id, memberArea }) => {
+type VideoModuleType = {
+  id: string;
+  module_index: number;
+  video_id: string;
+  video_index: number;
+  video: MentorTools.ToolData;
+};
+
+export const VideoView = ({
+  profile,
+  member_area_id,
+  video_id,
+  memberArea,
+}) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
-  const [videoId, setVideoId] = useState<string>(video_id);
-  const [nextVideoId, setNextVideoId] = useState<string>(null);
   const { inputs: inputData } = useUserInputs(member_area_id);
-  const [steps, setSteps] = useState<DnDObject[]>([]);
-  const [videosOrdem, setVideosOrdem] = useState<MentorTools.ToolData[]>([]);
+  const [showCertificate, setShowCertificate] = useState(false);
+
+  const [steps, setSteps] = useState<GroupTools[]>([]);
   const [userInput, setUserInput] = useState<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
-  const [open, setOpen] = useState(false);
 
+  const [selectedModule, setSelectedModule] = useState<string>();
+
+  const [open, setOpen] = useState(false);
   const commentRef = useRef(null);
 
   const [currentModal, setCurrentModal] = useState<{
@@ -53,18 +75,11 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
   const route = useRouter();
 
   useEffect(() => {
-    setSteps((oldSteps) => {
-      oldSteps = [...OrganizeTools(stepsData, ToolListNames.Video.id)];
-      return [...oldSteps];
-    });
-    setVideosOrdem(
-      stepsData
-        .filter((step) => step.mentor_tool === ToolListNames.Video.id)
-        .sort((a, b) => a.order - b.order),
-    );
+    if (stepsData) setSteps(JSON.parse(JSON.stringify(stepsData)));
   }, [stepsData]);
 
   const HandleModal = useCallback(() => {
+    if (!currentModal) return null;
     return (
       <SwitchMentoredModal
         open={open}
@@ -132,67 +147,47 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
     [handleSave, userInput],
   );
 
-  // search for the first not finished step and set the video id
-  const GetCurrentVideo = useCallback(() => {
-    let lastId;
-    let nextVideo;
-    steps.forEach((stp) => {
-      if (!nextVideo)
-        stp.rows.find((row) => {
-          if (lastId) {
-            nextVideo = row.id;
-          }
-          if (!(row.extra as any)?.finished && !nextVideo) {
-            lastId = row.id;
-          }
-        });
-    });
-
-    if (lastId) {
-      if (lastId !== videoId) {
-        const id = !video_id ? lastId : video_id;
-        setVideoId(id);
-        route.push({
-          pathname: MentoredRoutes.video_view + '/' + member_area_id,
-          query: { v: id },
-        });
-      }
-      setNextVideoId(nextVideo);
-    } else {
-      setVideoId(null);
+  const mainModule = useMemo(() => {
+    if (selectedModule) {
+      return FindVideoById(selectedModule, steps);
     }
-  }, [steps, route, video_id, member_area_id, videoId]);
+    return FindNotWatchedVideo(steps, inputData);
+  }, [inputData, selectedModule, steps]);
+
+  const nextVideo = useMemo(() => {
+    if (!mainModule) return null;
+    const rs = FindNextVideo(
+      mainModule.module_index,
+      mainModule.video_index,
+      steps,
+    );
+    return rs;
+  }, [mainModule, steps]);
 
   useEffect(() => {
     if (inputData !== userInput) {
       setUserInput(inputData);
-      GetCurrentVideo();
     }
-  }, [GetCurrentVideo, inputData, userInput]);
+  }, [inputData, userInput]);
 
   const onSelectedNext = useCallback(() => {
-    const next = videosOrdem.findIndex((i) => i.id == videoId) + 1;
-
-    if (next !== 0 && next < videosOrdem.length) {
-      setVideoId(videosOrdem[next].id);
+    if (nextVideo) {
+      setSelectedModule(nextVideo.video.id);
       route.push(
         {
           pathname: MentoredRoutes.video_view + '/' + member_area_id,
-          query: { v: videosOrdem[next].id },
+          query: { v: nextVideo.video.id },
         },
         undefined,
         { shallow: true },
       );
     }
-    if (next + 1 >= videosOrdem.length) {
-      setNextVideoId(null);
-    }
-  }, [videosOrdem, videoId, route, member_area_id]);
+  }, [nextVideo, route, member_area_id]);
 
   const onSelectedVideo = useCallback(
     (id) => {
       if (!id) return;
-      setVideoId(id);
+      setSelectedModule(id);
       route.push(
         {
           pathname: MentoredRoutes.video_view + '/' + member_area_id,
@@ -201,85 +196,196 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
         undefined,
         { shallow: true },
       );
-
-      const next = videosOrdem.findIndex((i) => i.id == id) + 1;
-      if (next >= videosOrdem.length) {
-        setNextVideoId(null);
-      } else {
-        setNextVideoId(videosOrdem[next].id);
-      }
     },
-    [member_area_id, route, videosOrdem],
+    [member_area_id, route],
   );
-
-  const getVideo = useCallback(() => {
-    const video = steps
-      .find((stp) => stp.rows.find((row) => row.id == videoId))
-      ?.rows.find((row) => row.id == videoId);
-    return video;
-  }, [steps, videoId]);
 
   const SendComment = useCallback(() => {
     if (commentRef.current.value) {
-      const index = userInput?.findIndex((i) => i.id.toString() == videoId);
+      const index = userInput?.findIndex(
+        (i) => i.id.toString() == mainModule?.video?.id,
+      );
 
       GetOnChange({
-        refId: videoId,
+        refId: mainModule?.video?.id,
         data: {},
         extra: {
           ...(index > -1 ? userInput[index].extra : {}),
           comments: [
             ...(index > -1 ? userInput[index].extra.comments : []),
-            commentRef.current.value,
+            {
+              comment: commentRef.current.value,
+              user_id: profile.id,
+              created_at: new Date().toString(),
+            },
           ],
         },
       });
 
       commentRef.current.value = '';
     }
-  }, [GetOnChange, userInput, videoId]);
+  }, [GetOnChange, profile, userInput, mainModule?.video?.id]);
 
-  const handleLike = useCallback(() => {
-    // TODO: implementar like
-  }, []);
+  const handleLike = useCallback(
+    (value) => {
+      const index = userInput?.findIndex(
+        (i) => i.member_area_tool_id.toString() == mainModule?.video?.id,
+      );
+      GetOnChange({
+        refId: mainModule?.video?.id,
+        data: {},
+        extra: {
+          ...(index > -1 ? userInput[index].extra : {}),
+          like: value,
+        },
+      });
+    },
+    [GetOnChange, userInput, mainModule?.video?.id],
+  );
+
+  const CommentsSession = useCallback(() => {
+    return (
+      <Comments
+        comments={
+          userInput.find(
+            (i) => i.member_area_tool_id.toString() == mainModule?.video?.id,
+          )?.extra?.comments
+        }
+      />
+    );
+  }, [userInput, mainModule?.video?.id]);
+
+  const renderLike = useCallback(() => {
+    const like = userInput.find(
+      (inp) => inp.member_area_tool_id === mainModule?.video?.id,
+    )?.extra?.like;
+
+    return (
+      <>
+        <LikeButton
+          sx={{
+            opacity: 0.8,
+            backgroundColor:
+              like?.toString() === 'true' ? '#36c059' : 'transparent',
+          }}
+          onClick={() => handleLike(true)}
+        >
+          <Image alt="" width={24} height={24} src="/svgs/like-thumb.svg" />
+        </LikeButton>
+        <LikeButton
+          sx={{
+            opacity: 0.8,
+            backgroundColor:
+              like?.toString() === 'false' ? '#c03636' : 'transparent',
+          }}
+          onClick={() => handleLike(false)}
+        >
+          <Image alt="" width={24} height={24} src="/svgs/unlike-thumb.svg" />
+        </LikeButton>
+      </>
+    );
+  }, [handleLike, userInput, mainModule?.video?.id]);
+
+  const unlockedStep = useMemo(() => {
+    const unlocked = [];
+    for (let i = 0; i < steps.length; i++) {
+      if (i === 0) {
+        unlocked.push(steps[i].id);
+      } else {
+        const tasks = steps[i].rows;
+
+        const doneTasks = tasks?.filter((t) => {
+          const input = userInput?.find((i) => i.member_area_tool_id == t.id);
+          return !!input;
+        });
+
+        if (doneTasks?.length == tasks?.length) {
+          unlocked.push(steps[i].id);
+        } else {
+          if ((steps[i].extra as any)?.lockFeature) {
+            unlocked.push(steps[i].id);
+            break;
+          } else {
+            unlocked.push(steps[i].id);
+          }
+        }
+      }
+    }
+    return unlocked;
+  }, [steps, userInput]);
+
+  const isDone = useMemo(() => {
+    return steps.every((step) => getProgressByStep(step, userInput) == 100);
+  }, [steps, userInput]);
 
   return (
     <>
-      <Toolbar tabs={[memberArea.title]} />
+      <Toolbar
+        initialTab={1}
+        breadcrumbs={['Minhas mentorias', memberArea.title]}
+        contact={memberArea?.contact}
+        actionClick={() => setShowCertificate(true)}
+        actionTitle="Ver Certificado"
+        actionIcon={<DocumentScanner fontSize="small" />}
+        actionVisible={isDone}
+      />
       <ContentWidthLimit maxWidth={1900}>
+        {(!steps || steps.length == 0) && (
+          <TipBar>
+            Ainda não há <span>nenhuma etapa disponível</span> para essa
+            mentoria. Em caso de dúvidas, entre em contato com o suporte da
+            mentoria.
+          </TipBar>
+        )}
         <Wrapper>
           <VideoWrapper>
             <Typography variant="h6" sx={{ margin: '1rem 0' }}>
-              {getVideo()?.title}
+              {mainModule?.video?.parent_tool?.title} -
+              {mainModule?.video?.title}
             </Typography>
-            <Box
-              sx={{ width: '985px', height: '509px', backgroundColor: 'black' }}
-            >
-              <ReactPlayer
-                url={(getVideo()?.data as any)?.link}
-                width="100%"
-                onEnded={() =>
-                  GetOnChange({
-                    refId: videoId,
-                    data: {},
-                    extra: {
-                      finished: true,
-                    },
-                  })
-                }
-                height="100%"
-                controls={true}
-                config={{
-                  youtube: {
-                    playerVars: {
-                      showinfo: 0,
-                      controls: 1,
-                      disablekb: 0,
-                    },
-                  },
+            {mainModule?.video?.type != 4 && (
+              <Box
+                sx={{
+                  width: '985px',
+                  height: '554px',
+                  backgroundColor: 'black',
                 }}
-              />
-            </Box>
+              ></Box>
+            )}
+            {mainModule?.video?.type == 4 && (
+              <Box
+                sx={{
+                  width: '985px',
+                  height: '554px',
+                  backgroundColor: 'black',
+                }}
+              >
+                <ReactPlayer
+                  url={(mainModule?.video?.data as any)?.link}
+                  width="100%"
+                  onEnded={() =>
+                    GetOnChange({
+                      refId: mainModule?.video.id,
+                      data: {},
+                      extra: {
+                        finished: true,
+                      },
+                    })
+                  }
+                  height="100%"
+                  controls={true}
+                  config={{
+                    youtube: {
+                      playerVars: {
+                        showinfo: 0,
+                        controls: 1,
+                        disablekb: 0,
+                      },
+                    },
+                  }}
+                />
+              </Box>
+            )}
             {/* <IconButton sx={{ float: 'right' }}>
               <Image
                 alt=""
@@ -290,23 +396,10 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
             </IconButton> */}
             <VideoInteractionsBox>
               <Box sx={{ display: 'flex', gap: '0.5rem' }}>
-                <LikeButton onClick={() => {}}>
-                  <Image
-                    alt=""
-                    width={24}
-                    height={24}
-                    src="/svgs/like-thumb.svg"
-                  />
-                </LikeButton>
-                <LikeButton onClick={() => {}}>
-                  <Image
-                    alt=""
-                    width={24}
-                    height={24}
-                    src="/svgs/unlike-thumb.svg"
-                  />
-                </LikeButton>
-                {userInput.find((inp) => inp.id.toString() === videoId) && (
+                {renderLike()}
+                {userInput.find(
+                  (inp) => inp.id?.toString() === mainModule?.video?.id,
+                ) && (
                   <CompleteButton>
                     Concluído
                     <Image
@@ -318,7 +411,7 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
                   </CompleteButton>
                 )}
               </Box>
-              {nextVideoId && (
+              {nextVideo?.video_index && (
                 <NextVButton onClick={() => onSelectedNext()}>
                   Próximo
                   <Image
@@ -333,9 +426,9 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
 
             <Typography
               variant="body1"
-              sx={{ margin: '1rem 0', maxWidth: 1000, width: '100%' }}
+              sx={{ margin: '1rem 0', maxWidth: 980, width: '100%' }}
             >
-              {getVideo()?.description}
+              {mainModule?.video?.description}
             </Typography>
 
             <Typography variant="body1" sx={{ margin: '2.5rem 0 0.8rem 0' }}>
@@ -347,22 +440,49 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
                 ref={commentRef}
                 placeholder="Deixar mensagem para o mentor"
               />
-              <SendButton onClick={() => handleLike()} variant="contained">
+              <SendButton onClick={() => SendComment()} variant="contained">
                 Enviar
                 <Image alt="" width={15} height={15} src="/svgs/share.svg" />
               </SendButton>
             </Box>
+            <CommentsSession />
           </VideoWrapper>
-          <ProgressBarWrapper>
+          <ProgressBarWrapper
+            sx={{
+              padding: '1rem 0 0 2rem',
+            }}
+          >
             <ProgressBar
-              data={steps}
+              data={steps.filter(({ id }) => unlockedStep.some((s) => s == id))}
               input={userInput}
-              activeid={videoId}
-              onGoTo={(id) => onSelectedVideo(id)}
+              activeid={mainModule?.video?.id}
+              activeStepId={mainModule?.module?.id}
+              onGoTo={(id, task) => {
+                if (task.type == 4) {
+                  onSelectedVideo(id);
+                } else {
+                  setCurrentModal({
+                    onChange: () => {},
+                    type: GetTypeName(task.type),
+                    refId: id,
+                    area_id: member_area_id,
+                    data: task,
+                  });
+                  setOpen(true);
+                }
+              }}
             />
           </ProgressBarWrapper>
         </Wrapper>
       </ContentWidthLimit>
+      <HandleModal />
+      {showCertificate && (
+        <CertificateModal
+          open={showCertificate}
+          setOpen={setShowCertificate}
+          product={memberArea}
+        />
+      )}
     </>
   );
 };
@@ -370,8 +490,11 @@ export const VideoView = ({ member_area_id, video_id, memberArea }) => {
 // * ServerSideRender (SSR)
 export const getProps = async (ctx) => {
   const { session } = await GetAuthSession(ctx);
+  let id = ctx.query?.id as string;
 
-  if (!session)
+  if (id.includes('pdf')) id = null;
+
+  if (!session || !id)
     return {
       redirect: {
         destination: '/',
@@ -379,21 +502,33 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const id = ctx.query.id as string;
   const video_id = (ctx.query.v || 0) as string;
 
-  // fetch for member area
-  const memberArea = await GetProduct(ctx.req, id);
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const product = await GetProductById(supabase, {
+    id: ctx.query.id,
+  });
+
+  const { profile } = await GetProfileById(supabase, {
+    id: session.user.id,
+  });
+
+  if (!product) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: {
       member_area_id: id,
       video_id,
       memberArea: {
-        id: memberArea.id,
-        title: memberArea.title,
-        description: memberArea.description,
+        id: product.id,
+        title: product.title,
+        description: product.description,
       },
+      profile,
     },
   };
 };

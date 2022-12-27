@@ -4,12 +4,16 @@ import { useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import { AddImgButton, ButtonLabel } from './styles';
+import { Close } from '@mui/icons-material';
+import { RemoveBox } from '../UploadFileModal/styles';
 
 type Props = {
   onUploadImage: (file: any) => void;
   thumbnail: string;
   title?: string;
   isBlocked?: boolean;
+  defaultImage?: string;
+  onRemove?: (sourceUrl: string) => void;
 };
 
 const AddImage: FC<Props> = ({
@@ -17,22 +21,49 @@ const AddImage: FC<Props> = ({
   thumbnail,
   title,
   isBlocked,
+  defaultImage = '/svgs/step-image.svg',
+  onRemove,
 }) => {
   const theme = useTheme();
   return (
-    <Box sx={{ display: 'flex', marginBottom: '1rem' }}>
-      <Image
-        alt=""
-        src={thumbnail || '/svgs/step-image.svg'}
-        width={100}
-        height={70}
-        style={{
-          objectFit: 'contain',
-        }}
-      ></Image>
+    <Box
+      sx={{
+        display: 'flex',
+        marginBottom: '1rem',
+        width: '100%',
+      }}
+    >
+      <Box position="relative">
+        {thumbnail && (
+          <RemoveBox
+            sx={{
+              right: -10,
+              top: 1,
+            }}
+            onClick={() => onRemove(thumbnail)}
+          >
+            <Close
+              sx={{
+                height: '1rem',
+                paddingRight: '0.3rem',
+                paddingBottom: '0rem',
+              }}
+            />
+          </RemoveBox>
+        )}
+        <Image
+          alt=""
+          src={thumbnail || defaultImage}
+          width={80}
+          height={80}
+          style={{
+            objectFit: 'cover',
+          }}
+        />
+      </Box>
       <Box
         sx={{
-          marginLeft: '0.5rem',
+          marginLeft: '1.2rem',
           textAlign: 'left',
           color: `${theme.palette.text.primary}`,
         }}

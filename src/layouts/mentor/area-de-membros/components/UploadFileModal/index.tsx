@@ -45,7 +45,7 @@ const FilesUploadModal = ({
   const [description, setDescription] = useState(descriptionData);
 
   const [files, setFiles] = useState<FileType[]>(filesData || []);
-  const [removedFiles, setRemovedFiles] = useState<FileType[]>([]);
+  const [removedFiles, setRemovedFiles] = useState<string[]>([]);
 
   const handleRemoveFile = (_file) => {
     setRemovedFiles([...removedFiles, _file.sourceUrl]);
@@ -103,6 +103,7 @@ const FilesUploadModal = ({
       title="Upload de Arquivo"
     >
       <>
+        <Box width="100vw" />
         <InputField
           label="Título"
           placeholder="Digite o título da etapa"
@@ -117,26 +118,28 @@ const FilesUploadModal = ({
         ></DescriptionInputField>
 
         {files?.length === 0 && (
-          <DropzoneComponent onDrop={(_files) => handleUpload(_files)}>
-            <UploadField sx={{ marginBottom: '1.3rem' }}>
-              <Label>
-                <Image
-                  alt="upload"
-                  width={58}
-                  height={39}
-                  src="/svgs/upload.svg"
-                />
-                <UploadTypography>
-                  Solte o arquivo para fazer upload
-                </UploadTypography>
-                <P>Tamanho máximo de 40mb (No momento, apenas PDF) </P>
-                {/* // TODO: Adicionar feature de google drive */}
-                {/* <DriveButton>
+          <Box sx={{ width: '100%' }}>
+            <DropzoneComponent onDrop={(_files) => handleUpload(_files)}>
+              <UploadField>
+                <Label>
+                  <Image
+                    alt="upload"
+                    width={58}
+                    height={39}
+                    src="/svgs/upload.svg"
+                  />
+                  <UploadTypography>
+                    Solte o arquivo para fazer upload
+                  </UploadTypography>
+                  <P>Tamanho máximo de 40mb (No momento, apenas PDF) </P>
+                  {/* // TODO: Adicionar feature de google drive */}
+                  {/* <DriveButton>
               <GoogleDrive>Google Drive</GoogleDrive>
             </DriveButton> */}
-              </Label>
-            </UploadField>
-          </DropzoneComponent>
+                </Label>
+              </UploadField>
+            </DropzoneComponent>
+          </Box>
         )}
         {files?.length !== 0 && (
           <CustomTypography>Arquivo Anexado</CustomTypography>
@@ -156,7 +159,9 @@ const FilesUploadModal = ({
                 width={54}
                 height={46}
                 src={getImage(file)}
-                objectFit="contain"
+                style={{
+                  objectFit: 'contain',
+                }}
               />
               <AttachName>{file.name}</AttachName>
               <RemoveBox onClick={() => handleRemoveFile(file)}>

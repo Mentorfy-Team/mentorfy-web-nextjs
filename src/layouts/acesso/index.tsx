@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import Image from 'next/image';
 import handleAcessoSubPage from './helper/SwitchSubPages';
 import {
@@ -8,11 +7,10 @@ import {
   BackgroundHolder,
   Grid,
   HeaderTitle,
-  Welcome,
   Wrapper,
 } from './styles';
-import backgroundImage from '~/../public/images/background-login.jpg';
-import tipografiaImage from '~/../public/images/tipografia.png';
+import backgroundImage from '~/../public/images/background.webp';
+import tipografiaImage from '~/../public/images/logo-montanha.png';
 import { userStore } from '~/stores';
 import { useRouter } from 'next/router';
 // eslint-disable-next-line unused-imports/no-unused-imports-ts
@@ -26,14 +24,14 @@ export type AcessoSubPage =
   | 'sucesso'
   | 'confirmar-conta';
 
-function LoginView({
-  urlParams,
-}: InferGetServerSidePropsType<typeof getProps>) {
+function LoginView() {
   const mobile = useMediaQuery('(max-width:500px)');
   const { appParams, setAppParams } = userStore();
   const [info, setInfo] = useState<any>();
   const [Header, setHeader] = useState<any>();
   const router = useRouter();
+
+  const urlParams = router.query;
 
   const handleSubPages = useCallback(() => {
     return handleAcessoSubPage(info, setInfo, urlParams);
@@ -42,11 +40,14 @@ function LoginView({
   const ImageHeader = useCallback(() => {
     return !appParams.signup ? (
       <Image
-        width={300 / (1.75 + (mobile ? 0.5 : 0))}
-        height={75 / (1.75 + (mobile ? 0.5 : 0))}
+        width={340 / (1.75 + (mobile ? 0.5 : 0))}
+        height={140 / (1.75 + (mobile ? 0.5 : 0))}
         src={tipografiaImage}
-        placeholder="blur"
         alt="logo"
+        style={{
+          objectFit: 'contain',
+        }}
+        quality={80}
       />
     ) : (
       <HeaderTitle>{appParams.signup.title}</HeaderTitle>
@@ -73,7 +74,7 @@ function LoginView({
               }}
               alt="some important man mentoring smart people"
               src={backgroundImage}
-              quality={100}
+              quality={85}
               placeholder="blur"
             />
           </BackgroundHolder>
@@ -88,7 +89,6 @@ function LoginView({
           lg={5.5}
         >
           <AlignSelf pt={mobile ? 6 : 10} pb={4}>
-            <Welcome>BEM-VINDO A</Welcome>
             {Header}
           </AlignSelf>
           <Wrapper>{handleSubPages()}</Wrapper>
@@ -98,12 +98,22 @@ function LoginView({
   );
 }
 
-export const getProps: GetServerSideProps = async (ctx) => {
-  return {
-    props: {
-      urlParams: ctx.query,
-    },
-  };
-};
+// export const getProps: GetServerSideProps = async (ctx) => {
+//   // if path contains error, redirect to login
+//   if (ctx.resolvedUrl.includes('#error')) {
+//     return {
+//       redirect: {
+//         destination: '?',
+//         permanent: false,
+//       },
+//     };
+//   }
+
+//   return {
+//     props: {
+//       urlParams: ctx.query,
+//     },
+//   };
+// };
 
 export default LoginView;

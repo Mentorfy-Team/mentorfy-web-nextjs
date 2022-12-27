@@ -3,7 +3,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 
-import { Header, Modal, ModalDialogContent, ModalDialogTitle } from './styles';
+import {
+  ButtonsWrapper,
+  Header,
+  Modal,
+  ModalDialogContent,
+  ModalDialogTitle,
+} from './styles';
 import { useTheme } from '@mui/material/styles';
 
 type props = {
@@ -21,6 +27,9 @@ type props = {
   id?: string;
   isBlocked?: boolean;
   withX?: boolean;
+  sx?: any;
+  saveText?: string;
+  maxWidth?: string;
 };
 
 const ModalComponent: FC<props> = ({
@@ -38,6 +47,9 @@ const ModalComponent: FC<props> = ({
   id,
   isBlocked = false,
   withX = true,
+  sx,
+  saveText,
+  maxWidth,
 }) => {
   const theme = useTheme();
 
@@ -48,6 +60,7 @@ const ModalComponent: FC<props> = ({
       onClose={() => setOpen(false)}
       isMentorado={isMentorado}
       popularProduct={popularProduct}
+      maxWidthSize={maxWidth}
     >
       {popularProduct ? (
         ''
@@ -69,62 +82,66 @@ const ModalComponent: FC<props> = ({
         isMentorado={isMentorado}
         popularProduct={popularProduct}
         id="dialog"
+        sx={sx}
       >
         {children}
-        {onSave && (
-          <Button
-            variant="outlined"
-            sx={{
-              textTransform: 'none',
-              float: 'right',
-              width: '40%',
-              marginTop: '1rem',
-              height: '2.5rem',
-              backgroundColor: `${deleteMessage ? '' : 'green'}`,
-              color: 'white',
-            }}
-            disabled={isBlocked}
-            onClick={() => onSave()}
-          >
-            {deleteMessage ? 'Cancelar' : 'Salvar'}
-          </Button>
-        )}
-        {onClose && (
-          <Button
-            variant="outlined"
-            sx={{
-              textTransform: 'none',
-              float: 'right',
-              width: '40%',
-              marginTop: '1rem',
-              height: '2.5rem',
-              color: theme.palette.accent.main,
-            }}
-            disabled={isBlocked}
-            onClick={() => onClose()}
-          >
-            Fechar
-          </Button>
-        )}
-        {onDelete && (
-          <Button
-            variant="outlined"
-            sx={{
-              textTransform: 'none',
-              float: 'left',
-              width: '40%',
-              marginTop: '1rem',
-              color: `${deleteMessage ? 'white' : 'gray'}`,
-              backgroundColor: `${deleteMessage && 'red'}`,
-              fontWeight: '300',
-              height: '2.5rem',
-            }}
-            disabled={isBlocked}
-            onClick={() => onDelete()}
-          >
-            Excluir
-          </Button>
-        )}
+        <ButtonsWrapper>
+          {onDelete ? (
+            <Button
+              variant="outlined"
+              sx={{
+                textTransform: 'none',
+                float: 'left',
+                width: '40%',
+                margin: '1rem 0px 0px 0px',
+                color: `${deleteMessage ? 'white' : 'gray'}`,
+                backgroundColor: `${deleteMessage && 'red'}`,
+                fontWeight: '300',
+                height: '2.5rem',
+              }}
+              disabled={isBlocked}
+              onClick={() => onDelete()}
+            >
+              Excluir
+            </Button>
+          ) : (
+            <div />
+          )}
+          {onSave && (
+            <Button
+              variant="outlined"
+              sx={{
+                textTransform: 'none',
+                float: 'right',
+                width: '40%',
+                margin: '1rem 0px 0px 0px',
+                height: '2.5rem',
+                backgroundColor: `${deleteMessage ? '' : 'green'}`,
+                color: 'white',
+              }}
+              disabled={isBlocked}
+              onClick={() => onSave()}
+            >
+              {deleteMessage ? 'Cancelar' : saveText ? saveText : 'Salvar'}
+            </Button>
+          )}
+          {onClose && (
+            <Button
+              variant="outlined"
+              sx={{
+                textTransform: 'none',
+                width: '40%',
+                margin: '1rem 0px 0px 0px',
+                height: '2.5rem',
+                color: theme.palette.accent.main,
+              }}
+              disabled={isBlocked}
+              onClick={() => onClose()}
+            >
+              Fechar
+            </Button>
+          )}
+        </ButtonsWrapper>
       </ModalDialogContent>
     </Modal>
   );

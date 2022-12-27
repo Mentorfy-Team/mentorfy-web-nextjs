@@ -9,9 +9,15 @@ export const Wrapper = styled(Box)`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  height: 263.47px;
+  height: 266px;
   padding: 1.3rem;
   text-align: left;
+`;
+
+export const Title = styled(Typography)`
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 110.52%;
 `;
 
 export const SubTitle = styled(Typography)`
@@ -20,15 +26,23 @@ export const SubTitle = styled(Typography)`
   font-weight: 500;
   line-height: 110.52%;
 `;
+export const AvailableAmount = styled(Typography)`
+  font-size: 0.7rem;
+  font-weight: 400;
+  line-height: 110.52%;
+  opacity: 0.8;
+  margin-bottom: 0.5rem;
+`;
 
 export const WalletAmount = styled(Typography)`
   font-size: 1.2rem;
-  font-weight: 500;
+  font-weight: 700;
   line-height: 110.52%;
 `;
 
 export const ButtonsWrapper = styled(Box)`
   display: flex;
+  width: 100%;
   justify-content: space-between;
 `;
 
@@ -37,15 +51,17 @@ export const AdvanceButton = styled(Button)`
   font-weight: 500;
   line-height: 110.52%;
   padding: 0;
+  :hover {
+    background-color: transparent !important;
+  }
 `;
 
 export const TransferButton = styled(Button)`
   background: none;
-  border-color: ${({ theme }) => theme.palette.accent.main};
-  font-size: 10px;
+  font-size: 0.7rem;
+  background-color: ${({ theme }) => theme.palette.accent.main};
   font-weight: 500;
   line-height: 110.52%;
-  margin-left: 1rem;
   padding: 0 0.3rem;
   text-transform: uppercase;
 `;

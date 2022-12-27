@@ -24,6 +24,7 @@ export const ButtonsWrapper = styled('div')`
   display: flex;
   justify-content: space-between;
   margin-top: 2rem;
+  width: 100%;
 
   a {
     text-decoration: none;
@@ -32,16 +33,15 @@ export const ButtonsWrapper = styled('div')`
 
 export const WheelWrapper = styled(Box)`
   background-color: ${({ theme }) => theme.palette.primary.main};
-  width: 100%;
+  overflow: visible;
 `;
 
 export const ContentWrapper = styled('div')`
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.5rem;
   justify-content: center;
-  margin-top: 2rem;
 `;
 
 export const ForwardButton = styled(Button)`
@@ -56,7 +56,7 @@ export const BackButton = styled(Button)`
 `;
 
 export const TextQuestion = styled(Typography)`
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   span {
     font-weight: bold;
     margin-left: 0.2rem;

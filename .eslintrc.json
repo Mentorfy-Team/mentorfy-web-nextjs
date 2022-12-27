@@ -15,7 +15,7 @@
     "@typescript-eslint/no-explicit-any": "off",
     "unused-imports/no-unused-imports-ts": 2,
     "react/display-name": "off",
-    "better-styled-components/sort-declarations-alphabetically": "error",
+    "better-styled-components/sort-declarations-alphabetically": "off",
     "import/no-anonymous-default-export": "off",
     "quotes": ["error", "single"],
     "semi": ["error", "always"],

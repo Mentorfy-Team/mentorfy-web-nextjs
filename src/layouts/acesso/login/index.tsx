@@ -3,8 +3,6 @@ import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Auth } from '~/@types/api/auth/auth';
 import InputField from '~/components/atoms/InputField';
-import Tabbar from '~/components/modules/Tabbar';
-import { TabItem } from '~/components/modules/Tabbar/styles';
 import { MentorRoutes, MentoredRoutes } from '~/consts/routes/routes.consts';
 import { useProfile } from '~/hooks/useProfile';
 import { Authenticate } from '~/services/auth/auth.service';
@@ -18,7 +16,8 @@ import {
   LoginButton,
   Title,
 } from '../styles';
-import { deleteCookie, setCookie } from 'cookies-next';
+import SupabaseClient from '~/services/SupabaseClient';
+import CustomTab from './components/CustomTab';
 
 type props = {
   urlProps: any[];
@@ -41,13 +40,37 @@ const Login: FC<props> = ({ urlProps }) => {
   } = useProfile();
 
   useEffect(() => {
+    const {
+      data: { subscription },
+    } = SupabaseClient().auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN') {
+        if (session) {
+          SupabaseClient()
+            .auth.setSession(session)
+            .then(() => {
+              mutate();
+            });
+        }
+      }
+    });
+
+    return subscription.unsubscribe();
+  }, [mutate]);
+
+  const onLogin = useCallback(async () => {
+    if (profile?.access_type === 'mentor') {
+      await route.prefetch(MentorRoutes.home);
+      await route.push(MentorRoutes.home);
+    } else {
+      await route.prefetch(MentoredRoutes.home);
+      await route.push(MentoredRoutes.home);
+    }
+  }, [profile?.access_type, route]);
+
+  useEffect(() => {
     if (!isProfileLoading) {
       if (profile?.id) {
-        if (profile?.access_type === 'mentor') {
-          route.push(MentorRoutes.home);
-        } else {
-          route.push(MentoredRoutes.home);
-        }
+        onLogin();
       }
     }
     if (profile?.id) setIsLoading(false);
@@ -74,15 +97,8 @@ const Login: FC<props> = ({ urlProps }) => {
       setError('*Email e ou senha incorretos, tente novamente!');
       setIsLoading(false);
       return;
-    } else {
-      deleteCookie('sb-refresh-token');
-      deleteCookie('sb-access-token');
-
-      setCookie('sb-refresh-token', registerData.session.refresh_token);
-      setCookie('sb-access-token', registerData.session.access_token);
-      await mutate();
     }
-  }, [email, mutate, password]);
+  }, [email, password]);
 
   return (
     <AnimatedView>
@@ -93,29 +109,7 @@ const Login: FC<props> = ({ urlProps }) => {
         </Accent>{' '}
         exclusiva.
       </Title>
-      <Tabbar
-        withborder
-        selected={index}
-        onChange={(_, value) => setIndex(value)}
-      >
-        <TabItem
-          sx={{
-            width: '50%',
-            marginLeft: '0px !important',
-            alignItems: 'center !important',
-          }}
-          label="Login"
-        />
-        <TabItem
-          sx={{
-            alignItems: 'center !important',
-            width: '50%',
-            marginLeft: '0px !important',
-          }}
-          label="Crie sua conta"
-          onClick={() => setAppParams({ subpage: 'cadastro' })}
-        />
-      </Tabbar>
+      <CustomTab onClick={() => setAppParams({ subpage: 'cadastro' })} />
       <FormWrapper
         sx={{ marginTop: '1.5rem' }}
         onSubmit={handleSubmit(onSubmit)}
@@ -133,6 +127,7 @@ const Login: FC<props> = ({ urlProps }) => {
             setEmail(e.target.value);
             setError(null);
           }}
+          disabled={isLoading}
         />
         <InputField
           id="outlined-required"
@@ -147,6 +142,7 @@ const Login: FC<props> = ({ urlProps }) => {
             setPassword(e.target.value);
             setError(null);
           }}
+          disabled={isLoading}
         />
         {error && <ErrorHelper>{error}</ErrorHelper>}
         <LoginButton loading={isLoading} disabled={isLoading} type="submit">

@@ -44,8 +44,8 @@ export const CustomTypography = styled(Typography)`
   font-size: 0.7rem;
   font-weight: 400;
   line-height: 0.75rem;
+  margin: 1rem auto 0 0;
   margin-bottom: 0.5rem;
-  margin-top: 1rem;
 `;
 
 export const AttachName = styled('p')`
@@ -56,7 +56,9 @@ export const AttachName = styled('p')`
   margin-top: 0.3rem;
 `;
 
-export const UploadField = styled('div')``;
+export const UploadField = styled('div')`
+  margin-bottom: 1.3rem;
+`;
 
 export const RemoveBox = styled(Box)`
   background: ${({ theme }) => theme.palette.error.main};
@@ -74,6 +76,7 @@ export const FilesWrapper = styled(Box)`
   display: flex;
   gap: 1rem;
   overflow-x: auto;
+  width: 100%;
 `;
 
 export const DriveButton = styled(Button)`

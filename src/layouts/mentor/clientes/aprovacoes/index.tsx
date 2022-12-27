@@ -45,7 +45,7 @@ const Approvals: React.FC<{ user }> = ({ user }) => {
         />
       </>
     );
-  }, [clients, mutate]);
+  }, [clients, mutate, setLoading]);
 
   return <ProductsTableComponent />;
 };

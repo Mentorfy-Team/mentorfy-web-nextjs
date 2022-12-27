@@ -10,7 +10,7 @@ export const StudentComments = styled(Typography)`
 
 export const ResponseText = styled(Typography)`
   color: ${({ theme }) => theme.palette.secondary.main};
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 400;
   line-height: 0.9rem;
 `;
@@ -42,16 +42,17 @@ export const AvatarWrapper = styled('div')`
 `;
 
 export const AnswersWrapper = styled('div')`
-  max-height: 350px;
-  overflow-y: auto;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+  width: 100%;
 `;
 
 export const TaskTitle = styled(Typography)`
   font-size: 1.1rem;
   font-weight: 600;
   line-height: 1.4rem;
-
   text-overflow: ellipsis;
   white-space: nowrap;
 `;

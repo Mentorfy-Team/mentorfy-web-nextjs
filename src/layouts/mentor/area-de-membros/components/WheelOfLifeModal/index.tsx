@@ -66,6 +66,7 @@ const WheelOfLifeModal = ({
       title="Roda da Vida"
     >
       <>
+        <Box sx={{ width: '100vw' }} />
         <InputField
           label="Título"
           value={title}

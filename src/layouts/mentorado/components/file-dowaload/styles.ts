@@ -4,9 +4,8 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 
 export const FileWrapper = styled(Box)`
-
   background-color: ${({ theme }) => theme.palette.caption.main};
-  border-radius: 4px;
+  border-radius: 6px;
   display: flex;
   height: 450px;
   justify-content: center;
@@ -30,7 +29,7 @@ export const DownloaddButton = styled(Button)<{
   download: any;
 }>`
   background-color: ${({ theme }) => theme.palette.primary.light} !important;
-  border-radius: 4px;
+  border-radius: 6px;
   color: ${({ theme }) => theme.palette.accent.main};
   font-weight: bold;
   padding: 10px 20px !important;
@@ -42,8 +41,8 @@ export const DownloaddButton = styled(Button)<{
 `;
 
 export const DownloadText = styled(Typography)`
-  font-size: 1.2rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 300;
   line-height: 1.4rem;
   margin: 1.6rem 0 1.6rem 0;
 `;

@@ -1,4 +1,4 @@
-import { handler } from '~/backend/handler';
-import { get } from '~/backend/member-areas';
+import { handler } from '~/backend/http/handler';
+import { get } from '~/backend/http/member-areas';
 
 export default handler({ get });

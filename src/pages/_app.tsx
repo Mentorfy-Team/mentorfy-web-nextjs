@@ -7,19 +7,27 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { SupabaseWithoutAuth } from '~/backend/supabase';
 import createEmotionCache from '~/createEmotionCache';
 import { GlobalStyles, ThemeProvider } from '~/theme';
 import { PageWrapper, Wrapper } from './_app.styles';
 const clientSideEmotionCache = createEmotionCache();
-import { Roboto } from '@next/font/google';
+import { Corinthia, Roboto } from '@next/font/google';
 import { SessionContextProvider } from '@supabase/auth-helpers-react';
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from '~/@types/supabase/v2.types';
+import { userStore } from '~/stores';
+import SupabaseClient from '~/services/SupabaseClient';
+export { reportWebVitals } from 'next-axiom';
 
 export const MainFont = Roboto({
   weight: ['300', '400', '500', '700', '900'],
   variable: '--main-font',
+  subsets: ['latin'],
+});
+
+export const SingFont = Corinthia({
+  weight: ['400', '700'],
+  variable: '--sign-font',
   subsets: ['latin'],
 });
 
@@ -40,7 +48,7 @@ interface MyAppProps extends AppProps {
 const App = (props: MyAppProps) => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const router = useRouter();
-
+  const { setLoading, isLoading, llc } = userStore();
   const [supabaseClient] = useState(() =>
     createBrowserSupabaseClient<Database>(),
   );
@@ -49,18 +57,26 @@ const App = (props: MyAppProps) => {
     if (router.asPath.includes('#')) {
       router.replace(router.asPath.replace('#', '?'));
     }
-  }, [router]);
+    // find if llc has more than 30 seconds pass
+    if (llc && isLoading) {
+      const now = new Date();
+      const diff = Math.abs(now.getTime() - Date.parse(llc));
+      const diffSeconds = Math.ceil(diff / 1000);
+      if (diffSeconds > 30) {
+        setLoading(false);
+      }
+    }
+  }, [isLoading, llc, router, setLoading]);
 
   useEffect(() => {
     const {
       data: { subscription },
-    } = SupabaseWithoutAuth.auth.onAuthStateChange((event, session) => {
-      fetch('/api/auth/cookies', {
-        method: 'POST',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        credentials: 'same-origin',
-        body: JSON.stringify({ event, session }),
-      });
+    } = SupabaseClient().auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN') {
+        if (session) {
+          SupabaseClient().auth.setSession(session);
+        }
+      }
     });
 
     return subscription.unsubscribe();
@@ -85,16 +101,36 @@ const App = (props: MyAppProps) => {
     }
   }, [router]);
 
+  useEffect(() => {
+    const handleLoadingOn = (url, { shallow }) => {
+      setLoading(true);
+    };
+    const handleLoadingOff = (url, { shallow }) => {
+      setLoading(false);
+    };
+
+    router.events.on('routeChangeStart', handleLoadingOn);
+    router.events.on('routeChangeComplete', handleLoadingOff);
+
+    // If the component is unmounted, unsubscribe
+    // from the event with the `off` method:
+    return () => {
+      router.events.off('routeChangeStart', handleLoadingOn);
+      router.events.off('routeChangeComplete', handleLoadingOff);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <main className={MainFont.className}>
+    <main style={MainFont.style} className={MainFont.className}>
       <CacheProvider value={emotionCache}>
         <Head>
           <title>Mentorfy</title>
           <meta content="width=device-width, initial-scale=1" />
         </Head>
         <GlobalStyles />
-        <CssBaseline />
         <ThemeProvider>
+          <CssBaseline />
           <Wrapper id="WrapperRoot">
             <PageWrapper>
               <SessionContextProvider

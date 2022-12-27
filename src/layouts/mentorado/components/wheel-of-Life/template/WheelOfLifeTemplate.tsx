@@ -6,7 +6,7 @@ const generateData = (areas: string[], input) => {
   for (let i = 0; i < areas.length; i++) {
     for (let j = 0; j < 10; j++) {
       data.push({
-        value: input[i]?.rating > j ? 1 : 0,
+        value: input[i]?.rating > j ? j + 1 : null,
         area: areas[i],
         rating: j,
       });
@@ -15,11 +15,13 @@ const generateData = (areas: string[], input) => {
   return data;
 };
 
-export default function ({ taskData, input }) {
+export default function ({ taskData, input, width, height }) {
   return Heatmap({
     data: generateData(
       taskData.map((task) => task.title),
       input,
     ),
+    width,
+    height,
   });
 }

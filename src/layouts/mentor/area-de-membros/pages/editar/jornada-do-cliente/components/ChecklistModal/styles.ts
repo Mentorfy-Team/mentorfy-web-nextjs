@@ -19,16 +19,16 @@ export const ClientName = styled(Typography)`
   line-height: 1.1rem;
 `;
 export const FinishedDate = styled(Typography)`
-  color: ${({theme}) => theme.palette.caption.main};
+  color: ${({ theme }) => theme.palette.caption.main};
   font-size: 0.8rem;
   font-weight: 500;
   line-height: 1.1rem;
 `;
 
 export const TitleWrapper = styled('div')`
- align-items: center;
- display: flex;
- flex-direction: column;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
 `;
 export const AvatarWrapper = styled('div')`
   border-radius: 50%;
@@ -37,24 +37,33 @@ export const AvatarWrapper = styled('div')`
 `;
 
 export const AnswersWrapper = styled('div')`
-  max-height: 350px;
-  overflow-y: auto; 
+  width: 100%;
 `;
 
 export const TaskTitle = styled(Typography)`
+  align-self: center;
   font-size: 1.1rem;
   font-weight: 600;
   line-height: 1.4rem;
-  position: relative;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin-bottom: 1rem;
+  color: ${({ theme }) => theme.palette.accent.main};
+`;
+
+export const SubTaskTitle = styled(Typography)`
+  align-self: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.4rem;
+  display: contents;
+  p {
+    align-self: start;
+  }
 `;
 
 export const TaskWrapper = styled('div')`
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  gap: 0.5rem;
   padding-bottom: 2rem;
-  width: 90%;
+  width: 100%;
 `;

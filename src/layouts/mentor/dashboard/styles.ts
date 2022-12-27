@@ -48,14 +48,6 @@ export const IndicatorTitle = styled(Typography)<Props>`
   line-height: 110.52%;
 `;
 
-export const ArrowBox = styled(Box)`
-  background-color: #162f29;
-  border-radius: 4px;
-  display: flex;
-  height: 48.78px;
-  justify-content: center;
-  width: 50px;
-`;
 export const ImagesBox = styled(Box)<Props>`
   background-color: ${({ theme }) => theme.palette.primary.light};
   border-radius: 4px;
@@ -65,4 +57,51 @@ export const ImagesBox = styled(Box)<Props>`
   gap: 0.5rem;
   height: 282px;
   max-width: 310px;
+  position: relative;
+`;
+
+export const BannerWrapper = styled(Box)`
+  max-width: 1900px;
+  height: 300px;
+  background-color: ${({ theme }) => theme.palette.primary.light};
+  border-radius: 10px;
+  background-image: url('/images/montanha.png');
+  background-size: cover;
+  padding: 2.5rem 3rem 0;
+  display: flex;
+  overflow-y: auto;
+`;
+
+export const TextsWrapper = styled(Box)`
+  text-align: start;
+  display: flex;
+  flex-direction: column;
+`;
+export const NameWrapper = styled(Box)`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+export const MentorName = styled(Typography)`
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 110.52%;
+  color: ${({ theme }) => theme.palette.caption.main};
+`;
+
+export const WelcomeText = styled(Typography)`
+  font-size: 2.2rem;
+  font-weight: 700;
+  line-height: 110.52%;
+  margin: 0.7rem 0 2rem;
+`;
+
+export const DescriptionText = styled(Typography)`
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 110.52%;
+  color: ${({ theme }) => theme.palette.caption.main};
+  text-align: justify;
+  width: 80%;
 `;

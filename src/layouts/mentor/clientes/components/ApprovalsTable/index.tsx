@@ -44,7 +44,7 @@ const ApprovalsTable = ({
   rows = [],
   onApprovalDone,
 }: {
-  rows: UserClient.ClientRelation[];
+  rows: ClientTypes.Client[];
   onApprovalDone: (id, product_id, approved) => void;
 }) => {
   const [page, setPage] = useState(1);

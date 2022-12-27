@@ -1,10 +1,11 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import Grid2 from '@mui/material/Unstable_Grid2';
 
 export const Item = styled(Box)`
   align-items: flex-start;
-  background-color: #29282d;
+  background-color: ${({ theme }) => theme.palette.primary.light};
+  border: 1px solid ${({ theme }) => theme.palette.accent.dark};
+  border-radius: 10px;
   display: flex;
 
   height: 8.9rem;
@@ -26,6 +27,8 @@ export const TextWrapper = styled(Box)`
   ${({ theme }) => theme.breakpoints.up('sm')} {
     gap: 1rem;
   }
-`;
 
-export const Grid = styled(Grid2)``;
+  p {
+    font-size: clamp(0.8rem, 1vw, 1.2rem);
+  }
+`;

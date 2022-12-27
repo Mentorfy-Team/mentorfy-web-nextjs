@@ -20,6 +20,7 @@ const globalStyles = css`
   }
   .MuiDialog-paper {
     background-color: transparent;
+    max-width: 100%;
     @media (max-width: 490px) {
       position: absolute;
       bottom: -34;

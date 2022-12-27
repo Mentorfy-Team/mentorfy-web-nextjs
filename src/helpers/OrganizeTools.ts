@@ -1,25 +1,17 @@
-import { DnDObject } from '~/components/modules/DragNDrop';
+import { GroupTools } from '~/components/modules/DragNDrop';
 
-export const OrganizeTools = (
-  data: MentorTools.ToolData[],
-  filterByTypeId?,
-) => {
+export const OrganizeTools = (data: GroupTools[], filterByTypeId?) => {
   if (!data) return [];
   const sortedData = data
-    .filter(
-      (d) =>
-        !filterByTypeId ||
-        d.mentor_tool === 0 ||
-        d.mentor_tool === filterByTypeId,
-    )
+    .filter((d) => !filterByTypeId || d.type === 0 || d.type === filterByTypeId)
     .sort((a, b) => a.order - b.order);
   if (!sortedData) return [];
 
-  const steps: DnDObject[] = [];
+  const steps: Partial<GroupTools>[] = [];
   let countSteps = 0;
 
   for (let i = 0; i < sortedData.length; i++) {
-    const isStep = sortedData[i].mentor_tool === 0;
+    const isStep = sortedData[i].type === 0;
 
     if (isStep) {
       steps.push({
@@ -35,7 +27,7 @@ export const OrganizeTools = (
       if (i === 0) {
         steps.push({
           id: '0',
-          title: 'Agrupador Padrão',
+          title: 'Módulo Padrão',
           rows: [
             {
               id: sortedData[i].id,
@@ -43,20 +35,21 @@ export const OrganizeTools = (
               description: sortedData[i].description,
               data: sortedData[i].data,
               extra: sortedData[i].extra,
-              mentor_tool: sortedData[i].mentor_tool,
+              type: sortedData[i].type,
+              parent: sortedData[i].parent,
             },
           ],
         });
         countSteps++;
       } else {
-        console.log(steps, countSteps - 1, 'sss');
         steps[countSteps - 1].rows.push({
           id: sortedData[i].id,
           title: sortedData[i].title,
           description: sortedData[i].description,
           data: sortedData[i].data,
           extra: sortedData[i].extra,
-          mentor_tool: sortedData[i].mentor_tool,
+          type: sortedData[i].type,
+          parent: sortedData[i].parent,
         });
       }
     }

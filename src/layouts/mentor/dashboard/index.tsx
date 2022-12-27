@@ -1,47 +1,66 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Image from 'next/image';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import Toolbar from '~/components/modules/Toolbar';
 import Finances from './components/finance';
 import Indicators from './components/Indicators';
-import { ImagesBox } from './styles';
+import {
+  BannerWrapper,
+  DescriptionText,
+  ImagesBox,
+  MentorName,
+  NameWrapper,
+  TextsWrapper,
+  WelcomeText,
+} from './styles';
 import { GetAuthSession } from '~/helpers/AuthSession';
-const Dashboard: FC<PageTypes.Props> = () => {
+import Mountain from '~/../public/svgs/favicon';
+import Soon from '~/components/atoms/Soon';
+import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
+import { SupabaseServer } from '~/backend/supabase';
+
+const Dashboard: FC<PageTypes.Props> = ({ user, profile }) => {
   const ref = useRef(null);
   const [width, setWidth] = useState(0);
   const [height, setHeight] = useState(0);
 
-  useEffect(() => {
-    setWidth(ref.current.offsetWidth);
-    setHeight(ref.current.offsetHeight);
-  }, []);
+  // useEffect(() => {
+  //   setWidth(ref.current.offsetWidth);
+  //   setHeight(ref.current.offsetHeight);
+  // }, []);
+
   return (
     <>
-      <Toolbar tabs={['Visão Geral']} />
-      <ContentWidthLimit maxWidth={1900}>
-        <Box
-          sx={{
-            width: '100%',
-            minHeight: '300px',
-            overflow: 'hidden',
-            position: 'relative',
-          }}
-          ref={ref}
-        >
+      <ContentWidthLimit
+        withToolBar={false}
+        withoutScroll={true}
+        maxWidth={1900}
+      >
+        <BannerWrapper>
+          <TextsWrapper>
+            <NameWrapper>
+              <Mountain />
+              <MentorName>Olá, {profile?.name}</MentorName>
+            </NameWrapper>
+            <WelcomeText>Seja bem-vindo(a) ao Mentorfy</WelcomeText>
+            <DescriptionText>
+              Mais que uma plataforma dedicada a mentores, somos um caminho.
+              Acreditamos que o papel de um mentor é descobrir soluções e
+              caminhos que ainda não existem na realidade humana, mas quando
+              criados e mapeados, podem dar nomes às montanhas assim como foi
+              com George EVEREST. Mentor, essa é a sua jornada, bem vindo ao
+              caminho que vai te transformar em uma lenda!
+            </DescriptionText>
+          </TextsWrapper>
           <Image
             alt="banner"
-            width={width}
-            height={300 * 2}
-            src="/images/banner.png"
-            style={{
-              objectFit: 'cover',
-              position: 'absolute',
-              bottom: '0px',
-            }}
+            width={371}
+            height={150}
+            src="/images/frase.png"
             quality={100}
+            style={{ margin: '3rem 0 0 auto' }}
           />
-        </Box>
+        </BannerWrapper>
         <Indicators />
         <Finances />
         <Box
@@ -53,6 +72,7 @@ const Dashboard: FC<PageTypes.Props> = () => {
           }}
         >
           <ImagesBox>
+            <Soon>Em breve</Soon>
             <Image
               alt="banner"
               width={310}
@@ -64,6 +84,7 @@ const Dashboard: FC<PageTypes.Props> = () => {
             />
           </ImagesBox>
           <ImagesBox>
+            <Soon>Em breve</Soon>
             <Image
               alt="banner"
               width={302}
@@ -80,8 +101,10 @@ const Dashboard: FC<PageTypes.Props> = () => {
               height: '282px',
               cursor: 'pointer',
               flex: 1,
+              position: 'relative',
             }}
           >
+            <Soon>Em breve</Soon>
             <Image
               alt="banner"
               width={490}
@@ -109,10 +132,14 @@ export const getProps = async (ctx) => {
         permanent: false,
       },
     };
-
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const userData = await GetProfileById(supabase, {
+    id: session.user.id,
+  });
   return {
     props: {
       user: session.user,
+      profile: userData.profile,
     },
   };
 };

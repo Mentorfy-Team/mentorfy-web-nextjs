@@ -115,6 +115,7 @@ const ChecklistModal = ({
       title="Checklist"
     >
       <>
+        <Box sx={{ width: '100vw' }} />
         <InputField
           value={title}
           onChange={(e) => setTitle(e.target.value)}

@@ -15,14 +15,15 @@ const ClientsGrid = ({ mentorados = 0, alunos = 0, acessos = 0 }) => {
         <Item>
           <TextWrapper>
             <Typography variant="body2">Total de Mentorados</Typography>
-            <Typography sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}>
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}
+            >
               {mentorados}
             </Typography>
           </TextWrapper>
 
-          {!isMobile && (
-            <GraduationCapSvg height={40} width={40} fill="#1C1B20" />
-          )}
+          {!isMobile && <GraduationCapSvg height={40} width={40} />}
         </Item>
       </Grid>
 
@@ -36,12 +37,15 @@ const ClientsGrid = ({ mentorados = 0, alunos = 0, acessos = 0 }) => {
         <Item>
           <TextWrapper>
             <Typography variant="body2">Total de Alunos</Typography>
-            <Typography sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}>
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}
+            >
               {alunos}
             </Typography>
           </TextWrapper>
 
-          {!isMobile && <ClientsSvg height={40} width={40} fill="#1C1B20" />}
+          {!isMobile && <ClientsSvg height={40} width={40} />}
         </Item>
       </Grid>
 
@@ -49,12 +53,15 @@ const ClientsGrid = ({ mentorados = 0, alunos = 0, acessos = 0 }) => {
         <Item>
           <TextWrapper>
             <Typography variant="body2">Total de Acessos</Typography>
-            <Typography sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}>
+            <Typography
+              variant="h4"
+              sx={{ fontWeight: 600, fontSize: isMobile ? 26 : 40 }}
+            >
               {acessos}
             </Typography>
           </TextWrapper>
 
-          {!isMobile && <RocketSvg height={32} width={32} fill="#1C1B20" />}
+          {!isMobile && <RocketSvg height={32} width={32} />}
         </Item>
       </Grid>
     </Grid>

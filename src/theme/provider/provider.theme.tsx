@@ -13,7 +13,7 @@ const Provider: FC<{ children: React.ReactNode }> = ({ children }) => {
   });
 
   Theme = responsiveFontSizes(Theme);
-  Theme.components = MuiOverride;
+  Theme.components = MuiOverride as any;
 
   return (
     <div>

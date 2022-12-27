@@ -39,6 +39,16 @@ export const AppBar = styled(MuiAppBar)`
   svg {
     cursor: pointer;
   }
+
+  a {
+    text-decoration: none;
+    color: white;
+    border: 1px solid ${({ theme }) => theme.palette.accent.main};
+    color: ${({ theme }) => theme.palette.accent.main};
+    border-radius: 5px;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.9rem;
+  }
 `;
 
 export const PopoverBox = styled(Box)`

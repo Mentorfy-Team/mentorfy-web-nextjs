@@ -33,7 +33,7 @@ const Clients: FC<{ user: User }> = ({ user }) => {
     isLoading: isLoadingClient,
   } = useClients(user.id);
   const [selectedClient, setSelectedClient] = useState(null);
-  // userStore
+
   const { setLoading: setGlobalLoading, isLoading: GlobalLoading } =
     userStore();
   const route = useRouter();
@@ -89,7 +89,7 @@ const Clients: FC<{ user: User }> = ({ user }) => {
   // Consts to controll buttons text
   const exportClientsText = isMobile ? '' : 'Exportar Clientes';
   const filterClientsText = isMobile ? '' : 'Filtrar Clientes';
-  const createdClientsText = isMobile ? '' : 'Cadastrar Clientes';
+  const createdClientsText = isMobile ? '' : 'Cadastrar Cliente';
   return (
     <>
       <Box sx={{ paddingTop: '2rem' }}>
@@ -100,16 +100,17 @@ const Clients: FC<{ user: User }> = ({ user }) => {
             acessos={statistics.totalAccesses}
           />
           <ButtonsWrapper>
-            <ClientsOptionsButton variant="outlined">
+            {/* <ClientsOptionsButton variant="outlined">
               <Image
                 alt="exportar-clientes"
                 src="/svgs/export-clients.svg"
                 height={16}
                 width={16}
+                color="inherit"
               />
               {exportClientsText}
-            </ClientsOptionsButton>
-            <ClientsOptionsButton variant="outlined">
+            </ClientsOptionsButton> */}
+            {/* <ClientsOptionsButton variant="outlined">
               <Image
                 alt="filtrar-clientes"
                 src="/svgs/filter-clients.svg"
@@ -117,7 +118,7 @@ const Clients: FC<{ user: User }> = ({ user }) => {
                 width={16}
               />
               {filterClientsText}
-            </ClientsOptionsButton>
+            </ClientsOptionsButton> */}
             <ClientsOptionsButton
               onClick={() => setOpenCreatePage(true)}
               variant="contained"

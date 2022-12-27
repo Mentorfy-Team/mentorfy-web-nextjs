@@ -60,6 +60,8 @@ const QuestionFormModal = ({
       onDelete={() => handleSave(true)}
     >
       <>
+        <Box sx={{ width: '100vw' }} />
+
         <InputField
           label="Título"
           placeholder="Digite o título da etapa"

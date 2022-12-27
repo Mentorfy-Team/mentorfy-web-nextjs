@@ -34,7 +34,7 @@ const GroupModal = dynamic(() => import('../components/GroupModal'), {
 import ToolList from '../components/ToolListModal';
 
 export const ToolListNames = {
-  StepGroup: { name: 'Agrupador de Etapas', id: 0 },
+  StepGroup: { name: 'Módulo de Etapas', id: 0 },
   QuestionsForm: { name: 'Formulário de Perguntas', id: 1 },
   UploadFile: { name: 'Upload de Arquivo', id: 2 },
   Checklist: { name: 'Checklist', id: 3 },
@@ -55,6 +55,7 @@ export type ToolsModalProps = {
   onChange?: (value: any) => any;
   setOpen?: (value: any) => any;
   rows?: any[];
+  area_type?: number;
 };
 
 const SwitchModal: React.FC<ToolsModalProps> = ({
@@ -66,6 +67,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
   refId,
   area_id,
   rows,
+  area_type,
 }) => {
   switch (type) {
     case ToolListNames.WheelOfLifeModal.name:
@@ -178,16 +180,31 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
           setOpen={setOpen}
           onChange={(props) =>
             onChange({
-              data: { ...props, type: 0 },
+              data: { ...props },
               refId,
             })
           }
+          area_type={area_type}
         />
       );
     case ToolListNames.ToolList.name:
-      return <ToolList open={open} setOpen={setOpen} onChange={onChange} />;
+      return (
+        <ToolList
+          open={open}
+          setOpen={setOpen}
+          onChange={onChange}
+          area_id={area_id}
+        />
+      );
     default:
-      return <ToolList open={open} setOpen={setOpen} onChange={onChange} />;
+      return (
+        <ToolList
+          open={open}
+          setOpen={setOpen}
+          onChange={onChange}
+          area_id={area_id}
+        />
+      );
   }
 };
 

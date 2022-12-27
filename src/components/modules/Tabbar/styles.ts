@@ -36,7 +36,7 @@ export const TabWrapper = styled(Tabs)<Props>`
   }
 
   .MuiTabs-scroller {
-    max-width: 390px;
+    max-width: 480px;
     position: fixed;
   }
 

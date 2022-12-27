@@ -82,6 +82,7 @@ export interface Database {
           subscription: boolean | null
           interval: string | null
           approved: boolean
+          finishedAt: string | null
         }
         Insert: {
           user_id: string
@@ -91,6 +92,7 @@ export interface Database {
           subscription?: boolean | null
           interval?: string | null
           approved?: boolean
+          finishedAt?: string | null
         }
         Update: {
           user_id?: string
@@ -100,6 +102,30 @@ export interface Database {
           subscription?: boolean | null
           interval?: string | null
           approved?: boolean
+          finishedAt?: string | null
+        }
+      }
+      integration_token: {
+        Row: {
+          id: string
+          product_id: string
+          type: string
+          created_at: string | null
+          token: string
+        }
+        Insert: {
+          id?: string
+          product_id: string
+          type: string
+          created_at?: string | null
+          token: string
+        }
+        Update: {
+          id?: string
+          product_id?: string
+          type?: string
+          created_at?: string | null
+          token?: string
         }
       }
       log_type: {
@@ -139,42 +165,65 @@ export interface Database {
           type_id?: number | null
         }
       }
+      member_area_files: {
+        Row: {
+          id: string
+          ref_id: string
+          url: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          ref_id: string
+          url: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          ref_id?: string
+          url?: string
+          created_at?: string | null
+        }
+      }
       member_area_tool: {
         Row: {
           id: string
           created_at: string | null
           member_area: string | null
-          mentor_tool: number | null
+          type: number
           title: string | null
           description: string | null
           status: boolean | null
           data: Json | null
           order: number | null
           extra: Json | null
+          parent: string | null
         }
         Insert: {
           id?: string
           created_at?: string | null
           member_area?: string | null
-          mentor_tool?: number | null
+          type: number
           title?: string | null
           description?: string | null
           status?: boolean | null
           data?: Json | null
           order?: number | null
           extra?: Json | null
+          parent?: string | null
         }
         Update: {
           id?: string
           created_at?: string | null
           member_area?: string | null
-          mentor_tool?: number | null
+          type?: number
           title?: string | null
           description?: string | null
           status?: boolean | null
           data?: Json | null
           order?: number | null
           extra?: Json | null
+          parent?: string | null
         }
       }
       member_area_type: {
@@ -182,16 +231,25 @@ export interface Database {
           id: number
           created_at: string | null
           name: string
+          path: string | null
+          tooltypes: number[] | null
+          image: string | null
         }
         Insert: {
           id?: number
           created_at?: string | null
           name: string
+          path?: string | null
+          tooltypes?: number[] | null
+          image?: string | null
         }
         Update: {
           id?: number
           created_at?: string | null
           name?: string
+          path?: string | null
+          tooltypes?: number[] | null
+          image?: string | null
         }
       }
       mentor_tool: {
@@ -200,18 +258,24 @@ export interface Database {
           created_at: string | null
           name: string
           description: string | null
+          image: string | null
+          order: number
         }
         Insert: {
           id?: number
           created_at?: string | null
           name: string
           description?: string | null
+          image?: string | null
+          order?: number
         }
         Update: {
           id?: number
           created_at?: string | null
           name?: string
           description?: string | null
+          image?: string | null
+          order?: number
         }
       }
       product: {
@@ -231,6 +295,9 @@ export interface Database {
           member_area: string | null
           video: string | null
           extra: Json | null
+          extra_image: string | null
+          certificate: Json | null
+          contact: string | null
         }
         Insert: {
           owner: string
@@ -248,6 +315,9 @@ export interface Database {
           member_area?: string | null
           video?: string | null
           extra?: Json | null
+          extra_image?: string | null
+          certificate?: Json | null
+          contact?: string | null
         }
         Update: {
           owner?: string
@@ -265,6 +335,9 @@ export interface Database {
           member_area?: string | null
           video?: string | null
           extra?: Json | null
+          extra_image?: string | null
+          certificate?: Json | null
+          contact?: string | null
         }
       }
       profile: {
@@ -279,6 +352,11 @@ export interface Database {
           access_type: string | null
           email: string | null
           phone: string | null
+          expiration_date: string | null
+          customer_id: string | null
+          card_id: string | null
+          plan_id: string | null
+          subscription_id: string | null
         }
         Insert: {
           id: string
@@ -291,6 +369,11 @@ export interface Database {
           access_type?: string | null
           email?: string | null
           phone?: string | null
+          expiration_date?: string | null
+          customer_id?: string | null
+          card_id?: string | null
+          plan_id?: string | null
+          subscription_id?: string | null
         }
         Update: {
           id?: string
@@ -303,6 +386,11 @@ export interface Database {
           access_type?: string | null
           email?: string | null
           phone?: string | null
+          expiration_date?: string | null
+          customer_id?: string | null
+          card_id?: string | null
+          plan_id?: string | null
+          subscription_id?: string | null
         }
       }
       profile_history: {
@@ -332,6 +420,72 @@ export interface Database {
           created_at?: string | null
           code?: number | null
           profile_id?: string | null
+        }
+      }
+      team: {
+        Row: {
+          id: string
+          title: string
+          owner_id: string
+          created_at: string | null
+          products: string[]
+        }
+        Insert: {
+          id?: string
+          title: string
+          owner_id: string
+          created_at?: string | null
+          products?: string[]
+        }
+        Update: {
+          id?: string
+          title?: string
+          owner_id?: string
+          created_at?: string | null
+          products?: string[]
+        }
+      }
+      team_member: {
+        Row: {
+          id: string
+          team_id: string
+          profile_id: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          team_id: string
+          profile_id: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          team_id?: string
+          profile_id?: string
+          created_at?: string | null
+        }
+      }
+      team_member_client: {
+        Row: {
+          id: number
+          profile_id: string
+          team_member_id: string
+          role: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: number
+          profile_id: string
+          team_member_id: string
+          role: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: number
+          profile_id?: string
+          team_member_id?: string
+          role?: string
+          created_at?: string | null
         }
       }
     }

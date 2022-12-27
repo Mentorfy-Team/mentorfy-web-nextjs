@@ -36,24 +36,28 @@ const ClientJourney: FC<props> = ({ id }) => {
   const [clientInput, setClientInput] = useState<any>();
   const [open, setOpen] = useState(false);
   const [steps, setSteps] = useState<ProductTypes.resultJorney[]>();
+
+  const [searchByName, setSearchByName] = useState<string>();
+
   const {
     data: { clients, result: stepsData },
     isLoading,
   } = useListOfClientsInProduct(id);
+
   const { setLoading } = userStore();
   const route = useRouter();
+
+  // useEffect(() => {
+  //   setLoading(isLoading);
+  // }, [isLoading, setLoading]);
+
   useEffect(() => {
-    setSteps(stepsData);
+    if (stepsData) setSteps(JSON.parse(JSON.stringify(stepsData)));
   }, [stepsData]);
-
-  useEffect(() => {
-    setLoading(isLoading);
-  }, [isLoading, setLoading]);
-
   const handleSelectedStep = (task) => {
     setSelectedTask(task);
 
-    if (task.id === task.id && background === '#7586EC') {
+    if (task.id === selectedTask?.id && background === '#7586EC') {
       setBackground('inherit');
     }
     if (task.id === task.id && background === 'inherit') {
@@ -69,14 +73,14 @@ const ClientJourney: FC<props> = ({ id }) => {
 
   const handleSelectedClient = (client: ProductTypes.Client) => {
     if (!selectedTask) {
-      route.push(route.asPath + '/perfil?altId=' + client.id);
+      route.push(route.asPath + '/perfil?id=' + client.id);
     } else {
       setClientInput(() => {
         const Inputs = client.inputs?.filter(
           (input) => input.member_area_tool_id === selectedTask?.id,
         );
         if (Inputs?.length > 0) {
-          if (selectedTask.mentor_tool === 4) {
+          if (selectedTask.type === 4) {
             const InputsData = {
               input: (Inputs[0].extra as any).comments,
               date: Inputs[0].created_at,
@@ -98,14 +102,21 @@ const ClientJourney: FC<props> = ({ id }) => {
     setOpen(true);
   };
 
+  const SearchForString = (values) => {
+    return values.filter(
+      (client) =>
+        client.name.toLowerCase().includes(searchByName.toLowerCase()) ||
+        client.email.toLowerCase().includes(searchByName.toLowerCase()),
+    );
+  };
+
   return (
     <ContentWidthLimit withoutScroll maxWidth={1900}>
       <TipWrapper>
         <Image alt="tip-icon" src="/svgs/tip-icon.svg" width={22} height={22} />
         <TipText>
-          Clique em uma etapa para
-          <span>filtrar a lista de mentorados</span>
-          que concluíram a etapa. Clique novamente para cancelar.
+          Clique em uma etapa e selecione um cliente para
+          <span>visualizar suas respostas e progressões</span>.
         </TipText>
       </TipWrapper>
 
@@ -122,12 +133,12 @@ const ClientJourney: FC<props> = ({ id }) => {
                   }}
                 >
                   <ImageWrapper>
-                    {steps[index].extra && step?.extra[0]?.sourceUrl && (
+                    {steps[index].data && step?.data[0]?.sourceUrl && (
                       <Image
                         alt="imagem-principal"
                         width={40}
                         height={40}
-                        src={step?.extra[0]?.sourceUrl}
+                        src={step?.data[0]?.sourceUrl}
                       />
                     )}
                   </ImageWrapper>
@@ -201,9 +212,25 @@ const ClientJourney: FC<props> = ({ id }) => {
               width: isMobile ? '90vw' : '15vw',
               margin: '1rem 0',
             }}
+            onChange={(value) => setSearchByName(value)}
           />
           <CompletedClientsTable
             clients={clients}
+            filter={(values) => {
+              const byName =
+                searchByName?.length > 0 ? SearchForString(values) : values;
+
+              const byStep = selectedTask?.id
+                ? byName.filter((client) => {
+                    const clientInputs = client.inputs?.filter(
+                      (input) => input.member_area_tool_id === selectedTask?.id,
+                    );
+                    return clientInputs?.length > 0;
+                  })
+                : byName;
+
+              return byStep;
+            }}
             onSelectedClient={handleSelectedClient}
           />
         </>
@@ -213,7 +240,7 @@ const ClientJourney: FC<props> = ({ id }) => {
         <SwicthClientJouneyModal
           open={open}
           setOpen={setOpen}
-          type={selectedTask?.mentor_tool}
+          type={selectedTask?.type}
           selectedClient={clientInput.client}
           selectedTask={selectedTask}
           finishedDate={clientInput.date}

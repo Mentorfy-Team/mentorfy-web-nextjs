@@ -1,15 +1,16 @@
-import React from 'react';
-import Button from '@mui/material/Button';
+import React, { useEffect } from 'react';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useProfile } from '~/hooks/useProfile';
 import { AppBar, AvatarWrapper, MenuItem, PopoverBox } from './styles';
-import Tipografia from '~/../public/images/tipografia.png';
+import Tipografia from '~/../public/images/logo-montanha.png';
 import MenuAvatar from '~/../public/svgs/menu-avatar';
 import Notification from '~/../public/svgs/notification';
-import Search from '~/../public/svgs/search';
+
+import Link from 'next/link';
+
 const HeaderPartial: React.FC = () => {
   const router = useRouter();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -35,6 +36,18 @@ const HeaderPartial: React.FC = () => {
     await logout();
   };
 
+  const handleGoToProfile = () => {
+    router.push(process.env.NEXT_PUBLIC_BASE_URL + 'meu-perfil');
+  };
+
+  useEffect(() => {
+    if (router.pathname.includes('mentorado'))
+      router.prefetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/mentorado/bem-vindo`,
+      );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <AppBar id="Header" position="fixed">
@@ -47,38 +60,27 @@ const HeaderPartial: React.FC = () => {
         >
           <Image
             style={{
-              marginLeft: '2rem',
+              marginLeft: '3.2rem',
             }}
-            height={30}
+            height={40}
             alt="some important man mentoring smart people"
             src={Tipografia}
-            quality={100}
-            placeholder="blur"
+            quality={85}
           />
           {router.pathname.includes('mentorado') && (
-            <Button
-              sx={{
-                color: '#fff',
-              }}
-              variant="text"
-              href={`${process.env.NEXT_PUBLIC_BASE_URL}/mentor/dashboard`}
-            >
+            <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/mentor/dashboard`}>
               Visualizar como mentor
-            </Button>
+            </Link>
           )}
           {!router.pathname.includes('mentorado') && (
-            <Button
-              sx={{
-                color: '#fff',
-              }}
-              variant="text"
+            <Link
               href={`${process.env.NEXT_PUBLIC_BASE_URL}/mentorado/bem-vindo`}
             >
               Visualizar como mentorado
-            </Button>
+            </Link>
           )}
         </div>
-        <Search />
+        {/* <Search /> */}
         <Notification />
         <AvatarWrapper onClick={handleClick}>
           <MenuAvatar fill={profile?.avatar ? 'transparent' : null} />
@@ -121,7 +123,9 @@ const HeaderPartial: React.FC = () => {
         transitionDuration={1}
       >
         <PopoverBox display="flex" flexDirection="column">
-          <MenuItem variant="caption">Perfil</MenuItem>
+          <MenuItem variant="caption" onClick={() => handleGoToProfile()}>
+            Perfil
+          </MenuItem>
           <MenuItem variant="caption">Certificados</MenuItem>
           <MenuItem variant="caption">FAQ</MenuItem>
           <Divider

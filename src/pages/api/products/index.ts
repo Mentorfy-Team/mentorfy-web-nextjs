@@ -1,5 +1,5 @@
-import { handler } from '~/backend/handler';
-import { del, get, post, put } from '~/backend/products';
+import { handler } from '~/backend/http/handler';
+import { del, get, post, put } from '~/backend/http/products';
 
 export const config = {
   api: {

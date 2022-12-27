@@ -1,23 +1,20 @@
-import { deleteCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import { ApiRoutes } from '~/consts/routes/api.routes';
 import { fetcher } from '~/hooks/fetcher';
+import SupabaseClient from '~/services/SupabaseClient';
 
 export function useProfile(withAddress = false, altProfileId?: string) {
   const route = useRouter();
   const logout = async () => {
-    const res = await fetch(ApiRoutes.auth_logout, {
-      method: 'GET',
-    });
-    if (res.status === 200) {
-      deleteCookie('sb-access-token');
-      deleteCookie('sb-refresh-token');
-      route.push('/');
-    }
+    await SupabaseClient().auth.signOut();
+    // remove the cookie
+    document.cookie =
+      'supabase-auth-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    route.push('/');
   };
 
-  const { data, error, mutate } = useSWR<
+  const { data, error, mutate, isLoading } = useSWR<
     UserTypes.ProfileWithAddress & { logout?: () => void }
   >(
     `${ApiRoutes.users_profile}?withAddress=${withAddress}${
@@ -28,7 +25,7 @@ export function useProfile(withAddress = false, altProfileId?: string) {
 
   return {
     data: { ...data, logout: () => logout() },
-    isLoading: !error && !data,
+    isLoading,
     isError: error,
     mutate,
   };

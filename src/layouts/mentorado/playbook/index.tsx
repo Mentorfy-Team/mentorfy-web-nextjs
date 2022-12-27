@@ -1,12 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
-import { DnDObject } from '~/components/modules/DragNDrop';
-import { OrganizeTools } from '~/helpers/OrganizeTools';
+import { GroupTools } from '~/components/modules/DragNDrop';
 import { useMemberAreaTools } from '~/hooks/useMemberAreaTools';
-import SwitchMentoredModal, { ToolListNames } from '../helpers/SwitchModal';
-import { UserInput } from '../kanban';
 import {
   Banner,
   Content,
@@ -17,12 +14,27 @@ import {
   Wrapper,
 } from './styles';
 import { GetAuthSession } from '~/helpers/AuthSession';
+import HandleToolModal from '../helpers/HandleToolModal';
+import { GetTypeName } from '../helpers/SaveClientInput';
+import Toolbar from '~/components/modules/Toolbar';
+import { ProgressBarWrapper } from '../video-view/styles';
+import ProgressBar from '~/components/modules/ProgressBar';
+import TipBar from '~/components/modules/TipBar';
+import NextImage from 'next/image';
+import { SupabaseServer } from '~/backend/supabase';
+import { GetProductById } from '~/backend/repositories/product/GetProductById';
 
-export const Playbook = ({ member_area_id }) => {
+export const Playbook: FC<
+  PageTypes.Props & { member_area_id: string; memberArea: any }
+> = ({ member_area_id, memberArea }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
-  const [steps, setSteps] = useState<DnDObject[]>([]);
-  const [userInput, setUserInput] = useState<UserInput[]>([]);
+  const [steps, setSteps] = useState<GroupTools[]>([]);
   const [open, setOpen] = useState(false);
+  const [currentCard, setCurrentCard] = useState<string | null>();
+  const [selected, setSelected] = useState<{
+    categoryId: string;
+    stepId: string;
+  } | null>();
 
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
@@ -33,128 +45,115 @@ export const Playbook = ({ member_area_id }) => {
   }>();
 
   useEffect(() => {
-    setSteps((oldSteps) => {
-      oldSteps = [...OrganizeTools(stepsData)];
-      return [...oldSteps];
-    });
+    if (stepsData) setSteps(JSON.parse(JSON.stringify(stepsData)));
   }, [stepsData]);
 
-  const HandleModal = useCallback(() => {
-    return (
-      <SwitchMentoredModal
-        open={open}
-        setOpen={setOpen}
-        onChange={currentModal.onChange}
-        type={currentModal.type}
-        refId={currentModal.refId}
-        area_id={member_area_id}
-        data={currentModal.data}
-        userInput={
-          userInput.find((inp) => inp.tool_id === currentModal.refId)?.data
-        }
-      />
-    );
-  }, [currentModal, open, member_area_id, userInput]);
+  const ModalComponent = useCallback(() => {
+    return HandleToolModal({
+      open,
+      setOpen,
+      currentModal,
+      area_id: member_area_id,
+      inputs: [],
+    });
+  }, [open, currentModal, member_area_id]);
 
-  const GetTypeName = useCallback((type) => {
-    return Object.values(ToolListNames).find((i) => {
-      return i.id == parseInt(type);
-    }).name;
+  const onSelectedCard = useCallback((id) => {
+    //setCurrentCard(id);
   }, []);
 
-  const handleSave = useCallback(async () => {
-    // timout para dar tempo para as imagens se organizarem
-    setTimeout(async function () {
-      //await InputUserMemberArea(member_area_id, userInput);
-      mutate();
-    }, 1000);
-  }, [mutate]);
+  const isEmptyMentory = useMemo(() => {
+    return steps?.length === 0;
+  }, [steps]);
 
-  const GetOnChange = useCallback(
-    async ({ refId, data }) => {
-      setUserInput((oldInput) => {
-        const index = oldInput.findIndex((i) => i.tool_id == refId);
-        if (index > -1) {
-          oldInput[index].data = data;
-        } else {
-          oldInput.push({ tool_id: refId, data });
-        }
-        return [...oldInput];
-      });
-
-      handleSave();
-    },
-    [handleSave],
-  );
+  const Cards = useCallback(() => {
+    return (
+      steps
+        .find((s) => s.id == selected?.stepId || !selected)
+        ?.rows.find((s) => s.id == selected?.categoryId || !selected)?.rows ||
+      []
+    );
+  }, [selected, steps]);
 
   return (
-    <ContentWidthLimit maxWidth={1400}>
-      <Wrapper>
-        <SideBar>
-          <SideBarTitle>Playbook de Vendas</SideBarTitle>
-        </SideBar>
-        <Box>
-          <Banner>Olá</Banner>
+    <>
+      <Toolbar
+        initialTab={1}
+        breadcrumbs={['Minhas mentorias', memberArea.title]}
+        contact={memberArea?.contact}
+      />
+      <ContentWidthLimit maxWidth={1900}>
+        {isEmptyMentory && (
+          <TipBar>
+            Ainda não há <span>nenhuma etapa ou atividades disponíveis</span>{' '}
+            para essa mentoria. Em caso de dúvidas, entre em contato com o
+            suporte da mentoria.
+          </TipBar>
+        )}
+        <Wrapper>
+          <SideBar>
+            <SideBarTitle>{memberArea.title}</SideBarTitle>
+            <ProgressBarWrapper>
+              <ProgressBar
+                data={steps}
+                input={[]}
+                activeid={currentCard}
+                activeStepId={selected?.stepId}
+                onGoTo={(categoryId, step) =>
+                  setSelected({ categoryId, stepId: step.id })
+                }
+              />
+            </ProgressBarWrapper>
+          </SideBar>
+          <Box>
+            {memberArea.extra_image ? (
+              <NextImage
+                alt="banner"
+                src={memberArea.extra_image}
+                width={1000}
+                height={200}
+                style={{
+                  objectFit: 'cover',
+                }}
+              />
+            ) : (
+              <Banner />
+            )}
 
-          <Tips>
-            <Content>
-              <Typography variant="h6">Dica importante</Typography>
-              <DescriptionText>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis
-                natus eligendi repudiandae, tempora sunt eum fugit voluptatibus
-                debitis. Omnis odio beatae inventore. Earum maxime perspiciatis
-                atque, inventore veritatis ea aspernatur!
-              </DescriptionText>
-            </Content>
-            <Content>
-              <Typography variant="h6">Dica importante</Typography>
-              <DescriptionText>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis
-                natus eligendi repudiandae, tempora sunt eum fugit voluptatibus
-                debitis. Omnis odio beatae inventore. Earum maxime perspiciatis
-                atque, inventore veritatis ea aspernatur!
-              </DescriptionText>
-            </Content>
-            <Content>
-              <Typography variant="h6">Dica importante</Typography>
-              <DescriptionText>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis
-                natus eligendi repudiandae, tempora sunt eum fugit voluptatibus
-                debitis. Omnis odio beatae inventore. Earum maxime perspiciatis
-                atque, inventore veritatis ea aspernatur!
-              </DescriptionText>
-            </Content>
-            <Content>
-              <Typography variant="h6">Dica importante</Typography>
-              <DescriptionText>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis
-                natus eligendi repudiandae, tempora sunt eum fugit voluptatibus
-                debitis. Omnis odio beatae inventore. Earum maxime perspiciatis
-                atque, inventore veritatis ea aspernatur!
-              </DescriptionText>
-            </Content>
-            <Content>
-              <Typography variant="h6">Dica importante</Typography>
-              <DescriptionText>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis
-                natus eligendi repudiandae, tempora sunt eum fugit voluptatibus
-                debitis. Omnis odio beatae inventore. Earum maxime perspiciatis
-                atque, inventore veritatis ea aspernatur!
-              </DescriptionText>
-            </Content>
-            <Content>
-              <Typography variant="h6">Dica importante</Typography>
-              <DescriptionText>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nobis
-                natus eligendi repudiandae, tempora sunt eum fugit voluptatibus
-                debitis. Omnis odio beatae inventore. Earum maxime perspiciatis
-                atque, inventore veritatis ea aspernatur!
-              </DescriptionText>
-            </Content>
-          </Tips>
-        </Box>
-      </Wrapper>
-    </ContentWidthLimit>
+            {steps.length > 0 && (
+              <Tips>
+                {Cards().map((task) => (
+                  <Content
+                    key={task.id}
+                    onClick={() => {
+                      const type = GetTypeName(task.type);
+                      setOpen(true);
+                      setCurrentModal({
+                        onChange: () => {},
+                        type,
+                        refId: task.id + '',
+                        data: task || {},
+                      });
+                    }}
+                  >
+                    <Typography variant="h6">{task.title}</Typography>
+                    <DescriptionText>{task.description}</DescriptionText>
+                  </Content>
+                ))}
+              </Tips>
+            )}
+            {Cards().length === 0 && (
+              <TipBar>
+                Ainda não há <span>nenhuma atividade disponível</span> para essa
+                etapa. Em caso de dúvidas, entre em contato com o suporte da
+                mentoria.
+              </TipBar>
+            )}
+          </Box>
+        </Wrapper>
+      </ContentWidthLimit>
+      {open && ModalComponent()}
+    </>
   );
 };
 
@@ -171,9 +170,26 @@ export const getProps = async (ctx) => {
     };
 
   const id = ctx.query.id as string;
+
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const product = await GetProductById(supabase, {
+    id: ctx.query.id,
+  });
+
+  if (!product) {
+    return {
+      notFound: true,
+    };
+  }
   return {
     props: {
       member_area_id: id,
+      memberArea: {
+        id: product.id,
+        title: product.title,
+        description: product.description,
+        extra_image: product.extra_image,
+      },
     },
   };
 };

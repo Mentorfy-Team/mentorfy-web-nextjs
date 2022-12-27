@@ -1,17 +1,28 @@
-import { Heatmap, HeatmapConfig } from '@ant-design/plots';
+import { HeatmapConfig } from '@ant-design/plots/lib/components/heatmap';
+import dynamic from 'next/dynamic';
 
-export default ({ data }) => {
+const Heatmap = dynamic(
+  () => import('@ant-design/plots').then((mod) => mod.Heatmap),
+  {
+    ssr: false,
+  },
+);
+
+export default ({ data, width, height }) => {
   const config = {
+    width,
+    height,
+    autoFit: true,
     data,
     xField: 'area',
     yField: 'rating',
     colorField: 'value',
     legend: false,
-    color: '#afafaf-#38c54a',
+    color: '#242424cc2-#8e992d-#38c54a',
     coordinate: {
       type: 'polar',
       cfg: {
-        innerRadius: 0.2,
+        innerRadius: 0.1,
       },
     },
     heatmapStyle: {
@@ -24,9 +35,19 @@ export default ({ data }) => {
         type: 'cat',
       },
       value: {
-        min: 0,
-        max: 1,
+        min: 1,
+        max: 10,
       },
+    },
+    label: {
+      style: {
+        fill: '#fff',
+        fontSize: 14,
+        fontWeight: 700,
+        opacity: 1,
+      },
+      rotate: 0,
+      autoRotate: false,
     },
     xAxis: {
       line: null,
@@ -42,14 +63,37 @@ export default ({ data }) => {
       },
     },
     yAxis: {
-      top: true,
+      top: false,
       line: null,
       grid: null,
       tickLine: null,
       label: {
+        formatter(text) {
+          return parseInt(text) + 1;
+        },
         offset: 0,
         style: {
-          fill: '#ffffff00',
+          fill: '#fff',
+          fontSize: 14,
+          fontWeight: 700,
+        },
+      },
+    },
+    // pattern: {
+    //   type: 'dot',
+    //   cfg: {
+    //     size: 1,
+    //     style: {
+    //       fill: '#ffffff55',
+    //     },
+    //   },
+    // },
+    state: {
+      active: {
+        animate: { duration: 100, easing: 'easeLinear' },
+        style: {
+          lineWidth: 2,
+          stroke: '#bbb937',
         },
       },
     },

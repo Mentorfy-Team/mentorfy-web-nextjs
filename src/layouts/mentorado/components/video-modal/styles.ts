@@ -16,15 +16,14 @@ export const CompleteButton = styled(Button)`
   background-color: ${({ theme }) => theme.palette.primary.light};
   color: ${({ theme }) => theme.palette.accent.main};
   float: right;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
+  margin: 1rem 0 1rem auto;
   width: 10rem;
 `;
 
 export const CommentInput = styled('textarea')`
   background-color: #252525;
   border: 1px solid ${({ theme }) => theme.palette.caption.dark};
-  border-radius: 10px;
+  border-radius: 6px;
   color: ${({ theme }) => theme.palette.text.primary};
   flex-grow: 1;
   font-size: 0.9rem;
@@ -39,8 +38,13 @@ export const CommentInput = styled('textarea')`
 
 export const SendButton = styled(Button)`
   align-items: center;
-  border-radius: 10px;
+  border-radius: 6px;
   display: flex;
   gap: 0.5rem;
   width: 12%;
+`;
+export const VideoWrapper = styled('div')`
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
 `;

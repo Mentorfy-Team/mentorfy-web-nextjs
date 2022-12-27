@@ -3,13 +3,13 @@ import Typography from '@mui/material/Typography';
 
 export const QuestionsText = styled(Typography)`
   color: ${({ theme }) => theme.palette.secondary.main};
-  font-size: 0.9rem;
+  font-size: 1.2rem;
   font-weight: 700;
   line-height: 1rem;
 `;
 
 export const ResponseText = styled(Typography)`
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: 400;
   line-height: 0.9rem;
 `;
@@ -41,17 +41,17 @@ export const AvatarWrapper = styled('div')`
 `;
 
 export const AnswersWrapper = styled('div')`
-  max-height: 350px;
-  overflow-y: auto;
+  margin-right: auto;
+  width: 100%;
 `;
 
 export const TaskTitle = styled(Typography)`
   font-size: 1.1rem;
   font-weight: 600;
-  left: 15%;
   line-height: 1.4rem;
   margin-bottom: 2rem;
-  position: relative;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;
+
+export const Wrapper = styled('div')``;
