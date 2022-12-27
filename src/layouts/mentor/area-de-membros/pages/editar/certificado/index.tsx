@@ -499,7 +499,17 @@ const Certificate = ({
                   <UploadTypography>
                     Solte o arquivo para fazer upload
                   </UploadTypography>
-                  <P>Tamanho máximo de 40mb (No momento, apenas PDF) </P>
+                  <div
+                    style={{
+                      color: 'red',
+                      fontSize: '0.8rem',
+                    }}
+                  >
+                    Dimenções: 1580 x 1180
+                  </div>
+                  <P>
+                    Tamanho máximo de 40mb (No momento, apenas JPG, PJEG e PNG.){' '}
+                  </P>
                 </Label>
               </UploadField>
             </DropzoneComponent>
