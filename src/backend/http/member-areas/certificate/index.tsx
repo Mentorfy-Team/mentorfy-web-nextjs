@@ -81,9 +81,13 @@ export const get = async (req, res: NextApiResponse) => {
     texts: merge,
     res,
   });
-
+  const fileName =
+    product.title.replace(/ /g, '_') + '_' + profile.name.replace(/ /g, '_');
   res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', 'attachment; filename=certificate.pdf');
+  res.setHeader(
+    'Content-Disposition',
+    'attachment; filename=' + `${fileName}` + '.pdf',
+  );
 
   return res.status(200).send(pdfData);
 };
