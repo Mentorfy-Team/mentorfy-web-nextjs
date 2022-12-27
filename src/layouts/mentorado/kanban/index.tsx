@@ -17,6 +17,8 @@ import { SupabaseServer } from '~/backend/supabase';
 import { GetProductById } from '~/backend/repositories/product/GetProductById';
 import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
 import CertificateModal from '../components/certificate-modal';
+import { DocumentScanner } from '@mui/icons-material';
+import { getProgressByStep } from '../helpers/GetProgress';
 
 export type UserInput = {
   id?: string;
@@ -45,7 +47,7 @@ export const KanbanView: FC<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
   const [open, setOpen] = useState(false);
-  const [showCertificate, setShowCertificate] = useState(true);
+  const [showCertificate, setShowCertificate] = useState(false);
 
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
@@ -116,29 +118,9 @@ export const KanbanView: FC<
     return unlocked;
   }, [steps, userInput]);
 
-  const getProgress = useCallback(
-    (ids) => {
-      let progress = 0;
-      ids.forEach((id) => {
-        const inputDone = userInput.find((i) => i.member_area_tool_id === id);
-        if (inputDone) progress++;
-      });
-      return ids.length > 0 ? (progress / ids.length) * 100 : 0;
-    },
-    [userInput],
-  );
-
-  const getProgressByStep = useCallback(
-    (step: GroupTools) => {
-      const ids = step.rows.map((r) => r.id);
-      return getProgress(ids);
-    },
-    [getProgress],
-  );
-
   const isDone = useMemo(() => {
-    return true; //steps.every((step) => getProgressByStep(step) == 100);
-  }, [getProgressByStep, steps]);
+    return steps.every((step) => getProgressByStep(step, userInput) == 100);
+  }, [steps, userInput]);
 
   return (
     <>
@@ -146,6 +128,10 @@ export const KanbanView: FC<
         initialTab={1}
         breadcrumbs={['Minhas mentorias', memberArea?.title]}
         contact={memberArea?.contact}
+        actionClick={() => setShowCertificate(true)}
+        actionTitle="Ver Certificado"
+        actionIcon={<DocumentScanner fontSize="small" />}
+        actionVisible={isDone}
       />
       <ContentWidthLimit>
         {(!steps || steps.length == 0) && (
@@ -260,13 +246,11 @@ export const KanbanView: FC<
       </ContentWidthLimit>
 
       {open && ModalComponent()}
-      {isDone && (
+      {showCertificate && (
         <CertificateModal
           open={showCertificate}
           setOpen={setShowCertificate}
           product={product}
-          certificate={product?.certificate as any}
-          user={user}
         />
       )}
     </>

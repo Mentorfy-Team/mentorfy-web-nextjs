@@ -76,6 +76,7 @@
     "slick-carousel": "^1.8.1",
     "supabase": "1.15.0",
     "swr": "2.0.0",
+    "textbox-for-pdfkit": "^0.2.1",
     "yup": "0.32.11",
     "zod": "^3.20.2",
     "zustand": "^4.1.4"

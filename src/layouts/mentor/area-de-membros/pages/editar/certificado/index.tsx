@@ -36,6 +36,9 @@ import { SingFont } from '~/pages/_app';
 import UploadToUrlFiles from '../../../components/UploadFileModal/helpers/UploadToUrlFiles';
 import { UpdateCertificate } from '~/services/certificate-upload.service';
 
+import NextImage from 'next/image';
+import { Button } from '@mui/material';
+
 const PDFReader = dynamic(
   () => import('~/components/atoms/PDFReader/PDFReader'),
   {
@@ -397,8 +400,22 @@ const Certificate = ({
                   </FieldButton>
                 </ButtonsWrapper>
               </div>
+              <Button
+                sx={{
+                  color: 'red',
+                  padding: '0.5rem 1rem',
+                }}
+                onClick={() => setFiles(null)}
+              >
+                Remover
+              </Button>
               <FileWrapper id="dragRef">
-                <PDFReader file={(files as any)?.data} />
+                <NextImage
+                  src={(files as any)?.data}
+                  width={790}
+                  height={590}
+                  alt="certificado"
+                />
                 {show?.name && (
                   <DragBox
                     position={initCertificate?.student.name}
@@ -467,7 +484,10 @@ const Certificate = ({
             </Wrapper>
           )}
           {!files?.data && (
-            <DropzoneComponent onDrop={(_files) => handleUpload(_files)}>
+            <DropzoneComponent
+              accepts={{ image: ['image/jpeg', 'image/png', 'image/jpg'] }}
+              onDrop={(_files) => handleUpload(_files)}
+            >
               <UploadField>
                 <Label>
                   <Image

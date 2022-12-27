@@ -1,119 +1,74 @@
-import dynamic from 'next/dynamic';
-const PDFReader = dynamic(
-  () => import('~/components/atoms/PDFReader/PDFReader'),
-  {
-    ssr: false,
-  },
-);
+import Box from '@mui/material/Box';
+import { useState } from 'react';
+import FormInput from '~/components/atoms/FormInput';
 import ModalComponent from '~/components/modules/Modal';
-import { ModalDialogContent } from '~/components/modules/Modal/styles';
-import { SingFont } from '~/pages/_app';
-import { DataText, FileWrapper, ForwardButton, Title } from './styles';
-import CircularProgress from '@mui/material/CircularProgress';
-import Image from 'next/image';
-
-const PDFDownload = dynamic(() => import('~/components/atoms/PDFDownload'), {
-  ssr: false,
-});
-
+import { ApiRoutes } from '~/consts/routes/api.routes';
+import { FormProvider, useForm } from 'react-hook-form';
+import { PDFButton } from './styles';
+import { LinkWrapper } from '~/components/modules/Toolbar/styles';
 type Props = {
   product: ProductTypes.Product;
-  certificate: ProductTypes.CertificateBuilder;
   open: boolean;
-  user: UserTypes.ProfileWithAddress & UserTypes.User;
   setOpen: (value: boolean) => void;
 };
-const CertificateModal = ({
-  open,
-  setOpen,
-  product,
-  certificate: { course, student, title, url },
-  user,
-}: Props) => {
-  const TextContent = ({ text, fontSize, position, sign = false }) => {
-    const bSize = position.boxSize; // diff de 35px botão de aumentar fonte
-    const threshold =
-      position.pageX > 0 ? parseInt(position.pageX) : parseInt(position.pageX);
-    const style = sign ? SingFont.style : {};
-    return (
-      <DataText
-        sx={{
-          fontSize: `${fontSize ? fontSize + 'px' : '14px'}`,
-          top: `${parseInt(position.pageY) + 25}px`,
-          left: `calc(50% + ${threshold}px)`,
-          overflow: 'visible',
-          width: '0px',
-          whiteSpace: 'nowrap',
-          display: 'flex',
-          placeContent: 'center',
-          lineHeight: 'normal',
-          ...style,
-        }}
-      >
-        <div>{text}</div>
-      </DataText>
-    );
-  };
+const CertificateModal = ({ open, setOpen, product }: Props) => {
+  const withDoc = !!(product.certificate as any).student?.document?.pageX;
+  const [document, setDocument] = useState<string | null>(null);
+
+  const methods = useForm<any>({});
 
   return (
     <ModalComponent
       open={open}
       setOpen={setOpen}
-      title="Certificado de Conclusão"
+      title="Emissão de Certificado"
     >
-      <ModalDialogContent sx={{ paddingTop: '0.5rem' }}>
-        <Title>{title}</Title>
-        <FileWrapper>
-          <div id="certificate_id">
-            <Image src={url} width={900} height={600} alt="certificado" />
-            {student?.name && (
-              <TextContent
-                fontSize={student?.name?.fontSize}
-                position={student?.name}
-                text={user?.profile.name}
-              />
-            )}
-            {student?.document && (
-              <TextContent
-                fontSize={student?.document?.fontSize}
-                position={student?.document}
-                text={'012.345.678-90'}
-              />
-            )}
-            {student?.finishedAt && (
-              <TextContent
-                fontSize={student?.finishedAt?.fontSize}
-                position={student?.finishedAt}
-                text={'12/12/2022'}
-              />
-            )}
-            {course?.name && (
-              <TextContent
-                fontSize={course?.name?.fontSize}
-                position={course?.name}
-                text={product.title}
-              />
-            )}
-            {course?.owner && (
-              <TextContent
-                fontSize={course?.owner?.fontSize}
-                position={course?.owner}
-                sign
-                text={product.profile.name}
-              />
-            )}
-          </div>
-        </FileWrapper>
-        <PDFDownload
-          fileName="certificate.pdf"
-          pageStyles={{}}
-          size={{ width: 1600, height: 1000 }}
-          loadingComponent={<CircularProgress color="success" />}
-          template_id="certificate_id"
+      <Box
+        sx={{
+          width: '600px',
+          backgroundColor: 'white',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+        p={2}
+      >
+        <FormProvider {...methods}>
+          <FormInput
+            name="document"
+            value={document}
+            onChange={(e) => {
+              // only numbers
+              const value = e.target.value.replace(/\D/g, '');
+              setDocument(value);
+            }}
+            type="text"
+            required
+            placeholder="00000000000"
+            label="Documento para emissão do certificado"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </FormProvider>
+        <LinkWrapper
+          sx={{
+            alignSelf: 'center',
+          }}
+          mt={2}
         >
-          <ForwardButton variant="contained">Download</ForwardButton>
-        </PDFDownload>
-      </ModalDialogContent>
+          {document.length > 5 && (
+            <PDFButton
+              as="a"
+              href={`${process.env.NEXT_PUBLIC_BASE_URL}/${
+                ApiRoutes.member_areas_certificate
+              }?id=${product.id}${withDoc ? `&doc=${document}` : ''}`}
+              onClick={() => setOpen(false)}
+            >
+              Download do Certificado
+            </PDFButton>
+          )}
+        </LinkWrapper>
+      </Box>
     </ModalComponent>
   );
 };

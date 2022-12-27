@@ -51,6 +51,10 @@ export const OrangeGradient = styled(Box)`
   z-index: 2;
   top: 5%;
   right: -25%;
+  @media(max-width: 1200px) { 
+    width: 350px;
+    height: 350px;
+  }
 `;
 
 export const Introduction = styled('main')`
@@ -59,6 +63,10 @@ export const Introduction = styled('main')`
   gap: 1rem;
   position: relative;
   justify-content: center;
+
+  @media(max-width: 1200px) { 
+    padding: 0 1rem;
+  }
 `;
 
 export const SecodaryText = styled(Typography)`
@@ -67,7 +75,7 @@ export const SecodaryText = styled(Typography)`
   line-height: 1.8rem;
 
   strong { 
-    display: inline-block;
+    display: block;
     margin-top: 0.5rem;
   }
 `;
@@ -76,6 +84,10 @@ export const MainText = styled(Typography)`
   font-weight: 700;
   font-size: 2.5rem;
   line-height: 2.8rem;
+
+  @media(max-width: 1200px) { 
+    font-size: 2rem;
+  }
 `;
 
 export const ActionButton = styled('a')`
@@ -104,6 +116,10 @@ export const SecondSection = styled('section')`
   gap: 4rem;
   position: relative;
   justify-content: center;
+
+  @media(max-width: 1200px) { 
+    margin-top: 5rem;
+  }
 `;
 
 export const SecondSectionText = styled(Typography)`
@@ -112,12 +128,10 @@ export const SecondSectionText = styled(Typography)`
   line-height: 1.8rem;
   margin: 1.3rem 0; 
 
-
   span { 
     display: inline-block; 
     margin: 1rem 0;
   }
-
   strong { 
     display: inline-block; 
     margin: 1rem 0;
@@ -130,7 +144,9 @@ export const ClientSupport = styled('section')`
   display: flex;
   gap: 4rem;
   justify-content: center;
-
+  @media(max-width: 1200px) { 
+    margin-top: 5rem;
+  }
 `;
 
 export const Container = styled('div')`
@@ -144,6 +160,7 @@ export const Container = styled('div')`
   @media(max-width: 1200px) { 
     flex-direction: column-reverse;
     align-items: center;
+    padding: 1rem;
   }
 
 `;
@@ -156,6 +173,9 @@ export const Features = styled('section')`
   flex-direction: column;
   align-items: center;
   gap: 3rem;
+  @media(max-width: 1200px) { 
+    margin-top: 5rem;
+  }
 `;
 
 export const FeaturesContainer = styled('div')`
@@ -212,6 +232,9 @@ export const VideoSection = styled('section')`
   flex-direction: column;
   margin-top: 5rem;
   position: relative;
+  @media(max-width: 1200px) { 
+    margin-top: 2.5rem;
+  }
 `;
 
 export const FAQ = styled('article')`
@@ -227,6 +250,10 @@ export const FAQText = styled(Typography)`
   opacity: 0.2;
   z-index: 1;
   margin-top: -40px;
+  @media(max-width: 1200px) { 
+    font-size: 6rem;
+    margin-top: -50px;
+  }
 `;
 
 export const QuestionsWrapper = styled('div')`
@@ -238,6 +265,9 @@ export const QuestionsWrapper = styled('div')`
   display: flex;
   align-items: center;
   flex-direction: column;
+  @media(max-width: 1200px) { 
+    width: 90%;
+  }
 `;
 
 export const QuestionsHolder = styled('div')`
@@ -246,6 +276,9 @@ export const QuestionsHolder = styled('div')`
   flex-direction: column;
   padding: 4rem;
   width: 100%;
+  @media(max-width: 1200px) { 
+    padding: 2rem;
+  }
 `;
 
 export const Question = styled('div')`
@@ -259,6 +292,9 @@ export const Question = styled('div')`
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
+  @media(max-width: 1200px) { 
+    padding: 1rem 1.5rem;
+  }
 `;
 
 export const AnswerWrapper = styled('div')`
@@ -267,5 +303,8 @@ export const AnswerWrapper = styled('div')`
   width: 100%;
   padding: 1rem 3rem;
   text-align: left;
+  @media(max-width: 1200px) { 
+    padding: 1rem 1.5rem;
+  }
 `;
 

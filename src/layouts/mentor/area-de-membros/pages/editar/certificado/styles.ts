@@ -125,8 +125,8 @@ export const FileWrapper = styled('div')`
   border-radius: 6px;
   display: flex;
   justify-content: center;
-  aspect-ratio: 16/9;
-  max-width: 900px;
+  width: 790px; //1325
+  height: 590px; // 1000
   margin-bottom: 1rem;
   position: relative;
 `;

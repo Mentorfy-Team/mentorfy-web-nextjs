@@ -12,9 +12,12 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Collapse from '@mui/material/Collapse';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useRouter } from 'next/navigation';
+
 export default function Page() {
   const [collapse, setCollapse] = useState(false);
   const [questionId, setQuestionId] = useState<string>();
+  const router = useRouter();
 
   const isMobile = useMediaQuery('(max-width: 1200px)');
   const handleCollapse = (question) => {
@@ -27,6 +30,10 @@ export default function Page() {
     }
   };
 
+  const handleCreateAccount = () => {
+    router.push('/');
+  };
+
   return (
     <ThemeProvider>
       <GlobalStyles />
@@ -37,7 +44,7 @@ export default function Page() {
             <Box sx={{
               display: 'flex',
               flexDirection: 'column',
-              gap: '2rem',
+              gap: '1.5rem',
             }}>
               <Image
                 alt='mentor-fy-logo'
@@ -57,7 +64,7 @@ export default function Page() {
                 <strong>Become a Legend</strong>
               </SecodaryText>
 
-              <ActionButton>
+              <ActionButton style={{ marginTop: '0' }} onClick={() => handleCreateAccount()}>
                 Quero conhecer a ferramenta
               </ActionButton>
             </Box>
@@ -128,7 +135,7 @@ export default function Page() {
                 <span>Inovamos a forma de se entregar à mentoria, com escala e previsibilidade para que você mentor preocupe-se apenas em gerar soluções e boas ideias.</span>
                 <span>Estamos prontos para lhe apoiar desde os seus primeiros passos com sua experiência Mentorfy, até estratégias mais avançadas para ajudar você a alavancar e escalar ainda mais as suas vendas!</span>
               </SecondSectionText>
-              <ActionButton sx={{ marginBottom: '1.5rem' }}>Ver demonstração</ActionButton>
+              <ActionButton sx={{ marginBottom: '1.5rem' }} onClick={() => handleCreateAccount()}>Ver demonstração</ActionButton>
             </Box>
           </ContentHolder>
         </SecondSection>
@@ -147,7 +154,7 @@ export default function Page() {
                   left: '4%',
                 }}
               />
-              <Box sx={{ width: '50%' }}>
+              <Box sx={{ width: `${isMobile ? '100%' : '50%'}` }}>
                 <MainText mb={4}>
                   Conte com o melhor suporte
                   que você jamais imaginou existir.
@@ -179,7 +186,7 @@ export default function Page() {
             }}
           />
           <ContentHolder features='features'>
-            <Box sx={{ width: '75%', margin: '0 auto', textAlign: 'center' }}>
+            <Box sx={{ textAlign: 'center' }}>
               <MainText>
                 Funcionalidades que entregam a melhor experiência
                 e aumentam o engajamento dos seus mentorados.
@@ -260,7 +267,7 @@ export default function Page() {
               ))}
             </FeaturesContainer>
 
-            <ActionButton sx={{ width: '150px' }}>Ver detalhes</ActionButton>
+            <ActionButton sx={{ width: '150px' }} onClick={() => handleCreateAccount()}>Ver detalhes</ActionButton>
           </ContentHolder>
           <Image
             alt='background-mountain'
@@ -283,19 +290,19 @@ export default function Page() {
                 src='/images/integrations.png'
                 quality={100}
                 width={isMobile ? 284 : 500}
-                height={isMobile ? 284 : 500}
+                height={isMobile ? 320 : 500}
               />
             </Box>
             <Box sx={{ alignSelf: 'end' }}>
-              <MainText sx={{ maxWidth: '80%' }}>
-                Integração Simples com Platafomras de Pagamentos.
+              <MainText>
+                Integração Simples com Plataformas de Pagamentos.
               </MainText>
               <SecondSectionText sx={{ margin: '2rem 0' }}>
                 Hotmart, Eduzz, D. Manager Guru, Abmex, Appmax, Asaas,
                 Blitz Pay, Braip, Chegow, Doppus, Kiwify, Monetizze, Perfect Pay, Proluno, Stripe, Ticto, Yampi
                 <strong> Não encontrou o seu Gateway? Nós integramos para você!</strong>
               </SecondSectionText>
-              <ActionButton sx={{ marginBottom: '4rem' }}>Ver demonstração</ActionButton>
+              <ActionButton sx={{ marginBottom: '4rem' }} onClick={() => handleCreateAccount()}>Ver demonstração</ActionButton>
             </Box>
           </ContentHolder>
         </Integrations>
@@ -303,7 +310,7 @@ export default function Page() {
           <OrangeGradient id='orange'
             sx={{
               left: '12%',
-              top: '0',
+              top: `${isMobile ? '20%' : '0'}`,
               zIndex: '0',
             }}
           />
@@ -322,11 +329,11 @@ export default function Page() {
           <MainText color='accent.main'>
             Não fique na curiosidade.
           </MainText>
-          <SecondSectionText>
+          <SecondSectionText sx={{ zIndex: '1', textAlign: 'center' }}>
             Inspire-se nos exemplos de áreas de mentoria pré configuradas que deixamos criados para você.
           </SecondSectionText>
           <Box sx={{ background: 'gray', aspectRatio: '16/9', width: '60%', zIndex: '3' }}></Box>
-          <ActionButton sx={{ margin: '3rem 0', zIndex: '3' }}> Ver demonstração</ActionButton>
+          <ActionButton sx={{ margin: '3rem 0', zIndex: '3' }} onClick={() => handleCreateAccount()}> Ver demonstração</ActionButton>
         </VideoSection>
         <FAQ>
           <QuestionsWrapper>
@@ -336,7 +343,7 @@ export default function Page() {
               {FAQList.map((question) => (
                 <div key={question.question} style={{ display: 'flex', flexDirection: 'column' }}>
                   <Question onClick={() => handleCollapse(question.question)}>
-                    <Typography color='accent.main' fontWeight={700} fontSize='1.5rem'>{question.question}</Typography>
+                    <Typography color='accent.main' fontWeight={700} fontSize={`${isMobile ? '1.2rem' : '1.5rem'}`}>{question.question}</Typography>
                     <IconButton sx={{ color: 'accent.main' }} >
                       {questionId === question.question && collapse ? '-' : '+'}
                     </IconButton>
