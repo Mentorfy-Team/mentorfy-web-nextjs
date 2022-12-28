@@ -133,7 +133,6 @@ const Teams: FC<{ user }> = ({ user }) => {
                       },
                       {
                         label: deleteMentorText,
-                        disabled: hasMentors,
                         icon: <DeleteForever fontSize="small" fill="#FE7D22" />,
                         onClick: () =>
                           onDeleteMentor({ refId: team.id, open: true }),
