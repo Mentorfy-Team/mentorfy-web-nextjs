@@ -12,7 +12,11 @@ async function main() {
     const server = express();
 
     server
+      .post('*', (req, res) => krabs(req, res, handle, app))
       .get('*', (req, res) => krabs(req, res, handle, app))
+      .put('*', (req, res) => krabs(req, res, handle, app))
+      .delete('*', (req, res) => krabs(req, res, handle, app))
+      .patch('*', (req, res) => krabs(req, res, handle, app))
       .listen(3000, () => console.log('server ready'));
   } catch (err) {
     console.log(err.stack);
