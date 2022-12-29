@@ -104,7 +104,7 @@ export const ActionButton = styled('a')`
   border-radius: 5px;
   cursor: pointer;
   margin-top: 0.5rem;
-
+  text-decoration: none;
   &:hover {
     opacity: 0.9;
   }

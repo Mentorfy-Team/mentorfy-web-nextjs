@@ -60,10 +60,6 @@ export default function Page() {
     }
   };
 
-  const handleCreateAccount = () => {
-    router.push('/');
-  };
-
   return (
     <ThemeProvider>
       <GlobalStyles />
@@ -100,7 +96,7 @@ export default function Page() {
 
               <ActionButton
                 style={{ marginTop: '0' }}
-                onClick={() => handleCreateAccount()}
+                href={process.env.NEXT_PUBLIC_HOME_URL}
               >
                 Quero conhecer a ferramenta
               </ActionButton>
@@ -185,7 +181,7 @@ export default function Page() {
               </SecondSectionText>
               <ActionButton
                 sx={{ marginBottom: '1.5rem' }}
-                onClick={() => handleCreateAccount()}
+                href={process.env.NEXT_PUBLIC_HOME_URL}
               >
                 Ver demonstração
               </ActionButton>
@@ -320,7 +316,7 @@ export default function Page() {
 
             <ActionButton
               sx={{ width: '150px' }}
-              onClick={() => handleCreateAccount()}
+              href={process.env.NEXT_PUBLIC_HOME_URL}
             >
               Ver detalhes
             </ActionButton>
@@ -364,7 +360,7 @@ export default function Page() {
               </SecondSectionText>
               <ActionButton
                 sx={{ marginBottom: '4rem' }}
-                onClick={() => handleCreateAccount()}
+                href={process.env.NEXT_PUBLIC_HOME_URL}
               >
                 Ver demonstração
               </ActionButton>
@@ -407,7 +403,7 @@ export default function Page() {
           ></Box>
           <ActionButton
             sx={{ margin: '3rem 0', zIndex: '3' }}
-            onClick={() => handleCreateAccount()}
+            href={process.env.NEXT_PUBLIC_HOME_URL}
           >
             {' '}
             Ver demonstração

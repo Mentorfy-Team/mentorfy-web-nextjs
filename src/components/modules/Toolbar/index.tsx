@@ -113,7 +113,7 @@ const Toolbar: React.FC<Props> = ({
           paddingRight: '1rem',
         }}
       >
-        {true && (
+        {contact && (
           <LinkWrapper>
             <Link
               href={`https://api.whatsapp.com/send?phone=${(
