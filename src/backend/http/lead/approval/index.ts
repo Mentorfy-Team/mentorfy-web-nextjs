@@ -7,7 +7,7 @@ export const get = async (req, res) => {
     .from('lead_approval')
     .select('*')
     .eq('email', req.body.email)
-    .eq('status', 'pending')
+    .eq('status', 'trial')
     .single();
 
   res.status(200).json(lead);
