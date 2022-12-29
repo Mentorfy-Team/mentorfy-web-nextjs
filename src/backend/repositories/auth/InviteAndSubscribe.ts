@@ -99,7 +99,7 @@ export const InviteAndSubscribe = async ({
   } else {
     toUpdate = {
       interval: 'monthly',
-      is_subscribed: true,
+      active: true,
       expiration_date: dateToReadable(expiration_date),
       plan: 'pro',
       access_type: 'mentor',

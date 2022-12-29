@@ -59,4 +59,7 @@ export enum ApiRoutes {
   //* Rota para subscriptions
   subscription = '/api/subscription',
   subscription_pix = '/api/subscription/pix',
+
+  //* Rota para lead
+  lead_approval = '/api/lead/approval',
 }

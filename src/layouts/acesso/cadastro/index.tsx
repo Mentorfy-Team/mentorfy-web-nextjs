@@ -18,6 +18,7 @@ import TextSuccess from './components/TextSuccess';
 import passwordValidator from './helper/password-validator';
 import { FormWrapper, Policies, PoliciesWrapper } from './styles';
 import { betaEmailAccess } from '~/consts/beta-access';
+import { LookForLead } from '~/services/lead/LookForLead';
 
 type props = {
   setInfo: (info: any) => void;
@@ -68,8 +69,13 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
 
   const onSubmit = useCallback(async () => {
     const values = inputs;
-
-    if (!betaEmailAccess.includes(values.email.toLocaleLowerCase())) {
+    const isLead = await LookForLead({
+      email: values.email,
+    });
+    if (
+      !betaEmailAccess.includes(values.email.toLocaleLowerCase()) &&
+      !isLead
+    ) {
       setError(
         'Acesso restrito a usuários betas convidados. Solicite seu convite diretamente.',
       );

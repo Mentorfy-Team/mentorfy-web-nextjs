@@ -105,6 +105,8 @@ export const ActionButton = styled('a')`
   cursor: pointer;
   margin-top: 0.5rem;
   text-decoration: none;
+  color: white;
+  z-index: 4;
   &:hover {
     opacity: 0.9;
   }
