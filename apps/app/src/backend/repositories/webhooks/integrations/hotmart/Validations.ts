@@ -1,0 +1,33 @@
+import crypto from 'crypto';
+import { GetTokenByRefeerer } from '@app/backend/repositories/product/GetTokenByRefeerer';
+import { AvailableIntegrations } from '..';
+
+export const isHotmart = (
+  data: Webhook.Integration.Kiwify.ApprovedPurchase,
+) => {
+  return false;
+};
+
+export const AuthenticateRequest = async (
+  supabase,
+  query: any,
+  order: Webhook.Integration.Kiwify.ApprovedPurchase,
+) => {
+  const { token } = await GetTokenByRefeerer(
+    supabase,
+    query.id,
+    AvailableIntegrations.HOTMART,
+  );
+
+  if (!token) return false;
+  const calculatedSignature = crypto
+    .createHmac('sha1', token)
+    .update(JSON.stringify(order))
+    .digest('hex');
+
+  if (query.signature !== calculatedSignature) {
+    return false;
+  }
+
+  return true;
+};
