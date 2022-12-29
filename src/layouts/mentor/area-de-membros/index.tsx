@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import InputLabel from '@mui/material/InputLabel';
@@ -18,24 +18,32 @@ import { DeleteText } from './components/GroupModal/styles';
 import {
   AbsoluteBottomBox,
   AreaWrapper,
+  CopyButton,
   CreateAreaButton,
+  DefaultAreaWrapper,
+  DefaultProductsWrapper,
   DeleteAreaButton,
-  EmptyBox,
-  ImageButton,
   ProductTitle,
+  ProductsField,
   ProductsSelectField,
 } from './styles';
 import PlusSvg from '~/../public/svgs/plus';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import RatioSize from '~/helpers/RatioSize';
+import { CloneProduct } from '~/services/clone-product.service';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   const { products, mutate } = useProducts(user.id);
+  const { products: defaultProducts } = useProducts('b9dc824e-20f9-4824-a568-326f193ed45a');
   const router = useRouter();
   const theme = useTheme();
   const [openCreatePage, setOpenCreatePage] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+  const [showCloneProduct, setShowCloneProduct] = useState(false);
   const [productId, setProductId] = useState('');
+  const [defaultProductTitle, setDefaultProductTitle] = useState('');
+  const [defaultProductType, setDefaultProductType] = useState('');
+  const [cloneProduct, setCloneProduct] = useState({});
   const [open, setOpen] = useState(false);
 
   const confirmDeleteProduct = async () => {
@@ -66,6 +74,29 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
       setOpen(false);
       setShowConfirmDelete(false);
     }
+  };
+  const handleDefaultProducts = (area) => {
+    setShowCloneProduct(!showCloneProduct);
+    setDefaultProductType(area?.title);
+    setCloneProduct((state) => ({
+      ...state,
+      product_id: area.id,
+    }));
+  };
+
+  useEffect(() => {
+    if (showCloneProduct) {
+      setCloneProduct((state) => ({
+        ...state,
+        title: defaultProductTitle,
+      }));
+    }
+  }, [defaultProductTitle, showCloneProduct]);
+
+  const SubmitCloneProduct = async () => {
+
+    await CloneProduct(cloneProduct);
+
   };
 
   return (
@@ -168,18 +199,65 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
           ))}
         </Box>
         <Divider sx={{ borderColor: '#36353A', m: '2rem 0rem' }} />
-        <Box sx={{ display: 'flex' }}>
-          <Typography sx={{ mb: '1.5rem' }}>Modelos Prontos</Typography>
+        <Box sx={{ display: 'flex', mb: '1.5rem', gap: '1rem' }}>
+          <Typography>Modelos Prontos</Typography>
+          <Typography color='caption.main'>(Clique em Usar Modelo para selecionar o modelo)</Typography>
         </Box>
-        <EmptyBox
-          sx={{
-            backgroundColor: '#36353a50',
-            width: RatioSize('w', 3),
-            height: RatioSize('h', 3),
-          }}
-        >
-          <ImageButton>Em breve</ImageButton>
-        </EmptyBox>
+        <DefaultProductsWrapper>
+          {defaultProducts?.map((area, index) => (
+            <DefaultAreaWrapper
+              // onClick={
+              //   async () => {
+              //     await router.prefetch(
+              //       MentorRoutes.members_area_editar + '/' + area.id,
+              //     );
+              //     router.push(MentorRoutes.members_area_editar + '/' + area.id);
+              //   }
+              //   // router.push(MentorRoutes.members_area_editar + '/' + area.id)
+              // }
+              key={index}
+            >
+              <CopyButton onClick={() => handleDefaultProducts(area)}>Usar Modelo</CopyButton>
+              {area.main_image && (
+                <Image
+                  alt=""
+                  src={area.main_image}
+                  style={{
+                    objectFit: 'cover',
+                    borderRadius: '0.5rem',
+                  }}
+                  width={RatioSize('w', 3)}
+                  height={RatioSize('h', 3)}
+                />
+              )}
+              {!area.main_image && (
+                <Box
+                  sx={{
+                    border: `1px solid ${theme.palette.accent.dark}`,
+                    borderRadius: '10px',
+                  }}
+                >
+                  <Image
+                    alt=""
+                    src={area.member_area?.member_area_type.image}
+                    style={{
+                      objectFit: 'cover',
+                      borderRadius: '0.5rem',
+                    }}
+                    width={RatioSize('w', 3)}
+                    height={RatioSize('h', 3)}
+                  />
+                </Box>
+              )}
+
+              {!area?.banner_image && (
+                <AbsoluteBottomBox>
+                  <ProductTitle>{area?.title}</ProductTitle>
+                </AbsoluteBottomBox>
+              )}
+            </DefaultAreaWrapper>
+          ))}
+        </DefaultProductsWrapper>
       </ContentWidthLimit>
       <CreateProductDialog open={openCreatePage} setOpen={setOpenCreatePage} />
       <ModalComponent
@@ -227,6 +305,36 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
             </ProductsSelectField>
           </Box>
         )}
+      </ModalComponent>
+      {/* Clone Product Modal */}
+      <ModalComponent
+        onDelete={() => setShowCloneProduct(false)}
+        onSave={() => SubmitCloneProduct()}
+        open={showCloneProduct}
+        setOpen={setShowCloneProduct}
+        title="Usar Modelo Pronto"
+        sx={{ width: '500px' }}
+      >
+        <Box sx={{ width: '100%' }}>
+          <DeleteText>Configure o seu modelo</DeleteText>
+          <ProductsField
+            label='Nome da Mentoria'
+            required
+            color='secondary'
+            sx={{ width: '100%', margin: '1rem 0' }}
+            onChange={(e) => setDefaultProductTitle(e.target.value)}
+          />
+          <ProductsField
+            label='Tipo'
+            color='secondary'
+            defaultValue={defaultProductType}
+            sx={{ width: '100%', margin: '1rem 0' }}
+            disabled
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </Box>
       </ModalComponent>
     </>
   );
