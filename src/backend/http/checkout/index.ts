@@ -27,7 +27,7 @@ export const post = async (req: GetRequest, res: GetResponse) => {
 
   if (user) {
     if (
-      user.is_subscribed &&
+      user.active &&
       user.expiration_date &&
       new Date(user.expiration_date).getTime() > Date.now()
     ) {
