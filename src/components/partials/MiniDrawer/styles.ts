@@ -39,7 +39,7 @@ export const DrawerHeader = styled(Box)`
   margin-top: 2.5rem;
 `;
 
-export const Drawer = styled(MuiDrawer, {
+export const Drawer = styled<any>(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
 })`
   div {
@@ -59,6 +59,12 @@ export const Drawer = styled(MuiDrawer, {
   span {
     font-size: 0.8rem;
   }
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      display: none !important;
+    `}
 
   ${({ theme, open }) => {
     if (open) {

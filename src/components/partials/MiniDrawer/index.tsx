@@ -14,7 +14,7 @@ type props = {
 
 const MiniDrawer: React.FC<props> = ({ children }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery('(max-width:500px)');
+  const isMobile = useMediaQuery('(max-width:768px)');
   const [open, setOpen] = React.useState(isMobile ? false : true);
   const router = useRouter();
   const { isLoading, setLoading } = userStore();
@@ -53,7 +53,12 @@ const MiniDrawer: React.FC<props> = ({ children }) => {
         minHeight: 'inherit',
       }}
     >
-      <Drawer id="Drawer" variant="permanent" open={open}>
+      <Drawer
+        id="Drawer"
+        disabled={isMobile}
+        variant="permanent"
+        open={!isMobile && open}
+      >
         <DrawerHeader id="DrawerHeader" />
         {/* <UserField pl={1.5} display="flex">
           <Avatar
