@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
-import { Avatar } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import dynamic from 'next/dynamic';
@@ -59,6 +60,7 @@ const VideoViewModal = ({
   } = useProfile();
   const { data } = useProfile();
   const commentRef = useRef(null);
+  const isMobile = useMediaQuery('(max-width: 900px)');
 
   const handleFinish = () => {
     onChange({
@@ -112,7 +114,7 @@ const VideoViewModal = ({
     <ModalComponent title={HeadText} setOpen={setOpen} open={open} isMentorado>
       <ModalDialogContent
         sx={{
-          minHeight: '750px',
+          minHeight: isMobile ? '0' : '750px',
         }}
         isMentorado
       >

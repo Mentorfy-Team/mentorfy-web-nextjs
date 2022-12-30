@@ -30,8 +30,8 @@ export const Modal = styled(Dialog) <Props>`
         max-width: 1000px;
         overflow: unset;
         @media (max-width: 600px) {
-          height: 100%;
-          max-height: 100%;
+          height: auto;
+          width: 100%;
         }
       }
     `}
@@ -57,6 +57,9 @@ export const ModalDialogContent = styled(DialogContent) <Props>`
   flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
+  @media (max-width: 900px) {
+    padding: 1rem;
+  }
   ${({ isMentorado }) =>
     isMentorado
       ? css`
@@ -65,6 +68,10 @@ export const ModalDialogContent = styled(DialogContent) <Props>`
             overflow-y: auto;
             padding: 0.5rem 1rem;
             width: 900px;
+            @media (max-width: 900px) {
+              height: auto;
+              width: 100%;
+        }
           }
         `
       : css`
