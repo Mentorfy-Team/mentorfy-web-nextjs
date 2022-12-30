@@ -72,7 +72,7 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
     const isLead = await LookForLead({
       email: values.email,
     });
-    console.log(isLead);
+
     if (
       !betaEmailAccess.includes(values.email.toLocaleLowerCase()) &&
       !isLead
