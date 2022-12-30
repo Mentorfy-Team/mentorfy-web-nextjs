@@ -16,9 +16,9 @@ module.exports = {
       name: 'app',
       domains: [
         {
-          development: 'app.localhost',
-          stage: 'app.mentorfy.io',
-          production: 'app.mentorfy.io',
+          development: /[\w|\d|-|_]+\.localhost/,
+          stage: /[\w|\d|-|_]+\.mentorfy\.io/,
+          production: /[\w|\d|-|_]+\.mentorfy\.io/,
         },
       ],
     },
