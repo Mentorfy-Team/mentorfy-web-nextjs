@@ -9,7 +9,7 @@ type Props = {
   maxWidthSize?: string;
 };
 
-export const Modal = styled(Dialog)<Props>`
+export const Modal = styled(Dialog) <Props>`
   .MuiPaper-root {
     height: fit-content;
     max-height: 90%;
@@ -42,11 +42,15 @@ export const Modal = styled(Dialog)<Props>`
         background-color: #121212;
         max-height: 100%;
         max-width: 900px;
+        @media (max-width: 900px) {
+          height: auto;
+          width: 100%;
+    }
       }
     `}
 `;
 
-export const ModalDialogContent = styled(DialogContent)<Props>`
+export const ModalDialogContent = styled(DialogContent) <Props>`
   align-items: center;
   background-color: ${({ theme }) => theme.palette.primary.main};
   display: flex;
@@ -75,6 +79,10 @@ export const ModalDialogContent = styled(DialogContent)<Props>`
       overflow: hidden;
       padding: 0;
       width: 900px;
+      @media (max-width: 900px) {
+          height: auto;
+          width: 100%;
+    }
     `}
 `;
 export const Header = styled(Box)`

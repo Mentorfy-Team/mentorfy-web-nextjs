@@ -31,6 +31,9 @@ export const AppBar = styled(MuiAppBar)`
   gap: 1rem;
   height: 50px;
   padding-right: 2rem;
+  @media(max-width: 600px){ 
+    padding-right: 0.5rem;
+  }
   > div {
     flex: 1;
   }

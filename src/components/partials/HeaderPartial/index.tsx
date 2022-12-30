@@ -8,11 +8,14 @@ import { AppBar, AvatarWrapper, MenuItem, PopoverBox } from './styles';
 import Tipografia from '~/../public/images/logo-montanha.png';
 import MenuAvatar from '~/../public/svgs/menu-avatar';
 import Notification from '~/../public/svgs/notification';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Link from 'next/link';
 
 const HeaderPartial: React.FC = () => {
   const router = useRouter();
+  const isMobile = useMediaQuery('(max-width: 600px)');
+
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null,
   );
@@ -55,12 +58,12 @@ const HeaderPartial: React.FC = () => {
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '4.0rem',
+            gap: isMobile ? '0.2rem' : '4.0rem',
           }}
         >
           <Image
             style={{
-              marginLeft: '3.2rem',
+              marginLeft: isMobile ? '0.5rem' : '3.2rem',
             }}
             height={40}
             alt="some important man mentoring smart people"
