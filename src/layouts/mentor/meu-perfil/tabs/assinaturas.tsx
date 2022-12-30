@@ -18,6 +18,7 @@ import PaymentChangeModal from '../components/ChangePayment';
 import { useRouter } from 'next/router';
 import Typography from '@mui/material/Typography';
 import { SendPixPayment } from '~/services/checkout/pix.service';
+import { isExpired } from '~/helpers/IsExpired';
 
 type Props = {
   profile: ClientTypes.Profile;
@@ -98,17 +99,49 @@ const Signature = ({ profile, customer, plan }: Props) => {
               gap: '1rem',
             }}
           >
-            <Typography>
-              Você ainda{' '}
-              <b
-                style={{
-                  color: theme.palette.accent.main,
-                }}
-              >
-                não possui uma assinatura
-              </b>{' '}
-              ativa. Assine agora para não perdeu o seu acesso.
-            </Typography>
+            {isExpired(profile.expiration_date) && (
+              <Typography>
+                Você ainda{' '}
+                <b
+                  style={{
+                    color: theme.palette.accent.main,
+                  }}
+                >
+                  não possui uma assinatura
+                </b>{' '}
+                ativa. Assine agora para não perdeu o seu acesso.
+              </Typography>
+            )}
+            {!isExpired(profile.expiration_date) && (
+              <Typography textAlign="center">
+                Você possui um periodo de{' '}
+                <b
+                  style={{
+                    color: theme.palette.success.main,
+                  }}
+                >
+                  acesso livre
+                </b>
+                , com vencimento em{' '}
+                <b
+                  style={{
+                    color: theme.palette.accent.main,
+                  }}
+                >
+                  {new Date(profile.expiration_date).toLocaleDateString(
+                    'pt-BR',
+                    {
+                      day: 'numeric',
+                      month: 'numeric',
+                      year: 'numeric',
+                    },
+                  )}
+                </b>
+                . <p />
+                Você pode assinar um novo plano clicando abaixo.
+              </Typography>
+            )}
+
             <Button
               variant="contained"
               color="primary"

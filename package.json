@@ -3,9 +3,9 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production node server.js",
     "supabase": "supabase start",
     "supabase:ts": "supabase gen types typescript --linked > ./src/@types/supabase/v2.types.ts",
     "lint": "next lint",

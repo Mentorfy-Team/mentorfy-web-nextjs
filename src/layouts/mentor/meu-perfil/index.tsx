@@ -63,7 +63,7 @@ const MinhaConta: FC<props> = ({
       case tabs.Links.valueOf():
         return <DadosPage profile={profile} address={address} />;
       case tabs.Assinatura.valueOf():
-        return <Signature customer={customer} profile={profile} plan={plan} />;
+        return <Signature customer={customer} profile={profile} plan={null} />;
       default:
         return (
           <GeralPage

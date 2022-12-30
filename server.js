@@ -3,13 +3,14 @@ const next = require('next');
 const krabs = require('krabs').default;
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
+const path = require('path');
 //
 async function main() {
   try {
     await app.prepare();
-
     const handle = app.getRequestHandler();
     const server = express();
+    server.use(express.static(path.join(__dirname, 'public')));
 
     server
       .post('*', (req, res) => krabs(req, res, handle, app))
