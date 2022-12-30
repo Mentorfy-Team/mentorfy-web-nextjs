@@ -1,6 +1,6 @@
 import React from 'react';
-import { BannerWrapper } from '~/layouts/checkout/styles';
 import {
+  BannerWrapper,
   DescriptionText,
   MentorName,
   NameWrapper,
@@ -15,7 +15,7 @@ import Image from 'next/image';
 const WelcomeHeader = ({ name, disabled }) => {
   return (
     !disabled && (
-      <BannerWrapper>
+      <BannerWrapper id="banner">
         <TextsWrapper>
           <NameWrapper>
             <MountainName />
