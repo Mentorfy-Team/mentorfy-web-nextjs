@@ -44,6 +44,15 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
         expiration_date: lead?.expiration_date,
       })
       .eq('id', user.id);
+
+    if (lead) {
+      await supabase
+        .from('lead_approval')
+        .update({
+          status: 'active',
+        })
+        .eq('email', user.email);
+    }
   }
 
   // * Se houver erro, retorna o erro
