@@ -78,7 +78,7 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
       !isLead
     ) {
       setError(
-        'Acesso restrito a usuários betas convidados. Solicite seu convite diretamente.',
+        'Sem permissão para novo cadastro ou usuário já cadastrado. Em caso de dúvidas, entre em contato com o suporte.',
       );
       return;
     }

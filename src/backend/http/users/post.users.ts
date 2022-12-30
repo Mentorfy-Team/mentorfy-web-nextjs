@@ -14,18 +14,26 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
     return res.status(400).json({ error: 'Email e senha são obrigatórios.' });
   }
 
+  const supabase = SupabaseServer(req, res);
+
   // * Cria a autenticação do usuário no banco de dados
   const {
     data: { user },
     error,
-  } = await SupabaseServer(req, res).auth.signUp({
+  } = await supabase.auth.signUp({
     email,
     password,
   });
 
   // * Se tudo estiver certo, atualiza o perfil do usuário
   if (!error) {
-    await SupabaseServer(req, res)
+    const { data: lead, error: error } = await supabase
+      .from('lead_approval')
+      .select('*')
+      .eq('email', user.email)
+      .single();
+
+    await supabase
       .from('profile')
       .update({
         name,
@@ -33,6 +41,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
         email: user.email,
         phone: user.phone,
         access_type: refeerer ? 'mentorado' : 'mentor',
+        expiration_date: lead?.expiration_date,
       })
       .eq('id', user.id);
   }
@@ -47,13 +56,13 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   if (refeerer) {
     const {
       data: { id },
-    } = await SupabaseServer(req, res)
+    } = await supabase
       .from('product')
       .select('id')
       .eq('refeerer', refeerer)
       .single();
 
-    await SupabaseServer(req, res).from('client_product').insert({
+    await supabase.from('client_product').insert({
       user_id: user.id,
       product_id: id,
       subscription: true,
