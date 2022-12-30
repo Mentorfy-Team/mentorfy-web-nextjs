@@ -4,7 +4,7 @@ const hostnamesDB = [
   //   description: 'Subdomain + custom domain',
   //   subdomain: '',
   //   customDomain: 'mentorfy.io',
-  //   // Default subdomain for Preview deployments and for local development
+  //   # Default subdomain for Preview deployments and for local development
   //   defaultForPreview: true,
   // },
   {
