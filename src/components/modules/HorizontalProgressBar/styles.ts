@@ -6,9 +6,11 @@ import Typography from '@mui/material/Typography';
 export const Wrapper = styled(Box)`
   display: flex;
   gap: 2rem;
+  min-height: 120px;
   margin: 1rem 1.8vw;
   padding-bottom: 1rem;
   overflow-x: scroll;
+  overflow-y: hidden;
 `;
 
 export const CircleWrapper = styled(Box)`

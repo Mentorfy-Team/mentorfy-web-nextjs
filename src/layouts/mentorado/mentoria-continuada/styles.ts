@@ -20,6 +20,10 @@ export const Bundle = styled(Box)`
   overflow: hidden;
   padding: 1rem;
   width: 100%;
+  @media(max-width: 900px){ 
+    max-height: 500px;
+    max-width: 350px;
+  }
 `;
 
 export const ImageWrapper = styled(Box)`
