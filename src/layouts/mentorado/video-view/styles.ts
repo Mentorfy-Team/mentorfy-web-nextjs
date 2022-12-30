@@ -10,6 +10,9 @@ export const Wrapper = styled(Box)`
 export const VideoWrapper = styled(Box)`
   padding-bottom: 3rem;
   text-align: start;
+  @media(max-width: 1200px){ 
+    padding-bottom: 0;
+  }
 `;
 
 export const ProgressBarWrapper = styled(Box)`
@@ -74,6 +77,9 @@ export const CommentInput = styled('textarea')`
   min-width: 88%;
   overflow-y: hidden;
   padding: 0.5rem 0.75rem;
+  @media(max-width: 1200px){ 
+    min-width: 100%;
+  }
 `;
 
 export const SendButton = styled(Button)`
