@@ -53,6 +53,8 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
   initClientProducts,
 }) => {
   const sizeLg = useMediaQuery('(min-width: 1200px)');
+  const isMobile = useMediaQuery('(max-width: 600px)');
+
   const { disableScroll, enableScroll } = usePreventBodyScroll();
 
   const [currentProduct, setCurrentProduct] = useState<ProductTypes.Product>();
@@ -177,7 +179,7 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
         >
           {p.map((product, index) => (
             <CourseBox
-              onMouseOver={() => {}}
+              onMouseOver={() => { }}
               className="item"
               key={index}
               onClick={() => {
@@ -188,8 +190,8 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
                   router.push(
                     types.find((type) => type.id.toString() === product.deliver)
                       .path +
-                      '/' +
-                      product.id,
+                    '/' +
+                    product.id,
                   );
                 } else {
                   handlePopularProductsModal(product);
@@ -235,7 +237,7 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
       />
       <ContentWidthLimit
         sx={{
-          marginTop: sizeLg ? '-6rem' : '0',
+          marginTop: sizeLg ? '-6rem' : '3rem',
           zIndex: 1,
           position: 'relative',
         }}
@@ -252,7 +254,7 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
           </>
         )}
 
-        <Box sx={{ display: 'flex', margin: '0.5rem 0 0.5rem 0' }}>
+        <Box sx={{ display: 'flex', margin: sizeLg ? '0.5rem 0' : '4rem 0 0.5rem 0' }}>
           <Typography variant="h5">Populares na Mentorfy</Typography>
         </Box>
         <SliderWrapper>
@@ -331,7 +333,7 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
               textAlign: 'start',
               display: 'flex',
               flexDirection: 'column',
-              margin: '-4rem 0 1rem 0',
+              margin: isMobile ? '-0.5rem 0 1rem 0' : '-4rem 0 1rem 0',
               padding: '0 1rem',
               position: 'relative',
               gap: '0.5rem',

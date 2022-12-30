@@ -108,7 +108,6 @@ export default function Page() {
                 src="/images/lp-main-image.png"
                 width={isMobile ? 322 : 850}
                 height={isMobile ? 200 : 500}
-                quality={100}
                 style={{
                   zIndex: '4',
                   marginTop: '5rem',
@@ -196,7 +195,6 @@ export default function Page() {
                 src="/images/cellphone.png"
                 width={isMobile ? 288 : 400}
                 height={isMobile ? 320 : 430}
-                quality={100}
                 style={{
                   zIndex: '2',
                   marginTop: `${isMobile ? '0' : '-15%'}`,

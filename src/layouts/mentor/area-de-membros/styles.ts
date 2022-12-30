@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
+import { TextField } from '~/components/atoms/DescriptionInputField/styles';
 import SelectField from '~/components/atoms/SelectField';
 
 export const OptionsWrapper = styled(Box)``;
@@ -14,6 +15,13 @@ export const AreaWrapper = styled(Box)`
     transform: scale(0.95);
   }
   transition: all 0.1s ease-in-out;
+`;
+
+export const DefaultAreaWrapper = styled(Box)`
+  cursor: pointer;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 `;
 
 export const HeaderWrapper = styled(Box)`
@@ -83,17 +91,13 @@ export const ImageButton = styled(Box)`
   width: 15rem;
 `;
 
-export const EmptyBox = styled(Box)`
-  align-items: center;
-  background: none;
-  border-radius: 5px;
-  color: black;
-  cursor: pointer;
+export const DefaultProductsWrapper = styled(Box)`
   display: flex;
-  height: 15rem;
-  justify-content: center;
-  margin-right: 4rem;
-  width: 15rem;
+  flex-direction: row;
+  overflow: auto;
+  overflow-y: hidden;
+  height: 100%;
+  gap: 2rem;
 `;
 
 export const CreateAreaButton = styled(Button)`
@@ -112,7 +116,7 @@ export const DeleteAreaButton = styled(Button)`
   text-transform: none;
 
   &:hover { 
-    background-color: ${({theme}) => theme.palette.failure.main};
+    background-color: ${({ theme }) => theme.palette.failure.main};
     color: #ffff;
   }
 
@@ -143,6 +147,39 @@ export const ProductsSelectField = styled(SelectField)`
   }
   .MuiOutlinedInput-input {
     padding: 9.5px 14px;
+  } 
+  svg { 
+    fill: #ffffff;
+  }
+`;
+
+export const CopyButton = styled(Button)`
+  background-color: ${({ theme }) => theme.palette.success.main};
+  filter: brightness();
+  color: white;
+  z-index: 2;
+  position: absolute;
+  right: 35%;
+  padding: 0.5rem;
+`;
+
+export const ProductsField = styled(TextField)`
+  height: 2.8rem;
+  outline: none;
+  width: 100%;
+  input {
+    color: #fff ;
+  }
+  label {
+    color: ${({ theme }) => theme.palette.text.primary} !important;
+  }
+  fieldset {
+    border-color: #fff ;
+    
+    height: 2.8rem;
+  }
+  .MuiOutlinedInput-input {
+    padding: 6.5px 14px;
   } 
   svg { 
     fill: #ffffff;

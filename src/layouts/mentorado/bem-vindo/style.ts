@@ -35,6 +35,7 @@ export const OverlayPopular = styled('div')`
 
 export const Background = styled(Box)`
   background: #080808;
+  min-height: 100vh;
   > div > video,
   iframe {
     z-index: -1;
@@ -307,7 +308,7 @@ export const ProductTitle = styled(Typography)`
   -webkit-box-orient: vertical;
 `;
 
-export const CollorFullTypography = styled(Typography)<{ one; two; three }>`
+export const CollorFullTypography = styled(Typography) <{ one; two; three }>`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background: ${({ one, two, three }) =>
@@ -323,7 +324,7 @@ export const CollorFullTypography = styled(Typography)<{ one; two; three }>`
   text-shadow: 0px 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
 `;
 
-export const CollorFullPopular = styled(Typography)<{ one; two; three }>`
+export const CollorFullPopular = styled(Typography) <{ one; two; three }>`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background: ${({ one, two, three }) =>

@@ -36,9 +36,9 @@ export const get = async (req, res) => {
     .select('*, team_member_client(*)')
     .or(
       'team_id.in.(' +
-        teams.map((t) => t.id).join(',') +
-        '), profile_id.eq.' +
-        user.id,
+      teams.map((t) => t.id).join(',') +
+      '), profile_id.eq.' +
+      user.id,
     );
 
   const cIds = team_member?.reduce(

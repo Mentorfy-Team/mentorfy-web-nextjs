@@ -7,7 +7,7 @@ module.exports = {
       domains: [
         {
           development: 'localhost',
-          stage: 'beta.mentorfy.io',
+          stage: 'mentorfy.io',
           production: 'mentorfy.io',
         },
       ],

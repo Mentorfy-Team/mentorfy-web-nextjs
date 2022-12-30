@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "supabase": "supabase start",
@@ -56,7 +56,6 @@
     "next": "13.0.4",
     "next-axiom": "^0.16.0",
     "pagarme": "^4.28.0",
-    "pdf-to-img": "^2.1.1",
     "pdfkit": "^0.13.0",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",

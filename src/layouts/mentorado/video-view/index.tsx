@@ -36,6 +36,7 @@ import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
 import CertificateModal from '../components/certificate-modal';
 import { DocumentScanner } from '@mui/icons-material';
 import { getProgressByStep } from '../helpers/GetProgress';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 type VideoModuleType = {
   id: string;
@@ -54,6 +55,7 @@ export const VideoView = ({
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [showCertificate, setShowCertificate] = useState(false);
+  const isMobile = useMediaQuery('(max-width: 1200px)');
 
   const [steps, setSteps] = useState<GroupTools[]>([]);
   const [userInput, setUserInput] = useState<
@@ -329,7 +331,7 @@ export const VideoView = ({
         actionIcon={<DocumentScanner fontSize="small" />}
         actionVisible={isDone}
       />
-      <ContentWidthLimit maxWidth={1900}>
+      <ContentWidthLimit maxWidth={1900} >
         {(!steps || steps.length == 0) && (
           <TipBar>
             Ainda não há <span>nenhuma etapa disponível</span> para essa
@@ -337,7 +339,7 @@ export const VideoView = ({
             mentoria.
           </TipBar>
         )}
-        <Wrapper>
+        <Wrapper sx={{ flexDirection: isMobile ? 'column' : 'row' }}>
           <VideoWrapper>
             <Typography variant="h6" sx={{ margin: '1rem 0' }}>
               {mainModule?.video?.parent_tool?.title} -
@@ -355,8 +357,9 @@ export const VideoView = ({
             {mainModule?.video?.type == 4 && (
               <Box
                 sx={{
-                  width: '985px',
-                  height: '554px',
+                  maxWidth: isMobile ? '100%' : '985px',
+                  height: isMobile ? 'auto' : '554px',
+                  aspectRatio: isMobile ? '16/9' : 'none',
                   backgroundColor: 'black',
                 }}
               >
@@ -400,16 +403,16 @@ export const VideoView = ({
                 {userInput.find(
                   (inp) => inp.id?.toString() === mainModule?.video?.id,
                 ) && (
-                  <CompleteButton>
-                    Concluído
-                    <Image
-                      alt=""
-                      width={15}
-                      height={15}
-                      src="/svgs/done-simbol.svg"
-                    />
-                  </CompleteButton>
-                )}
+                    <CompleteButton>
+                      Concluído
+                      <Image
+                        alt=""
+                        width={15}
+                        height={15}
+                        src="/svgs/done-simbol.svg"
+                      />
+                    </CompleteButton>
+                  )}
               </Box>
               {nextVideo?.video_index && (
                 <NextVButton onClick={() => onSelectedNext()}>
@@ -426,30 +429,36 @@ export const VideoView = ({
 
             <Typography
               variant="body1"
-              sx={{ margin: '1rem 0', maxWidth: 980, width: '100%' }}
+              sx={{ margin: isMobile ? ' 0' : '1rem 0', maxWidth: 980, width: '100%' }}
             >
               {mainModule?.video?.description}
             </Typography>
 
-            <Typography variant="body1" sx={{ margin: '2.5rem 0 0.8rem 0' }}>
-              Comentários ( Apenas o mentor pode ver )
-            </Typography>
+            {!isMobile && (
+              <>
+                <Typography variant="body1" sx={{ margin: '2.5rem 0 0.8rem 0' }}>
+                  Comentários ( Apenas o mentor pode ver )
+                </Typography>
 
-            <Box sx={{ width: '100%', display: 'flex', gap: '0.5rem' }}>
-              <CommentInput
-                ref={commentRef}
-                placeholder="Deixar mensagem para o mentor"
-              />
-              <SendButton onClick={() => SendComment()} variant="contained">
-                Enviar
-                <Image alt="" width={15} height={15} src="/svgs/share.svg" />
-              </SendButton>
-            </Box>
-            <CommentsSession />
+                <Box sx={{ width: '100%', display: 'flex', gap: '0.5rem' }}>
+                  <CommentInput
+                    ref={commentRef}
+                    placeholder="Deixar mensagem para o mentor"
+                  />
+                  <SendButton onClick={() => SendComment()} variant="contained">
+                    Enviar
+                    <Image alt="" width={15} height={15} src="/svgs/share.svg" />
+                  </SendButton>
+                </Box>
+                <CommentsSession />
+              </>
+            )}
           </VideoWrapper>
           <ProgressBarWrapper
             sx={{
               padding: '1rem 0 0 2rem',
+              maxHeight: isMobile ? '346px' : '',
+              overflowY: isMobile ? 'auto' : 'none',
             }}
           >
             <ProgressBar
@@ -462,7 +471,7 @@ export const VideoView = ({
                   onSelectedVideo(id);
                 } else {
                   setCurrentModal({
-                    onChange: () => {},
+                    onChange: () => { },
                     type: GetTypeName(task.type),
                     refId: id,
                     area_id: member_area_id,
@@ -473,16 +482,37 @@ export const VideoView = ({
               }}
             />
           </ProgressBarWrapper>
+          {isMobile && (
+            <>
+              <Typography variant="body1" sx={{ margin: '2.5rem auto 0.8rem 0' }}>
+                Comentários ( Apenas o mentor pode ver )
+              </Typography>
+
+              <Box sx={{ width: '100%', display: 'flex', gap: '0.5rem', flexDirection: isMobile ? 'column' : 'row' }}>
+                <CommentInput
+                  ref={commentRef}
+                  placeholder="Deixar mensagem para o mentor"
+                />
+                <SendButton onClick={() => SendComment()} variant="contained" sx={{ marginLeft: isMobile ? 'auto' : '0' }}>
+                  Enviar
+                  <Image alt="" width={15} height={15} src="/svgs/share.svg" />
+                </SendButton>
+              </Box>
+              <CommentsSession />
+            </>
+          )}
         </Wrapper>
       </ContentWidthLimit>
       <HandleModal />
-      {showCertificate && (
-        <CertificateModal
-          open={showCertificate}
-          setOpen={setShowCertificate}
-          product={memberArea}
-        />
-      )}
+      {
+        showCertificate && (
+          <CertificateModal
+            open={showCertificate}
+            setOpen={setShowCertificate}
+            product={memberArea}
+          />
+        )
+      }
     </>
   );
 };

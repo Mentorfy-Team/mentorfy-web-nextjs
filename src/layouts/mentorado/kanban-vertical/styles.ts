@@ -14,6 +14,10 @@ export const Bundle = styled(Box)`
   border-radius: 6px;
   overflow: auto;
   padding: 2.5rem;
+  margin-bottom: 3rem;
+  @media(max-width: 900px){ 
+    padding: 1.5rem;
+  }
 `;
 
 export const ImageWrapper = styled(Box)`
