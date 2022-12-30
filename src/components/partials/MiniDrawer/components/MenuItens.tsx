@@ -84,7 +84,7 @@ function StyledTreeItem(props: StyledTreeItemProps) {
             pr: 0,
             gap: 2,
             height: '45px',
-            width: '200px'
+            width: '200px',
           }}
         >
           {LabelIcon ? (
@@ -117,6 +117,8 @@ export default function MenuItens({
   routesData,
   selectedRoute,
   onSelectedRoute,
+  blockedUser,
+  freeRoutes,
 }) {
   const theme = useTheme();
   const router = useRouter();
@@ -132,6 +134,8 @@ export default function MenuItens({
           path,
           inDevelopment,
         }) => {
+          const disable =
+            inDevelopment || (blockedUser && !freeRoutes.includes(path));
           return (
             <StyledTreeItem
               key={name}
@@ -146,16 +150,22 @@ export default function MenuItens({
                 onSelectedRoute(path);
               }}
               hasChildren={false}
-              disabled={inDevelopment}
+              disabled={disable}
               sx={{
-                pointerEvents: inDevelopment ? 'none' : 'auto',
+                pointerEvents: disable ? 'none' : 'auto',
               }}
             />
           );
         },
       );
     },
-    [onSelectedRoute, routesData, theme.palette.accent.main],
+    [
+      blockedUser,
+      freeRoutes,
+      onSelectedRoute,
+      routesData,
+      theme.palette.accent.main,
+    ],
   );
 
   return (
@@ -183,6 +193,8 @@ export default function MenuItens({
           color,
         } = routesData[route];
         const hasChildren = children;
+        const disabled =
+          inDevelopment || (blockedUser && !freeRoutes.includes(path));
         return (
           <StyledTreeItem
             key={name}
@@ -197,9 +209,9 @@ export default function MenuItens({
             onClick={() => {
               onSelectedRoute(path);
             }}
-            disabled={inDevelopment}
+            disabled={disabled}
             sx={{
-              pointerEvents: inDevelopment ? 'none' : 'auto',
+              pointerEvents: disabled ? 'none' : 'auto',
             }}
           >
             {LoadSubMenu(route)}

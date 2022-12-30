@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { ActionButton, LinkWrapper, WhatsAppButton } from './styles';
 
 type Props = {
-  onChange?: (value: number) => void;
+  onChange?: (value: any) => void;
   tabs?: string[] | number[];
   breadcrumbs?: string[];
   initialTab?: number;
@@ -30,14 +30,14 @@ const Toolbar: React.FC<Props> = ({
   actionIcon,
   actionVisible,
 }) => {
-  const [tabindex, setTabindex] = React.useState(initialTab);
+  const [tabindex, setTabindex] = React.useState<number>(initialTab);
   const [hasmargintop, setHasMarginTop] = useState<boolean | null>(null);
   const route = useRouter();
   const theme = useTheme();
 
   useEffect(() => {
     onChange(tabindex);
-  }, [onChange, tabindex]);
+  }, [tabindex]);
 
   useEffect(() => {
     if (route.pathname.includes('mentorado')) {

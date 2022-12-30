@@ -7,6 +7,8 @@ import { MentorMenu } from '~/consts/routes/routes.consts';
 import { userStore } from '~/stores';
 import { AnimatedBox, Drawer, DrawerHeader } from './styles';
 import MenuItens from './components/MenuItens';
+import { isExpired } from '~/helpers/IsExpired';
+import { useProfile } from '~/hooks/useProfile';
 
 type props = {
   children?: JSX.Element;
@@ -21,6 +23,10 @@ const MiniDrawer: React.FC<props> = ({ children }) => {
   const [selectedRoute, setSelectedRoute] = React.useState<string>(
     router.pathname,
   );
+
+  const {
+    data: { profile },
+  } = useProfile();
 
   const pathsList = React.useMemo(() => {
     // reduce root and children paths
@@ -44,6 +50,35 @@ const MiniDrawer: React.FC<props> = ({ children }) => {
     });
   }, [pathsList, selectedRoute]);
 
+  const RenderItens = React.useCallback(() => {
+    return (
+      <MenuItens
+        blockedUser={isExpired(profile?.expiration_date)}
+        freeRoutes={['/mentor/meu-perfil']}
+        selectedRoute={[...ActivePaths, selectedRoute]}
+        onSelectedRoute={async (route) => {
+          const hasChildren = Object.values(MentorMenu).find(
+            (item) => item.path === route,
+          )?.children;
+          if (ActivePaths.includes(route) || hasChildren) {
+            setSelectedRoute((old) => old);
+
+            if (!hasChildren) {
+              await router.prefetch(route);
+              await router.push(route);
+            }
+            return;
+          }
+          setSelectedRoute(route);
+          await router.prefetch(route);
+          await router.push(route);
+        }}
+        routes={Object.keys(MentorMenu)}
+        routesData={MentorMenu}
+      />
+    );
+  }, [ActivePaths, profile?.expiration_date, router, selectedRoute]);
+
   return (
     <Box
       sx={{
@@ -60,71 +95,9 @@ const MiniDrawer: React.FC<props> = ({ children }) => {
         open={!isMobile && open}
       >
         <DrawerHeader id="DrawerHeader" />
-        {/* <UserField pl={1.5} display="flex">
-          <Avatar
-            src={_profile?.avatar}
-            sx={{ backgroundColor: 'gray !important' }}
-          />
-          <Box pl={2.5}>
-            <UserName variant="body2" noWrap>
-              {AdjustName(_profile?.name || 'Bem-vindo')}
-            </UserName>
-            <Box display="flex">
-              <Kind variant="caption">Mentor</Kind>
-              <ProFree type={_profile?.plan}>
-                {(_profile?.plan || 'Free').toUpperCase()}
-              </ProFree>
-            </Box>
-          </Box>
-        </UserField> */}
         <Box p="1rem 0" height="100%">
-          <MenuItens
-            selectedRoute={[...ActivePaths, selectedRoute]}
-            onSelectedRoute={async (route) => {
-              const hasChildren = Object.values(MentorMenu).find(
-                (item) => item.path === route,
-              )?.children;
-              if (ActivePaths.includes(route) || hasChildren) {
-                setSelectedRoute((old) => old);
-
-                if (!hasChildren) {
-                  await router.prefetch(route);
-                  await router.push(route);
-                }
-                return;
-              }
-              setSelectedRoute(route);
-              await router.prefetch(route);
-              await router.push(route);
-            }}
-            routes={Object.keys(MentorMenu)}
-            routesData={MentorMenu}
-          />
+          <RenderItens />
         </Box>
-        {/* {Object.keys(MentorMenu).map((route, index) => (
-            <ListItem
-              key={MentorMenu[route].name}
-              disablePadding
-              sx={{
-                display: 'block',
-                backgroundColor: IsActiveValidator(MentorMenu[route].path)
-                  ? 'rgba(0, 0, 0, 0.15)'
-                  : 'transparent',
-              }}
-            >
-              {!MentorMenu[route].children && MenuItem({ route })}
-              {MentorMenu[route].children && (
-                <ColapseMenu
-                  id="ColapseMenu"
-                  label="ColapseMenu"
-                  model={MenuItem({ route, rootWithLink: false })}
-                  key={MentorMenu[route].name}
-                >
-                  {MentorMenu[route].children}
-                </ColapseMenu>
-              )}
-            </ListItem>
-          ))} */}
       </Drawer>
       <Box
         component="main"
