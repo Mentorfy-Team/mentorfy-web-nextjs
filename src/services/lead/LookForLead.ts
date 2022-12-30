@@ -12,8 +12,6 @@ export const LookForLead = async (data: TextProps): Promise<boolean> => {
     );
     return !!response.data.email;
   } catch (error: any) {
-    return {
-      error: error.message,
-    } as any;
+    return null;
   }
 };

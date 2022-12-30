@@ -6,7 +6,7 @@ export const get = async (req, res) => {
   const { data: lead, error: error } = await supabase
     .from('lead_approval')
     .select('*')
-    .eq('email', req.body.email)
+    .eq('email', req.query.email)
     .eq('status', 'trial')
     .single();
 
