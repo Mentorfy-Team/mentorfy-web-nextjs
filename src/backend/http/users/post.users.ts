@@ -1,4 +1,5 @@
 import { SupabaseServer } from '~/backend/supabase';
+import { dateToReadable } from '../clients/list.api';
 type Request = UsersApi.Post.Request;
 type Response = UsersApi.Post.Response;
 
@@ -27,33 +28,44 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
 
   // * Se tudo estiver certo, atualiza o perfil do usuário
   if (!error) {
+    let leadInfo;
     const { data: lead, error: error } = await supabase
       .from('lead_approval')
       .select('*')
       .eq('email', user.email)
       .single();
 
+    leadInfo = lead;
+    if (!leadInfo) {
+      const { data: newLead } = await supabase
+        .from('lead_approval')
+        .insert({
+          fullname: name,
+          email: user.email,
+          phone: user.phone,
+          status: 'pending',
+          expiration_date: dateToReadable(
+            new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
+          ),
+        })
+        .eq('email', user.email);
+
+      leadInfo = newLead;
+    }
+
     await supabase
       .from('profile')
       .update({
         name,
-        plan: 'pro',
+        plan: 'Trial',
         email: user.email,
         phone: user.phone,
         access_type: refeerer ? 'mentorado' : 'mentor',
-        expiration_date: lead?.expiration_date,
-        active: active,
+        expiration_date: leadInfo?.expiration_date,
+        lead_id: leadInfo?.id,
+        active: leadInfo?.status === 'approved' ? true : false,
       })
       .eq('id', user.id);
-
-    if (lead) {
-      await supabase
-        .from('lead_approval')
-        .update({
-          status: 'active',
-        })
-        .eq('email', user.email);
-    }
   }
 
   // * Se houver erro, retorna o erro

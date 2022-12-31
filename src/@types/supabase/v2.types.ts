@@ -1047,7 +1047,7 @@ export interface Database {
           expiration_date: string
         }
         Insert: {
-          id: string
+          id?: string
           status?: string | null
           date_created?: string | null
           date_updated?: string | null
@@ -1298,6 +1298,7 @@ export interface Database {
           card_id: string | null
           plan_id: string | null
           subscription_id: string | null
+          lead_id: string | null
         }
         Insert: {
           id: string
@@ -1315,6 +1316,7 @@ export interface Database {
           card_id?: string | null
           plan_id?: string | null
           subscription_id?: string | null
+          lead_id?: string | null
         }
         Update: {
           id?: string
@@ -1332,6 +1334,7 @@ export interface Database {
           card_id?: string | null
           plan_id?: string | null
           subscription_id?: string | null
+          lead_id?: string | null
         }
       }
       profile_history: {
