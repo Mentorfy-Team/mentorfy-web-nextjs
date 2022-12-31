@@ -13,6 +13,8 @@ declare namespace ClientTypes {
     hasActivety: boolean;
   };
 
+  type Lead = typeof Database.public.Tables.lead_approval.Row;
+
   namespace Get {
     interface Request extends ExternalModules.Next.NextApiRequest {
       body: any;

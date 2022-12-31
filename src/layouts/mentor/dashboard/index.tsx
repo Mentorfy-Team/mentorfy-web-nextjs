@@ -11,6 +11,9 @@ import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
 import { SupabaseServer } from '~/backend/supabase';
 import { useMediaQuery } from '@mui/material';
 import dynamic from 'next/dynamic';
+import TipBar from '~/components/modules/TipBar';
+import { isExpired } from '~/helpers/IsExpired';
+import Link from 'next/link';
 
 const WelcomeHeader = dynamic(() => import('./components/welcome-header'), {
   ssr: false,
@@ -33,6 +36,18 @@ const Dashboard: FC<PageTypes.Props> = ({ user, profile }) => {
         withoutScroll={true}
         maxWidth={1900}
       >
+        {isExpired(profile?.expiration_date) && (
+          <TipBar
+            sx={{
+              marginBottom: '1rem',
+            }}
+            error
+          >
+            <span>Atenção:</span> Sua assinatura está expirada, para continuar a
+            usar a plataforma atualize agora{' '}
+            <Link href="/mentor/meu-perfil?tab=2">clicando aqui</Link>.
+          </TipBar>
+        )}
         <WelcomeHeader disabled={isMobile} name={profile?.name} />
         <Indicators />
         <Finances />

@@ -73,12 +73,13 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
     const isLead = await LookForLead({
       email: values.email,
     });
+
     if (
       !betaEmailAccess.includes(values.email.toLocaleLowerCase()) &&
       !isLead
     ) {
       setError(
-        'Acesso restrito a usuários betas convidados. Solicite seu convite diretamente.',
+        'Sem permissão para novo cadastro ou usuário já cadastrado. Em caso de dúvidas, entre em contato com o suporte.',
       );
       return;
     }

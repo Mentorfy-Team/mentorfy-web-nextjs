@@ -23,7 +23,7 @@ enum tabs {
 
 type props = PageTypes.Props & {
   product: ProductClient.Product;
-  tab: string;
+  tab: number;
   mentored_id?: string;
   mentor_id?: string;
   isViewingMentored: boolean;
@@ -34,7 +34,7 @@ type props = PageTypes.Props & {
 
 const MinhaConta: FC<props> = ({
   user,
-  tab = tabs.Geral.toString(),
+  tab = tabs.Geral.valueOf(),
   isViewingMentored,
   isViewingMentor,
   mentored_id,
@@ -42,15 +42,16 @@ const MinhaConta: FC<props> = ({
   plan,
   customer,
 }) => {
-  const [tabindex, setTabindex] = useState<string>(tab);
+  const [tabindex, setTabindex] = useState<number>(tab);
   const {
     data: { profile, address },
   } = useProfile(true, mentored_id || mentor_id || user.id);
 
   const SwitchTabs = useCallback(() => {
     if (!profile) return null;
+    console.log(tabindex, tab, tabs.Assinatura.valueOf());
     switch (tabindex) {
-      case tabs.Geral.toString():
+      case tabs.Geral.valueOf():
         return (
           <GeralPage
             isViewingMentored={isViewingMentored}
@@ -59,10 +60,10 @@ const MinhaConta: FC<props> = ({
             profile={profile}
           />
         );
-      case tabs.Links.toString():
+      case tabs.Links.valueOf():
         return <DadosPage profile={profile} address={address} />;
-      case tabs.Assinatura.toString():
-        return <Signature customer={customer} profile={profile} plan={plan} />;
+      case tabs.Assinatura.valueOf():
+        return <Signature customer={customer} profile={profile} plan={null} />;
       default:
         return (
           <GeralPage
@@ -82,12 +83,14 @@ const MinhaConta: FC<props> = ({
     profile,
     tabindex,
     user,
+    tab,
   ]);
 
   return (
     <>
       <Toolbar
-        onChange={(value) => setTabindex(value.toString())}
+        onChange={(value) => setTabindex(parseInt(value))}
+        initialTab={tab}
         tabs={
           isViewingMentor || isViewingMentored
             ? ['Perfil']
@@ -142,6 +145,7 @@ export const getProps = async (ctx) => {
       isViewingMentor: !!ctx.query.id,
       customer: customer,
       plan: plan,
+      tab: ctx.query.tab ?? tabs.Geral.toString(),
     },
   };
 };
