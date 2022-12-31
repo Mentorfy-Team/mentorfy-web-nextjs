@@ -4,7 +4,7 @@ type Response = UsersApi.Post.Response;
 
 export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const {
-    user: { email, password, name },
+    user: { email, password, name, active },
     refeerer,
   } = req.body;
 
@@ -33,6 +33,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
         email: user.email,
         phone: user.phone,
         access_type: refeerer ? 'mentorado' : 'mentor',
+        active: active,
       })
       .eq('id', user.id);
   }

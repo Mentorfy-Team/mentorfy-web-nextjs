@@ -32,6 +32,7 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
     password: '',
     confirmPassword: '',
     policies: false,
+    active: false,
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>();
@@ -91,7 +92,7 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
         setInfo(
           <>
             <Text>Seu cadastro foi concluído com sucesso!</Text>
-            <Text>Você já pode acessar clicando em continuar.</Text>
+            <Text>Ainda é necessário que um agente aprove seu acesso. Em alguns minutos você será notificado e seu acesso será liberado!.</Text>
           </>,
         );
       } else {
