@@ -13,6 +13,7 @@ declare namespace UserClient {
     password: string;
     confirmPassword: string;
     policies: boolean;
+    active: boolean;
   };
 
   type CreateClient = Pick<SignUp, 'name' | 'email' | 'phone'> & {
@@ -22,9 +23,9 @@ declare namespace UserClient {
 
   type ClientRelation = Pick<Profile, 'name' | 'email' | 'phone' | 'id'> & {
     products: Pick<Product, 'title' | 'id' | 'created_at'> &
-      {
-        subscribed_at: string;
-      }[];
+    {
+      subscribed_at: string;
+    }[];
   };
 
   namespace Post {

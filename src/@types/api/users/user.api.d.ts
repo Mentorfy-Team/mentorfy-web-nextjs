@@ -11,6 +11,7 @@ declare namespace UsersApi {
           plan: string;
           session?: any;
           event?: string;
+          active: boolean;
         };
         refeerer?: string;
       };

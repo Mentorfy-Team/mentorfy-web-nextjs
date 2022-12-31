@@ -53,11 +53,13 @@ const Login: FC<props> = ({ urlProps }) => {
         }
       }
     });
-
     return subscription.unsubscribe();
   }, [mutate]);
 
   const onLogin = useCallback(async () => {
+    if (profile?.active === false) {
+      setError('Seu acesso ainda não foi liberado. Em breve você será notificado');
+    }
     if (profile?.access_type === 'mentor') {
       await route.prefetch(MentorRoutes.home);
       await route.push(MentorRoutes.home);
@@ -65,9 +67,13 @@ const Login: FC<props> = ({ urlProps }) => {
       await route.prefetch(MentoredRoutes.home);
       await route.push(MentoredRoutes.home);
     }
-  }, [profile?.access_type, route]);
+  }, [profile?.access_type, profile?.active, route]);
 
   useEffect(() => {
+    if (profile?.active === false) {
+      setError('Seu acesso ainda não foi liberado. Em breve você será notificado');
+      return;
+    }
     if (!isProfileLoading) {
       if (profile?.id) {
         onLogin();
@@ -75,7 +81,7 @@ const Login: FC<props> = ({ urlProps }) => {
     }
     if (profile?.id) setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isProfileLoading, profile]);
+  }, [isProfileLoading, profile, profile?.active]);
 
   useEffect(() => {
     if (urlProps?.length > 0) {
