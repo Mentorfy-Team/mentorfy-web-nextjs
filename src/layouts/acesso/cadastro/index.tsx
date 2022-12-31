@@ -17,7 +17,6 @@ import { Text } from './components/styles';
 import TextSuccess from './components/TextSuccess';
 import passwordValidator from './helper/password-validator';
 import { FormWrapper, Policies, PoliciesWrapper } from './styles';
-import { betaEmailAccess } from '~/consts/beta-access';
 import { LookForLead } from '~/services/lead/LookForLead';
 
 type props = {
@@ -74,15 +73,15 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
       email: values.email,
     });
 
-    if (
-      !betaEmailAccess.includes(values.email.toLocaleLowerCase()) &&
-      !isLead
-    ) {
-      setError(
-        'Sem permissão para novo cadastro ou usuário já cadastrado. Em caso de dúvidas, entre em contato com o suporte.',
-      );
-      return;
-    }
+    // if (
+    //   !betaEmailAccess.includes(values.email.toLocaleLowerCase()) &&
+    //   !isLead
+    // ) {
+    //   setError(
+    //     'Sem permissão para novo cadastro ou usuário já cadastrado. Em caso de dúvidas, entre em contato com o suporte.',
+    //   );
+    //   return;
+    // }
     setIsLoading(true);
 
     const registerData = await RegisterNewUser(values, urlProps.signup);
@@ -93,7 +92,10 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
         setInfo(
           <>
             <Text>Seu cadastro foi concluído com sucesso!</Text>
-            <Text>Ainda é necessário que um agente aprove seu acesso. Em alguns minutos você será notificado e seu acesso será liberado!.</Text>
+            <Text>
+              Ainda é necessário que um agente aprove seu acesso. Em alguns
+              minutos você será notificado e seu acesso será liberado!.
+            </Text>
           </>,
         );
       } else {
