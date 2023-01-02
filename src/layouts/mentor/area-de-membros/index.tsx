@@ -34,7 +34,9 @@ import { CloneProduct } from '~/services/clone-product.service';
 
 const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   const { products, mutate } = useProducts(user.id);
-  const { products: defaultProducts } = useProducts('b9dc824e-20f9-4824-a568-326f193ed45a');
+  const { products: defaultProducts } = useProducts(
+    'b9dc824e-20f9-4824-a568-326f193ed45a',
+  );
   const router = useRouter();
   const theme = useTheme();
   const [openCreatePage, setOpenCreatePage] = useState(false);
@@ -94,9 +96,13 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   }, [defaultProductTitle, showCloneProduct]);
 
   const SubmitCloneProduct = async () => {
+    const newProduct = await CloneProduct(cloneProduct);
 
-    await CloneProduct(cloneProduct);
-
+    console.log('newProduct', newProduct);
+    await router.prefetch(
+      MentorRoutes.members_area + '/editar/' + newProduct.id,
+    );
+    router.push(MentorRoutes.members_area + '/editar/' + newProduct.id);
   };
 
   return (
@@ -201,7 +207,9 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
         <Divider sx={{ borderColor: '#36353A', m: '2rem 0rem' }} />
         <Box sx={{ display: 'flex', mb: '1.5rem', gap: '1rem' }}>
           <Typography>Modelos Prontos</Typography>
-          <Typography color='caption.main'>(Clique em Usar Modelo para selecionar o modelo)</Typography>
+          <Typography color="caption.main">
+            (Clique em Usar Modelo para selecionar o modelo)
+          </Typography>
         </Box>
         <DefaultProductsWrapper>
           {defaultProducts?.map((area, index) => (
@@ -217,7 +225,9 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
               // }
               key={index}
             >
-              <CopyButton onClick={() => handleDefaultProducts(area)}>Usar Modelo</CopyButton>
+              <CopyButton onClick={() => handleDefaultProducts(area)}>
+                Usar Modelo
+              </CopyButton>
               {area.main_image && (
                 <Image
                   alt=""
@@ -308,7 +318,6 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
       </ModalComponent>
       {/* Clone Product Modal */}
       <ModalComponent
-        onDelete={() => setShowCloneProduct(false)}
         onSave={() => SubmitCloneProduct()}
         open={showCloneProduct}
         setOpen={setShowCloneProduct}
@@ -318,15 +327,15 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
         <Box sx={{ width: '100%' }}>
           <DeleteText>Configure o seu modelo</DeleteText>
           <ProductsField
-            label='Nome da Mentoria'
+            label="Nome da Mentoria"
             required
-            color='secondary'
+            color="secondary"
             sx={{ width: '100%', margin: '1rem 0' }}
             onChange={(e) => setDefaultProductTitle(e.target.value)}
           />
           <ProductsField
-            label='Tipo'
-            color='secondary'
+            label="Tipo"
+            color="secondary"
             defaultValue={defaultProductType}
             sx={{ width: '100%', margin: '1rem 0' }}
             disabled
