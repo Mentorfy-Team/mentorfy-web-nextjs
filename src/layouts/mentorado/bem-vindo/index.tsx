@@ -5,7 +5,6 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
-import { ListProducts } from '~/services/product.service';
 const ReactPlayer = dynamic(() => import('react-player'), { ssr: false });
 
 import { useRouter } from 'next/router';
@@ -35,6 +34,8 @@ import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 import { LeftArrow, RightArrow } from '../components/arrows';
 import { CardVertical } from '../components/CardVertical';
 import usePreventBodyScroll from '../components/usePreventBodyScroll';
+import { SupabaseServer } from '~/backend/supabase';
+import { GetAllProducts } from '~/backend/repositories/product/GetAllProducts';
 const BannerFeatured: any = dynamic(
   () => import('../components/banner-featured'),
   { ssr: false },
@@ -179,7 +180,7 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
         >
           {p.map((product, index) => (
             <CourseBox
-              onMouseOver={() => { }}
+              onMouseOver={() => {}}
               className="item"
               key={index}
               onClick={() => {
@@ -190,8 +191,8 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
                   router.push(
                     types.find((type) => type.id.toString() === product.deliver)
                       .path +
-                    '/' +
-                    product.id,
+                      '/' +
+                      product.id,
                   );
                 } else {
                   handlePopularProductsModal(product);
@@ -254,7 +255,12 @@ const BemVindo: FC<PageTypes.Props & Props> = ({
           </>
         )}
 
-        <Box sx={{ display: 'flex', margin: sizeLg ? '0.5rem 0' : '4rem 0 0.5rem 0' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            margin: sizeLg ? '0.5rem 0' : '4rem 0 0.5rem 0',
+          }}
+        >
           <Typography variant="h5">Populares na Mentorfy</Typography>
         </Box>
         <SliderWrapper>
@@ -433,19 +439,20 @@ export const getProps = async (ctx) => {
       },
     };
 
-  const { products } = (await ListProducts(session.access_token)) ?? {
-    products: [],
-  };
-  const { products: ClientProducts } = (await ListProducts(
-    session.access_token,
-    session.user.id,
-  )) ?? { products: [] };
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const products = await GetAllProducts(supabase);
+
+  const ClientProducts = await GetAllProducts(supabase, {
+    id: session.user.id,
+  });
+
+  console.log(products);
 
   return {
     props: {
       user: session.user,
       initProducts: products,
-      initClientProducts: ClientProducts,
+      initClientProducts: ClientProducts ?? null,
     },
   };
 };
