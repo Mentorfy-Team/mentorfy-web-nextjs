@@ -17,7 +17,6 @@ import { Text } from './components/styles';
 import TextSuccess from './components/TextSuccess';
 import passwordValidator from './helper/password-validator';
 import { FormWrapper, Policies, PoliciesWrapper } from './styles';
-import { LookForLead } from '~/services/lead/LookForLead';
 
 type props = {
   setInfo: (info: any) => void;
@@ -69,9 +68,9 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
 
   const onSubmit = useCallback(async () => {
     const values = inputs;
-    const isLead = await LookForLead({
-      email: values.email,
-    });
+    // const isLead = await LookForLead({
+    //   email: values.email,
+    // });
 
     // if (
     //   !betaEmailAccess.includes(values.email.toLocaleLowerCase()) &&
@@ -168,6 +167,19 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
           label="E-mail"
           type={'email'}
           name="email"
+          placeholder="Digite seu email"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={handleChange}
+          error={!!error}
+          helperText={error}
+        />
+        <InputField
+          required
+          label="Telefone"
+          type={'tel'}
+          name="phone"
           placeholder="Digite seu email"
           InputLabelProps={{
             shrink: true,
