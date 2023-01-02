@@ -180,7 +180,7 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
           label="Telefone"
           type={'tel'}
           name="phone"
-          placeholder="Digite seu email"
+          placeholder="Digite seu telefone"
           InputLabelProps={{
             shrink: true,
           }}
