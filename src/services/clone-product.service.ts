@@ -3,16 +3,15 @@ import { HttpClient } from './HttpClient';
 
 export const CloneProduct = async (data: object) => {
   try {
-    const response = await HttpClient.get(
-      ApiRoutes.products_clone,
-      data,
-    );
+    const response = await HttpClient.get(ApiRoutes.products_clone, {
+      params: data,
+    });
 
     return response.data;
   } catch (error) {
+    console.log('error', (error as any).message);
     return {
       error: 'Erro ao clonar modelo',
     };
   }
-
 };

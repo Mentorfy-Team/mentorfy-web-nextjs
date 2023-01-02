@@ -133,6 +133,7 @@ const ContinuosMentoring: FC<
   }, [steps, userInput]);
 
   const isDone = useMemo(() => {
+    if (!userInput || userInput.length == 0) return false;
     return steps.every((step) => getProgressByStep(step, userInput) == 100);
   }, [steps, userInput]);
 

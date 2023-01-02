@@ -53,7 +53,7 @@ const VerticalKanban: FC<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
   const [open, setOpen] = useState(false);
-  const [showCertificate, setShowCertificate] = useState(true);
+  const [showCertificate, setShowCertificate] = useState(false);
 
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
@@ -148,6 +148,7 @@ const VerticalKanban: FC<
   }, [steps, userInput]);
 
   const isDone = useMemo(() => {
+    if (!userInput || userInput.length == 0) return false;
     return steps.every((step) => getProgressByStep(step, userInput) == 100);
   }, [steps, userInput]);
 
@@ -160,7 +161,7 @@ const VerticalKanban: FC<
         actionClick={() => setShowCertificate(true)}
         actionTitle="Ver Certificado"
         actionIcon={<DocumentScanner fontSize="small" />}
-        actionVisible={isDone}
+        actionVisible={isDone || false}
       />
       <HorizontalProgressBar
         data={steps}

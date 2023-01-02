@@ -317,6 +317,7 @@ export const VideoView = ({
   }, [steps, userInput]);
 
   const isDone = useMemo(() => {
+    if (!userInput || userInput.length == 0) return false;
     return steps.every((step) => getProgressByStep(step, userInput) == 100);
   }, [steps, userInput]);
 
@@ -331,7 +332,7 @@ export const VideoView = ({
         actionIcon={<DocumentScanner fontSize="small" />}
         actionVisible={isDone}
       />
-      <ContentWidthLimit maxWidth={1900} >
+      <ContentWidthLimit maxWidth={1900}>
         {(!steps || steps.length == 0) && (
           <TipBar>
             Ainda não há <span>nenhuma etapa disponível</span> para essa
@@ -403,16 +404,16 @@ export const VideoView = ({
                 {userInput.find(
                   (inp) => inp.id?.toString() === mainModule?.video?.id,
                 ) && (
-                    <CompleteButton>
-                      Concluído
-                      <Image
-                        alt=""
-                        width={15}
-                        height={15}
-                        src="/svgs/done-simbol.svg"
-                      />
-                    </CompleteButton>
-                  )}
+                  <CompleteButton>
+                    Concluído
+                    <Image
+                      alt=""
+                      width={15}
+                      height={15}
+                      src="/svgs/done-simbol.svg"
+                    />
+                  </CompleteButton>
+                )}
               </Box>
               {nextVideo?.video_index && (
                 <NextVButton onClick={() => onSelectedNext()}>
@@ -429,14 +430,21 @@ export const VideoView = ({
 
             <Typography
               variant="body1"
-              sx={{ margin: isMobile ? ' 0' : '1rem 0', maxWidth: 980, width: '100%' }}
+              sx={{
+                margin: isMobile ? ' 0' : '1rem 0',
+                maxWidth: 980,
+                width: '100%',
+              }}
             >
               {mainModule?.video?.description}
             </Typography>
 
             {!isMobile && (
               <>
-                <Typography variant="body1" sx={{ margin: '2.5rem 0 0.8rem 0' }}>
+                <Typography
+                  variant="body1"
+                  sx={{ margin: '2.5rem 0 0.8rem 0' }}
+                >
                   Comentários ( Apenas o mentor pode ver )
                 </Typography>
 
@@ -447,7 +455,12 @@ export const VideoView = ({
                   />
                   <SendButton onClick={() => SendComment()} variant="contained">
                     Enviar
-                    <Image alt="" width={15} height={15} src="/svgs/share.svg" />
+                    <Image
+                      alt=""
+                      width={15}
+                      height={15}
+                      src="/svgs/share.svg"
+                    />
                   </SendButton>
                 </Box>
                 <CommentsSession />
@@ -471,7 +484,7 @@ export const VideoView = ({
                   onSelectedVideo(id);
                 } else {
                   setCurrentModal({
-                    onChange: () => { },
+                    onChange: () => {},
                     type: GetTypeName(task.type),
                     refId: id,
                     area_id: member_area_id,
@@ -484,16 +497,30 @@ export const VideoView = ({
           </ProgressBarWrapper>
           {isMobile && (
             <>
-              <Typography variant="body1" sx={{ margin: '2.5rem auto 0.8rem 0' }}>
+              <Typography
+                variant="body1"
+                sx={{ margin: '2.5rem auto 0.8rem 0' }}
+              >
                 Comentários ( Apenas o mentor pode ver )
               </Typography>
 
-              <Box sx={{ width: '100%', display: 'flex', gap: '0.5rem', flexDirection: isMobile ? 'column' : 'row' }}>
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  gap: '0.5rem',
+                  flexDirection: isMobile ? 'column' : 'row',
+                }}
+              >
                 <CommentInput
                   ref={commentRef}
                   placeholder="Deixar mensagem para o mentor"
                 />
-                <SendButton onClick={() => SendComment()} variant="contained" sx={{ marginLeft: isMobile ? 'auto' : '0' }}>
+                <SendButton
+                  onClick={() => SendComment()}
+                  variant="contained"
+                  sx={{ marginLeft: isMobile ? 'auto' : '0' }}
+                >
                   Enviar
                   <Image alt="" width={15} height={15} src="/svgs/share.svg" />
                 </SendButton>
@@ -504,15 +531,13 @@ export const VideoView = ({
         </Wrapper>
       </ContentWidthLimit>
       <HandleModal />
-      {
-        showCertificate && (
-          <CertificateModal
-            open={showCertificate}
-            setOpen={setShowCertificate}
-            product={memberArea}
-          />
-        )
-      }
+      {showCertificate && (
+        <CertificateModal
+          open={showCertificate}
+          setOpen={setShowCertificate}
+          product={memberArea}
+        />
+      )}
     </>
   );
 };

@@ -5,14 +5,16 @@ type Response = UsersApi.Post.Response;
 
 export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const {
-    user: { email, password, name, active },
+    user: { email, password, name, active, phone },
     refeerer,
   } = req.body;
 
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email e senha são obrigatórios.' });
+  if (!email || !password || !phone) {
+    return res
+      .status(400)
+      .json({ error: 'Email, senha e telefone são obrigatórios.' });
   }
 
   const supabase = SupabaseServer(req, res);
@@ -24,6 +26,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   } = await supabase.auth.signUp({
     email,
     password,
+    phone,
   });
 
   // * Se tudo estiver certo, atualiza o perfil do usuário
