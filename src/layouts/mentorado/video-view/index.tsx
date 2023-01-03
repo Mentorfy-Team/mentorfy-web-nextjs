@@ -37,6 +37,7 @@ import CertificateModal from '../components/certificate-modal';
 import { DocumentScanner } from '@mui/icons-material';
 import { getProgressByStep } from '../helpers/GetProgress';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useGetProduct } from '~/hooks/useGetProduct';
 
 type VideoModuleType = {
   id: string;
@@ -61,6 +62,11 @@ export const VideoView = ({
   const [userInput, setUserInput] = useState<
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
+
+  const { product: MemberArea } = useGetProduct(
+    member_area_id,
+    memberArea,
+  );
 
   const [selectedModule, setSelectedModule] = useState<string>();
 
@@ -326,7 +332,7 @@ export const VideoView = ({
       <Toolbar
         initialTab={1}
         breadcrumbs={['Minhas mentorias', memberArea.title]}
-        contact={memberArea?.contact}
+        contact={MemberArea?.contact}
         actionClick={() => setShowCertificate(true)}
         actionTitle="Ver Certificado"
         actionIcon={<DocumentScanner fontSize="small" />}
@@ -404,16 +410,16 @@ export const VideoView = ({
                 {userInput.find(
                   (inp) => inp.id?.toString() === mainModule?.video?.id,
                 ) && (
-                  <CompleteButton>
-                    Concluído
-                    <Image
-                      alt=""
-                      width={15}
-                      height={15}
-                      src="/svgs/done-simbol.svg"
-                    />
-                  </CompleteButton>
-                )}
+                    <CompleteButton>
+                      Concluído
+                      <Image
+                        alt=""
+                        width={15}
+                        height={15}
+                        src="/svgs/done-simbol.svg"
+                      />
+                    </CompleteButton>
+                  )}
               </Box>
               {nextVideo?.video_index && (
                 <NextVButton onClick={() => onSelectedNext()}>
@@ -484,7 +490,7 @@ export const VideoView = ({
                   onSelectedVideo(id);
                 } else {
                   setCurrentModal({
-                    onChange: () => {},
+                    onChange: () => { },
                     type: GetTypeName(task.type),
                     refId: id,
                     area_id: member_area_id,

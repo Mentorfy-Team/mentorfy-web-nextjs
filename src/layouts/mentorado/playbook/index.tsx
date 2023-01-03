@@ -23,6 +23,7 @@ import TipBar from '~/components/modules/TipBar';
 import NextImage from 'next/image';
 import { SupabaseServer } from '~/backend/supabase';
 import { GetProductById } from '~/backend/repositories/product/GetProductById';
+import { useGetProduct } from '~/hooks/useGetProduct';
 
 export const Playbook: FC<
   PageTypes.Props & { member_area_id: string; memberArea: any }
@@ -35,6 +36,11 @@ export const Playbook: FC<
     categoryId: string;
     stepId: string;
   } | null>();
+
+  const { product: MemberArea } = useGetProduct(
+    member_area_id,
+    memberArea,
+  );
 
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
@@ -80,7 +86,7 @@ export const Playbook: FC<
       <Toolbar
         initialTab={1}
         breadcrumbs={['Minhas mentorias', memberArea.title]}
-        contact={memberArea?.contact}
+        contact={MemberArea?.contact}
       />
       <ContentWidthLimit maxWidth={1900}>
         {isEmptyMentory && (
@@ -129,7 +135,7 @@ export const Playbook: FC<
                       const type = GetTypeName(task.type);
                       setOpen(true);
                       setCurrentModal({
-                        onChange: () => {},
+                        onChange: () => { },
                         type,
                         refId: task.id + '',
                         data: task || {},
