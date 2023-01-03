@@ -107,6 +107,8 @@ export default function Page() {
               sx={{
                 position: 'relative',
                 flex: 1,
+                minHeight: '300px',
+                minWidth: '400px',
               }}
             >
               <Image
@@ -115,7 +117,7 @@ export default function Page() {
                 fill
                 style={{
                   zIndex: '4',
-                  marginTop: '5rem',
+                  marginTop: '2rem',
                   objectFit: 'contain',
                 }}
               />
