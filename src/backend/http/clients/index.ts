@@ -11,12 +11,6 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
       error: 'Dados inválidos',
     });
   }
-  if (!document) {
-    return res.status(400).json({
-      error: 'Documento inválido',
-    });
-  }
-
   const supabaseAdmin = SupabaseAdmin();
 
   const { data: existentUser, error: existentError } = await supabaseAdmin

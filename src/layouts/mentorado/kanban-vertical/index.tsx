@@ -34,19 +34,23 @@ import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
 import CertificateModal from '../components/certificate-modal';
 import { DocumentScanner } from '@mui/icons-material';
 import { getProgressByStep } from '../helpers/GetProgress';
+import { useGetProduct } from '~/hooks/useGetProduct';
 
 const VerticalKanban: FC<
   PageTypes.Props & {
     member_area_id: string;
-    memberArea: any;
+    memberAreaInitial: any;
     task_id: string;
     product: ProductTypes.Product;
     user: UserTypes.ProfileWithAddress & UserTypes.User;
   }
-> = ({ member_area_id, memberArea, task_id, product, user }) => {
+> = ({ member_area_id, memberAreaInitial, task_id, product, user }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const [stepId, setStepId] = useState<string>();
-
+  const { product: memberArea } = useGetProduct(
+    member_area_id,
+    memberAreaInitial,
+  );
   const { inputs: inputData } = useUserInputs(member_area_id);
   const [steps, setSteps] = useState<GroupTools[]>([]);
   const [userInput, setUserInput] = useState<
@@ -156,7 +160,7 @@ const VerticalKanban: FC<
     <>
       <Toolbar
         initialTab={1}
-        breadcrumbs={['Minhas mentorias', memberArea.title]}
+        breadcrumbs={['Minhas mentorias', memberArea?.title]}
         contact={memberArea?.contact}
         actionClick={() => setShowCertificate(true)}
         actionTitle="Ver Certificado"
@@ -168,7 +172,7 @@ const VerticalKanban: FC<
         input={userInput}
         activeid={task_id}
         activeStepId={ActiveStepId}
-        onGoTo={() => {}}
+        onGoTo={() => { }}
       />
       <ContentWidthLimit maxWidth={900}>
         {(!steps || steps.length == 0) && (
@@ -232,13 +236,12 @@ const VerticalKanban: FC<
                             marginLeft: '0.4rem',
                             alignSelf: 'center',
                           }}
-                          src={`/svgs/${
-                            userInput?.find(
-                              (inp) => inp.member_area_tool_id === task.id,
-                            )?.extra
-                              ? 'done'
-                              : 'done-gray'
-                          }.svg`}
+                          src={`/svgs/${userInput?.find(
+                            (inp) => inp.member_area_tool_id === task.id,
+                          )?.extra
+                            ? 'done'
+                            : 'done-gray'
+                            }.svg`}
                         />
                       </Task>
                     ))}
@@ -319,10 +322,10 @@ export const getProps = async (ctx) => {
     props: {
       member_area_id: id,
       task_id,
-      memberArea: {
-        id: product.id,
-        title: product.title,
-        description: product.description,
+      memberAreaInitial: {
+        id: id,
+        title: product?.title,
+        description: product?.description,
       },
       product: product,
       user: userData,
