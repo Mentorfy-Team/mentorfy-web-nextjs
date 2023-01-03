@@ -42,7 +42,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
       .single();
 
     leadInfo = lead;
-    if (!leadInfo) {
+    if (!leadInfo?.id) {
       const { data: newLead } = await supabase
         .from('lead_approval')
         .insert({
