@@ -26,7 +26,6 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   } = await supabase.auth.signUp({
     email,
     password,
-    phone,
   });
 
   // * Se tudo estiver certo, atualiza o perfil do usuário
@@ -45,7 +44,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
         .insert({
           fullname: name,
           email: user.email,
-          phone: user.phone,
+          phone: phone,
           status: 'pending',
           expiration_date: dateToReadable(
             new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),

@@ -13,7 +13,7 @@ export const Wrapper = styled('div')`
   overflow: hidden;
 `;
 
-export const ContentHolder = styled(Box)<Props>`
+export const ContentHolder = styled(Box) <Props>`
   max-width: 1380px;
   display: flex;
   gap: 2rem;
@@ -112,6 +112,9 @@ export const ActionButton = styled('a')`
   }
   &:active {
     transform: scale(0.99);
+  }
+  @media(max-width: 600px){ 
+    width: 100%;
   }
 `;
 
@@ -241,6 +244,7 @@ export const VideoSection = styled('section')`
   flex-direction: column;
   margin-top: 5rem;
   position: relative;
+  padding: 0 2rem;
   @media (max-width: 1200px) {
     margin-top: 2.5rem;
   }
