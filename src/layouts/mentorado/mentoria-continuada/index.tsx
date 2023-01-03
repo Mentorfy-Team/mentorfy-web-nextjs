@@ -28,7 +28,12 @@ import {
 } from './styles';
 
 const ContinuosMentoring: FC<
-  PageTypes.Props & { member_area_id: string; memberAreaInitial: any; task_id: string, product: ProductTypes.Product }
+  PageTypes.Props & {
+    member_area_id: string;
+    memberAreaInitial: any;
+    task_id: string;
+    product: ProductTypes.Product;
+  }
 > = ({ member_area_id, memberAreaInitial, task_id, product, user }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
   const { inputs: inputData } = useUserInputs(member_area_id);
@@ -167,7 +172,7 @@ const ContinuosMentoring: FC<
           input={userInput}
           activeid={task_id}
           activeStepId={steps[0]?.id}
-          onGoTo={() => { }}
+          onGoTo={() => {}}
         />
         <ScrollArea>
           {steps &&
@@ -222,12 +227,13 @@ const ContinuosMentoring: FC<
                             marginLeft: '0.4rem',
                             alignSelf: 'center',
                           }}
-                          src={`/svgs/${userInput?.find(
-                            (inp) => inp.member_area_tool_id === task.id,
-                          )?.extra
-                            ? 'done'
-                            : 'done-gray'
-                            }.svg`}
+                          src={`/svgs/${
+                            userInput?.find(
+                              (inp) => inp.member_area_tool_id === task.id,
+                            )?.extra
+                              ? 'done'
+                              : 'done-gray'
+                          }.svg`}
                         />
                       </Task>
                     ))}
@@ -300,6 +306,7 @@ export const getProps = async (ctx) => {
       notFound: true,
     };
   }
+  console.log('product', product);
   return {
     props: {
       member_area_id: id,
