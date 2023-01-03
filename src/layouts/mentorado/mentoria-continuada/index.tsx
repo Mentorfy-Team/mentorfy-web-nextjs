@@ -147,7 +147,7 @@ const ContinuosMentoring: FC<
     <>
       <Toolbar
         initialTab={1}
-        breadcrumbs={['Minhas mentorias', memberArea.title]}
+        breadcrumbs={['Minhas mentorias', memberArea?.title]}
         contact={memberArea?.contact}
         actionClick={() => setShowCertificate(true)}
         actionTitle="Ver Certificado"

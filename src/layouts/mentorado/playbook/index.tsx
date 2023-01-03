@@ -37,10 +37,7 @@ export const Playbook: FC<
     stepId: string;
   } | null>();
 
-  const { product: MemberArea } = useGetProduct(
-    member_area_id,
-    memberArea,
-  );
+  const { product: MemberArea } = useGetProduct(member_area_id, memberArea);
 
   const [currentModal, setCurrentModal] = useState<{
     onChange: any;
@@ -85,7 +82,7 @@ export const Playbook: FC<
     <>
       <Toolbar
         initialTab={1}
-        breadcrumbs={['Minhas mentorias', memberArea.title]}
+        breadcrumbs={['Minhas mentorias', memberArea?.title]}
         contact={MemberArea?.contact}
       />
       <ContentWidthLimit maxWidth={1900}>
@@ -98,7 +95,7 @@ export const Playbook: FC<
         )}
         <Wrapper>
           <SideBar>
-            <SideBarTitle>{memberArea.title}</SideBarTitle>
+            <SideBarTitle>{memberArea?.title}</SideBarTitle>
             <ProgressBarWrapper>
               <ProgressBar
                 data={steps}
@@ -112,10 +109,10 @@ export const Playbook: FC<
             </ProgressBarWrapper>
           </SideBar>
           <Box>
-            {memberArea.extra_image ? (
+            {memberArea?.extra_image ? (
               <NextImage
                 alt="banner"
-                src={memberArea.extra_image}
+                src={memberArea?.extra_image}
                 width={1000}
                 height={200}
                 style={{
@@ -135,7 +132,7 @@ export const Playbook: FC<
                       const type = GetTypeName(task.type);
                       setOpen(true);
                       setCurrentModal({
-                        onChange: () => { },
+                        onChange: () => {},
                         type,
                         refId: task.id + '',
                         data: task || {},
