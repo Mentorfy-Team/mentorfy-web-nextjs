@@ -46,7 +46,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
           email: user.email,
           phone: phone,
           status: 'pending',
-          expiration_date: dateToReadable(
+          trial_expiration: dateToReadable(
             new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
           ),
         })
@@ -63,7 +63,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
         email: user.email,
         phone: user.phone,
         access_type: refeerer ? 'mentorado' : 'mentor',
-        expiration_date: leadInfo?.expiration_date,
+        expiration_date: leadInfo?.trial_expiration,
         lead_id: leadInfo?.id,
         active: leadInfo?.status === 'approved' ? true : false,
       })
