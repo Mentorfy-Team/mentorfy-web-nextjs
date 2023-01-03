@@ -72,6 +72,7 @@ export default function Page() {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '1.5rem',
+                flex: 1,
               }}
             >
               <Image
@@ -102,16 +103,20 @@ export default function Page() {
               </ActionButton>
             </Box>
 
-            <Box>
+            <Box
+              sx={{
+                position: 'relative',
+                flex: 1,
+              }}
+            >
               <Image
                 alt="mentorfy-representation"
                 src="/images/lp-main-image.png"
-                width={isMobile ? 322 : 850}
-                height={isMobile ? 200 : 500}
+                fill
                 style={{
                   zIndex: '4',
                   marginTop: '5rem',
-                  position: 'relative',
+                  objectFit: 'contain',
                 }}
               />
             </Box>
