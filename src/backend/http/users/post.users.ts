@@ -31,6 +31,10 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   // * Se tudo estiver certo, atualiza o perfil do usuário
   if (!error) {
     let leadInfo;
+    const defaultExpirationDate = dateToReadable(
+      new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
+    );
+
     const { data: lead, error: error } = await supabase
       .from('lead_approval')
       .select('*')
@@ -38,7 +42,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
       .single();
 
     leadInfo = lead;
-    if (!leadInfo) {
+    if (!leadInfo?.id) {
       const { data: newLead } = await supabase
         .from('lead_approval')
         .insert({
@@ -46,9 +50,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
           email: user.email,
           phone: phone,
           status: 'pending',
-          expiration_date: dateToReadable(
-            new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
-          ),
+          trial_expiration: defaultExpirationDate,
         })
         .eq('email', user.email);
 
@@ -63,7 +65,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
         email: user.email,
         phone: user.phone,
         access_type: refeerer ? 'mentorado' : 'mentor',
-        expiration_date: leadInfo?.expiration_date,
+        expiration_date: leadInfo?.trial_expiration ?? defaultExpirationDate,
         lead_id: leadInfo?.id,
         active: leadInfo?.status === 'approved' ? true : false,
       })

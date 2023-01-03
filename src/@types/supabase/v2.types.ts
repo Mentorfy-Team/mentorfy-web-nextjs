@@ -1044,7 +1044,8 @@ export interface Database {
           phone: string | null
           email: string | null
           comments: string | null
-          expiration_date: string
+          expiration_date: string | null
+          trial_expiration: string | null
         }
         Insert: {
           id?: string
@@ -1055,7 +1056,8 @@ export interface Database {
           phone?: string | null
           email?: string | null
           comments?: string | null
-          expiration_date: string
+          expiration_date?: string | null
+          trial_expiration?: string | null
         }
         Update: {
           id?: string
@@ -1066,7 +1068,8 @@ export interface Database {
           phone?: string | null
           email?: string | null
           comments?: string | null
-          expiration_date?: string
+          expiration_date?: string | null
+          trial_expiration?: string | null
         }
       }
       log_type: {
