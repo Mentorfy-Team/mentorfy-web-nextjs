@@ -64,6 +64,7 @@ export default function Page() {
     <ThemeProvider>
       <GlobalStyles />
       <CssBaseline />
+
       <Wrapper>
         <Introduction>
           <ContentHolder>
@@ -84,7 +85,7 @@ export default function Page() {
               <SecodaryText>
                 Gerencie 1000 mentorados como se fossem 10
               </SecodaryText>
-              <MainText>
+              <MainText variant="h1">
                 A primeira Área de membros 100% focada em processos de mentorias
                 com experiência Premium
               </MainText>
