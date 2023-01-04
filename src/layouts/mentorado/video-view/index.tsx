@@ -63,10 +63,7 @@ export const VideoView = ({
     Partial<MemberAreaTypes.UserInput[]>
   >([]);
 
-  const { product: MemberArea } = useGetProduct(
-    member_area_id,
-    memberArea,
-  );
+  const { product: MemberArea } = useGetProduct(member_area_id, memberArea);
 
   const [selectedModule, setSelectedModule] = useState<string>();
 
@@ -331,7 +328,7 @@ export const VideoView = ({
     <>
       <Toolbar
         initialTab={1}
-        breadcrumbs={['Minhas mentorias', memberArea.title]}
+        breadcrumbs={['Minhas mentorias', memberArea?.title]}
         contact={MemberArea?.contact}
         actionClick={() => setShowCertificate(true)}
         actionTitle="Ver Certificado"
@@ -410,16 +407,16 @@ export const VideoView = ({
                 {userInput.find(
                   (inp) => inp.id?.toString() === mainModule?.video?.id,
                 ) && (
-                    <CompleteButton>
-                      Concluído
-                      <Image
-                        alt=""
-                        width={15}
-                        height={15}
-                        src="/svgs/done-simbol.svg"
-                      />
-                    </CompleteButton>
-                  )}
+                  <CompleteButton>
+                    Concluído
+                    <Image
+                      alt=""
+                      width={15}
+                      height={15}
+                      src="/svgs/done-simbol.svg"
+                    />
+                  </CompleteButton>
+                )}
               </Box>
               {nextVideo?.video_index && (
                 <NextVButton onClick={() => onSelectedNext()}>
@@ -490,7 +487,7 @@ export const VideoView = ({
                   onSelectedVideo(id);
                 } else {
                   setCurrentModal({
-                    onChange: () => { },
+                    onChange: () => {},
                     type: GetTypeName(task.type),
                     refId: id,
                     area_id: member_area_id,

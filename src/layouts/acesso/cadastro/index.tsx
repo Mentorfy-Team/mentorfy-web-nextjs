@@ -185,8 +185,6 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
             shrink: true,
           }}
           onChange={handleChange}
-          error={!!error}
-          helperText={error}
         />
         <InputField
           required

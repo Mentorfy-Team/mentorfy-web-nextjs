@@ -13,7 +13,7 @@ export const Wrapper = styled('div')`
   overflow: hidden;
 `;
 
-export const ContentHolder = styled(Box) <Props>`
+export const ContentHolder = styled(Box)<Props>`
   max-width: 1380px;
   display: flex;
   gap: 2rem;
@@ -86,17 +86,18 @@ export const SecodaryText = styled(Typography)`
 
 export const MainText = styled(Typography)`
   font-weight: 700;
-  font-size: 2.5rem;
+  font-size: 2.5rem !important;
   line-height: 2.8rem;
 
   @media (max-width: 1200px) {
-    font-size: 2rem;
+    font-size: 2rem !important;
   }
 `;
 
 export const ActionButton = styled('a')`
   background-color: ${({ theme }) => theme.palette.accent.main};
-  width: 300px;
+  width: 320px;
+  white-space: nowrap;
   padding: 0.5rem 1rem;
   display: flex;
   justify-content: center;
@@ -113,7 +114,7 @@ export const ActionButton = styled('a')`
   &:active {
     transform: scale(0.99);
   }
-  @media(max-width: 600px){ 
+  @media (max-width: 600px) {
     width: 100%;
   }
 `;

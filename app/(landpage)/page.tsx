@@ -64,6 +64,7 @@ export default function Page() {
     <ThemeProvider>
       <GlobalStyles />
       <CssBaseline />
+
       <Wrapper>
         <Introduction>
           <ContentHolder>
@@ -72,6 +73,7 @@ export default function Page() {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '1.5rem',
+                flex: 1,
               }}
             >
               <Image
@@ -83,7 +85,7 @@ export default function Page() {
               <SecodaryText>
                 Gerencie 1000 mentorados como se fossem 10
               </SecodaryText>
-              <MainText>
+              <MainText variant="h1">
                 A primeira Área de membros 100% focada em processos de mentorias
                 com experiência Premium
               </MainText>
@@ -102,16 +104,22 @@ export default function Page() {
               </ActionButton>
             </Box>
 
-            <Box>
+            <Box
+              sx={{
+                position: 'relative',
+                flex: 1,
+                minHeight: '300px',
+                minWidth: '400px',
+              }}
+            >
               <Image
                 alt="mentorfy-representation"
                 src="/images/lp-main-image.png"
-                width={isMobile ? 322 : 850}
-                height={isMobile ? 200 : 500}
+                fill
                 style={{
                   zIndex: '4',
-                  marginTop: '5rem',
-                  position: 'relative',
+                  marginTop: '2rem',
+                  objectFit: 'contain',
                 }}
               />
             </Box>
