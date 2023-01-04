@@ -86,11 +86,11 @@ export const SecodaryText = styled(Typography)`
 
 export const MainText = styled(Typography)`
   font-weight: 700;
-  font-size: 2.5rem;
+  font-size: 2.5rem !important;
   line-height: 2.8rem;
 
   @media (max-width: 1200px) {
-    font-size: 2rem;
+    font-size: 2rem !important;
   }
 `;
 
