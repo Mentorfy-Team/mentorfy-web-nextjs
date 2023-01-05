@@ -30,6 +30,7 @@ type props = {
   sx?: any;
   saveText?: string;
   maxWidth?: string;
+  deleteTitle?: string;
 };
 
 const ModalComponent: FC<props> = ({
@@ -39,6 +40,7 @@ const ModalComponent: FC<props> = ({
   open,
   isMentorado,
   deleteMessage,
+  deleteTitle,
   popularProduct,
   setOpen,
   onSave,
@@ -102,7 +104,7 @@ const ModalComponent: FC<props> = ({
               disabled={isBlocked}
               onClick={() => onDelete()}
             >
-              Excluir
+              {deleteTitle ? deleteTitle : 'Excluir'}
             </Button>
           ) : (
             <div />

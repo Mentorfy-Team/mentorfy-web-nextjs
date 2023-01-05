@@ -10,7 +10,7 @@ type AddMentorDTO = {
 };
 
 type DeleteMentorDTO = {
-  team_member_id: string;
+  profile_id: string;
   teams: string[];
   reason: string;
 };

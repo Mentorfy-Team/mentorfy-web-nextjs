@@ -18,7 +18,6 @@ export const AreaWrapper = styled(Box)`
 `;
 
 export const DefaultAreaWrapper = styled(Box)`
-  cursor: pointer;
   margin-bottom: 1rem;
   position: relative;
   z-index: 1;
@@ -115,7 +114,7 @@ export const DeleteAreaButton = styled(Button)`
   margin-bottom: 1.5rem;
   text-transform: none;
 
-  &:hover { 
+  &:hover {
     background-color: ${({ theme }) => theme.palette.failure.main};
     color: #ffff;
   }
@@ -132,23 +131,23 @@ export const ProductsSelectField = styled(SelectField)`
   input {
     font-size: 0.9rem;
     height: 0.625rem;
-    color: #fff ;
+    color: #fff;
   }
   label {
     color: ${({ theme }) => theme.palette.text.primary} !important;
   }
   fieldset {
-    border-color: #fff ;
-    
+    border-color: #fff;
+
     height: 2.8rem;
-    &:focus{ 
-      border-color: #4A538D !important;
+    &:focus {
+      border-color: #4a538d !important;
     }
   }
   .MuiOutlinedInput-input {
     padding: 9.5px 14px;
-  } 
-  svg { 
+  }
+  svg {
     fill: #ffffff;
   }
 `;
@@ -168,20 +167,20 @@ export const ProductsField = styled(TextField)`
   outline: none;
   width: 100%;
   input {
-    color: #fff ;
+    color: #fff;
   }
   label {
     color: ${({ theme }) => theme.palette.text.primary} !important;
   }
   fieldset {
-    border-color: #fff ;
-    
+    border-color: #fff;
+
     height: 2.8rem;
   }
   .MuiOutlinedInput-input {
     padding: 6.5px 14px;
-  } 
-  svg { 
+  }
+  svg {
     fill: #ffffff;
   }
 `;

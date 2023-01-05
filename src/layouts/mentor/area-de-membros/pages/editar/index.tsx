@@ -15,6 +15,8 @@ import { GetAuthSession } from '~/helpers/AuthSession';
 import Certificate from './certificado';
 import { GetProductById } from '~/backend/repositories/product/GetProductById';
 import { SupabaseServer } from '~/backend/supabase';
+import isReadOnly from '~/helpers/IsReadOnly';
+import { CheckForSubscription } from '~/backend/repositories/subscription/CheckForSubscription';
 
 const EditarMentoria: FC<Props> = ({ id, product, user }) => {
   const [tabindex, setTabindex] = useState(product.owner == user.id ? 0 : 1);
@@ -84,11 +86,21 @@ export const getProps = async (ctx) => {
       },
     };
 
+  const accesses = await CheckForSubscription({
+    supabase,
+    data: {
+      user_id: session.user.id,
+    },
+  });
+
+  const readOnly = isReadOnly(accesses);
+
   return {
     props: {
       id: ctx.query.id,
       user: session.user,
       product,
+      readOnly,
     },
   };
 };

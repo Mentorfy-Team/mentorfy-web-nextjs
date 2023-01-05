@@ -88,7 +88,6 @@ export const MentorMenu: MentorMenuProps = {
     path: MentorRoutes.evolution,
     name: 'Minha Evolução',
     component: rocket_svg,
-    inDevelopment: true,
   },
   invoice: {
     path: MentorRoutes.invoice,

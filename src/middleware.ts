@@ -17,9 +17,9 @@ export default async function middleware(req: NextRequest) {
     .replace(`.${process.env.ROOT_DOMAIN}`, '')
     .replace('.localhost:3000', '');
 
-  console.log('process.env.ROOT_DOMAIN: ', process.env.ROOT_DOMAIN);
-  console.log('hostname: ', hostname);
-  console.log('currentHost: ', currentHost);
+  // console.log('process.env.ROOT_DOMAIN: ', process.env.ROOT_DOMAIN);
+  // console.log('hostname: ', hostname);
+  // console.log('currentHost: ', currentHost);
   const data = await getHostnameDataOrDefault(currentHost);
 
   // Prevent security issues – users should not be able to canonically access

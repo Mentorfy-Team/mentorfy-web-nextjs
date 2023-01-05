@@ -139,7 +139,7 @@ export const BOX = styled(Box)`
 `;
 
 export const SignatureWrapper = styled(Box)`
-  padding: 2rem 1.5rem;
+  padding: 1.5rem;
   background-color: ${({ theme }) => theme.palette.primary.light};
   text-align: left;
   border-radius: 20px;
@@ -149,7 +149,6 @@ export const SignatureText = styled(Typography)`
   font-weight: 600;
   font-size: 1.2rem;
   line-height: 1.4rem;
-  margin-bottom: 1.5rem;
 `;
 
 export const PlanWrapper = styled(Box)`

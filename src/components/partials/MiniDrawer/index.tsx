@@ -12,9 +12,10 @@ import { useProfile } from '~/hooks/useProfile';
 
 type props = {
   children?: JSX.Element;
+  props?: any;
 };
 
-const MiniDrawer: React.FC<props> = ({ children }) => {
+const MiniDrawer: React.FC<props> = ({ children, props: { pageProps } }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width:768px)');
   const [open, setOpen] = React.useState(isMobile ? false : true);
@@ -50,11 +51,24 @@ const MiniDrawer: React.FC<props> = ({ children }) => {
     });
   }, [pathsList, selectedRoute]);
 
+  const hasExpiredAccess = React.useMemo(() => {
+    if (!isExpired(profile?.expiration_date)) {
+      return false;
+    }
+    if (pageProps?.accesses) {
+      return !(
+        pageProps.accesses.find((acc) => !isExpired(acc.expiration_date)) !=
+        null
+      );
+    }
+    return true;
+  }, [profile, pageProps]);
+
   const RenderItens = React.useCallback(() => {
     return (
       <MenuItens
-        blockedUser={isExpired(profile?.expiration_date)}
-        freeRoutes={['/mentor/meu-perfil']}
+        blockedUser={hasExpiredAccess}
+        freeRoutes={['/mentor/meu-perfil', '/mentor/dashboard']}
         selectedRoute={[...ActivePaths, selectedRoute]}
         onSelectedRoute={async (route) => {
           const hasChildren = Object.values(MentorMenu).find(

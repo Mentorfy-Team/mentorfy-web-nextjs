@@ -13,6 +13,9 @@ import ProductsTable from './components/ProductsTable';
 import { AddProductButton } from './styles';
 import PlusSvg from '~/../public/svgs/plus';
 import { GetAuthSession } from '~/helpers/AuthSession';
+import { SupabaseServer } from '~/backend/supabase';
+import { CheckForSubscription } from '~/backend/repositories/subscription/CheckForSubscription';
+import isReadOnly from '~/helpers/IsReadOnly';
 
 const CreateProductDialog = dynamic(
   () => import('./components/CreateProductDialog'),
@@ -79,9 +82,21 @@ export const getProps = async (ctx) => {
       },
     };
 
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const accesses = await CheckForSubscription({
+    supabase,
+    data: {
+      user_id: session.user.id,
+    },
+  });
+
+  const readOnly = isReadOnly(accesses);
+
   return {
     props: {
       user: session.user,
+      accesses,
+      readOnly,
     },
   };
 };
