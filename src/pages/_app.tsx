@@ -88,11 +88,11 @@ const App = (props: MyAppProps) => {
         router.pathname.includes('/m') &&
         !router.pathname.includes('mentorado')
       )
-        return <MiniDrawer>{children}</MiniDrawer>;
+        return <MiniDrawer props={props}>{children}</MiniDrawer>;
 
       return <>{children}</>;
     },
-    [router.pathname],
+    [router.pathname, props],
   );
 
   useEffect(() => {

@@ -85,12 +85,12 @@ export const del = async (req, res) => {
 
   if (
     !teams ||
-    teams.every((t) => t.owner_id !== user.id) ||
-    teams.every((t) =>
-      (t.team_member as any[]).every(
-        (m) => m.profile_id !== req.body.profile_id,
-      ),
-    )
+    (teams.every((t) => t.owner_id !== user.id) &&
+      teams.every((t) =>
+        (t.team_member as any[]).every(
+          (m) => m.profile_id !== req.body.profile_id,
+        ),
+      ))
   ) {
     return res.status(401).json({ error: 'Unauthorized' });
   }

@@ -4,8 +4,6 @@ import { InputsWrapper } from '~/layouts/mentor/meu-perfil/style';
 import { PaymentInfoWrapper } from '../../layouts/checkout/styles';
 
 const CreditCardFields = ({ extra = null, errors = {} }) => {
-  console.log(errors);
-
   return (
     <>
       <PaymentInfoWrapper>

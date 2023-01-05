@@ -12,6 +12,8 @@ import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
 import { SupabaseServer } from '~/backend/supabase';
 import { GetCustomer } from '~/backend/repositories/pagarme/customer/GetCustomer';
 import { GetPlan } from '~/backend/repositories/pagarme/plan/GetPlan';
+import isReadOnly from '~/helpers/IsReadOnly';
+import { CheckForSubscription } from '~/backend/repositories/subscription/CheckForSubscription';
 
 const DadosPage = dynamic(() => import('./tabs/dados-cadastro'));
 
@@ -41,6 +43,7 @@ const MinhaConta: FC<props> = ({
   mentor_id,
   plan,
   customer,
+  accesses,
 }) => {
   const [tabindex, setTabindex] = useState<number>(tab);
   const {
@@ -63,7 +66,14 @@ const MinhaConta: FC<props> = ({
       case tabs.Links.valueOf():
         return <DadosPage profile={profile} address={address} />;
       case tabs.Assinatura.valueOf():
-        return <Signature customer={customer} profile={profile} plan={null} />;
+        return (
+          <Signature
+            accesses={accesses}
+            customer={customer}
+            profile={profile}
+            plan={plan}
+          />
+        );
       default:
         return (
           <GeralPage
@@ -75,15 +85,16 @@ const MinhaConta: FC<props> = ({
         );
     }
   }, [
-    address,
-    customer,
-    isViewingMentor,
-    isViewingMentored,
-    plan,
     profile,
     tabindex,
-    user,
     tab,
+    isViewingMentored,
+    isViewingMentor,
+    user,
+    address,
+    accesses,
+    customer,
+    plan,
   ]);
 
   return (
@@ -136,6 +147,15 @@ export const getProps = async (ctx) => {
 
   const plan = await GetPlan(profile.plan_id);
 
+  const accesses = await CheckForSubscription({
+    supabase,
+    data: {
+      user_id: session.user.id,
+    },
+  });
+
+  const readOnly = isReadOnly(accesses);
+
   return {
     props: {
       user: session.user,
@@ -146,6 +166,8 @@ export const getProps = async (ctx) => {
       customer: customer,
       plan: plan,
       tab: ctx.query.tab ?? tabs.Geral.toString(),
+      accesses,
+      readOnly,
     },
   };
 };

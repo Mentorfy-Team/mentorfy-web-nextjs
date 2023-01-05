@@ -2,20 +2,6 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from '~/@types/supabase/v2.types';
 //import { dateToReadable } from '~/backend/http/clients/list.api';
 
-type AccessType = {
-  type: 'team' | 'client' | 'mentor';
-  team?: {
-    team_id: string;
-  };
-  client?: {
-    product_id: string;
-  };
-  mentor?: {
-    plan: 'trial' | string;
-  };
-  expiration_date?: string;
-};
-
 export const CheckForSubscription = async ({
   supabase,
   data: { user_id },
@@ -31,7 +17,7 @@ export const CheckForSubscription = async ({
     .eq('id', user_id)
     .single();
 
-  const AccessTypes: AccessType[] = [];
+  const AccessTypes: UserTypes.AccessType[] = [];
 
   if (user) {
     if (user.plan_id) {
@@ -49,30 +35,60 @@ export const CheckForSubscription = async ({
       .select('*, team(*)')
       .eq('profile_id', user_id);
 
-    if (team_members) {
-      team_members
-        .map((team_member) => {
-          return team_member.team as TeamTypes.Team;
-        })
-        .forEach(async (team) => {
-          const { data: owner, error } = await supabase
-            .from('profile')
-            .select('expiration_date')
-            .eq('id', team.owner_id)
-            .single();
+    const pids = team_members
+      .reduce((acc, tm) => {
+        return acc.concat((tm.team as any).products);
+      }, [])
+      .map((x) => x);
 
-          AccessTypes.push({
-            type: 'team',
-            team: {
-              team_id: team.id,
-            },
-            expiration_date: owner.expiration_date,
-          });
+    const { data: products } = await supabase
+      .from('product')
+      .select('id, title')
+      .in('id', pids);
+
+    if (team_members) {
+      const reduced = team_members.reduce(
+        (acc: TeamTypes.Team[], teamMember) => {
+          const team = teamMember.team as TeamTypes.Team;
+          team.products = products.filter((p) =>
+            team.products.includes(p.id),
+          ) as any;
+          team['member_id'] = teamMember.id;
+          const x = acc.find((y) => y.owner_id === team.owner_id);
+          if (!x) {
+            return acc.concat([team]);
+          } else {
+            return acc;
+          }
+        },
+        [],
+      );
+      for (let i = 0; i < reduced.length; i++) {
+        const team = reduced[i];
+        const { data: owner, error } = await supabase
+          .from('profile')
+          .select('expiration_date')
+          .eq('id', team.owner_id)
+          .single();
+
+        AccessTypes.push({
+          type: 'team',
+          team: {
+            id: team.id,
+            owner_id: team.owner_id,
+            name: team.title,
+            member_id: team['member_id'],
+            products: team.products,
+          },
+          expiration_date: owner.expiration_date,
         });
+      }
     }
+    return AccessTypes;
   } else {
     return null;
   }
+
   // const currentSub = new Date(user.expiration_date);
   // const isSubActive = currentSub.toISOString() > new Date().toISOString();
 
