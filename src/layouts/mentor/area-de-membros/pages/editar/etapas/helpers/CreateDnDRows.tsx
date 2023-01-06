@@ -10,6 +10,7 @@ export default function CreateDnDRows({
   onNewGroup,
   allowSubgroup = false,
   productType,
+  readOnly,
 }) {
   const Group = ({ step, children, isGroup }) => {
     return (
@@ -29,13 +30,17 @@ export default function CreateDnDRows({
 
         {children}
         {isGroup && allowSubgroup && (
-          <AddCategory onClick={() => onNewGroup(step.id)}>
+          <AddCategory onClick={() => !readOnly && onNewGroup(step.id)}>
             <AddBox />
             Adicionar Categoria
           </AddCategory>
         )}
         {(!isGroup || !allowSubgroup) && (
-          <AddTool onClick={() => onOpenModal(step.id)} variant="contained">
+          <AddTool
+            disabled={readOnly}
+            onClick={() => onOpenModal(step.id)}
+            variant="contained"
+          >
             <Task />
             {productType ? 'Adicionar Aula' : 'Adicionar Etapa'}
           </AddTool>

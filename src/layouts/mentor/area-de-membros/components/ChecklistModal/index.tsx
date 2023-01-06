@@ -12,6 +12,7 @@ const ChecklistModal = ({
   setOpen,
   data: { data: taskData, title: titleData, description: descriptionData },
   onChange,
+  readOnly,
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
@@ -110,8 +111,9 @@ const ChecklistModal = ({
     <ModalComponent
       open={open}
       setOpen={setOpen}
-      onSave={() => handleSave()}
-      onDelete={() => handleSave(true)}
+      onSave={readOnly ? null : () => handleSave()}
+      onDelete={readOnly ? null : () => handleSave(true)}
+      onClose={readOnly ? () => setOpen(false) : null}
       title="Checklist"
     >
       <>

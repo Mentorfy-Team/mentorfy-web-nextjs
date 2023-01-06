@@ -15,9 +15,12 @@ const QuestionsForm = dynamic(
   () => import('../components/QuestionsFormModal'),
   { loading: () => <LoadingComponent /> },
 );
-const DownloadFileModal = dynamic(() => import('../components/DownloadFileModal'), {
-  loading: () => <LoadingComponent />,
-});
+const DownloadFileModal = dynamic(
+  () => import('../components/DownloadFileModal'),
+  {
+    loading: () => <LoadingComponent />,
+  },
+);
 const UploadFileModal = dynamic(() => import('../components/UploadFileModal'), {
   loading: () => <LoadingComponent />,
 });
@@ -60,6 +63,7 @@ export type ToolsModalProps = {
   setOpen?: (value: any) => any;
   rows?: any[];
   area_type?: number;
+  readOnly?: boolean;
 };
 
 const SwitchModal: React.FC<ToolsModalProps> = ({
@@ -72,6 +76,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
   area_id,
   rows,
   area_type,
+  readOnly,
 }) => {
   switch (type) {
     case ToolListNames.WheelOfLifeModal.name:
@@ -86,6 +91,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.Checklist.name:
@@ -100,6 +106,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.Embed.name:
@@ -114,6 +121,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.DownloadFile.name:
@@ -129,6 +137,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.OpenText.name:
@@ -143,6 +152,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.QuestionsForm.name:
@@ -157,6 +167,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.Video.name:
@@ -173,6 +184,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.UploadFile.name:
@@ -187,6 +199,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.StepGroup.name:
@@ -203,6 +216,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
             })
           }
           area_type={area_type}
+          readOnly={readOnly}
         />
       );
     case ToolListNames.ToolList.name:

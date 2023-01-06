@@ -40,6 +40,7 @@ const DownloadFileModal = ({
   setOpen,
   onChange,
   data: { title: titleData, description: descriptionData, data: filesData },
+  readOnly,
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
@@ -96,8 +97,9 @@ const DownloadFileModal = ({
 
   return (
     <ModalComponent
-      onDelete={() => handleSave(true)}
-      onSave={() => handleSave()}
+      onSave={readOnly ? null : () => handleSave()}
+      onDelete={readOnly ? null : () => handleSave(true)}
+      onClose={readOnly ? () => setOpen(false) : null}
       open={open}
       setOpen={setOpen}
       title="Download de Arquivo"

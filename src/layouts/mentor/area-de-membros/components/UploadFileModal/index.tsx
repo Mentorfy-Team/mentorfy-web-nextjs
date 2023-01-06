@@ -21,6 +21,7 @@ const UploadFileModal = ({
   setOpen,
   onChange,
   data: { title: titleData, description: descriptionData },
+  readOnly,
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
@@ -36,8 +37,9 @@ const UploadFileModal = ({
 
   return (
     <ModalComponent
-      onDelete={() => handleSave(true)}
-      onSave={() => handleSave()}
+      onSave={readOnly ? null : () => handleSave()}
+      onDelete={readOnly ? null : () => handleSave(true)}
+      onClose={readOnly ? () => setOpen(false) : null}
       open={open}
       setOpen={setOpen}
       title="Upload de Arquivo"
@@ -56,7 +58,6 @@ const UploadFileModal = ({
           value={description}
           placeholder="Dê uma descrição para essa etapa"
         ></DescriptionInputField>
-
       </>
     </ModalComponent>
   );

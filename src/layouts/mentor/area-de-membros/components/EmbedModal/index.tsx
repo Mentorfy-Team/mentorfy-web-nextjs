@@ -11,6 +11,7 @@ const EmbedModal = ({
   setOpen,
   onChange,
   data: { title: titleData, description: descriptionData, data: EmbedData },
+  readOnly,
 }) => {
   const [display, setDisplay] = useState(true);
   const [title, setTitle] = useState<string>(titleData);
@@ -29,8 +30,9 @@ const EmbedModal = ({
 
   return (
     <ModalComponent
-      onSave={() => handleSave()}
-      onDelete={() => handleSave(true)}
+      onSave={readOnly ? null : () => handleSave()}
+      onDelete={readOnly ? null : () => handleSave(true)}
+      onClose={readOnly ? () => setOpen(false) : null}
       open={open}
       setOpen={setOpen}
       title="Embed"
