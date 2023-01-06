@@ -19,11 +19,6 @@ export const GetProfile = async (
       },
     );
 
-    if (response.data.error) {
-      return {
-        error: response.data.error,
-      };
-    }
     return response.data;
   } catch (error: any) {
     return {

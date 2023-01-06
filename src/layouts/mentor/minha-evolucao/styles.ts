@@ -3,10 +3,11 @@ import Box from '@mui/material/Box';
 
 export const SvgWrapper = styled(Box)`
   position: absolute;
-  svg { 
-    #TRILHA{ 
-      #Caminho-Jornada { 
-        stroke: ${({ theme }) => theme.palette.accent.main};
+  svg {
+    #TRILHA {
+      #Caminho-Jornada {
+        // linear gradient
+        stroke: url(#linear-gradient);
       }
     }
     /* stroke-dasharray: 100;
