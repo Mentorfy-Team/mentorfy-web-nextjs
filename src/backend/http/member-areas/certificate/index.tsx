@@ -92,20 +92,24 @@ export const get = async (req, res: NextApiResponse) => {
       );
   }
 
-  const pdfData = await CreateCertificate({
-    certificate: certificateUrl,
-    texts: merge,
-    res,
-  });
-  const fileName =
-    product.title.replace(/ /g, '_') + '_' + profile.name.replace(/ /g, '_');
-  res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader(
-    'Content-Disposition',
-    'attachment; filename=' + `${fileName}` + '.pdf',
-  );
+  try {
+    const pdfData = await CreateCertificate({
+      certificate: certificateUrl,
+      texts: merge,
+      res,
+    });
+    const fileName =
+      product.title.replace(/ /g, '_') + '_' + profile.name.replace(/ /g, '_');
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader(
+      'Content-Disposition',
+      'attachment; filename=' + `${fileName}` + '.pdf',
+    );
 
-  return res.status(200).send(pdfData);
+    return res.status(200).send(pdfData);
+  } catch (error) {
+    return res.status(200).send(error);
+  }
 };
 
 const formartCPForCNPJ = (cpfOrCnpj: string) => {
