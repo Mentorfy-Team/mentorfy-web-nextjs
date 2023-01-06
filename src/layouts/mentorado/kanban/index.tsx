@@ -252,6 +252,7 @@ export const KanbanView: FC<
           open={showCertificate}
           setOpen={setShowCertificate}
           product={product}
+          profile={user.profile}
         />
       )}
     </>

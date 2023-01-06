@@ -1,7 +1,6 @@
 import PDFDocument from 'pdfkit';
 import addTextbox from 'textbox-for-pdfkit';
-import { HttpClient } from '~/services/HttpClient';
-import fs from 'fs';
+import { HttpServer } from '~/services/HttpClient';
 
 // Header
 const maxWidth = 790 * 2;
@@ -11,7 +10,7 @@ export const CreateCertificate = async ({
   texts: { course, student },
   res,
 }) => {
-  const response = await HttpClient.get(certificate, {
+  const response = await HttpServer.get(certificate, {
     responseType: 'arraybuffer',
   });
   // a promise resolve
@@ -39,7 +38,7 @@ export const CreateCertificate = async ({
       }
     }
 
-    doc.pipe(fs.createWriteStream('output.pdf'));
+    //doc.pipe(fs.createWriteStream('output.pdf'));
 
     doc.rect(0, 0, doc.page.width, doc.page.height).fill('transparent');
 

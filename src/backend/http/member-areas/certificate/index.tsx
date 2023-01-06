@@ -8,7 +8,7 @@ export const get = async (req, res: NextApiResponse) => {
   const { data: product, error } = await supabase
     .from('product')
     .select('*, profile(*)')
-    .eq('id', req.query.id)
+    .eq('id', req.query.pid)
     .single();
 
   // get session
@@ -19,14 +19,14 @@ export const get = async (req, res: NextApiResponse) => {
   const { data: profile } = await supabase
     .from('profile')
     .select('*')
-    .eq('id', user.id)
+    .eq('id', req.query.cid)
     .single();
 
-  const { data: client_product } = await supabase
+  let { data: client_product } = await supabase
     .from('client_product')
     .select('*')
-    .eq('product_id', req.query.id)
-    .eq('client_id', user.id)
+    .eq('product_id', req.query.pid)
+    .eq('client_id', req.query.cid)
     .single();
 
   let date = new Date().toLocaleDateString('pt-BR', {
@@ -34,6 +34,14 @@ export const get = async (req, res: NextApiResponse) => {
     month: '2-digit',
     year: 'numeric',
   });
+
+  if (product.owner === profile.id) {
+    if (!client_product) {
+      client_product = {
+        finishedAt: date,
+      } as any;
+    }
+  }
 
   if (!client_product?.finishedAt) {
     if (client_product) {
@@ -75,6 +83,14 @@ export const get = async (req, res: NextApiResponse) => {
   const certificatePosition = product.certificate as ProductTypes.Certificate;
 
   const merge = mergeDeep(certificatePosition, texts);
+
+  if (certificateUrl.includes('.pdf')) {
+    return res
+      .status(200)
+      .send(
+        'O certificado precisa estar no formato de imagem nas configuracoes da mentoria.',
+      );
+  }
 
   const pdfData = await CreateCertificate({
     certificate: certificateUrl,

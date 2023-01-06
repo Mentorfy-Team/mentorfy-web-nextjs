@@ -539,6 +539,7 @@ export const VideoView = ({
           open={showCertificate}
           setOpen={setShowCertificate}
           product={memberArea}
+          profile={profile}
         />
       )}
     </>
