@@ -6,11 +6,21 @@ import Description from '~/components/atoms/ModalDescription';
 import ModalComponent from '~/components/modules/Modal';
 import { ModalDialogContent } from '~/components/modules/Modal/styles';
 import DropzoneComponent from '~/components/modules/Dropzone';
-import { AttachName, CustomTypography, FilesWrapper, Label, P, RemoveBox, UploadField, UploadTypography } from './styles';
+import {
+  AttachName,
+  CustomTypography,
+  FilesWrapper,
+  Label,
+  P,
+  RemoveBox,
+  UploadField,
+  UploadTypography,
+} from './styles';
 import { FileType } from '~/layouts/mentor/area-de-membros/components/DownloadFileModal';
 import HandleFileUpload from '~/helpers/HandleFileUpload';
 import { Close } from '@mui/icons-material';
 import UploadToUrlFiles from '~/layouts/mentor/area-de-membros/components/DownloadFileModal/helpers/UploadToUrlFiles';
+import { useProfile } from '~/hooks/useProfile';
 
 type InputProps = { id: string; value: boolean }[];
 type ExtraProps = boolean;
@@ -24,7 +34,7 @@ type ToolProps = {
 
 type RefIdProps = {
   refId: string;
-}
+};
 
 const FilesUploadModal = ({
   open,
@@ -32,13 +42,14 @@ const FilesUploadModal = ({
   data: { data: filesData, title: titleData, description: descriptionData },
   onChange,
   userInput,
-  refId,
 }: MentoredComponents.Props<ToolProps, InputProps, ExtraProps, RefIdProps>) => {
-  const [input, setInput] = useState(userInput?.data || []);
+  const {
+    data: { profile },
+  } = useProfile();
 
   const [files, setFiles] = useState<FileType[]>(filesData || []);
   const [removedFiles, setRemovedFiles] = useState<string[]>([]);
-  console.log(refId);
+
   const handleRemoveFile = (_file) => {
     setRemovedFiles([...removedFiles, _file.sourceUrl]);
     setFiles(
@@ -62,7 +73,7 @@ const FilesUploadModal = ({
   };
 
   const handleFinish = async () => {
-    const convertedFiles = await UploadToUrlFiles(files, refId);
+    const convertedFiles = await UploadToUrlFiles(files, profile.id);
     onChange({
       data: convertedFiles,
       extra: {
@@ -92,7 +103,6 @@ const FilesUploadModal = ({
       onSave={() => handleFinish()}
     >
       <ModalDialogContent sx={{ textAlign: 'center', maxWidth: '600px' }}>
-
         <Description>{descriptionData}</Description>
         {files?.length === 0 && (
           <Box sx={{ width: '100%' }}>
@@ -119,7 +129,13 @@ const FilesUploadModal = ({
           </Box>
         )}
         {files?.length !== 0 && (
-          <Box sx={{ display: 'flex', flexDirection: 'column', textAlign: 'center' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              textAlign: 'center',
+            }}
+          >
             <CustomTypography>Arquivo Anexado</CustomTypography>
             <FilesWrapper>
               {files?.map((file) => (
@@ -138,7 +154,8 @@ const FilesUploadModal = ({
                     src={getImage(file)}
                     style={{
                       objectFit: 'contain',
-                    }} />
+                    }}
+                  />
                   <AttachName>{file.name}</AttachName>
                   <RemoveBox onClick={() => handleRemoveFile(file)}>
                     <Close
@@ -146,11 +163,13 @@ const FilesUploadModal = ({
                         height: '1rem',
                         paddingRight: '0.3rem',
                         paddingBottom: '0rem',
-                      }} />
+                      }}
+                    />
                   </RemoveBox>
                 </Box>
               ))}
-            </FilesWrapper></Box>
+            </FilesWrapper>
+          </Box>
         )}
       </ModalDialogContent>
     </ModalComponent>

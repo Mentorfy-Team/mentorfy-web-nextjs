@@ -17,6 +17,7 @@ import { GetProductById } from '~/backend/repositories/product/GetProductById';
 import { SupabaseServer } from '~/backend/supabase';
 import isReadOnly from '~/helpers/IsReadOnly';
 import { CheckForSubscription } from '~/backend/repositories/subscription/CheckForSubscription';
+import defaultUser from '~/consts/defaultUser';
 
 const EditarMentoria: FC<Props> = ({ id, product, user }) => {
   const [tabindex, setTabindex] = useState(product.owner == user.id ? 0 : 1);
@@ -93,7 +94,11 @@ export const getProps = async (ctx) => {
     },
   });
 
-  const readOnly = isReadOnly(accesses);
+  let readOnly = isReadOnly(accesses);
+
+  if (product.owner === defaultUser && defaultUser !== session.user.id) {
+    readOnly = true;
+  }
 
   return {
     props: {
