@@ -1,5 +1,5 @@
 export const DefaultCertificate = {
-  url: '/default-certificate.pjg',
+  url: '/default-certificate.jpg',
   student: {
     name: {
       pageX: '-134',

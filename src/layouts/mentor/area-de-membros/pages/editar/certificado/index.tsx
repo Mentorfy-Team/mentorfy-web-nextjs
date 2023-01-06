@@ -33,11 +33,11 @@ import { DefaultCertificate } from '~/consts/certificate';
 import { toast } from 'react-toastify';
 import { DragBox } from './components/DragBox';
 import { SingFont } from '~/pages/_app';
-import UploadToUrlFiles from '../../../components/UploadFileModal/helpers/UploadToUrlFiles';
 import { UpdateCertificate } from '~/services/certificate-upload.service';
 
 import NextImage from 'next/image';
 import { Button } from '@mui/material';
+import UploadToUrlFiles from '../../../components/UploadFileModal/helpers/UploadToUrlFiles';
 
 const PDFReader = dynamic(
   () => import('~/components/atoms/PDFReader/PDFReader'),
@@ -216,21 +216,6 @@ const Certificate = ({
     });
   };
 
-  const GetUrlAndSaveInCertificate = async () => {
-    if (!files || !files?.sourceUrl || !files?.data) return;
-
-    const convertedFiles = await UploadToUrlFiles([files], id);
-    setCertificate((old) => {
-      const updatedCertificate = {
-        ...old,
-        url: convertedFiles[0].sourceUrl,
-        product_id: id,
-        title: title,
-      };
-      return updatedCertificate;
-    });
-  };
-
   useEffect(() => {
     if (color) {
       setDefaultCertificate((old) => {
@@ -243,13 +228,23 @@ const Certificate = ({
   }, [color, files, id, title]);
 
   const onSubmit = async () => {
-    await GetUrlAndSaveInCertificate();
-
     if (color) {
       await UpdateCertificate(defaultCertificate, title, id);
-    }
-    await UpdateCertificate(certificate, title, id);
+    } else {
+      if (!files && !files?.sourceUrl && !files?.data) {
+        await UpdateCertificate(certificate, title, id);
+      } else {
+        const convertedFiles = await UploadToUrlFiles([files], id);
 
+        const updatedCertificate = {
+          ...certificate,
+          url: convertedFiles[0].sourceUrl,
+          product_id: id,
+          title: title,
+        };
+        await UpdateCertificate(updatedCertificate, title, id);
+      }
+    }
     toast.success('Certificado salvo com sucesso');
     setIsLoading(false);
   };
@@ -350,7 +345,7 @@ const Certificate = ({
 
       {!color && (
         <>
-          {files?.data && (
+          {files?.data && !files?.data?.includes('.pdf') && (
             <Wrapper>
               <div>
                 <UsageText>
@@ -483,7 +478,7 @@ const Certificate = ({
               </FileWrapper>
             </Wrapper>
           )}
-          {!files?.data && (
+          {(!files?.data || files?.data?.includes('.pdf')) && (
             <DropzoneComponent
               accepts={{ image: ['image/jpeg', 'image/png', 'image/jpg'] }}
               onDrop={(_files) => handleUpload(_files)}
@@ -519,7 +514,12 @@ const Certificate = ({
       {color && (
         <Wrapper>
           <FileWrapper id="dragRef">
-            <PDFReader file={defaultCertificate.url} />
+            <NextImage
+              src={defaultCertificate.url}
+              width={790}
+              height={590}
+              alt="certificado"
+            />
           </FileWrapper>
         </Wrapper>
       )}
