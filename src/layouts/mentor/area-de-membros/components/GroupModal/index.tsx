@@ -4,7 +4,7 @@ import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
 import HandleFileUpload from '~/helpers/HandleFileUpload';
 import AddImage from '../AddImage';
-import UploadToUrlFiles from '../UploadFileModal/helpers/UploadToUrlFiles';
+import UploadToUrlFiles from '../DownloadFileModal/helpers/UploadToUrlFiles';
 import { Checkbox, DeleteText } from './styles';
 import {
   BpCheckedIcon,

@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Image from 'next/image';
 import { AddImgButton, ButtonLabel } from './styles';
 import { Close } from '@mui/icons-material';
-import { RemoveBox } from '../UploadFileModal/styles';
+import { RemoveBox } from '../DownloadFileModal/styles';
 
 type Props = {
   onUploadImage: (file: any) => void;

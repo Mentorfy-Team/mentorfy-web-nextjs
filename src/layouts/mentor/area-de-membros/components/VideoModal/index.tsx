@@ -5,7 +5,7 @@ import ModalComponent from '~/components/modules/Modal';
 import HandleFileUpload from '~/helpers/HandleFileUpload';
 import AddImage from '../AddImage';
 import ContentBox from '../ContentBox';
-import UploadToUrlFiles from '../UploadFileModal/helpers/UploadToUrlFiles';
+import UploadToUrlFiles from '../DownloadFileModal/helpers/UploadToUrlFiles';
 import Video from './components/Video';
 import { AcceptedLinksText, AddTaskButton, LinkInputWrapper } from './styles';
 

@@ -28,12 +28,12 @@ import { useTheme } from '@mui/material/styles';
 import DropzoneComponent from '~/components/modules/Dropzone';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { FileType } from '../../../components/UploadFileModal';
+import { FileType } from '../../../components/DownloadFileModal';
 import { DefaultCertificate } from '~/consts/certificate';
 import { toast } from 'react-toastify';
 import { DragBox } from './components/DragBox';
 import { SingFont } from '~/pages/_app';
-import UploadToUrlFiles from '../../../components/UploadFileModal/helpers/UploadToUrlFiles';
+import UploadToUrlFiles from '../../../components/DownloadFileModal/helpers/UploadToUrlFiles';
 import { UpdateCertificate } from '~/services/certificate-upload.service';
 
 import NextImage from 'next/image';
