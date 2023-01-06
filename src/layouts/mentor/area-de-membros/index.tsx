@@ -31,8 +31,11 @@ import PlusSvg from '~/../public/svgs/plus';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import RatioSize from '~/helpers/RatioSize';
 import { CloneProduct } from '~/services/clone-product.service';
+import isReadOnly from '~/helpers/IsReadOnly';
+import { CheckForSubscription } from '~/backend/repositories/subscription/CheckForSubscription';
+import { SupabaseServer } from '~/backend/supabase';
 
-const MembersArea: FC<PageTypes.Props> = ({ user }) => {
+const MembersArea: FC<PageTypes.Props> = ({ user, readonly }) => {
   const { products, mutate } = useProducts(user.id);
   const { products: defaultProducts } = useProducts(
     'b9dc824e-20f9-4824-a568-326f193ed45a',
@@ -98,7 +101,6 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
   const SubmitCloneProduct = async () => {
     const newProduct = await CloneProduct(cloneProduct);
 
-    console.log('newProduct', newProduct);
     await router.prefetch(
       MentorRoutes.members_area + '/editar/' + newProduct.id,
     );
@@ -115,6 +117,7 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
           <Box sx={{ float: 'right' }}>
             <CreateAreaButton
               variant="outlined"
+              disabled={readonly}
               onClick={() => setOpenCreatePage(true)}
             >
               <PlusSvg fill={theme.palette.accent.main} />
@@ -122,6 +125,7 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
             </CreateAreaButton>
             <DeleteAreaButton
               className="delete-icon"
+              disabled={readonly}
               onClick={(e) => {
                 setOpen(true);
                 // e.stopPropagation();
@@ -164,6 +168,27 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
               }
               key={index}
             >
+              {area.owner != user.id && (
+                <Box
+                  sx={(theme) => ({
+                    position: 'absolute',
+                    width: '100%',
+                    height: '8%',
+                    backgroundColor: theme.palette.accent.main,
+                    borderRadius: '8px 8px 0 0',
+                    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                  })}
+                >
+                  <Typography
+                    variant="body1"
+                    fontWeight="bold"
+                    mt={0.5}
+                    sx={{ color: '#fff' }}
+                  >
+                    Acesso de Time
+                  </Typography>
+                </Box>
+              )}
               {area.main_image && (
                 <Image
                   alt=""
@@ -213,19 +238,11 @@ const MembersArea: FC<PageTypes.Props> = ({ user }) => {
         </Box>
         <DefaultProductsWrapper>
           {defaultProducts?.map((area, index) => (
-            <DefaultAreaWrapper
-              // onClick={
-              //   async () => {
-              //     await router.prefetch(
-              //       MentorRoutes.members_area_editar + '/' + area.id,
-              //     );
-              //     router.push(MentorRoutes.members_area_editar + '/' + area.id);
-              //   }
-              //   // router.push(MentorRoutes.members_area_editar + '/' + area.id)
-              // }
-              key={index}
-            >
-              <CopyButton onClick={() => handleDefaultProducts(area)}>
+            <DefaultAreaWrapper key={index}>
+              <CopyButton
+                disabled={readonly}
+                onClick={() => handleDefaultProducts(area)}
+              >
                 Usar Modelo
               </CopyButton>
               {area.main_image && (
@@ -361,9 +378,20 @@ export const getProps = async (ctx) => {
       },
     };
 
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const accesses = await CheckForSubscription({
+    supabase,
+    data: {
+      user_id: session.user.id,
+    },
+  });
+
+  const readOnly = isReadOnly(accesses);
+
   return {
     props: {
       user: session.user,
+      readOnly,
     },
   };
 };

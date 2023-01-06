@@ -6,6 +6,9 @@ import Clients from './meus-clientes';
 import Approvals from './aprovacoes';
 import Teams from './meus-times';
 import { GetAuthSession } from '~/helpers/AuthSession';
+import { CheckForSubscription } from '~/backend/repositories/subscription/CheckForSubscription';
+import { SupabaseServer } from '~/backend/supabase';
+import isReadOnly from '~/helpers/IsReadOnly';
 
 const tabs = ['Clientes', 'Aprovações', 'Meus Times'];
 
@@ -45,10 +48,21 @@ export const getProps = async (ctx) => {
         permanent: false,
       },
     };
+  const supabase = SupabaseServer(ctx.req, ctx.res);
+  const accesses = await CheckForSubscription({
+    supabase,
+    data: {
+      user_id: session.user.id,
+    },
+  });
+
+  const readOnly = isReadOnly(accesses);
 
   return {
     props: {
       user: session.user,
+      accesses,
+      readOnly,
     },
   };
 };

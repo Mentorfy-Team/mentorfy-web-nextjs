@@ -11,6 +11,21 @@ declare namespace UserTypes {
     address?: Address;
   };
 
+  type AccessType = {
+    type: 'team' | 'client' | 'mentor';
+    team?: {
+      id: string;
+      owner_id: string;
+      name: string;
+      member_id: string;
+      products: string[];
+    };
+    mentor?: {
+      plan: 'trial' | string;
+    };
+    expiration_date?: string;
+  };
+
   type PagarmeCustomer = {
     object: string;
     id: number;

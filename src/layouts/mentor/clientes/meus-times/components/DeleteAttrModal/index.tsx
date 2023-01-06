@@ -53,7 +53,7 @@ const DeleteAttrModal: React.FC<{
             required
             value={selectedMentor}
             label="Escolha o Mentor"
-            name="team_member_id"
+            name="profile_id"
             onChange={(e) => {
               setSelectedMentor(e.target.value);
               onChange(e);

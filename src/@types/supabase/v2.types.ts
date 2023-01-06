@@ -83,6 +83,7 @@ export interface Database {
           interval: string | null
           approved: boolean
           finishedAt: string | null
+          subscription_id: string | null
         }
         Insert: {
           user_id: string
@@ -93,6 +94,7 @@ export interface Database {
           interval?: string | null
           approved?: boolean
           finishedAt?: string | null
+          subscription_id?: string | null
         }
         Update: {
           user_id?: string
@@ -103,6 +105,7 @@ export interface Database {
           interval?: string | null
           approved?: boolean
           finishedAt?: string | null
+          subscription_id?: string | null
         }
       }
       directus_activity: {
@@ -1044,7 +1047,6 @@ export interface Database {
           phone: string | null
           email: string | null
           comments: string | null
-          expiration_date: string | null
           trial_expiration: string | null
         }
         Insert: {
@@ -1056,7 +1058,6 @@ export interface Database {
           phone?: string | null
           email?: string | null
           comments?: string | null
-          expiration_date?: string | null
           trial_expiration?: string | null
         }
         Update: {
@@ -1068,7 +1069,6 @@ export interface Database {
           phone?: string | null
           email?: string | null
           comments?: string | null
-          expiration_date?: string | null
           trial_expiration?: string | null
         }
       }

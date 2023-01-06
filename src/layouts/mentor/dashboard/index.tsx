@@ -14,6 +14,8 @@ import dynamic from 'next/dynamic';
 import TipBar from '~/components/modules/TipBar';
 import { isExpired } from '~/helpers/IsExpired';
 import Link from 'next/link';
+import { CheckForSubscription } from '~/backend/repositories/subscription/CheckForSubscription';
+import isReadOnly from '~/helpers/IsReadOnly';
 
 const WelcomeHeader = dynamic(() => import('./components/welcome-header'), {
   ssr: false,
@@ -124,10 +126,21 @@ export const getProps = async (ctx) => {
   const userData = await GetProfileById(supabase, {
     id: session.user.id,
   });
+
+  const accesses = await CheckForSubscription({
+    supabase,
+    data: {
+      user_id: session.user.id,
+    },
+  });
+
+  const readOnly = isReadOnly(accesses);
+
   return {
     props: {
       user: session.user,
       profile: userData.profile,
+      readOnly,
     },
   };
 };

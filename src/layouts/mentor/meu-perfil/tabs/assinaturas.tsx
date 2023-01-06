@@ -19,21 +19,29 @@ import { useRouter } from 'next/router';
 import Typography from '@mui/material/Typography';
 import { SendPixPayment } from '~/services/checkout/pix.service';
 import { isExpired } from '~/helpers/IsExpired';
+import { Divider } from '@mui/material';
+import { DeleteText } from '../../area-de-membros/components/GroupModal/styles';
+import ModalComponent from '~/components/modules/Modal';
+import { DeleteMentor } from '~/services/teams/teams.service';
 
 type Props = {
   profile: ClientTypes.Profile;
   customer: Pagarme.Customer;
   plan: Pagarme.Plan;
+  accesses: UserTypes.AccessType[];
 };
 
-const Signature = ({ profile, customer, plan }: Props) => {
+const Signature = ({ profile, customer, plan, accesses }: Props) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showPix, setShowPix] = useState(false);
+  const [openExitTeam, setOpenExitTeam] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [pixQrCode, setPixQrCode] = useState('');
+
+  const [seletedTeam, setSelectedTeam] = useState<any>();
 
   const router = useRouter();
 
@@ -90,6 +98,8 @@ const Signature = ({ profile, customer, plan }: Props) => {
   return (
     <>
       <SignatureWrapper>
+        <SignatureText>Assinatura</SignatureText>
+        <Divider sx={{ borderColor: '#272727', margin: '1rem -1.5rem' }} />
         {!plan && (
           <Box
             sx={{
@@ -156,7 +166,6 @@ const Signature = ({ profile, customer, plan }: Props) => {
         )}
         {plan && (
           <>
-            <SignatureText>Assinatura :</SignatureText>
             <PlanWrapper>
               <Box sx={{ display: 'flex', gap: '1rem' }}>
                 <PlanText>{plan?.name}</PlanText>
@@ -226,6 +235,68 @@ const Signature = ({ profile, customer, plan }: Props) => {
             </PlanWrapper>
           </>
         )}
+
+        <Divider sx={{ borderColor: '#272727', margin: '1rem -1.5rem' }} />
+        <SignatureText>Acessos de Time</SignatureText>
+
+        {accesses.filter((a) => !!a.team?.id).length === 0 && (
+          <Typography textAlign="center">
+            Você ainda não possui acesso a nenhum time.
+          </Typography>
+        )}
+        <Box height="1rem" />
+        {accesses
+          .filter((a) => !!a.team?.id)
+          .map(({ team }) => (
+            <PlanWrapper key={team.id}>
+              <Box sx={{ display: 'flex', gap: '1rem' }}>
+                <PlanText>{team?.name}</PlanText>
+                {isActive(profile.expiration_date) && (
+                  <ActivePlan>Ativo</ActivePlan>
+                )}
+                {!isActive(profile.expiration_date) && (
+                  <ExpiredPlan>Expirado</ExpiredPlan>
+                )}
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <ExpiresDateText>Produtos Vinculados</ExpiresDateText>
+                <ExpiresDate>{team?.products?.length}</ExpiresDate>
+              </Box>
+              <Box />
+              <Box />
+              <Box />
+              <Button
+                sx={{ textTransfor: 'uppercase' }}
+                onClick={() => {
+                  setOpenExitTeam(true);
+                  setSelectedTeam(team);
+                }}
+              >
+                Sair do Time
+              </Button>
+
+              {!profile.card_id && (
+                <LoadingButton
+                  loading={isLoading}
+                  variant="outlined"
+                  onClick={() => handlePixRequest()}
+                  sx={{
+                    background: 'none',
+                    border: `1px solid ${theme.palette.accent.main}`,
+                    textTransform: 'none',
+                  }}
+                >
+                  Pagar Fatura
+                </LoadingButton>
+              )}
+            </PlanWrapper>
+          ))}
       </SignatureWrapper>
       <PixModal open={open} setOpen={setOpen} qrCode={pixQrCode} />
       <PaymentChangeModal
@@ -235,6 +306,33 @@ const Signature = ({ profile, customer, plan }: Props) => {
         customer={customer}
         profile={profile}
       />
+      <ModalComponent
+        onDelete={async () => {
+          await DeleteMentor({
+            teams: [seletedTeam.id],
+            reason: 'Optou por sair.',
+            profile_id: profile.id,
+          });
+          setOpenExitTeam(false);
+          // reload page
+          router.reload();
+        }}
+        onSave={() => {
+          setOpenExitTeam(false);
+        }}
+        open={openExitTeam}
+        setOpen={setOpenExitTeam}
+        title="Sair do Time"
+        deleteMessage={true}
+        deleteTitle="Sair"
+      >
+        <Box sx={{ textAlign: 'center' }}>
+          <DeleteText>
+            Ao sair, você perderá todos os acessos relacionados a esse time.
+            Deseja continuar mesmo assim?
+          </DeleteText>
+        </Box>
+      </ModalComponent>
     </>
   );
 };

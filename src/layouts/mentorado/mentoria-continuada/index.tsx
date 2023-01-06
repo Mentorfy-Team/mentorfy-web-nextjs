@@ -306,7 +306,7 @@ export const getProps = async (ctx) => {
       notFound: true,
     };
   }
-  console.log('product', product);
+
   return {
     props: {
       member_area_id: id,

@@ -9,7 +9,6 @@ export const CloneProduct = async (data: object) => {
 
     return response.data;
   } catch (error) {
-    console.log('error', (error as any).message);
     return {
       error: 'Erro ao clonar modelo',
     };

@@ -9,6 +9,8 @@ import GeralPage from './tabs/geral';
 import { GetAuthSession } from '~/helpers/AuthSession';
 import { SupabaseServer } from '~/backend/supabase';
 import { GetProductById } from '~/backend/repositories/product/GetProductById';
+import { CheckForSubscription } from '~/backend/repositories/subscription/CheckForSubscription';
+import isReadOnly from '~/helpers/IsReadOnly';
 
 const LinksPage = dynamic(() => import('./tabs/links'));
 
@@ -78,11 +80,22 @@ export const getProps = async (ctx) => {
     id: ctx.query.id,
   });
 
+  const accesses = await CheckForSubscription({
+    supabase,
+    data: {
+      user_id: session.user.id,
+    },
+  });
+
+  const readOnly = isReadOnly(accesses);
+
   return {
     props: {
       product: product,
       tab: ctx.query.tab ? tabs[ctx.query.tab as string] : tabs.Geral,
       user: session.user,
+      readOnly,
+      accesses,
     },
   };
 };
