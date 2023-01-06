@@ -108,7 +108,13 @@ export const get = async (req, res: NextApiResponse) => {
 
     return res.status(200).send(pdfData);
   } catch (error) {
-    return res.status(200).send(error);
+    return res.status(200).json({
+      error,
+      data: {
+        certificate: certificateUrl,
+        texts: merge,
+      },
+    });
   }
 };
 
