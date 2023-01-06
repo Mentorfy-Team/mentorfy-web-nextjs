@@ -101,7 +101,7 @@ const AddText = (doc, text, x, y, fontSize = 12, handWrite = false) => {
       {
         text: text,
         font: handWrite
-          ? '~/../public/fonts/Corinthia-Regular.ttf'
+          ? require('~/../public/fonts/Corinthia-Regular.ttf')
           : 'Helvetica',
       },
     ],
