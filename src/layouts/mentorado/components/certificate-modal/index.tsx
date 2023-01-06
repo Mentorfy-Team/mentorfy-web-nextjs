@@ -59,7 +59,7 @@ const CertificateModal = ({ open, setOpen, product }: Props) => {
           {document?.length > 5 && (
             <PDFButton
               as="a"
-              href={`${process.env.NEXT_PUBLIC_BASE_URL}/${
+              href={`${process.env.NEXT_PUBLIC_API_URL}/${
                 ApiRoutes.member_areas_certificate
               }?id=${product.id}${withDoc ? `&doc=${document}` : ''}`}
               onClick={() => setOpen(false)}
