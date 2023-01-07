@@ -66,6 +66,7 @@ const CertificateModal = ({ open, setOpen, product, profile }: Props) => {
                 withDoc ? `&doc=${document}` : ''
               }`}
               download
+              target="_blank"
               onClick={() => setOpen(false)}
             >
               Download do Certificado
