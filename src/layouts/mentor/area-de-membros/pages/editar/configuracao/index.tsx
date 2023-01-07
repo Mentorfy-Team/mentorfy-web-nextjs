@@ -25,8 +25,9 @@ import { userStore } from '~/stores';
 import { ColorPicker } from './components/ColorPicker';
 type props = {
   id: string;
+  readOnly?: boolean;
 };
-const Geral: FC<props> = ({ id }) => {
+const Geral: FC<props> = ({ id, readOnly }) => {
   const route = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [video, setVideo] = useState<string>('');

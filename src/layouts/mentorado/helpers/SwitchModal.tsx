@@ -16,7 +16,10 @@ const OpenText = dynamic(() => import('../components/open-text'), {
 const QuestionsForm = dynamic(() => import('../components/questions-forms'), {
   loading: () => <LoadingComponent />,
 });
-const UploadFile = dynamic(() => import('../components/file-dowaload'), {
+const DownloadFileModal = dynamic(() => import('../components/file-download'), {
+  loading: () => <LoadingComponent />,
+});
+const UploadFileModal = dynamic(() => import('../components/upload-file'), {
   loading: () => <LoadingComponent />,
 });
 // const WheelOfLifeModal = dynamic(
@@ -35,14 +38,15 @@ const Schedule = dynamic(() => import('../components/schedule'), {
 export const ToolListNames = {
   StepGroup: { name: 'Módulo de Etapas', id: 0 },
   QuestionsForm: { name: 'Formulário de Perguntas', id: 1 },
-  UploadFile: { name: 'Upload de Arquivo', id: 2 },
+  DownloadFile: { name: 'Download de Arquivo', id: 2 },
   Checklist: { name: 'Checklist', id: 3 },
   Video: { name: 'Upload de Vídeo', id: 4 },
   Embed: { name: 'Embed', id: 5 },
   OpenText: { name: 'Campo de Texto Aberto', id: 6 },
   WheelOfLifeModal: { name: 'Roda da Vida', id: 7 },
   Calendar: { name: 'Calendário', id: 8 },
-  ToolList: { name: 'Lista de Ferramentas', id: 9 },
+  UploadFile: { name: 'Upload de Arquivo', id: 9 },
+  ToolList: { name: 'Lista de Ferramentas', id: 10 },
 };
 
 export type ToolsModalProps = {
@@ -111,9 +115,9 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
           }
         />
       );
-    case ToolListNames.UploadFile.name:
+    case ToolListNames.DownloadFile.name:
       return (
-        <UploadFile
+        <DownloadFileModal
           data={data}
           userInput={userInput}
           open={open}
@@ -162,6 +166,22 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
           data={data}
           userInput={userInput}
           open={open}
+          setOpen={setOpen}
+          onChange={(props) =>
+            onChange({
+              ...props,
+              refId,
+            })
+          }
+        />
+      );
+    case ToolListNames.UploadFile.name:
+      return (
+        <UploadFileModal
+          data={data}
+          userInput={userInput}
+          open={open}
+          refId={refId}
           setOpen={setOpen}
           onChange={(props) =>
             onChange({

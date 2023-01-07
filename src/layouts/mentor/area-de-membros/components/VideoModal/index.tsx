@@ -5,7 +5,7 @@ import ModalComponent from '~/components/modules/Modal';
 import HandleFileUpload from '~/helpers/HandleFileUpload';
 import AddImage from '../AddImage';
 import ContentBox from '../ContentBox';
-import UploadToUrlFiles from '../UploadFileModal/helpers/UploadToUrlFiles';
+import UploadToUrlFiles from '../DownloadFileModal/helpers/UploadToUrlFiles';
 import Video from './components/Video';
 import { AcceptedLinksText, AddTaskButton, LinkInputWrapper } from './styles';
 
@@ -29,6 +29,7 @@ const VideoModal = ({
   multivideos = false,
   area_id,
   withLink = true,
+  readOnly,
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
@@ -102,8 +103,9 @@ const VideoModal = ({
 
   return (
     <ModalComponent
-      onSave={() => handleSave()}
-      onDelete={() => handleSave(true)}
+      onSave={readOnly ? null : () => handleSave()}
+      onDelete={readOnly ? null : () => handleSave(true)}
+      onClose={readOnly ? () => setOpen(false) : null}
       open={open}
       setOpen={setOpen}
       title="Upload de Vídeo"

@@ -71,13 +71,17 @@ const HeaderPartial: React.FC = () => {
             quality={85}
           />
           {router.pathname.includes('mentorado') && (
-            <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/mentor/dashboard`}>
+            <Link
+              href={`${process.env.NEXT_PUBLIC_BASE_URL}/mentor/dashboard`}
+              target='_blank'
+            >
               Visualizar como mentor
             </Link>
           )}
           {!router.pathname.includes('mentorado') && (
             <Link
               href={`${process.env.NEXT_PUBLIC_BASE_URL}/mentorado/bem-vindo`}
+              target='_blank'
             >
               Visualizar como mentorado
             </Link>

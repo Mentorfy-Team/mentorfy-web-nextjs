@@ -4,7 +4,7 @@ import InputField from '~/components/atoms/InputField';
 import ModalComponent from '~/components/modules/Modal';
 import HandleFileUpload from '~/helpers/HandleFileUpload';
 import AddImage from '../AddImage';
-import UploadToUrlFiles from '../UploadFileModal/helpers/UploadToUrlFiles';
+import UploadToUrlFiles from '../DownloadFileModal/helpers/UploadToUrlFiles';
 import { Checkbox, DeleteText } from './styles';
 import {
   BpCheckedIcon,
@@ -26,6 +26,7 @@ const GroupModal = ({
   onChange,
   area_id,
   area_type,
+  readOnly,
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
@@ -87,19 +88,23 @@ const GroupModal = ({
 
   return (
     <ModalComponent
-      onSave={() => handleSave()}
-      onDelete={() => {
-        // show a browser alert to confirm the delete
-        if (rowsData.length > 0) {
-          setDeleteGroup(true);
-        }
-        if (rowsData.length === 0) {
-          handleSave(true);
-        }
-        if (deleteGroup === true) {
-          handleSave(true);
-        }
-      }}
+      onSave={readOnly ? null : () => handleSave()}
+      onClose={readOnly ? () => setOpen(false) : null}
+      onDelete={
+        readOnly
+          ? null
+          : () => {
+              if (rowsData.length > 0) {
+                setDeleteGroup(true);
+              }
+              if (rowsData.length === 0) {
+                handleSave(true);
+              }
+              if (deleteGroup === true) {
+                handleSave(true);
+              }
+            }
+      }
       open={open}
       setOpen={setOpen}
       title="Informações do Módulo"

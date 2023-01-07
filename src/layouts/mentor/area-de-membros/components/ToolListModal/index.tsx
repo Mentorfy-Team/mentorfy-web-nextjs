@@ -26,6 +26,7 @@ const ToolList: React.FC<Props> = ({ onChange, setOpen, open, area_id }) => {
   } = useMentorTools(product?.id);
   const { setLoading, isLoading: GlobalLoading } = userStore();
 
+  console.log(tools);
   useEffect(() => {
     setLoading(isToolsLoading);
     if (product?.id) mutate();

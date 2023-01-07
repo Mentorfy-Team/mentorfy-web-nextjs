@@ -15,7 +15,13 @@ const QuestionsForm = dynamic(
   () => import('../components/QuestionsFormModal'),
   { loading: () => <LoadingComponent /> },
 );
-const UploadFile = dynamic(() => import('../components/UploadFileModal'), {
+const DownloadFileModal = dynamic(
+  () => import('../components/DownloadFileModal'),
+  {
+    loading: () => <LoadingComponent />,
+  },
+);
+const UploadFileModal = dynamic(() => import('../components/UploadFileModal'), {
   loading: () => <LoadingComponent />,
 });
 const WheelOfLifeModal = dynamic(
@@ -36,14 +42,15 @@ import ToolList from '../components/ToolListModal';
 export const ToolListNames = {
   StepGroup: { name: 'Módulo de Etapas', id: 0 },
   QuestionsForm: { name: 'Formulário de Perguntas', id: 1 },
-  UploadFile: { name: 'Upload de Arquivo', id: 2 },
+  DownloadFile: { name: 'Download de Arquivo', id: 2 },
   Checklist: { name: 'Checklist', id: 3 },
   Video: { name: 'Upload de Vídeo', id: 4 },
   Embed: { name: 'Embed', id: 5 },
   OpenText: { name: 'Campo de Texto Aberto', id: 6 },
   WheelOfLifeModal: { name: 'Roda da Vida', id: 7 },
   Calendar: { name: 'Calendário', id: 8 },
-  ToolList: { name: 'Lista de Ferramentas', id: 9 },
+  UploadFile: { name: 'Upload de Arquivo', id: 9 },
+  ToolList: { name: 'Lista de Ferramentas', id: 10 },
 };
 
 export type ToolsModalProps = {
@@ -56,6 +63,7 @@ export type ToolsModalProps = {
   setOpen?: (value: any) => any;
   rows?: any[];
   area_type?: number;
+  readOnly?: boolean;
 };
 
 const SwitchModal: React.FC<ToolsModalProps> = ({
@@ -68,6 +76,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
   area_id,
   rows,
   area_type,
+  readOnly,
 }) => {
   switch (type) {
     case ToolListNames.WheelOfLifeModal.name:
@@ -82,6 +91,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.Checklist.name:
@@ -96,6 +106,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.Embed.name:
@@ -110,11 +121,12 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
-    case ToolListNames.UploadFile.name:
+    case ToolListNames.DownloadFile.name:
       return (
-        <UploadFile
+        <DownloadFileModal
           area_id={area_id}
           data={data}
           open={open}
@@ -125,6 +137,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.OpenText.name:
@@ -139,6 +152,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.QuestionsForm.name:
@@ -153,6 +167,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.Video.name:
@@ -169,6 +184,22 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
               refId,
             })
           }
+          readOnly={readOnly}
+        />
+      );
+    case ToolListNames.UploadFile.name:
+      return (
+        <UploadFileModal
+          data={data}
+          open={open}
+          setOpen={setOpen}
+          onChange={(props) =>
+            onChange({
+              data: { ...props, type: ToolListNames.UploadFile.id },
+              refId,
+            })
+          }
+          readOnly={readOnly}
         />
       );
     case ToolListNames.StepGroup.name:
@@ -185,6 +216,7 @@ const SwitchModal: React.FC<ToolsModalProps> = ({
             })
           }
           area_type={area_type}
+          readOnly={readOnly}
         />
       );
     case ToolListNames.ToolList.name:

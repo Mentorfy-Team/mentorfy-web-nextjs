@@ -9,6 +9,7 @@ const OpenTextFieldModal = ({
   setOpen,
   onChange,
   data: { title: titleData, description: descriptionData, data },
+  readOnly,
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
@@ -26,8 +27,9 @@ const OpenTextFieldModal = ({
 
   return (
     <ModalComponent
-      onDelete={() => handleSave(true)}
-      onSave={() => handleSave()}
+      onSave={readOnly ? null : () => handleSave()}
+      onDelete={readOnly ? null : () => handleSave(true)}
+      onClose={readOnly ? () => setOpen(false) : null}
       open={open}
       setOpen={setOpen}
       title="Campo de Texto Aberto"

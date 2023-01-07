@@ -38,6 +38,7 @@ const DragNDrop = dynamic(() => import('~/components/modules/DragNDrop'), {
 type Props = {
   id: string;
   product: any;
+  readOnly: boolean;
 };
 
 type ModalType = {
@@ -49,7 +50,7 @@ type ModalType = {
   rows?: any[];
 };
 
-const EditarMentoria: FC<Props> = ({ id, product }) => {
+const EditarMentoria: FC<Props> = ({ id, product, readOnly }) => {
   const [currentModal, setCurrentModal] = useState<ModalType>();
   const [open, setOpen] = useState(false);
   const [steps, setSteps] = useState<GroupTools[]>([]);
@@ -170,9 +171,10 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
         area_type={product.deliver}
         data={currentModal.data}
         rows={currentModal.rows}
+        readOnly={readOnly}
       />
     );
-  }, [open, currentModal, GetTypeName, id, product]);
+  }, [open, currentModal, GetTypeName, id, product, readOnly]);
 
   const handleSave = useCallback(async () => {
     setLoading(true);
@@ -286,11 +288,12 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
             onNewGroup={(id) => addNewGroup(id)}
             allowSubgroup={allowSubGroups}
             productType={productType}
+            readOnly={readOnly}
           />
         </SortableContext>
       );
     },
-    [GetOnChange, addNewGroup, handleOpenToolsModal, product],
+    [GetOnChange, addNewGroup, handleOpenToolsModal, product, readOnly],
   );
 
   return (
@@ -307,7 +310,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
             color="primary"
             onClick={() => handleSave()}
             loading={isLoading}
-            disabled={!hasChanges || isLoading}
+            disabled={!hasChanges || isLoading || readOnly}
           >
             <Save />
             <Typography
@@ -333,6 +336,7 @@ const EditarMentoria: FC<Props> = ({ id, product }) => {
         />
         <Box display="flex" alignSelf="end" gap={2} mb={2}>
           <AddGroup
+            disabled={readOnly}
             onClick={() => addNewGroup()}
             variant="contained"
             color="secondary"

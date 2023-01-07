@@ -20,6 +20,7 @@ const QuestionFormModal = ({
   setOpen,
   onChange,
   data: { title: titleData, description: descriptionData, data: questionsData },
+  readOnly,
 }) => {
   const theme = useTheme();
   const [questions, setQuestions] = useState<QuestionsObject[]>(
@@ -56,8 +57,9 @@ const QuestionFormModal = ({
       open={open}
       setOpen={setOpen}
       title="Formulário de Perguntas"
-      onSave={() => handleSave()}
-      onDelete={() => handleSave(true)}
+      onSave={readOnly ? null : () => handleSave()}
+      onDelete={readOnly ? null : () => handleSave(true)}
+      onClose={readOnly ? () => setOpen(false) : null}
     >
       <>
         <Box sx={{ width: '100vw' }} />

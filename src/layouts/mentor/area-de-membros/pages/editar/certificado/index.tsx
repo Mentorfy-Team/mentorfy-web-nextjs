@@ -28,7 +28,7 @@ import { useTheme } from '@mui/material/styles';
 import DropzoneComponent from '~/components/modules/Dropzone';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { FileType } from '../../../components/UploadFileModal';
+import { FileType } from '../../../components/DownloadFileModal';
 import { DefaultCertificate } from '~/consts/certificate';
 import { toast } from 'react-toastify';
 import { DragBox } from './components/DragBox';
@@ -65,11 +65,13 @@ type CustomInfoSize = {
 type Props = {
   id: string;
   product: ProductTypes.Product;
+  readOnly: boolean;
 };
 
 const Certificate = ({
   id,
   product: { title: productTitle, profile, certificate: initCertificate },
+  readOnly,
 }: Props) => {
   const { handleSubmit } = useForm();
   const [isLoading, setIsLoading] = useState<boolean>(false);

@@ -206,13 +206,12 @@ export const KanbanView: FC<
                             marginLeft: '0.4rem',
                             alignSelf: 'center',
                           }}
-                          src={`/svgs/${
-                            userInput?.find(
-                              (inp) => inp.member_area_tool_id === task.id,
-                            )?.extra
+                          src={`/svgs/${userInput?.find(
+                            (inp) => inp.member_area_tool_id === task.id,
+                          )?.extra
                               ? 'done'
                               : 'done-gray'
-                          }.svg`}
+                            }.svg`}
                         />
                       </Task>
                     ))}

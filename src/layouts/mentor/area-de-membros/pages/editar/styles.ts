@@ -11,6 +11,12 @@ export const SaveButton = styled(LoadingButton)`
   }
 `;
 
+export const ReadOnly = styled(Box)`
+  * {
+    pointer-events: none;
+  }
+`;
+
 export const GroupHeader = styled(Box)`
   display: flex;
   flex-direction: column;

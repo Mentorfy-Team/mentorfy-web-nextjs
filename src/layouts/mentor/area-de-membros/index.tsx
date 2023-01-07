@@ -34,12 +34,11 @@ import { CloneProduct } from '~/services/clone-product.service';
 import isReadOnly from '~/helpers/IsReadOnly';
 import { CheckForSubscription } from '~/backend/repositories/subscription/CheckForSubscription';
 import { SupabaseServer } from '~/backend/supabase';
+import defaultUser from '~/consts/defaultUser';
 
 const MembersArea: FC<PageTypes.Props> = ({ user, readonly }) => {
   const { products, mutate } = useProducts(user.id);
-  const { products: defaultProducts } = useProducts(
-    'b9dc824e-20f9-4824-a568-326f193ed45a',
-  );
+  const { products: defaultProducts } = useProducts(defaultUser);
   const router = useRouter();
   const theme = useTheme();
   const [openCreatePage, setOpenCreatePage] = useState(false);

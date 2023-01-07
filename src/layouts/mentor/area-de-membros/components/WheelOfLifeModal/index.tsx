@@ -13,6 +13,7 @@ const WheelOfLifeModal = ({
   setOpen,
   onChange,
   data: { data: areasData, title: titleData, description: descriptionData },
+  readOnly,
 }) => {
   const [title, setTitle] = useState(titleData);
   const [description, setDescription] = useState(descriptionData);
@@ -59,8 +60,9 @@ const WheelOfLifeModal = ({
 
   return (
     <ModalComponent
-      onSave={() => handleSave()}
-      onDelete={() => handleSave(true)}
+      onSave={readOnly ? null : () => handleSave()}
+      onDelete={readOnly ? null : () => handleSave(true)}
+      onClose={readOnly ? () => setOpen(false) : null}
       open={open}
       setOpen={setOpen}
       title="Roda da Vida"
