@@ -39,8 +39,6 @@ export const CreateCertificate = async ({
       }
     }
 
-    //doc.pipe(fs.createWriteStream('output.pdf'));
-
     doc.rect(0, 0, doc.page.width, doc.page.height).fill('transparent');
 
     doc.fontSize(10);
