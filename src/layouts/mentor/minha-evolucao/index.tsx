@@ -3,8 +3,7 @@ import { FC } from 'react';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import Toolbar from '~/components/modules/Toolbar';
 import { GetAuthSession } from '~/helpers/AuthSession';
-import Trilha from '~/../public/images/jornada/trilha-jornada';
-import { SvgWrapper } from './styles';
+import Trilhas from './components/Trilhas';
 import { SupabaseServer } from '~/backend/supabase';
 import { CheckForSubscription } from '~/backend/repositories/subscription/CheckForSubscription';
 import isReadOnly from '~/helpers/IsReadOnly';
@@ -13,12 +12,15 @@ const Dashboard: FC<PageTypes.Props> = () => {
     <>
       <Toolbar tabs={['Progressão']} />
       <ContentWidthLimit maxWidth={1200} sx={{ position: 'relative' }}>
-        <div style={{ position: 'absolute' }}>
-          <Trilha width={1100} height={600} fill="gray" />
+        <div
+          style={{
+            position: 'absolute',
+            marginTop: '5rem',
+            marginLeft: '-1rem',
+          }}
+        >
+          <Trilhas fill="gray" />
         </div>
-        <SvgWrapper>
-          <Trilha width={1100} height={600} />
-        </SvgWrapper>
         <Image
           alt="monte-fugi"
           width={1100}
