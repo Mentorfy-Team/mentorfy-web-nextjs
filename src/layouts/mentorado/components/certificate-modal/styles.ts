@@ -16,7 +16,7 @@ export const DataText = styled(Typography)`
   font-weight: 600;
 `;
 
-export const PDFButton = styled(Box)<{ href }>`
+export const PDFButton = styled(Box)<{ href; download }>`
   font-size: 1rem !important;
   padding: 0.4rem 0.8rem;
   align-self: center;
