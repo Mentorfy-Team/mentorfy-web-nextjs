@@ -110,10 +110,6 @@ export const get = async (req, res: NextApiResponse) => {
   } catch (error) {
     return res.status(200).json({
       error,
-      data: {
-        certificate: certificateUrl,
-        texts: merge,
-      },
     });
   }
 };
