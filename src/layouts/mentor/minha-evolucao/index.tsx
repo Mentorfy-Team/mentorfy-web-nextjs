@@ -15,8 +15,8 @@ const Dashboard: FC<PageTypes.Props> = () => {
         <div
           style={{
             position: 'absolute',
-            marginTop: '5rem',
-            marginLeft: '-1rem',
+            marginTop: '2rem',
+            marginLeft: '-1.5rem',
           }}
         >
           <Trilhas fill="gray" />
