@@ -1,7 +1,6 @@
 import PDFDocument from 'pdfkit';
 import addTextbox from 'textbox-for-pdfkit';
 import { HttpClient } from '~/services/HttpClient';
-import fs from 'fs';
 
 // Header
 const maxWidth = 790 * 2;
@@ -40,7 +39,7 @@ export const CreateCertificate = async ({
       }
     }
 
-    doc.pipe(fs.createWriteStream('output.pdf'));
+    //doc.pipe(fs.createWriteStream('output.pdf'));
 
     doc.rect(0, 0, doc.page.width, doc.page.height).fill('transparent');
 
