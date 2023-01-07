@@ -52,7 +52,7 @@ const MinhaConta: FC<props> = ({
 
   const SwitchTabs = useCallback(() => {
     if (!profile) return null;
-    console.log(tabindex, tab, tabs.Assinatura.valueOf());
+
     switch (tabindex) {
       case tabs.Geral.valueOf():
         return (

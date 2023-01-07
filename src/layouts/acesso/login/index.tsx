@@ -72,7 +72,7 @@ const Login: FC<props> = ({ urlProps }) => {
     }
     setIsLoading(true);
     const registerData = await Authenticate({ email, password });
-    console.log('registerData', registerData);
+
     if (!registerData || registerData.error) {
       setError('*Email e ou senha incorretos, tente novamente!');
       setIsLoading(false);

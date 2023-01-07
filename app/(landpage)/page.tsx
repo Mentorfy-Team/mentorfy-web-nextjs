@@ -99,7 +99,7 @@ export default function Page() {
 
               <ActionButton
                 style={{ marginTop: '0' }}
-                href={process.env.NEXT_PUBLIC_HOME_URL}
+                href={process.env.NEXT_PUBLIC_BASE_URL}
               >
                 Quero conhecer a ferramenta
               </ActionButton>
@@ -189,7 +189,7 @@ export default function Page() {
               </SecondSectionText>
               <ActionButton
                 sx={{ marginBottom: '1.5rem' }}
-                href={process.env.NEXT_PUBLIC_HOME_URL}
+                href={process.env.NEXT_PUBLIC_BASE_URL}
               >
                 Ver demonstração
               </ActionButton>
@@ -323,7 +323,7 @@ export default function Page() {
 
             <ActionButton
               sx={{ width: '150px' }}
-              href={process.env.NEXT_PUBLIC_HOME_URL}
+              href={process.env.NEXT_PUBLIC_BASE_URL}
             >
               Ver detalhes
             </ActionButton>
@@ -367,7 +367,7 @@ export default function Page() {
               </SecondSectionText>
               <ActionButton
                 sx={{ marginBottom: '4rem' }}
-                href={process.env.NEXT_PUBLIC_HOME_URL}
+                href={process.env.NEXT_PUBLIC_BASE_URL}
               >
                 Ver demonstração
               </ActionButton>
@@ -410,7 +410,7 @@ export default function Page() {
           ></Box>
           <ActionButton
             sx={{ margin: '3rem 0', zIndex: '3' }}
-            href={process.env.NEXT_PUBLIC_HOME_URL}
+            href={process.env.NEXT_PUBLIC_BASE_URL}
           >
             {' '}
             Ver demonstração

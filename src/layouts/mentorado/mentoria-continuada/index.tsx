@@ -2,6 +2,7 @@ import { DocumentScanner } from '@mui/icons-material';
 import Image from 'next/image';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GetProductById } from '~/backend/repositories/product/GetProductById';
+import { GetProfileById } from '~/backend/repositories/user/GetProfileById';
 import { SupabaseServer } from '~/backend/supabase';
 import ContentWidthLimit from '~/components/modules/ContentWidthLimit';
 import { GroupTools } from '~/components/modules/DragNDrop';
@@ -33,6 +34,7 @@ const ContinuosMentoring: FC<
     memberAreaInitial: any;
     task_id: string;
     product: ProductTypes.Product;
+    user: UserTypes.ProfileWithAddress & UserTypes.User;
   }
 > = ({ member_area_id, memberAreaInitial, task_id, product, user }) => {
   const { steps: stepsData, mutate } = useMemberAreaTools(member_area_id);
@@ -272,6 +274,7 @@ const ContinuosMentoring: FC<
           open={showCertificate}
           setOpen={setShowCertificate}
           product={product}
+          profile={user.profile}
         />
       )}
     </>
@@ -307,6 +310,10 @@ export const getProps = async (ctx) => {
     };
   }
 
+  const userData = await GetProfileById(supabase, {
+    id: session.user.id,
+  });
+
   return {
     props: {
       member_area_id: id,
@@ -317,6 +324,7 @@ export const getProps = async (ctx) => {
         description: product?.description,
       },
       product: product,
+      user: userData,
     },
   };
 };

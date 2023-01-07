@@ -10,8 +10,9 @@ type Props = {
   product: ProductTypes.Product;
   open: boolean;
   setOpen: (value: boolean) => void;
+  profile: any;
 };
-const CertificateModal = ({ open, setOpen, product }: Props) => {
+const CertificateModal = ({ open, setOpen, product, profile }: Props) => {
   const withDoc = !!(product.certificate as any)?.student?.document?.pageX;
   const [document, setDocument] = useState<string | null>(null);
 
@@ -59,9 +60,13 @@ const CertificateModal = ({ open, setOpen, product }: Props) => {
           {document?.length > 5 && (
             <PDFButton
               as="a"
-              href={`${process.env.NEXT_PUBLIC_BASE_URL}/${
+              href={`${process.env.NEXT_PUBLIC_API_URL}/${
                 ApiRoutes.member_areas_certificate
-              }?id=${product.id}${withDoc ? `&doc=${document}` : ''}`}
+              }?pid=${product.id}&cid=${profile.id}${
+                withDoc ? `&doc=${document}` : ''
+              }`}
+              download
+              target="_blank"
               onClick={() => setOpen(false)}
             >
               Download do Certificado

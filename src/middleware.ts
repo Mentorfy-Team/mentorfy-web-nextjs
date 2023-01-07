@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getHostnameDataOrDefault } from '../lib/db';
 
 export const config = {
-  matcher: ['/', '/app/:path'],
+  matcher: ['/', '/app/:path', '/api'],
 };
 
 export default async function middleware(req: NextRequest) {
@@ -21,6 +21,11 @@ export default async function middleware(req: NextRequest) {
   // console.log('hostname: ', hostname);
   // console.log('currentHost: ', currentHost);
   const data = await getHostnameDataOrDefault(currentHost);
+
+  if (url.pathname.startsWith('/api')) {
+    url.pathname = `/${url.pathname}`;
+    return NextResponse.rewrite(url);
+  }
 
   // Prevent security issues – users should not be able to canonically access
   // the pages/sites folder and its respective contents.
