@@ -1,6 +1,7 @@
 import PDFDocument from 'pdfkit';
 import addTextbox from 'textbox-for-pdfkit';
-import { HttpServer } from '~/services/HttpClient';
+import { HttpClient } from '~/services/HttpClient';
+import fs from 'fs';
 
 // Header
 const maxWidth = 790 * 2;
@@ -10,9 +11,10 @@ export const CreateCertificate = async ({
   texts: { course, student },
   res,
 }) => {
-  const response = await HttpServer.get(certificate, {
+  const response = await HttpClient.get(certificate, {
     responseType: 'arraybuffer',
   });
+
   // a promise resolve
   const promise = new Promise((resolve, reject) => {
     const doc = new PDFDocument({
@@ -38,7 +40,7 @@ export const CreateCertificate = async ({
       }
     }
 
-    //doc.pipe(fs.createWriteStream('output.pdf'));
+    doc.pipe(fs.createWriteStream('output.pdf'));
 
     doc.rect(0, 0, doc.page.width, doc.page.height).fill('transparent');
 
@@ -73,6 +75,11 @@ export const CreateCertificate = async ({
       }
       if (course.owner) {
         const { text, pageX, pageY, fontSize } = course.owner;
+        doc.registerFont(
+          'Corinthia',
+          '~/../public/fonts/Corinthia-Regular.ttf',
+          'Corinthia',
+        );
         AddText(doc, text, pageX, pageY, fontSize, true);
       }
     }
@@ -100,9 +107,7 @@ const AddText = (doc, text, x, y, fontSize = 12, handWrite = false) => {
     [
       {
         text: text,
-        font: handWrite
-          ? require('~/../public/fonts/Corinthia-Regular.ttf')
-          : 'Helvetica',
+        font: 'Helvetica',
       },
     ],
     doc,
