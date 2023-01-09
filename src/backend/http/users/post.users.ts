@@ -52,7 +52,9 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
           status: 'pending',
           trial_expiration: defaultExpirationDate,
         })
-        .eq('email', user.email);
+        .eq('email', user.email)
+        .select('*')
+        .single();
 
       leadInfo = newLead;
     }
