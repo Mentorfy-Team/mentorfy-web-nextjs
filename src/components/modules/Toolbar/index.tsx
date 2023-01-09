@@ -37,7 +37,7 @@ const Toolbar: React.FC<Props> = ({
 
   useEffect(() => {
     onChange(tabindex);
-  }, [tabindex]);
+  }, [onChange, tabindex]);
 
   useEffect(() => {
     if (route.pathname.includes('mentorado')) {

@@ -112,7 +112,7 @@ export const Buttons = styled(LoadingButton)`
   text-transform: none;
 `;
 
-export const Form = styled(Box)<{ bgwhite? }>`
+export const Form = styled(Box) <{ bgwhite?}>`
   align-items: flex-start;
   background-color: ${({ bgwhite }) => (bgwhite ? 'white' : 'unset')};
   border-radius: 5px;
@@ -216,7 +216,7 @@ export const Input = styled(InputField)`
     -webkit-box-shadow: none;
     box-shadow: none !important;
     -webkit-text-fill-color: ${({ theme }) =>
-      theme.palette.caption.dark} !important;
+    theme.palette.caption.dark} !important;
   }
 
   svg {
@@ -229,4 +229,37 @@ export const InputsWrapper = styled('div')`
   align-items: center;
   gap: 0.5rem;
   width: 100%;
+`;
+
+export const PlansWrapper = styled(Box)`
+  display: flex;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+`;
+export const PlanContainer = styled(Box)`
+  background-color: ${({ theme }) => theme.palette.primary.dark};
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 10px;
+`;
+export const TitleContainer = styled(Box)`
+  padding: 1rem;
+  border-bottom: 1px solid ${({ theme }) => theme.palette.caption.dark};
+  text-align: center;
+`;
+export const PlanTitle = styled(Typography)`
+  font-weight: 500;
+  line-height: 1.2;
+  font-size: 1.8rem;
+`;
+export const DescriptionContainer = styled(Box)`
+  display: flex;
+  padding: 1rem;
+
+`;
+export const PlanDescription = styled(Typography)`
+  font-weight: 500;
+  line-height: 1.2;
 `;

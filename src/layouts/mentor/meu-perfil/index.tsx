@@ -84,18 +84,7 @@ const MinhaConta: FC<props> = ({
           />
         );
     }
-  }, [
-    profile,
-    tabindex,
-    tab,
-    isViewingMentored,
-    isViewingMentor,
-    user,
-    address,
-    accesses,
-    customer,
-    plan,
-  ]);
+  }, [profile, tabindex, isViewingMentored, isViewingMentor, user, address, accesses, customer, plan]);
 
   return (
     <>
@@ -106,10 +95,10 @@ const MinhaConta: FC<props> = ({
           isViewingMentor || isViewingMentored
             ? ['Perfil']
             : [
-                'Perfil',
-                'Dados de Cadastro',
-                profile?.access_type === 'mentor' ? 'Assinatura' : '',
-              ]
+              'Perfil',
+              'Dados de Cadastro',
+              profile?.access_type === 'mentor' ? 'Assinatura' : '',
+            ]
         }
       />
       <ContentWidthLimit>

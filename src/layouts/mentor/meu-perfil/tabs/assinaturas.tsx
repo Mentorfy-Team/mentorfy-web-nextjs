@@ -2,13 +2,19 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import {
   ActivePlan,
+  DescriptionContainer,
   ExpiredPlan,
   ExpiresDate,
   ExpiresDateText,
+  PlanContainer,
+  PlanDescription,
   PlanText,
+  PlanTitle,
   PlanWrapper,
+  PlansWrapper,
   SignatureText,
   SignatureWrapper,
+  TitleContainer,
 } from '../style';
 import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
@@ -151,8 +157,54 @@ const Signature = ({ profile, customer, plan, accesses }: Props) => {
                 Você pode assinar um novo plano clicando abaixo.
               </Typography>
             )}
+            <PlansWrapper>
+              <PlanContainer>
+                <TitleContainer>
+                  <PlanTitle>
+                    Anual
+                  </PlanTitle>
+                </TitleContainer>
+                <DescriptionContainer>
+                  <PlanDescription>
+                    Acesso ilimitado à Áreas de Membros
+                  </PlanDescription>
+                </DescriptionContainer>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={async () => {
+                    await router.prefetch('/checkout/plan_YPpMGKptgmIrM8gv');
+                    await router.push('/checkout/plan_YPpMGKptgmIrM8gv');
+                  }}
+                >
+                  Assinar agora
+                </Button>
+              </PlanContainer>
 
-            <Button
+              <PlanContainer>
+                <TitleContainer>
+                  <PlanTitle>
+                    Mensal
+                  </PlanTitle>
+                </TitleContainer>
+                <DescriptionContainer>
+                  <PlanDescription>
+                    Acesso limitado à Áreas de Membros
+                  </PlanDescription>
+                </DescriptionContainer>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={async () => {
+                    await router.prefetch('/checkout/plan_YPpMGKptgmIrM8gv');
+                    await router.push('/checkout/plan_YPpMGKptgmIrM8gv');
+                  }}
+                >
+                  Assinar agora
+                </Button>
+              </PlanContainer>
+            </PlansWrapper>
+            {/* <Button
               variant="contained"
               color="primary"
               onClick={async () => {
@@ -161,7 +213,7 @@ const Signature = ({ profile, customer, plan, accesses }: Props) => {
               }}
             >
               Assinar agora
-            </Button>
+            </Button> */}
           </Box>
         )}
         {plan && (
