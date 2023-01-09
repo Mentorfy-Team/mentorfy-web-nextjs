@@ -100,7 +100,7 @@ export const getProps = async (ctx) => {
   if (product.owner === defaultUser && defaultUser !== session.user.id) {
     readOnly = true;
   }
-
+  console.log(readOnly);
   return {
     props: {
       id: ctx.query.id,

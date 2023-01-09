@@ -1,5 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { Database } from '~/@types/supabase/v2.types';
+import { isExpired } from '~/helpers/IsExpired';
 //import { dateToReadable } from '~/backend/http/clients/list.api';
 
 export const CheckForSubscription = async ({
@@ -20,7 +21,11 @@ export const CheckForSubscription = async ({
   const AccessTypes: UserTypes.AccessType[] = [];
 
   if (user) {
-    if (user.plan_id) {
+    if (
+      user.plan_id ||
+      user.expiration_date == null ||
+      !isExpired(user.expiration_date)
+    ) {
       AccessTypes.push({
         type: 'mentor',
         mentor: {
