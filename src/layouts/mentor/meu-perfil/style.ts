@@ -230,3 +230,39 @@ export const InputsWrapper = styled('div')`
   gap: 0.5rem;
   width: 100%;
 `;
+
+export const PlansWrapper = styled(Box)`
+  height: 100%;
+`;
+export const PlanContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: ${({ theme }) => theme.palette.primary.dark};
+  border-radius: 10px;
+  height: 100%;
+  overflow: hidden;
+`;
+export const TitleContainer = styled(Box)`
+  padding: 1rem;
+  background-color: ${({ theme }) => theme.palette.accent.dark};
+  border-bottom: 1px solid ${({ theme }) => theme.palette.caption.dark};
+  text-align: center;
+`;
+export const PlanTitle = styled(Typography)`
+  font-weight: 500;
+  line-height: 1.2;
+  font-size: 1.6rem;
+`;
+export const DescriptionContainer = styled(Box)`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: stretch;
+  width: 100%;
+`;
+export const PlanDescription = styled(Typography)`
+  font-weight: 300;
+  line-height: 1.2;
+  text-align: stretch;
+`;

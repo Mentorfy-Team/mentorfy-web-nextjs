@@ -42,6 +42,9 @@ const HeaderPartial: React.FC = () => {
   const handleGoToProfile = () => {
     router.push(process.env.NEXT_PUBLIC_BASE_URL + 'meu-perfil');
   };
+  const handleGoToSignature = () => {
+    router.push(process.env.NEXT_PUBLIC_BASE_URL + 'meu-perfil?tab=2');
+  };
 
   useEffect(() => {
     if (router.pathname.includes('mentorado'))
@@ -134,6 +137,7 @@ const HeaderPartial: React.FC = () => {
             Perfil
           </MenuItem>
           <MenuItem variant="caption">Certificados</MenuItem>
+          <MenuItem variant="caption" onClick={() => handleGoToSignature()}>Planos</MenuItem>
           <MenuItem variant="caption">FAQ</MenuItem>
           <Divider
             sx={{
