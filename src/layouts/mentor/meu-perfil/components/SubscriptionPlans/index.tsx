@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import React from 'react';
 import {
@@ -9,8 +9,6 @@ import {
   PlansWrapper,
   TitleContainer,
 } from '../../style';
-
-// import { Container } from './styles';
 
 const SubscriptionPlans = ({ data }: { data: Pagarme.Plan }) => {
   const info = {
@@ -70,6 +68,43 @@ const SubscriptionPlans = ({ data }: { data: Pagarme.Plan }) => {
             </PlanDescription>
 
             <PlanDescription>Cancelar quando quiser</PlanDescription>
+
+            <PlanDescription>
+              <Typography
+                sx={(theme) => ({
+                  textAlign: 'center',
+                  fontSize: '1.5rem',
+                  fontWeight: 'bold',
+                  color: theme.palette.success.main,
+                })}
+              >
+                {
+                  (info.items[0].pricing_scheme.price_brackets[0].price / 100)
+                    .toLocaleString('pt-br', {
+                      style: 'currency',
+                      currency: 'BRL',
+                    })
+                    .split(',')[0]
+                }
+                <span
+                  style={{
+                    fontSize: '0.8rem',
+                  }}
+                >
+                  ,
+                  {info.items[0].pricing_scheme.price_brackets[0].price
+                    .toLocaleString('pt-br', {
+                      style: 'currency',
+                      currency: 'BRL',
+
+                      currencyDisplay: 'symbol',
+                    })
+                    .split(',')[1]
+                    .replace('R$', '')}{' '}
+                  / mês
+                </span>
+              </Typography>
+            </PlanDescription>
           </DescriptionContainer>
           <Button
             variant="contained"
