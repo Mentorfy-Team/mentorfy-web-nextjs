@@ -2,19 +2,13 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import {
   ActivePlan,
-  DescriptionContainer,
   ExpiredPlan,
   ExpiresDate,
   ExpiresDateText,
-  PlanContainer,
-  PlanDescription,
   PlanText,
-  PlanTitle,
   PlanWrapper,
-  PlansWrapper,
   SignatureText,
   SignatureWrapper,
-  TitleContainer,
 } from '../style';
 import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
@@ -26,18 +20,27 @@ import Typography from '@mui/material/Typography';
 import { SendPixPayment } from '~/services/checkout/pix.service';
 import { isExpired } from '~/helpers/IsExpired';
 import { Divider } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
 import { DeleteText } from '../../area-de-membros/components/GroupModal/styles';
 import ModalComponent from '~/components/modules/Modal';
 import { DeleteMentor } from '~/services/teams/teams.service';
+import SubscriptionPlans from '../components/SubscriptionPlans';
 
 type Props = {
   profile: ClientTypes.Profile;
   customer: Pagarme.Customer;
   plan: Pagarme.Plan;
   accesses: UserTypes.AccessType[];
+  planOptions: Pagarme.Plan[];
 };
 
-const Signature = ({ profile, customer, plan, accesses }: Props) => {
+const Signature = ({
+  profile,
+  customer,
+  plan,
+  accesses,
+  planOptions,
+}: Props) => {
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const [openPaymentModal, setOpenPaymentModal] = useState(false);
@@ -157,63 +160,21 @@ const Signature = ({ profile, customer, plan, accesses }: Props) => {
                 Você pode assinar um novo plano clicando abaixo.
               </Typography>
             )}
-            <PlansWrapper>
-              <PlanContainer>
-                <TitleContainer>
-                  <PlanTitle>
-                    Anual
-                  </PlanTitle>
-                </TitleContainer>
-                <DescriptionContainer>
-                  <PlanDescription>
-                    Acesso ilimitado à Áreas de Membros
-                  </PlanDescription>
-                </DescriptionContainer>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={async () => {
-                    await router.prefetch('/checkout/plan_YPpMGKptgmIrM8gv');
-                    await router.push('/checkout/plan_YPpMGKptgmIrM8gv');
-                  }}
-                >
-                  Assinar agora
-                </Button>
-              </PlanContainer>
 
-              <PlanContainer>
-                <TitleContainer>
-                  <PlanTitle>
-                    Mensal
-                  </PlanTitle>
-                </TitleContainer>
-                <DescriptionContainer>
-                  <PlanDescription>
-                    Acesso limitado à Áreas de Membros
-                  </PlanDescription>
-                </DescriptionContainer>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={async () => {
-                    await router.prefetch('/checkout/plan_YPpMGKptgmIrM8gv');
-                    await router.push('/checkout/plan_YPpMGKptgmIrM8gv');
-                  }}
-                >
-                  Assinar agora
-                </Button>
-              </PlanContainer>
-            </PlansWrapper>
-            {/* <Button
-              variant="contained"
-              color="primary"
-              onClick={async () => {
-                await router.prefetch('/checkout/plan_YPpMGKptgmIrM8gv');
-                await router.push('/checkout/plan_YPpMGKptgmIrM8gv');
+            <Grid
+              sx={{
+                maxWidth: '90vw',
+                width: '650px',
               }}
+              container
+              spacing={2}
             >
-              Assinar agora
-            </Button> */}
+              {planOptions?.map((item) => (
+                <Grid xs={12} sm={6} key={item?.id}>
+                  <SubscriptionPlans data={item} />
+                </Grid>
+              ))}
+            </Grid>
           </Box>
         )}
         {plan && (

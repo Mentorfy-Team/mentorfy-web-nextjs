@@ -31,6 +31,14 @@ declare namespace Pagarme {
     created_at: string;
     updated_at: string;
     items: Item[];
+    metadata: {
+      member_areas?: string | number | '0';
+      lifetime_clientes?: string | number | '0';
+      active_clientes?: string | number | '0';
+      team_members?: string | number | '0';
+      support?: string | 'basic' | 'premium';
+      [key: string]: string;
+    };
   };
 
   export type Card = {

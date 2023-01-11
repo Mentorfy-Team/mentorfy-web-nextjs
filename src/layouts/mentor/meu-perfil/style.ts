@@ -112,7 +112,7 @@ export const Buttons = styled(LoadingButton)`
   text-transform: none;
 `;
 
-export const Form = styled(Box) <{ bgwhite?}>`
+export const Form = styled(Box)<{ bgwhite? }>`
   align-items: flex-start;
   background-color: ${({ bgwhite }) => (bgwhite ? 'white' : 'unset')};
   border-radius: 5px;
@@ -216,7 +216,7 @@ export const Input = styled(InputField)`
     -webkit-box-shadow: none;
     box-shadow: none !important;
     -webkit-text-fill-color: ${({ theme }) =>
-    theme.palette.caption.dark} !important;
+      theme.palette.caption.dark} !important;
   }
 
   svg {
@@ -232,34 +232,37 @@ export const InputsWrapper = styled('div')`
 `;
 
 export const PlansWrapper = styled(Box)`
-  display: flex;
-  gap: 2rem;
-  margin-top: 2rem;
-  flex-wrap: wrap;
+  height: 100%;
 `;
 export const PlanContainer = styled(Box)`
-  background-color: ${({ theme }) => theme.palette.primary.dark};
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  background-color: ${({ theme }) => theme.palette.primary.dark};
   border-radius: 10px;
+  height: 100%;
+  overflow: hidden;
 `;
 export const TitleContainer = styled(Box)`
   padding: 1rem;
+  background-color: ${({ theme }) => theme.palette.accent.dark};
   border-bottom: 1px solid ${({ theme }) => theme.palette.caption.dark};
   text-align: center;
 `;
 export const PlanTitle = styled(Typography)`
   font-weight: 500;
   line-height: 1.2;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
 `;
 export const DescriptionContainer = styled(Box)`
   display: flex;
-  padding: 1rem;
-
+  flex-direction: column;
+  gap: 1rem;
+  align-items: stretch;
+  width: 100%;
 `;
 export const PlanDescription = styled(Typography)`
-  font-weight: 500;
+  font-weight: 300;
   line-height: 1.2;
+  text-align: stretch;
 `;

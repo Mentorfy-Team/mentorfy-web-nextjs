@@ -32,6 +32,7 @@ type props = PageTypes.Props & {
   isViewingMentor: boolean;
   plan: Pagarme.Plan;
   customer: Pagarme.Customer;
+  planOptions: Pagarme.Plan[];
 };
 
 const MinhaConta: FC<props> = ({
@@ -44,6 +45,7 @@ const MinhaConta: FC<props> = ({
   plan,
   customer,
   accesses,
+  planOptions,
 }) => {
   const [tabindex, setTabindex] = useState<number>(tab);
   const {
@@ -72,6 +74,7 @@ const MinhaConta: FC<props> = ({
             customer={customer}
             profile={profile}
             plan={plan}
+            planOptions={planOptions}
           />
         );
       default:
@@ -84,7 +87,17 @@ const MinhaConta: FC<props> = ({
           />
         );
     }
-  }, [profile, tabindex, isViewingMentored, isViewingMentor, user, address, accesses, customer, plan]);
+  }, [
+    profile,
+    tabindex,
+    isViewingMentored,
+    isViewingMentor,
+    user,
+    address,
+    accesses,
+    customer,
+    plan,
+  ]);
 
   return (
     <>
@@ -95,10 +108,10 @@ const MinhaConta: FC<props> = ({
           isViewingMentor || isViewingMentored
             ? ['Perfil']
             : [
-              'Perfil',
-              'Dados de Cadastro',
-              profile?.access_type === 'mentor' ? 'Assinatura' : '',
-            ]
+                'Perfil',
+                'Dados de Cadastro',
+                profile?.access_type === 'mentor' ? 'Assinatura' : '',
+              ]
         }
       />
       <ContentWidthLimit>
@@ -136,6 +149,9 @@ export const getProps = async (ctx) => {
 
   const plan = await GetPlan(profile.plan_id);
 
+  const black = await GetPlan('plan_wP03z2Efv0smN7db');
+  const vip = await GetPlan('plan_YPpMGKptgmIrM8gv');
+
   const accesses = await CheckForSubscription({
     supabase,
     data: {
@@ -154,6 +170,7 @@ export const getProps = async (ctx) => {
       isViewingMentor: !!ctx.query.id,
       customer: customer,
       plan: plan,
+      planOptions: [vip, black],
       tab: ctx.query.tab ?? tabs.Geral.toString(),
       accesses,
       readOnly,
