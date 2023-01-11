@@ -32,7 +32,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
   if (!error) {
     let leadInfo;
     const defaultExpirationDate = dateToReadable(
-      new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
+      new Date(new Date().getTime() + 14 * 24 * 60 * 60 * 1000),
     );
 
     const { data: lead, error: error } = await supabase
@@ -52,7 +52,9 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
           status: 'pending',
           trial_expiration: defaultExpirationDate,
         })
-        .eq('email', user.email);
+        .eq('email', user.email)
+        .select('*')
+        .single();
 
       leadInfo = newLead;
     }

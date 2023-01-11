@@ -32,17 +32,13 @@ type ToolProps = {
   type: string;
 }[];
 
-type RefIdProps = {
-  refId: string;
-};
-
 const FilesUploadModal = ({
   open,
   setOpen,
   data: { data: filesData, title: titleData, description: descriptionData },
   onChange,
   userInput,
-}: MentoredComponents.Props<ToolProps, InputProps, ExtraProps, RefIdProps>) => {
+}: MentoredComponents.Props<ToolProps, InputProps, ExtraProps>) => {
   const {
     data: { profile },
   } = useProfile();

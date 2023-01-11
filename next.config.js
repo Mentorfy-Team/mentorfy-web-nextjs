@@ -6,15 +6,15 @@ const { withAxiom } = require('next-axiom');
 const nextConfig = withAxiom({
   reactStrictMode: true,
   swcMinify: true,
-  experimental: {
-    modularizeImports: {
-      '@mui/material': {
-        transform: '@mui/material/{{member}}',
-      },
-      '@mui/icons-material': {
-        transform: '@mui/icons-material/{{member}}',
-      },
+  modularizeImports: {
+    '@mui/material': {
+      transform: '@mui/material/{{member}}',
     },
+    '@mui/icons-material': {
+      transform: '@mui/icons-material/{{member}}',
+    },
+  },
+  experimental: {
     appDir: true,
   },
   eslint: {

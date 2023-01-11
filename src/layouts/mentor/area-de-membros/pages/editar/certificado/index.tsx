@@ -27,7 +27,6 @@ import {
 import { useTheme } from '@mui/material/styles';
 import DropzoneComponent from '~/components/modules/Dropzone';
 import Image from 'next/image';
-import dynamic from 'next/dynamic';
 import { FileType } from '../../../components/DownloadFileModal';
 import { DefaultCertificate } from '~/consts/certificate';
 import { toast } from 'react-toastify';
@@ -37,14 +36,7 @@ import { UpdateCertificate } from '~/services/certificate-upload.service';
 
 import NextImage from 'next/image';
 import { Button } from '@mui/material';
-import UploadToUrlFiles from '../../../components/UploadFileModal/helpers/UploadToUrlFiles';
-
-const PDFReader = dynamic(
-  () => import('~/components/atoms/PDFReader/PDFReader'),
-  {
-    ssr: false,
-  },
-);
+import UploadToUrlFiles from '../../../components/DownloadFileModal/helpers/UploadToUrlFiles';
 
 type CustomInfo = {
   name: boolean;

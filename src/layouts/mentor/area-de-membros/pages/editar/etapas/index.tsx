@@ -348,6 +348,7 @@ const EditarMentoria: FC<Props> = ({ id, product, readOnly }) => {
         <ScrollWrapper withtoolbar="true">
           <DragNDrop
             setElements={setSteps}
+            steps={steps}
             elements={DnDRows(steps)}
             allowOverlay={product.deliver === '3'}
           />

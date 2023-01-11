@@ -181,7 +181,6 @@ const SwitchMentoredModal: React.FC<ToolsModalProps> = ({
           data={data}
           userInput={userInput}
           open={open}
-          refId={refId}
           setOpen={setOpen}
           onChange={(props) =>
             onChange({

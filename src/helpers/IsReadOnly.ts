@@ -1,6 +1,7 @@
 import { isExpired } from './IsExpired';
 
 const isReadOnly = (accesses: UserTypes.AccessType[]) => {
+  console.log(accesses);
   const isMentor = accesses.find(
     (x) => !isExpired(x.expiration_date) && x.type === 'mentor',
   );

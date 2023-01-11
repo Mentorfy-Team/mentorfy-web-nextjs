@@ -18,12 +18,14 @@ export type GroupTools = MentorTools.ToolData & {
 
 type Props = {
   elements: any;
+  steps: any;
   setElements: (elements: any) => void;
   allowOverlay?: boolean;
 };
 
 export default function DragNDrop({
   elements,
+  steps,
   setElements,
   allowOverlay = false,
 }: Props) {
@@ -45,53 +47,47 @@ export default function DragNDrop({
     const tool: GroupTools = active?.data?.current;
 
     if (active.id !== over?.id && tool) {
-      setElements((steps: GroupTools[]) => {
-        const newItens = [...steps];
+      const newItens = [...steps];
 
-        // Se o pai tiver um pai, é porque tool é filho de uma categoria.
-        if (tool.parent_tool?.parent) {
-          const granFatherIndex = newItens.findIndex((i) =>
-            i.rows.find((j) => j.id === tool.parent),
-          );
-          const fatherIndex = newItens[granFatherIndex].rows.findIndex(
-            (i) => i.id === tool.parent,
-          );
-          const rowsToOrganize =
-            newItens[granFatherIndex].rows[fatherIndex].rows;
+      // Se o pai tiver um pai, é porque tool é filho de uma categoria.
+      if (tool.parent_tool?.parent) {
+        const granFatherIndex = newItens.findIndex((i) =>
+          i.rows.find((j) => j.id === tool.parent),
+        );
+        const fatherIndex = newItens[granFatherIndex].rows.findIndex(
+          (i) => i.id === tool.parent,
+        );
+        const rowsToOrganize = newItens[granFatherIndex].rows[fatherIndex].rows;
 
-          const oldIndex = rowsToOrganize.findIndex((i) => i.id === active.id);
-          const newIndex = rowsToOrganize.findIndex((i) => i.id === over.id);
+        const oldIndex = rowsToOrganize.findIndex((i) => i.id === active.id);
+        const newIndex = rowsToOrganize.findIndex((i) => i.id === over.id);
 
-          newItens[granFatherIndex].rows = newItens[granFatherIndex].rows.map(
-            (father, index) => {
-              const newFather = { ...father };
+        newItens[granFatherIndex].rows = newItens[granFatherIndex].rows.map(
+          (father, index) => {
+            const newFather = { ...father };
 
-              if (index === fatherIndex) {
-                newFather.rows = arrayMove(rowsToOrganize, oldIndex, newIndex);
-              }
+            if (index === fatherIndex) {
+              newFather.rows = arrayMove(rowsToOrganize, oldIndex, newIndex);
+            }
 
-              return newFather;
-            },
-          );
-        } else {
-          // move etapa
-          const granFatherIndex = newItens.findIndex(
-            (i) => i.id === tool.parent,
-          );
-          const rowsToOrganize = newItens[granFatherIndex].rows;
+            return newFather;
+          },
+        );
+      } else {
+        // move etapa
+        const granFatherIndex = newItens.findIndex((i) => i.id === tool.parent);
+        const rowsToOrganize = newItens[granFatherIndex].rows;
 
-          const oldIndex = rowsToOrganize.findIndex((i) => i.id === active.id);
-          const newIndex = rowsToOrganize.findIndex((i) => i.id === over.id);
+        const oldIndex = rowsToOrganize.findIndex((i) => i.id === active.id);
+        const newIndex = rowsToOrganize.findIndex((i) => i.id === over.id);
 
-          newItens[granFatherIndex].rows = arrayMove(
-            rowsToOrganize,
-            oldIndex,
-            newIndex,
-          );
-        }
-
-        return newItens;
-      });
+        newItens[granFatherIndex].rows = arrayMove(
+          rowsToOrganize,
+          oldIndex,
+          newIndex,
+        );
+      }
+      setElements(newItens);
     }
   }
 
