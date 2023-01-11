@@ -10,8 +10,6 @@ import {
   TitleContainer,
 } from '../../style';
 
-// import { Container } from './styles';
-
 const SubscriptionPlans = ({ data }: { data: Pagarme.Plan }) => {
   const info = {
     ...data,
