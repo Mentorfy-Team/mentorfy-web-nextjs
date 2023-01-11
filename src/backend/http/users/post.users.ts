@@ -5,7 +5,7 @@ type Response = UsersApi.Post.Response;
 
 export const post: Handler.Callback<Request, Response> = async (req, res) => {
   const {
-    user: { email, password, name, active, phone },
+    user: { email, password, name, active, phone, document },
     refeerer,
   } = req.body;
 
@@ -70,6 +70,7 @@ export const post: Handler.Callback<Request, Response> = async (req, res) => {
         expiration_date: leadInfo?.trial_expiration ?? defaultExpirationDate,
         lead_id: leadInfo?.id,
         active: leadInfo?.status === 'approved' ? true : false,
+        document: document,
       })
       .eq('id', user.id);
   }

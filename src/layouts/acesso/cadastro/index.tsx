@@ -177,6 +177,19 @@ const Cadastro: FC<props> = ({ setInfo, urlProps }) => {
         />
         <InputField
           required
+          label="CPF/CNPJ"
+          type={'TEXT'}
+          name="document"
+          placeholder="Digite o seu documento"
+          InputLabelProps={{
+            shrink: true,
+          }}
+          onChange={handleChange}
+          error={!!error}
+          helperText={error}
+        />
+        <InputField
+          required
           label="Telefone"
           type={'tel'}
           name="phone"
