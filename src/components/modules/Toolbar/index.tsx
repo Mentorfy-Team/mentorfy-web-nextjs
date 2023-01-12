@@ -20,7 +20,7 @@ type Props = {
 };
 
 const Toolbar: React.FC<Props> = ({
-  onChange = () => { },
+  onChange = () => {},
   tabs = [],
   breadcrumbs = [],
   initialTab = 0,
@@ -119,7 +119,7 @@ const Toolbar: React.FC<Props> = ({
               href={`https://api.whatsapp.com/send?phone=${(
                 contact + ''
               ).replace('+', '')}`}
-              target='_blank'
+              target="_blank"
             >
               <WhatsAppButton>
                 <WhatsApp fontSize="small" />

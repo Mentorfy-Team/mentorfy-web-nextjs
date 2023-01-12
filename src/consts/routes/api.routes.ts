@@ -37,6 +37,7 @@ export enum ApiRoutes {
   member_areas_client_input = '/api/member-areas/client-input',
   member_areas_client_approval = '/api/member-areas/client-approval',
   member_areas_certificate = 'api/member-areas/certificate',
+  member_areas_integration = 'api/member-areas/integration',
 
   //* Rotas para api de autenticação
   auth = '/api/auth',
