@@ -19,6 +19,7 @@ import { SupabaseServer } from '~/backend/supabase';
 import isReadOnly from '~/helpers/IsReadOnly';
 import { CheckForSubscription } from '~/backend/repositories/subscription/CheckForSubscription';
 import defaultUser from '~/consts/defaultUser';
+import Integrations from './integracao';
 
 const EditarMentoria: FC<Props> = ({ id, product, user, readOnly }) => {
   const [tabindex, setTabindex] = useState(product.owner == user.id ? 0 : 1);
@@ -28,10 +29,13 @@ const EditarMentoria: FC<Props> = ({ id, product, user, readOnly }) => {
     'Configuração',
     'Links',
     'Certificado',
+    'Integrações',
   ]);
 
   const SwitchTabs = useCallback(() => {
     switch (tabindex) {
+      case 5:
+        return <Integrations product={product} readOnly={readOnly} id={id} />;
       case 3:
         return <Links id={id} />;
       case 4:
@@ -100,7 +104,7 @@ export const getProps = async (ctx) => {
   if (product.owner === defaultUser && defaultUser !== session.user.id) {
     readOnly = true;
   }
-  console.log(readOnly);
+
   return {
     props: {
       id: ctx.query.id,
