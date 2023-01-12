@@ -12,6 +12,7 @@ declare namespace UsersApi {
           session?: any;
           event?: string;
           active: boolean;
+          document: string;
         };
         refeerer?: string;
       };
